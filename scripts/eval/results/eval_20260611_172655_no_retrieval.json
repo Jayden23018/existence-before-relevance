@@ -1,0 +1,120 @@
+{
+  "meta": {
+    "timestamp": "2026-06-11T09:27:04.258Z",
+    "model": "google/gemma-4-31b-it:free",
+    "condition": "no_retrieval",
+    "total_tasks": 1,
+    "completed_tasks": 1,
+    "failed_tasks": 0
+  },
+  "tasks": [
+    {
+      "slug": "craft/wooden_sword",
+      "level": "L1",
+      "goal_item": "wooden_sword",
+      "min_steps": 2,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect raw logs",
+            "command": "!collectBlocks(\"oak_log\", 1)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 1)"
+            ],
+            "reasoning": "Need logs to create planks for all subsequent wooden items.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft wood planks",
+            "command": "!craftRecipe(\"oak_planks\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 4)"
+            ],
+            "reasoning": "Planks are required to make sticks and the sword head.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft sticks",
+            "command": "!craftRecipe(\"stick\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 4)"
+            ],
+            "reasoning": "A sword requires 1 stick for the handle.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 2
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft wooden sword",
+            "command": "!craftRecipe(\"wooden_sword\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"wooden_sword\", 1)"
+            ],
+            "reasoning": "Combined 2 wooden planks and 1 stick according to the sword material quantity pattern.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 2
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "wooden_sword"
+      },
+      "raw_response": "REASONING:\nI referenced the Material Quantity Pattern for swords (2 material units + 1 stick) and the Step Structure Pattern for basic wood processing.\nTarget item: wooden_sword\nMaterial: wood\nTool type: sword\n\nEXECUTION PLAN:\nStep 1: Collect raw logs\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 1)\nReasoning: Need logs to create planks for all subsequent wooden items.\n\nStep 2: Craft wood planks\nPrerequisites: item:oak_log:1\nCommand: !craftRecipe(\"oak_planks\", 4)\nReasoning: Planks are required to make sticks and the sword head.\n\nStep 3: Craft sticks\nPrerequisites: item:oak_planks:2\nCommand: !craftRecipe(\"stick\", 4)\nReasoning: A sword requires 1 stick for the handle.\n\nStep 4: Craft wooden sword\nPrerequisites: item:oak_planks:2, item:stick:1\nCommand: !craftRecipe(\"wooden_sword\", 1)\nReasoning: Combined 2 wooden planks and 1 stick according to the sword material quantity pattern.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 4,
+        "step_efficiency": 0.5,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 0,
+      "prompt_length": 7621
+    }
+  ],
+  "summary": {
+    "by_level": {
+      "L1": {
+        "total": 1,
+        "strict_tcr": "1/1",
+        "lenient_tcr": "1/1",
+        "pvr": "1/1",
+        "avg_step_efficiency": 0.5
+      }
+    },
+    "overall": {
+      "strict_tcr": "1/1",
+      "lenient_tcr": "1/1",
+      "pvr": "1/1",
+      "avg_step_efficiency": 0.5
+    }
+  }
+}

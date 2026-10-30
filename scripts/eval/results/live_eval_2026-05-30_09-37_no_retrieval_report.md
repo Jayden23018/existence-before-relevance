@@ -1,0 +1,14 @@
+# Live Bot Evaluation — no_retrieval
+**Date**: 2026-05-30
+**Overall TCR**: 0/1 (0.0%)
+**Note**: Craft tasks use pre-seeded raw materials; collect tasks gather from world.
+
+## Per-Level Summary
+| Level | Pass | Total | % |
+|-------|------|-------|---|
+| L2 | 0 | 1 | 0% |
+
+## Per-Task Results
+| Task | Level | Target | Found | Pass | Time(s) | Timeout |
+|------|-------|--------|-------|------|---------|---------|
+| craft/furnace | L2 | 1× furnace | 0 | ✗ | 180.5 | Yes |

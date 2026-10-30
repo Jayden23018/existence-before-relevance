@@ -1,0 +1,1728 @@
+{
+  "meta": {
+    "timestamp": "2026-06-01T08:17:34.417Z",
+    "model": "gpt-4o-2024-11-20",
+    "condition": "no_retrieval",
+    "total_tasks": 60,
+    "completed_tasks": 2,
+    "failed_tasks": 58
+  },
+  "tasks": [
+    {
+      "slug": "craft/wooden_sword",
+      "level": "L1",
+      "goal_item": "wooden_sword",
+      "min_steps": 2,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect logs to craft planks and sticks.",
+            "command": "!collectBlocks(\"oak_log\", 2)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 2)"
+            ],
+            "reasoning": "Logs are the base resource for crafting planks and sticks for the wooden sword.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft wooden planks from logs.",
+            "command": "!craftRecipe(\"oak_planks\", 8)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 8)"
+            ],
+            "reasoning": "Each log crafts into 4 planks, which will provide enough material for both the sword (2 planks) and the stick.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 2
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft sticks from wooden planks.",
+            "command": "!craftRecipe(\"stick\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 4)"
+            ],
+            "reasoning": "Sticks are crafted from planks and are required for the sword handle. Two planks yield four sticks, ensuring enough for the sword handle.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 2
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft the wooden sword using planks and a stick.",
+            "command": "!craftRecipe(\"wooden_sword\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"wooden_sword\", 1)"
+            ],
+            "reasoning": "Following the sword material pattern, the wooden sword requires 2 wooden planks (for the blade) and 1 stick (for the handle). This is the final crafting step.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 2
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "wooden_sword"
+      },
+      "raw_response": "**REASONING**:  \nTo analyze the user request \"craft a wooden sword,\" I identified the target item as a \"wooden_sword.\" The material is \"wood,\" indicating it uses planks crafted from logs. The tool type is a \"sword,\" which follows the quantity pattern of needing 2 material units (planks) and 1 stick. Using the Material Processing Pattern and Dependency Pattern, I observe that wooden planks must be crafted from logs, and sticks are crafted from planks. No smelting is required for wood. Following the Step Structure Pattern, I ensure the steps are in the proper dependency order.\n\n**EXECUTION PLAN**:\n\nStep 1: Collect logs to craft planks and sticks.  \nPrerequisites: None  \nCommand: !collectBlocks(\"oak_log\", 2)  \nReasoning: Logs are the base resource for crafting planks and sticks for the wooden sword.\n\nStep 2: Craft wooden planks from logs.  \nPrerequisites: item:oak_log:2  \nCommand: !craftRecipe(\"oak_planks\", 8)  \nReasoning: Each log crafts into 4 planks, which will provide enough material for both the sword (2 planks) and the stick.\n\nStep 3: Craft sticks from wooden planks.  \nPrerequisites: item:oak_planks:2  \nCommand: !craftRecipe(\"stick\", 4)  \nReasoning: Sticks are crafted from planks and are required for the sword handle. Two planks yield four sticks, ensuring enough for the sword handle.\n\nStep 4: Craft the wooden sword using planks and a stick.  \nPrerequisites: item:oak_planks:2, item:stick:1  \nCommand: !craftRecipe(\"wooden_sword\", 1)  \nReasoning: Following the sword material pattern, the wooden sword requires 2 wooden planks (for the blade) and 1 stick (for the handle). This is the final crafting step.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 4,
+        "step_efficiency": 0.5,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 0,
+      "prompt_length": 7621
+    },
+    {
+      "slug": "craft/stone_pickaxe",
+      "level": "L1",
+      "goal_item": "stone_pickaxe",
+      "min_steps": 3,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect oak logs to create sticks and wooden pickaxe prerequisites",
+            "command": "!collectBlocks(\"oak_log\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 3)"
+            ],
+            "reasoning": "Logs are needed to produce planks and sticks, which are prerequisites for crafting a wooden pickaxe.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks from logs",
+            "command": "!craftRecipe(\"oak_planks\", 12)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 12)"
+            ],
+            "reasoning": "Logs must be processed into planks to craft sticks and a wooden pickaxe.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft sticks from planks",
+            "command": "!craftRecipe(\"stick\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 4)"
+            ],
+            "reasoning": "Sticks are required for crafting both the wooden and stone pickaxes.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 12
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft a wooden pickaxe",
+            "command": "!craftRecipe(\"wooden_pickaxe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"wooden_pickaxe\", 1)"
+            ],
+            "reasoning": "A wooden pickaxe is necessary to mine stone blocks, which are required for crafting a stone pickaxe.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              },
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 5,
+            "goal": "Collect stone blocks using the wooden pickaxe",
+            "command": "!collectBlocks(\"stone\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"stone\", 3)"
+            ],
+            "reasoning": "Stone blocks are the primary material for crafting a stone pickaxe.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "wooden_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "stone",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 6,
+            "goal": "Craft a stone pickaxe",
+            "command": "!craftRecipe(\"stone_pickaxe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"stone_pickaxe\", 1)"
+            ],
+            "reasoning": "This is the final crafting step, using the collected stone and sticks to create the stone pickaxe.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              },
+              {
+                "type": "item",
+                "name": "stone",
+                "count": 3
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "stone_pickaxe"
+      },
+      "raw_response": "**REASONING**:  \nThe user's request is to \"craft a stone pickaxe.\" From this, I identified the following:  \n- Target item: stone_pickaxe  \n- Material type: stone  \n- Tool type: pickaxe  \n\nAccording to the Material Quantity Pattern, a pickaxe requires 3 material units (stone, in this case) and 2 sticks. Following the Dependency Pattern, I must ensure that all prerequisites for crafting the stone pickaxe are met. I referenced the examples that show cold-start tool chains to include steps for creating a wooden pickaxe first because mining stone requires at least a wooden pickaxe.  \n\n**EXECUTION PLAN**:  \n\nStep 1: Collect oak logs to create sticks and wooden pickaxe prerequisites  \nPrerequisites: None  \nCommand: !collectBlocks(\"oak_log\", 3)  \nReasoning: Logs are needed to produce planks and sticks, which are prerequisites for crafting a wooden pickaxe.  \n\nStep 2: Craft oak planks from logs  \nPrerequisites: item:oak_log:3  \nCommand: !craftRecipe(\"oak_planks\", 12)  \nReasoning: Logs must be processed into planks to craft sticks and a wooden pickaxe.  \n\nStep 3: Craft sticks from planks  \nPrerequisites: item:oak_planks:12  \nCommand: !craftRecipe(\"stick\", 4)  \nReasoning: Sticks are required for crafting both the wooden and stone pickaxes.  \n\nStep 4: Craft a wooden pickaxe  \nPrerequisites: item:stick:2, item:oak_planks:3  \nCommand: !craftRecipe(\"wooden_pickaxe\", 1)  \nReasoning: A wooden pickaxe is necessary to mine stone blocks, which are required for crafting a stone pickaxe.  \n\nStep 5: Collect stone blocks using the wooden pickaxe  \nPrerequisites: item:wooden_pickaxe:1, access:stone  \nCommand: !collectBlocks(\"stone\", 3)  \nReasoning: Stone blocks are the primary material for crafting a stone pickaxe.  \n\nStep 6: Craft a stone pickaxe  \nPrerequisites: item:stick:2, item:stone:3, station:crafting_table  \nCommand: !craftRecipe(\"stone_pickaxe\", 1)  \nReasoning: This is the final crafting step, using the collected stone and sticks to create the stone pickaxe.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": true,
+        "step_count": 6,
+        "step_efficiency": 0.5,
+        "issues": [
+          "Step 6: craftRecipe(\"stone_pickaxe\", 1) missing ingredients: cobblestone x3"
+        ],
+        "lenient_issues": [
+          "Step 6: craftRecipe(\"stone_pickaxe\", 1) missing ingredients: cobblestone x3"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7623
+    },
+    {
+      "slug": "craft/wooden_axe",
+      "level": "L1",
+      "goal_item": "wooden_axe",
+      "min_steps": 2,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7617
+    },
+    {
+      "slug": "craft/torch_batch",
+      "level": "L1",
+      "goal_item": "torch",
+      "min_steps": 3,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7611
+    },
+    {
+      "slug": "craft/wooden_hoe",
+      "level": "L1",
+      "goal_item": "wooden_hoe",
+      "min_steps": 2,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7617
+    },
+    {
+      "slug": "craft/crafting_table",
+      "level": "L1",
+      "goal_item": "crafting_table",
+      "min_steps": 1,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7625
+    },
+    {
+      "slug": "collect/bamboo",
+      "level": "L1",
+      "goal_item": "bamboo",
+      "min_steps": 1,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7615
+    },
+    {
+      "slug": "collect/sugar_cane",
+      "level": "L1",
+      "goal_item": "sugar_cane",
+      "min_steps": 1,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7623
+    },
+    {
+      "slug": "collect/dirt",
+      "level": "L1",
+      "goal_item": "dirt",
+      "min_steps": 1,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7625
+    },
+    {
+      "slug": "collect/andesite",
+      "level": "L1",
+      "goal_item": "andesite",
+      "min_steps": 1,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7619
+    },
+    {
+      "slug": "craft/iron_pickaxe",
+      "level": "L2",
+      "goal_item": "iron_pickaxe",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7653
+    },
+    {
+      "slug": "craft/iron_helmet",
+      "level": "L2",
+      "goal_item": "iron_helmet",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7651
+    },
+    {
+      "slug": "craft/iron_boots",
+      "level": "L2",
+      "goal_item": "iron_boots",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7643
+    },
+    {
+      "slug": "collect/deepslate_coal",
+      "level": "L2",
+      "goal_item": "coal",
+      "min_steps": 1,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7665
+    },
+    {
+      "slug": "craft/iron_axe",
+      "level": "L2",
+      "goal_item": "iron_axe",
+      "min_steps": 4,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7645
+    },
+    {
+      "slug": "craft/iron_shovel",
+      "level": "L2",
+      "goal_item": "iron_shovel",
+      "min_steps": 4,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7651
+    },
+    {
+      "slug": "craft/furnace",
+      "level": "L2",
+      "goal_item": "furnace",
+      "min_steps": 3,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7611
+    },
+    {
+      "slug": "craft/shears",
+      "level": "L2",
+      "goal_item": "shears",
+      "min_steps": 4,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7605
+    },
+    {
+      "slug": "craft/shield",
+      "level": "L2",
+      "goal_item": "shield",
+      "min_steps": 4,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7609
+    },
+    {
+      "slug": "craft/stone_sword",
+      "level": "L2",
+      "goal_item": "stone_sword",
+      "min_steps": 3,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7619
+    },
+    {
+      "slug": "craft/stone_axe",
+      "level": "L2",
+      "goal_item": "stone_axe",
+      "min_steps": 3,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7615
+    },
+    {
+      "slug": "collect/deepslate_copper",
+      "level": "L2",
+      "goal_item": "raw_copper",
+      "min_steps": 1,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7727
+    },
+    {
+      "slug": "craft/stone_bricks",
+      "level": "L2",
+      "goal_item": "stone_bricks",
+      "min_steps": 4,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7617
+    },
+    {
+      "slug": "craft/iron_chestplate",
+      "level": "L3",
+      "goal_item": "iron_chestplate",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7659
+    },
+    {
+      "slug": "craft/bow",
+      "level": "L3",
+      "goal_item": "bow",
+      "min_steps": 3,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7603
+    },
+    {
+      "slug": "craft/bucket",
+      "level": "L3",
+      "goal_item": "bucket",
+      "min_steps": 4,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7609
+    },
+    {
+      "slug": "craft/compass",
+      "level": "L3",
+      "goal_item": "compass",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7611
+    },
+    {
+      "slug": "craft/piston",
+      "level": "L3",
+      "goal_item": "piston",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7609
+    },
+    {
+      "slug": "craft/golden_sword",
+      "level": "L3",
+      "goal_item": "golden_sword",
+      "min_steps": 6,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7651
+    },
+    {
+      "slug": "craft/diamond_pickaxe",
+      "level": "L3",
+      "goal_item": "diamond_pickaxe",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7627
+    },
+    {
+      "slug": "craft/diamond_sword",
+      "level": "L3",
+      "goal_item": "diamond_sword",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7623
+    },
+    {
+      "slug": "collect/deepslate_diamond",
+      "level": "L3",
+      "goal_item": "diamond",
+      "min_steps": 1,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7679
+    },
+    {
+      "slug": "craft/iron_block",
+      "level": "L3",
+      "goal_item": "iron_block",
+      "min_steps": 4,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7649
+    },
+    {
+      "slug": "craft/iron_leggings",
+      "level": "L3",
+      "goal_item": "iron_leggings",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7649
+    },
+    {
+      "slug": "craft/iron_sword",
+      "level": "L3",
+      "goal_item": "iron_sword",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7649
+    },
+    {
+      "slug": "craft/chest",
+      "level": "L1",
+      "goal_item": "chest",
+      "min_steps": 2,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7607
+    },
+    {
+      "slug": "craft/ladder",
+      "level": "L1",
+      "goal_item": "ladder",
+      "min_steps": 2,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7609
+    },
+    {
+      "slug": "craft/iron_trapdoor",
+      "level": "L2",
+      "goal_item": "iron_trapdoor",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7655
+    },
+    {
+      "slug": "craft/iron_door",
+      "level": "L2",
+      "goal_item": "iron_door",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7647
+    },
+    {
+      "slug": "craft/iron_bars",
+      "level": "L2",
+      "goal_item": "iron_bars",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7641
+    },
+    {
+      "slug": "craft/clock",
+      "level": "L3",
+      "goal_item": "clock",
+      "min_steps": 6,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7607
+    },
+    {
+      "slug": "craft/iron_horse_armor",
+      "level": "L3",
+      "goal_item": "iron_horse_armor",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7655
+    },
+    {
+      "slug": "combat/kill_creeper",
+      "level": "L1",
+      "goal_item": "gunpowder",
+      "min_steps": 3,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7654
+    },
+    {
+      "slug": "combat/kill_enderman",
+      "level": "L2",
+      "goal_item": "ender_pearl",
+      "min_steps": 4,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7668
+    },
+    {
+      "slug": "combat/kill_slime",
+      "level": "L2",
+      "goal_item": "slime_ball",
+      "min_steps": 3,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7672
+    },
+    {
+      "slug": "combat/kill_blaze",
+      "level": "L3",
+      "goal_item": "blaze_rod",
+      "min_steps": 6,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7682
+    },
+    {
+      "slug": "combat/kill_wither_skeleton",
+      "level": "L3",
+      "goal_item": "bone",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7712
+    },
+    {
+      "slug": "craft/wooden_shovel",
+      "level": "L1",
+      "goal_item": "wooden_shovel",
+      "min_steps": 2,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7623
+    },
+    {
+      "slug": "craft/oak_fence",
+      "level": "L1",
+      "goal_item": "oak_fence",
+      "min_steps": 3,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7617
+    },
+    {
+      "slug": "craft/oak_door",
+      "level": "L1",
+      "goal_item": "oak_door",
+      "min_steps": 2,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7615
+    },
+    {
+      "slug": "craft/lever",
+      "level": "L1",
+      "goal_item": "lever",
+      "min_steps": 3,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7607
+    },
+    {
+      "slug": "craft/painting",
+      "level": "L1",
+      "goal_item": "painting",
+      "min_steps": 3,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7613
+    },
+    {
+      "slug": "collect/gravel",
+      "level": "L1",
+      "goal_item": "gravel",
+      "min_steps": 1,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7621
+    },
+    {
+      "slug": "collect/pumpkin",
+      "level": "L1",
+      "goal_item": "pumpkin",
+      "min_steps": 1,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7617
+    },
+    {
+      "slug": "craft/stonecutter",
+      "level": "L2",
+      "goal_item": "stonecutter",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7619
+    },
+    {
+      "slug": "craft/minecart",
+      "level": "L2",
+      "goal_item": "minecart",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7613
+    },
+    {
+      "slug": "craft/golden_chestplate",
+      "level": "L3",
+      "goal_item": "golden_chestplate",
+      "min_steps": 6,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7661
+    },
+    {
+      "slug": "craft/jukebox",
+      "level": "L3",
+      "goal_item": "jukebox",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7611
+    },
+    {
+      "slug": "craft/anvil",
+      "level": "L3",
+      "goal_item": "anvil",
+      "min_steps": 6,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7609
+    },
+    {
+      "slug": "craft/note_block",
+      "level": "L3",
+      "goal_item": "note_block",
+      "min_steps": 6,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7617
+    }
+  ],
+  "summary": {
+    "by_level": {
+      "L1": {
+        "total": 20,
+        "strict_tcr": "1/20",
+        "lenient_tcr": "1/20",
+        "pvr": "2/20",
+        "avg_step_efficiency": 0.05
+      },
+      "L2": {
+        "total": 20,
+        "strict_tcr": "0/20",
+        "lenient_tcr": "0/20",
+        "pvr": "0/20",
+        "avg_step_efficiency": 0
+      },
+      "L3": {
+        "total": 20,
+        "strict_tcr": "0/20",
+        "lenient_tcr": "0/20",
+        "pvr": "0/20",
+        "avg_step_efficiency": 0
+      }
+    },
+    "overall": {
+      "strict_tcr": "1/60",
+      "lenient_tcr": "1/60",
+      "pvr": "2/60",
+      "avg_step_efficiency": 0.02
+    }
+  }
+}

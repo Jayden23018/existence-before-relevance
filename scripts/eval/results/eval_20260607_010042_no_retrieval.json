@@ -1,0 +1,126 @@
+{
+  "meta": {
+    "timestamp": "2026-06-06T17:02:15.507Z",
+    "model": "gemma4:12b",
+    "condition": "no_retrieval",
+    "total_tasks": 1,
+    "completed_tasks": 1,
+    "failed_tasks": 0
+  },
+  "tasks": [
+    {
+      "slug": "craft/wooden_sword",
+      "level": "L1",
+      "goal_item": "wooden_sword",
+      "min_steps": 2,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect raw oak logs",
+            "command": "!collectBlocks(\"oak_log\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 3)"
+            ],
+            "reasoning": "Gathering wood is the first step in obtaining any items made of wood or its derivatives.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft planks from oak logs",
+            "command": "!craftRecipe(\"oak_planks\", 12)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 12)"
+            ],
+            "reasoning": "Logs must be processed into planks before they can be used to craft sticks or other items.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft sticks from oak planks",
+            "command": "!craftRecipe(\"stick\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 4)"
+            ],
+            "reasoning": "A stick is a mandatory component for the construction of a sword.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_plank",
+                "count": 4
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft the wooden sword",
+            "command": "!craftRecipe(\"wooden_sword\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"wooden_sword\", 1)"
+            ],
+            "reasoning": "This final step follows the Sword Pattern by combining two material units and one stick to create the target weapon.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_plank",
+                "count": 2
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "wooden_sword"
+      },
+      "raw_response": "REASONING:\nI identified the target item as wooden_sword, the material type as wood, and the tool type as sword. I applied the Material Quantity Pattern which requires 2 material units and 1 stick for swords, and followed the Step Structure and Dependency Patterns to ensure logs were processed into planks before crafting sticks and the final weapon.\n\nEXECUTION PLAN:\nStep 1: Collect raw oak logs\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 3)\nReasoning: Gathering wood is the first step in obtaining any items made of wood or its derivatives.\n\nStep 2: Craft planks from oak logs\nPrerequisites: item:oak_log:3\nCommand: !craftRecipe(\"oak_planks\", 12)\nReasoning: Logs must be processed into planks before they can be used to craft sticks or other items.\n\nStep 3: Craft sticks from oak planks\nPrerequisites: item:oak_plank:4\nCommand: !craftRecipe(\"stick\", 4)\nReasoning: A stick is a mandatory component for the construction of a sword.\n\nStep 4: Craft the wooden sword\nPrerequisites: item:oak_plank:2, item:stick:1\nCommand: !craftRecipe(\"wooden_sword\", 1)\nReasoning: This final step follows the Sword Pattern by combining two material units and one stick to create the target weapon.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 4,
+        "step_efficiency": 0.5,
+        "issues": [
+          "Step 3: missing oak_plank x4",
+          "Step 4: missing oak_plank x2"
+        ],
+        "lenient_issues": [
+          "Step 3: missing oak_plank x4",
+          "Step 4: missing oak_plank x2"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7621
+    }
+  ],
+  "summary": {
+    "by_level": {
+      "L1": {
+        "total": 1,
+        "strict_tcr": "0/1",
+        "lenient_tcr": "0/1",
+        "pvr": "0/1",
+        "avg_step_efficiency": 0.5
+      }
+    },
+    "overall": {
+      "strict_tcr": "0/1",
+      "lenient_tcr": "0/1",
+      "pvr": "0/1",
+      "avg_step_efficiency": 0.5
+    }
+  }
+}

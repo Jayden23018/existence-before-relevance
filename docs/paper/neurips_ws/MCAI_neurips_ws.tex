@@ -1,0 +1,3310 @@
+\documentclass[letterpaper]{article} % DO NOT CHANGE THIS
+
+% ============================================================
+% NeurIPS 2026 workshop style, camera-ready (non-archival).
+% `final` de-anonymises, drops line numbers and sets the workshop footer.
+% NEmo asks for sglblindworkshop.  Under `final` it renders the same as
+% dblblindworkshop (neurips_2026.sty:85-93).
+% ============================================================
+\usepackage[final,sglblindworkshop]{neurips_2026}
+\usepackage[hyphens]{url}          % DO NOT CHANGE THIS
+\usepackage{graphicx}              % DO NOT CHANGE THIS
+\usepackage{caption}               % DO NOT CHANGE THIS
+% Additional packages used in this paper
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{microtype}
+\usepackage{array}
+\usepackage{pifont}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,fit,backgrounds}
+% The official NeurIPS 2026 template loads hyperref too; here it comes last,
+% after caption and tikz.  It gives clickable links and PDF metadata, and
+% hidelinks keeps the look of the reviewed version.  Keep pdftitle equal to
+% \title: check_format.py --final compares them.
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Existence Before Relevance: Same-Category
+  Demonstrations Close a Prerequisite-Chain Gap in LLM Plan Generation, and
+  Pass On Their Defects}}
+
+% booktabs breathing room.  neurips_2026.sty:238 swaps above/belowcaptionskip
+% for tables, but \usepackage{caption} redefines \@makecaption and ignores it,
+% so a table caption lands flush on \toprule.  \abovetopsep restores the gap;
+% the rulesep pair keeps header/body off the rules.
+\setlength{\abovetopsep}{6pt}
+\setlength{\aboverulesep}{0.6ex}
+\setlength{\belowrulesep}{0.8ex}
+
+% neurips_2026.sty:145 sets \flushbottom.  Whenever a page cannot be filled --
+% which happens on every page that defers a tall appendix table -- \flushbottom
+% pays for the shortfall out of the only stretchable glue available:
+% \textfloatsep and the \section skips.  The result is several cm of white
+% smeared between a heading and its first paragraph.  \raggedbottom parks the
+% slack at the page foot instead, where nothing looks broken.
+\raggedbottom
+
+% Same idea for float pages.  LaTeX's defaults (\@fptop/\@fpsep/\@fpbot all
+% carry 1--2fil) centre and spread the floats, so a two-table page reads as two
+% tables adrift in white.  Pin them to the top, fixed gap, slack to the foot.
+\makeatletter
+\setlength{\@fptop}{0pt}
+\setlength{\@fpsep}{18pt}
+\makeatother
+
+
+% cross-reference helpers: never hardcode section numbers
+\newcommand{\secref}[1]{\S\ref{#1}}
+\newcommand{\appref}[1]{Appendix~\ref{#1}}
+
+% convenience macros for significance stars
+\newcommand{\sigC}{$\star\!\star\!\star$}
+\newcommand{\sigB}{$\star\!\star$}
+
+\title{Existence Before Relevance: Same-Category Demonstrations Close a
+       Prerequisite-Chain Gap in LLM Plan Generation, and Pass On Their Defects}
+\workshoptitle{Neuro-Symbolic Embodied Intelligence}
+% Names, order and affiliations come from the OpenReview profiles (2026-10-30).
+\author{%
+  Zixuan Wang$^{1}$\quad Ziming Dai$^{2}$\quad Yu Wu$^{3}$\quad Li Ning$^{4}$ \\
+  $^{1}$Shenzhen College of International Education\quad
+  $^{2}$BASIS International Schools \\
+  $^{3}$Dongguan University of Technology\quad
+  $^{4}$Stellaris AI \\
+  \texttt{zw6963470@gmail.com}
+}
+
+\begin{document}
+\maketitle
+
+% ============================================================
+\begin{abstract}
+Large language models (LLMs) are increasingly used as task planners for
+embodied agents, yet long prerequisite chains remain a weak point.  We study
+this in offline plan generation for a Minecraft agent, scoring each plan with
+a rule-based validator that walks it over a virtual inventory.  For five of
+the seven LLMs we test (8\,B to 671\,B parameters where disclosed), plans for
+two-chain (L2) tasks pass only 10--30\% of the time without retrieval, against
+45--95\% on single-material tasks.  Adding three same-category demonstrations
+to the prompt improves all five.  In a four-condition ablation on one model,
+randomly chosen same-category demonstrations recover most of the gain ($+$31
+percentage points; $+$20 when the scorer also charges consumed materials), and
+ranking them by relevance over the game's recipe graph adds a smaller increment
+over lexical ranking ($+$12 points) that neither our pre-specified correction
+nor the stricter scorer confirms.  Demonstration content is also inherited
+verbatim: an invalid command in the combat demonstrations appears in 71.5\% of
+retrieval trials on those tasks and in none of 505 trials without retrieval.
+In this setting, adding same-category demonstrations to a shared rule text
+matters more than selecting them precisely, and their defects have to be
+checked because they are copied.
+\end{abstract}
+
+% ============================================================
+\section{Introduction}
+\label{sec:intro}
+
+An LLM that plans for a virtual embodied agent needs long chains of
+procedural, version-specific knowledge:
+which tool mines which block, what a recipe consumes, which intermediate item
+must exist first.  A symbolic planner is handed this knowledge as a domain
+model; an LLM planner is assumed to have absorbed it in pretraining.
+Minecraft makes the difference measurable.  Frontier models decompose
+single-step goals readily~\citep{wang2023voyager,wang2023describe}, and
+Plancraft~\citep{dagan2024plancraft} finds that they struggle with multi-step
+crafting.  We ask which facet of that knowledge an LLM planner must be
+\emph{given} rather than assumed to hold: its existence in the prompt as worked examples, its
+relevance to the query, its correctness, or the model's capacity to use it.
+
+\textbf{Scope.}  This is a study of LLM \emph{plan generation} with an
+embodied motivation.  Every confirmatory result comes from scoring generated
+plans offline: a rule-based validator walks each plan over a virtual inventory
+whose initial state is given by construction, with no perception, symbol
+grounding or execution.  A live-execution study does not separate the
+conditions and is reported as a limitation, not as evidence
+(\secref{sec:limits}).  The neuro-symbolic interaction we evaluate is
+therefore \emph{pre-generation knowledge supply}: the \texttt{minecraft-data}
+recipe graph drives the ranking of the demonstrations that enter the prompt.
+In the static study the validator serves only as the metric
+(Figure~\ref{fig:pipeline}).  Every condition shares a fixed rule text with the
+tool tiers and one generic chain (\appref{app:prompt}), so no retrieval is not a
+blank prompt.
+
+We make three contributions, each tied to the component and experiment that
+supports it.
+\begin{enumerate}\setlength\itemsep{1pt}
+  \item \textbf{A diagnosis.}  Without retrieval, five of the seven models we
+  test pass only 10--30\% of two-chain (L2) tasks against 45--95\% of
+  single-material (L1) tasks, and 74--95\% of their failing tasks carry a
+  prerequisite that is never acquired (no retrieval; Table~\ref{tab:main},
+  \appref{app:failmodes}).  Two open-weight models do not show the gap, and we
+  have no tested explanation for why.
+  \item \textbf{A decomposition of the remedy.}  Same-category demonstrations
+  improve all five affected models, the 8B one included
+  (Table~\ref{tab:main}).  On the ablation model, random demonstrations
+  recover most of the gain, and ranking them with SAER (State-Aware Example Retrieval), a training-free scorer
+  over the recipe graph, adds a smaller increment that our tests do not
+  confirm (demonstration retrieval, with SAER's ranking the one step that reads
+  the graph; Table~\ref{tab:ablation}, \appref{app:mcnemar}).
+  \item \textbf{A measurement of defect inheritance.}  Planners copy what their
+  demonstrations contain, including an unregistered command and short
+  quantities, at rates near zero without retrieval (\secref{sec:knowledge_gap}, \appref{app:demoquality}).  This is the
+  correctness facet's mechanism.
+\end{enumerate}
+Each effect is reported under the pre-specified scorer and under a stricter
+one that also charges consumed materials.  The existence effect survives both;
+the relevance increment survives neither the pre-specified correction nor the
+stricter scorer.
+
+% ============================================================
+\section{Related Work}
+
+\noindent\textbf{LLM agents and retrieval in Minecraft.}
+Minecraft is an established testbed for open-ended LLM
+agents~\citep{fan2022minedojo}: lifelong learners
+(Voyager~\citep{wang2023voyager}) and open-world multi-task planners
+(DEPS~\citep{wang2023describe}, GITM~\citep{zhu2023ghost},
+JARVIS-1~\citep{wang2023jarvis}), all dependent on frontier-scale
+models.  We build on MINDcraft~\citep{nottingham2023mindcraft}.  Closest
+to our mechanism, \citet{leung2025knowledge} propose Goal-Oriented
+Graphs (GoGs), which recursively retrieve a goal's prerequisites from a
+dependency graph;
+Plan4MC~\citep{yuan2023plan4mc} traverses a pre-built skill prerequisite
+graph over RL skills; Optimus-1~\citep{li2024optimus} retrieves world
+knowledge from a hierarchical knowledge graph; and
+Plancraft~\citep{dagan2024plancraft} is a crafting-GUI benchmark whose
+oracle planner finds LLMs struggle with multi-step crafting.  Unlike these, we retrieve few-shot
+\emph{demonstrations} to condition plan generation, decomposing
+\emph{which} facet of knowledge provision binds performance.
+
+\noindent\textbf{Retrieval-augmented in-context learning.}
+\label{sec:ricl}
+In-context learning (ICL)~\citep{brown2020language} adapts LLMs from
+demonstrations without parameter updates; \citet{min2022rethinking} show
+format, not label correctness, drives ICL, motivating SAER's focus on
+structural relevance.  Retrieval-based ICL selects examples per query:
+unsupervised methods (BM25~\citep{robertson2009probabilistic},
+SBERT~\citep{reimers2019sentence}) use lexical/semantic similarity;
+EPR~\citep{rubin2022learning} and LLM-R~\citep{wang2024learning} train
+retrievers from LLM feedback; InstructRAG~\citep{wang2025instructrag}
+retrieves over an instruction graph; broader
+RAG~\citep{lewis2020retrieval,gao2023retrieval} augments facts rather than
+task demonstrations.  SAER is \emph{training-free} (unlike EPR/LLM-R) and
+reads material-tier similarity off the \texttt{minecraft-data} crafting
+graph, selecting demonstrations rather than subgoals with no traversal at
+inference.  BM25 is our lexical baseline
+(\secref{sec:models}); SBERT appears in \appref{app:threeway}.
+
+\noindent\textbf{Planning beyond Minecraft and across scales.}
+Embodied planning beyond Minecraft~\citep{huang2022language} has
+explored complementary directions: SayCan~\citep{ahn2022can} grounds
+actions in affordances, LLM+P~\citep{liu2023llmp} delegates to a PDDL
+planner, \citet{guan2023leveraging} have the LLM construct the PDDL
+domain model itself under validator feedback, and
+Reflexion~\citep{shinn2023reflexion} refines plans via
+post-execution self-evaluation.  The LLM-Modulo
+position~\citep{kambhampati2024position} generalises this family: LLMs as
+approximate knowledge sources paired with external model-based
+verifiers.  Our validator plays that role only at runtime; the intervention we study is
+\emph{pre}-generation, supplying symbolic knowledge rather than checking the
+output.  None of these addresses
+how much of that knowledge must be supplied, or how the answer varies
+with scale.  \citet{shi2023large} show irrelevant
+context distracts models (motivating our category filter);
+\citet{liu2024lost} document a mid-prompt position bias.  PlanBench~\citep{valmeekam2023planbench} argues
+commonsense benchmarks conflate planning with retrieval, and
+\citet{xu2026depthceiling} attribute multi-step failure to a
+\emph{reasoning-depth} ceiling that scale and few-shot prompting barely
+move.  We isolate another constraint---stating the rules is not enough, and
+the binding limit is procedural knowledge in \emph{task-matched} form---and an
+exploratory thinking-mode ablation (\appref{app:thinking}) is consistent with
+test-time reasoning raising L1 without unlocking L2.
+
+\section{Method}
+
+\subsection{System Overview}
+
+An intent classifier assigns the task a category, SAER retrieves three
+same-category demonstrations, the planning LLM writes a step plan, a plan
+validator checks its prerequisites (and at runtime may repair it), and an
+executor turns the steps into Mineflayer actions (\appref{sec:exec};
+Figure~\ref{fig:pipeline}).
+
+\begin{figure}[t]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+  node distance=4mm,
+  font=\small,
+  box/.style={rectangle, draw, thick, align=center, text width=2.3cm,
+              minimum height=1.15cm, inner sep=3pt},
+  neu/.style={box, fill=black!3},
+  sym/.style={box, fill=black!14, densely dashed},
+  proc/.style={box, fill=white},
+  kb/.style={rectangle, draw, thick, densely dashed, fill=black!14,
+             align=center, inner sep=3pt},
+  arr/.style={-{Stealth[length=2mm]}, thick},
+  off/.style={-{Stealth[length=2mm]}, thick, dashed, black!45},
+  tag/.style={font=\footnotesize\itshape, align=center, text width=2.5cm}
+]
+\node[neu] (intent) {\textbf{Intent classifier}\\ task $\rightarrow$ category};
+\node[sym, right=of intent] (saer) {\textbf{SAER retrieval}\\ filter, score, top-3};
+\node[neu, right=of saer] (llm) {\textbf{Planning LLM}\\ demos $\rightarrow$ plan};
+\node[sym, right=of llm] (val) {\textbf{Plan validator}\\ prerequisite walk};
+\node[proc, right=9mm of val] (exec) {\textbf{Executor}\\ Mineflayer actions};
+\node[kb, above=5mm of llm] (kb) {\texttt{minecraft-data} recipe graph\\
+  {\footnotesize\itshape ingredients, harvest tools}};
+
+\node[anchor=east] (in) at ([xshift=-3mm]intent.west) {task};
+\draw[arr] (in) -- (intent);
+\draw[arr] (intent) -- (saer);
+\draw[arr] (saer) -- (llm);
+\draw[arr] (llm) -- (val);
+\draw[off] (val) -- (exec);
+\draw[arr, densely dashed] (kb.west) -| (saer.north);
+\draw[arr, densely dashed] (kb.east) -| (val.north);
+
+\node[tag, below=2mm of intent] {static study: fixed to\\ the gold category};
+\node[tag, below=2mm of saer] {static study:\\ \textbf{varied} (4 conditions)};
+\node[tag, below=2mm of llm] {static study:\\ \textbf{varied} (7 models)};
+\node[tag, below=2mm of val] {static study: the\\ metric; repair unused};
+\node[tag, below=2mm of exec] {live study only};
+\end{tikzpicture}%
+}
+\caption{Pipeline, and each component's role in the confirmatory static
+study.  Dashed, shaded boxes are symbolic and do not learn: the
+\texttt{minecraft-data} recipe graph and the two modules that read it.  The
+intent classifier and the planning LLM are LLM calls.  Only the retrieval
+condition and the planning model are varied; the task category is supplied
+from the benchmark label; the validator acts only as the scorer, and its repair
+path and the executor (grey dashed arrow) are exercised only in the live study
+(\appref{sec:live}).}
+\label{fig:pipeline}
+\end{figure}
+
+\noindent\textbf{Why demonstrations rather than the graph.}  The recipe graph
+could be handed to the model directly, as Goal-Oriented
+Graphs~\citep{leung2025knowledge} do, or to a classical planner, which can
+derive a crafting target's prerequisite chain deterministically; the release
+contains such a chain resolver on its runtime repair path.  We study
+demonstrations for three reasons.  The graph covers only part of the task:
+\texttt{minecraft-data} lists crafting recipes but no smelting route (nothing
+yields an iron ingot from raw iron) and no tool-tier ordering, and SAER's ingredient term is zero on 18 of the 60
+tasks, every gathering and combat task among them (\secref{sec:scoring}).  A demonstration delivers the prerequisites already in
+order and in the bot's executable command grammar.  And the agent we build on
+receives tasks as free-form chat across categories, for which demonstrations
+are the interface it already has.  The LLM is therefore our object of study,
+not a competitor to a classical planner.  Supplying each target's resolved chain
+is the natural next baseline, and we have not run it.
+
+\subsection{Category Filtering}
+\label{sec:catfilter}
+
+The intent classifier (\texttt{getIntent()} in the release) asks the planning
+LLM for one label from a fixed set: \texttt{craft}, \texttt{collect},
+\texttt{cook}, \texttt{build}, \texttt{combat} and \texttt{explore}, plus a
+\texttt{general} fallback.  \texttt{combat} was added \emph{after} the
+evaluation runs, when we found the original classifier could not route to the
+combat file (\appref{app:intent_oracle}).  Only demonstrations from the file
+mapped to the label are admitted as retrieval candidates.  The filter is
+motivated by the finding that irrelevant context degrades
+reasoning~\citep{shi2023large}, not measured against it: no condition here runs unfiltered.  In the static
+evaluation the category is the task's ground-truth label, so retrieval quality
+is an \emph{oracle-category upper bound}; the bound is tight here, since the
+deployed classifier routes 180/180 trials to the correct file, on one provider
+endpoint and 60 templated prompts (\appref{app:intent_oracle}).
+
+\subsection{Composite Scoring}
+\label{sec:scoring}
+
+Given a query task $q$ and a candidate example $e$ from the same
+category, SAER computes a scalar relevance score $S(q, e) \in [0, 1]$:
+\begin{equation}
+S(q, e) = \alpha \cdot I(q,e) + \beta \cdot K(q,e) + \gamma \cdot M(q,e) + \delta \cdot L(q,e),
+\label{eq:score}
+\end{equation}
+where $\alpha{+}\beta{+}\gamma{+}\delta{=}1$.  The benchmark uses the
+\emph{cold-start} weights $(0.50, 0.35, 0.00, 0.15)$ throughout, for an empty
+inventory; a \emph{default} $(0.40, 0.30, 0.20, 0.10)$ for a known inventory
+targets mid-task replanning and is not evaluated here.  Cold start sets
+$\gamma{=}0$ because $M$ never depends on $q$, so it would act as a standing
+preference for low-tier examples rather than a relevance term.  The default's
+4:3:2:1 ordering encodes our prior on each dimension's discriminative value
+(ingredient overlap first, level only a tiebreaker).  Weights were
+fixed before evaluation and no experiment here shows them optimal: on the
+frozen benchmark the deployed weights are indistinguishable from uniform
+(\appref{app:deployed_ablation}), and an earlier 35-task ablation is silent on
+their ordering (\appref{app:weights}).  They are a working point, not a
+demonstrated optimum.
+
+All four components take values in $[0,1]$; the first two are Jaccard
+overlaps, the last two normalised proximities.
+\textbf{Ingredient Overlap ($I$).}  Let $R_q, R_e$ be the crafting
+ingredient sets of $q$ and $e$, resolved from the \texttt{minecraft-data}
+recipe graph: $I(q,e) = |R_q \cap R_e| / (|R_q \cup R_e| + \varepsilon)$,
+$\varepsilon = 10^{-6}$; $I$ is identically zero when either side resolves to no
+recipe, which measurement puts at all 16 gathering and combat tasks plus 2 of
+the 44 crafting ones; on those 18 the ranking falls to $K$ and $L$ alone.
+SAER's increment over BM25 is concentrated in the complement, where
+$\alpha{\cdot}I$ can fire (\appref{app:strata}).
+\textbf{Keyword Overlap ($K$).}  Let $W_q, W_e$ be content-word sets
+(nouns, verbs, item names after stop-word removal):
+$K(q,e) = |W_q \cap W_e| / (|W_q \cup W_e| + \varepsilon)$.
+\textbf{Mining-Tier Gap ($M$).}  With $t_{\text{req}}(e) \in \{0,1,2,3\}$
+the minimum pickaxe tier $e$ requires (0=none, 1=wooden, 2=stone, 3=iron)
+and $t_{\text{player}}$ the agent's best tier,
+$M = 1 - \max(0,\, t_{\text{req}}(e) - t_{\text{player}})/3$; with
+$\gamma{=}0$ it enters no reported number.
+\textbf{Level Proximity ($L$).}  Examples carry a hand-annotated
+$\ell_e \in \{1,2,3\}$; the query's $\ell_q \in \{1,2,3,4\}$ comes from
+surface keywords in the request (default 2), and
+$L = 1 - |\ell_q - \ell_e|/3$.  The heuristic never reads the benchmark's tier
+label and does not recover it --- it agrees on 20/60 tasks, what a constant
+``L2'' guess scores --- so $\delta{\cdot}L$ carries no tier oracle
+(\appref{app:intent_oracle}).
+How the ranked examples enter the prompt, and why no term in that
+construction is learned, is stated in \appref{app:prompt}.
+
+\subsection{Context Assembly}
+\label{sec:context}
+
+The top-$k$ candidates ($k{=}3$) are ordered by descending $S(q,e)$,
+so the most relevant comes first; the block itself sits mid-prompt,
+after the command reference.  Each example is rendered as plain
+text, not JSON: \texttt{Step N:}, \texttt{Prerequisites:},
+\texttt{Produces:}, then one \texttt{Command:} per bot call; the model is
+asked for the same shape with \texttt{Reasoning:} replacing
+\texttt{Produces:} --- a step-by-step form after \citet{wei2022chain} and
+ReAct~\citep{yao2023react}.
+
+\subsection{Plan Validation}
+\label{sec:planval}
+
+The plan validator (\texttt{PlanValidator} in the release) checks a plan's
+prerequisite structure over a virtual inventory before any in-game action.
+At runtime, on failure, it permits one gap-repair regeneration before
+execution (\appref{app:pseudocode}).  In the static study its walk is
+reimplemented single-pass and repair-free as the scorer
+(\secref{sec:protocol}), so the repair path is exercised only by the live study
+(\appref{sec:live}), and every static number, Table~\ref{tab:main} and the
+ablation included, measures the unrepaired plan.
+
+% ============================================================
+\section{Experiments}
+
+\subsection{Evaluation Tasks}
+\label{sec:tasks}
+
+We evaluate on a held-out benchmark of \textbf{60 tasks} spanning three
+Minecraft task categories (44 crafting, 11 gathering, 5 combat) and
+three difficulty tiers.  No task appears in the demonstration set, verified
+by slug-level non-overlap checking after an earlier benchmark revision replaced
+24 overlapping tasks.  The benchmark and training data were frozen before any
+model evaluation began, and no task was added or removed after seeing model
+outputs.  Residual structural overlap is modest.  For the 44
+crafting tasks the symmetric ingredient Jaccard to the nearest demonstration
+has mean 0.188 (0.290 on a later corrected bank) and never exceeds 0.333 on
+the bank the runs retrieved over; no gathering task's goal item is the final
+product of any demonstration, whereas the same check flags all five combat
+tasks (\secref{sec:combat_design}).  On the evaluation-time bank the gain
+rises with overlap, but the direction reverses on the corrected bank, and the
+high-overlap stratum is the iron- and stone-tier multi-hop chains, so overlap
+is substantially a proxy for prerequisite depth and neither panel points to
+near-copies (\appref{app:overlap}).
+
+\textbf{L1} (20 tasks): single-material tasks achievable with basic
+tools (\texttt{wooden\_sword}, \texttt{chest}, \texttt{bowl}).
+\textbf{L2} (20 tasks): two-chain tasks typically culminating
+in iron-tool use (\texttt{iron\_axe}, \texttt{cauldron},
+\texttt{hopper}); L2 is the primary discrimination tier because it
+requires the complete wooden$\to$stone$\to$iron pickaxe chain.
+\textbf{L3} (20 tasks): three-or-more-chain tasks involving deep
+dependency trees (\texttt{compass}, \texttt{golden\_pickaxe},
+\texttt{anvil}).
+
+\subsection{Models and Conditions}
+\label{sec:models}
+
+We evaluate seven models from five organisations (\appref{app:models}): five
+primary-study models under \texttt{no\_retrieval} and \texttt{saer\_cold},
+and a two-model open-weight replication panel (Gemma4-26B/31B) outside the
+pre-specified test family.  Four retrieval conditions are compared on
+Qwen2.5-Max, the ablation model.  Sampling temperature is 0.7 for Qwen3-8B,
+GPT-4o and Claude Sonnet~4.5, the value in the harness's evaluation profiles,
+not tuned on this benchmark.  The Qwen2.5-Max, DeepSeek-V3 and Gemma4 requests
+set no temperature, so those endpoints used their server defaults, which the
+run files do not record (\appref{app:models}).  Every within-model
+comparison, and so every retrieval effect, keeps the model and its setting
+fixed; levels across models, and the three cross-model tests of the family,
+mix settings.
+
+\noindent\textbf{Conditions.}
+\begin{itemize}\setlength\itemsep{1pt}
+  \item \textbf{no\_retrieval}: No retrieved examples; the task and the shared rule text only
+  (\appref{app:prompt}).
+  \item \textbf{saer\_cold}: SAER with cold-start weights
+  $(\alpha,\beta,\gamma,\delta){=}(0.50,0.35,0.00,0.15)$; agent
+  inventory treated as empty.
+  \item \textbf{random\_retrieval} (Qwen2.5-Max ablation only): Three
+  examples selected uniformly at random from the same-category training
+  set.
+  \item \textbf{bm25\_retrieval} (Qwen2.5-Max ablation \emph{and}
+  evaluated cross-model on all five primary-study models, \secref{sec:ablation}): Okapi
+  BM25~\citep{robertson2009probabilistic} ($k_1{=}1.5$, $b_L{=}0.75$;
+  $b_L$ is BM25's length-normalisation term, not McNemar's $b$).
+\end{itemize}
+
+\subsection{Evaluation Protocol}
+\label{sec:protocol}
+
+\textbf{Static plan evaluation.}  For each task and condition the planning
+LLM writes a plan, which is scored offline without a live bot: the validator
+walks the plan's commands (\texttt{collectBlocks}, \texttt{craftRecipe},
+\texttt{smeltItem}) over a virtual inventory that starts empty (pseudocode in
+\appref{app:pseudocode}).  Each condition is run with three seeds; a task
+passes if it passes in at least two (\textbf{majority vote}).
+
+\textbf{Metrics.}  The primary metric is the \emph{Strict Plan Pass Rate}
+(SPR; labelled TCR, for task completion rate, in the released scripts\footnote{Code and data: \url{https://github.com/Jayden23018/existence-before-relevance}.}): the fraction of tasks whose plan
+has no prerequisite gap in the inventory walk and ends with the goal item
+present.  SPR measures the prerequisite-structure validity of a plan, not task
+completion.  \emph{Plan Validity Rate} (PVR) checks only \emph{explicitly
+declared} preconditions and the goal item, not implicit tool-tier
+requirements, so the gap PVR$-$SPR separates structural failures from
+detail-level ones.
+
+\textbf{Two scorings.}  The pre-specified scorer credits each produced item
+but never debits consumed ones, on the rationale that quantities are the
+executor's job; an item produced once satisfies every later requirement.  We
+therefore also report a \emph{debited} SPR, which charges each craft and smelt
+so that every produced unit is spent once (\appref{app:exposure}).  The
+leniency is not symmetric: on Qwen2.5-Max, debiting removes 0 of
+\texttt{no\_retrieval}'s 19 passes but 7 of random's 38, 14 of BM25's 42 and
+16 of SAER's 49, because a scorer that never debits can only over-credit plans
+that produce things, and retrieval makes plans produce more.  Credit-only
+remains the confirmatory scorer, since the test family was fixed for it;
+debited figures appear beside it in Tables~\ref{tab:main}
+and~\ref{tab:ablation}.  Against the published Plancraft oracle the scorer
+agrees on 95.8\% of 11,177 craft invocations ($\kappa{=}0.753$).  That
+certifies single-craft feasibility only: one issue class of six, not the
+tool-gap class behind two models' failures (\appref{app:plancraft}).
+
+\textbf{Re-validation.}  Two harness defects were found after generation: a
+missing recipe-resolver hook that disabled three of SAER's scoring dimensions,
+and a missing mining-drop alias in the scorer.  Every \texttt{saer\_cold} arm in Table~\ref{tab:main}
+was regenerated after the fix, so each is a later run than its
+\texttt{no\_retrieval} arm, and every stored seed plan of every condition was
+then re-scored with one fixed validator.  All confirmatory SPR, PVR and
+McNemar values come from that pass (\appref{app:provenance}); three
+exploratory panels quote run-time verdicts beside re-scored ones
+(\appref{app:livecombat}, \appref{app:capacity}, \appref{app:thinking}).
+
+\textbf{Statistical testing.}  McNemar's exact binomial
+test~\citep{mcnemar1947note} on per-task majority-vote outcomes,
+$\alpha{=}0.05$, Bonferroni-corrected over 13 pre-specified tests (5
+per-model $+$ 5 ablation $+$ 3 cross-model): $\alpha'{=}0.0038$.  We call a
+result \emph{family-wise significant} if $p{<}\alpha'$, \emph{nominal} if
+$0.0038{\le}p{<}0.05$, and \emph{not significant} otherwise; every headline
+verdict is a Bonferroni verdict.  The uniformly more powerful Holm
+step-down~\citep{holm1979simple} over the same 13 tests is reported post hoc
+as a labelled sensitivity analysis (Holm rejects 11, Bonferroni 9;
+\appref{app:mcnemar}).  The Gemma4 panel lies outside the family and is
+reported descriptively.  The 55 demonstrations (25 crafting, 21
+collecting, 9 combat) were AI-drafted from hand-written seeds and hand-checked
+(\appref{app:traindata}).
+
+\subsection{Combat Subgroup}
+\label{sec:combat_design}
+
+The five combat tasks (L1--L3) are part of the 60 and counted in
+Table~\ref{tab:main}, so they form a within-benchmark subgroup, not a
+hold-out.  Five of the nine combat demonstrations target the same five mobs
+and differ only by slug prefix (\texttt{combat/creeper} vs.\
+\texttt{combat/kill\_creeper}), which the slug-level check misses; the runs
+behind Table~\ref{tab:main} retrieve over them (\appref{app:nocombat} bounds
+what that costs).  A separate probe re-runs the five tasks on Qwen2.5-Max under
+all four conditions without those five demonstrations, over a combat pool with acquisition chains
+corrected for a cold start (\appref{app:livecombat}).
+
+% ============================================================
+\section{Results}
+
+\subsection{Main Results}
+\label{sec:mainresults}
+
+\begin{table}[tbp]
+\caption{Cross-architecture results (60 tasks, 3-seed majority vote).  SPR
+under the pre-specified credit-only scorer and under debiting
+(\secref{sec:protocol}); PVR and the L1--L3 tier counts (of 20 each) are credit-only.
+\textbf{L2} is the discrimination tier.  Gap $=$ PVR$-$SPR in tasks.  $\Delta$
+$=$ \texttt{saer\_cold} minus \texttt{no\_ret}, differencing the rounded
+percentages, with McNemar exact $p$; \textbf{bold} $=$ below
+$\alpha'{=}0.0038$.  $^\ddagger$ $=$ 4B active parameters (Mixture-of-Experts).  The
+replication panel lies outside the pre-specified family.  Verdicts in
+\appref{app:mcnemar} and \appref{app:exposure}; run provenance in
+\appref{app:provenance}; denominator sensitivity in \appref{app:denom}.}
+\label{tab:main}
+\footnotesize\setlength{\tabcolsep}{2.4pt}\renewcommand{\arraystretch}{0.9}
+\centering
+\begin{tabular}{llrrrrrrrll}
+\toprule
+& & \multicolumn{2}{c}{SPR (/60)} & & & & & & \multicolumn{2}{c}{SAER $\Delta$ (pp)} \\
+\cmidrule(lr){3-4}\cmidrule(lr){10-11}
+Model & Cond. & credit & debited & PVR & Gap & L1 & \textbf{L2} & L3 & credit & debited \\
+\midrule
+Qwen3-8B       & no\_ret    & 14 (23\%) & 13 (22\%) & 47 & +33 & 9  & 3  & 2  & --- & --- \\
+Qwen3-8B       & saer\_cold & 26 (43\%) & 24 (40\%) & 48 & +22 & 12 & 11 & 3  & +20 ($p{=}0.0075$) & +18 ($p{=}0.0127$) \\
+\midrule
+GPT-4o         & no\_ret    & 23 (38\%) & 20 (33\%) & 29 & +6  & 17 & 3  & 3  & --- & --- \\
+GPT-4o         & saer\_cold & 41 (68\%) & 34 (57\%) & 46 & +5  & 17 & 16 & 8  & \textbf{+30} ($p{<}0.001$) & \textbf{+24} ($p{<}0.001$) \\
+\addlinespace
+Claude S.~4.5  & no\_ret    & 25 (42\%) & 22 (37\%) & 29 & +4  & 19 & 4  & 2  & --- & --- \\
+Claude S.~4.5  & saer\_cold & 51 (85\%) & 35 (58\%) & 57 & +6  & 20 & 13 & 18 & \textbf{+43} ($p{<}0.001$) & \textbf{+21} ($p{<}0.001$) \\
+\addlinespace
+Qwen2.5-Max    & no\_ret    & 19 (32\%) & 19 (32\%) & 28 & +9  & 17 & 2  & 0  & --- & --- \\
+Qwen2.5-Max    & saer\_cold & 49 (82\%) & 33 (55\%) & 56 & +7  & 20 & 14 & 15 & \textbf{+50} ($p{<}0.001$) & \textbf{+23} ($p{<}0.001$) \\
+\addlinespace
+DeepSeek-V3    & no\_ret    & 33 (55\%) & 25 (42\%) & 41 & +8  & 17 & 6  & 10 & --- & --- \\
+DeepSeek-V3    & saer\_cold & 52 (87\%) & 35 (58\%) & 55 & +3  & 19 & 17 & 16 & \textbf{+32} ($p{<}0.001$) & +16 ($p{=}0.0309$) \\
+\midrule
+\multicolumn{11}{l}{\emph{Replication panel (outside the pre-specified Bonferroni family)}} \\
+\addlinespace[2pt]
+Gemma4-26B$^{\ddagger}$ & no\_ret    & 44 (73\%) & 35 (58\%) & 53 & +9  & 18 & 12 & 14 & --- & --- \\
+Gemma4-26B$^{\ddagger}$ & saer\_cold & 48 (80\%) & 28 (47\%) & 58 & +10 & 17 & 16 & 15 & +7 ($p{=}0.39$) & $-$11 ($p{=}0.118$) \\
+\addlinespace
+Gemma4-31B & no\_ret    & 46 (77\%) & 37 (62\%) & 53 & +7  & 18 & 13 & 15 & --- & --- \\
+Gemma4-31B & saer\_cold & 53 (88\%) & 37 (62\%) & 58 & +5  & 19 & 17 & 17 & +11 ($p{=}0.016$) & 0 ($p{=}1.0$) \\
+\bottomrule
+\end{tabular}
+\renewcommand{\arraystretch}{1}
+\end{table}
+
+\noindent\textbf{Finding~1: an L2 bottleneck in five of seven models.}  The
+five primary-study models score 10--30\% on L2 without retrieval (median
+15\%; a 2$\times$5 homogeneity test does not reject, $p{=}0.54$) against
+45--95\% on L1 (median 85\%).  The Gemma4 replication panel already clears
+60--65\% on L2 without retrieval, so the diagnosis applies to the five primary
+models, not to every model we ran.  We have no tested explanation for the difference.
+
+\noindent\textbf{Finding~2: retrieval helps all five, the 8B model
+included.}  SAER improves all five primary models by $+$20 to $+$50\,pp, four
+family-wise significantly; Qwen3-8B gains least ($+$20\,pp, $p{=}0.0075$:
+Holm yes, Bonferroni no).  Under debiting all five gains stay positive
+($+$16 to $+$24\,pp) and three clear $\alpha'$.  Gain does not track parameter
+count (DeepSeek-V3, 671\,B, gains less than Qwen2.5-Max), and two of five sizes are undisclosed and a third only approximate
+(\appref{app:models}), so we make no capacity-scaling claim.  Qwen3-8B keeps
+the largest PVR$-$SPR gap ($+$22 vs.\ $+3$--$+7$): given correct templates it
+still mis-specifies counts (2 iron ingots for a helmet needing 5), a residual
+distinct from the bottleneck.  Of the five, DeepSeek-V3 alone reaches 10/20 at L3 without
+retrieval (others 0--3/20); with SAER it converges with Qwen2.5-Max
+overall ($p{=}0.453$).  On the replication panel the credit-only gains
+($+$7 and $+$11\,pp) do not survive debiting.
+
+\noindent\textbf{The L2 tier.}  L2 recovery spans $+$40 to $+$65\,pp, again
+non-monotone in parameter count.  On Qwen2.5-Max random retrieval alone lifts
+L2 from 10\% to 70\%, and \texttt{saer\_cold} reaches the same 14/20, so L2
+does not separate SAER from random; BM25 trails both there (11/20) but leads
+random at L3 (14/20 vs.\ 7/20).  As BM25 and random do not differ overall
+($p{=}0.424$), we read neither tier split as more than noise (per-tier counts
+in \appref{app:perseed}).
+
+\subsection{Qwen2.5-Max Four-Condition Ablation}
+\label{sec:ablation}
+
+\begin{table}[htbp]
+\caption{Four-condition ablation on Qwen2.5-Max (60 tasks, 3-seed majority
+vote) under both scorings.  $\Delta$ is against \texttt{no\_retrieval}, or
+between the two named arms, differencing rounded percentages; 95\% CI on the
+paired difference~\citep{newcombe1998improved}, credit-only.  $b/c$ $=$
+tasks passed only by the condition (or first-named arm) / only by the
+comparator, with McNemar exact $p$.}
+\label{tab:ablation}
+\footnotesize\setlength{\tabcolsep}{4pt}
+\centering
+\begin{tabular}{lrrllrll}
+\toprule
+& \multicolumn{4}{c}{Credit-only (pre-specified)} & \multicolumn{3}{c}{Debited} \\
+\cmidrule(lr){2-5}\cmidrule(lr){6-8}
+Condition & SPR & PVR & $\Delta$ [95\% CI] & $b/c$ ($p$) & SPR & $\Delta$ & $b/c$ ($p$) \\
+\midrule
+no\_retrieval & 19 & 28 & --- & --- & 19 & --- & --- \\
+random        & 38 & 54 & $+$31 [19, 42] & 19/0 (${<}0.001$) & 31 & $+$20 & 13/1 (0.0018) \\
+BM25          & 42 & 53 & $+$38 [24, 50] & 24/1 (${<}0.001$) & 28 & $+$15 & 12/3 (0.0352) \\
+saer\_cold    & 49 & 56 & $+$50 [36, 61] & 30/0 (${<}0.001$) & 33 & $+$23 & 15/1 (${<}0.001$) \\
+\midrule
+BM25 vs.\ random   & & & $+$7 [$-$5, 18] & 9/5 (0.424)  & & $-$5 & 1/4 (0.375) \\
+SAER vs.\ BM25     & & & $+$12 [3, 20]   & 7/0 (0.0156) & & $+$8 & 6/1 (0.125) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent(1)~\textbf{Existence is the primary lever.}  The step from no
+retrieval to random same-category demonstrations is the largest one
+($+$31\,pp; $+$20\,pp debited, $b{=}13$, $c{=}1$, $p{=}0.0018$), family-wise
+significant under both scorings.  The step adds same-category worked examples to a rule text that already states
+the output format and one generic chain.  Random demonstrations carry the same step grammar as SAER's (\secref{sec:context}), so part of this may be exposure to
+format rather than to procedural content, in line with
+\citet{min2022rethinking}; no condition here separates the two.  The combat
+subgroup agrees: re-run without its five near-duplicate demonstrations, no
+retrieval reaches 0/5 and every retrieval condition 3/5 or better, too few
+tasks to rank the variants (\appref{sec:combat_probe}).
+
+\noindent(2)~\textbf{Relevance is directional, not established.}  SAER over
+BM25 gives $b{=}7$, $c{=}0$, $p{=}0.0156$, $+$12\,pp [95\% CI $+$3, $+$20].
+Four qualifications bound it.  \emph{Power:} with seven discordant tasks the
+smallest attainable two-sided $p$ is $2\cdot0.5^{7}{=}0.0156$, so the
+Bonferroni bar (which needs $b{+}c{\ge}10$) was out of reach whatever the
+outcome; post hoc Holm clears it at the pre-specified family size $m{=}13$
+and fails at $m{=}14$ (\appref{app:mcnemar}).  \emph{Scorer:} debiting
+reduces it to $b{=}6$, $c{=}1$, $p{=}0.125$, and BM25 (28) falls below random
+(31).  \emph{Generation epoch:} Qwen2.5-Max's BM25 arm was generated 16 days
+before its SAER arm on a provider alias, not a date-pinned identifier, so an
+endpoint change is a rival explanation that re-scoring cannot remove
+(\appref{app:provenance}).  \emph{Replication:} across the five primary models
+SAER beats BM25 on four (nominally on two) and trails by one task on GPT-4o;
+the one-sided 4--1 sign test gives $p{=}0.188$, and six of the seven discordant tasks lie in the 42
+where ingredient overlap is non-zero (\appref{app:strata}).  One check
+cuts the other way: SAER is handed the \emph{more} defective demonstrations
+(top-1 materially short on 22/60 tasks vs.\ BM25's 8/60, $p{=}0.00012$) and
+still scores higher, so demonstration quality does not explain its edge
+(\appref{app:exposure}).  We read relevance as a consistent but unconfirmed
+increment.
+
+% ============================================================
+\section{Analysis and Discussion}
+
+\subsection{Why L2 Fails, and What Demonstrations Transmit}
+\label{sec:knowledge_gap}
+
+The L2 wall holds with the tool chain stated in the rule text, and it does not
+track scale.  Counting the
+scorer's typed issues over every no-retrieval failure
+(\appref{app:failmodes}), 20--41 of each primary model's 27--46 failing tasks
+(74--95\%) carry an \emph{unacquired prerequisite}: a declared precondition, a
+craft ingredient or a tool never obtained.  The signature is shared, its
+composition is not: ingredient gaps run 39 tasks on Qwen3-8B against 3 on
+GPT-4o, and tool gaps 33 on Qwen2.5-Max against 2 on Claude Sonnet~4.5, so we
+claim no common failure profile, and the version-specific naming check fires
+on no failure in the primary study (the rule text states the drop names).  Correctness binds on one exploratory
+contrast: on a superseded 35-task benchmark six L2 demonstrations declared a
+stone pickaxe they never crafted, and under one scorer SAER read 1/13 at L2
+against random's 6/13; the post-repair reading (11--12/13) is confounded with
+two concurrent validator fixes, and the episode predates every run reported
+here (\appref{app:weights}).
+
+\textbf{Defects are inherited verbatim.}  The mechanism behind that contrast
+is measurable on the frozen runs.  All nine combat demonstrations use
+\texttt{!equipItem}, which is not in the bot's command registry
+(\texttt{!equip} is).  Across every stored combat-task plan, superseded runs
+included, the string appears in 0 of 505 trials without retrieval and in 726
+of 1,016 with it (71.5\%; 72.9\% under SAER, 74.2\% BM25, 61.2\% random): the
+models never invent the command and copy it about three times in four once
+shown it (\appref{app:intent_oracle}).  Quantities travel the same way.  Nine
+of the collecting bank's 17 \texttt{oak\_planks} calls ask for 4, too few for
+a crafting table, sticks and a pickaxe.  On the 11 gathering tasks four of the
+five models never emit 4 without retrieval (the rule text's chain shows 12), yet under SAER they do in 10 of 12
+trials on Qwen2.5-Max, 4 of 15 on DeepSeek-V3 and 2 of 17 on GPT-4o, while
+Claude Sonnet~4.5 overrides the demonstration every time (Qwen3-8B emits 4
+under both conditions; \appref{app:quantity}).  Neither defect moves a
+credit-only number, since that scorer credits no equip step and charges no
+quantity, which is why both survived to be found.
+
+\subsection{Limitations}
+\label{sec:limits}
+
+\noindent\textbf{Scope.}  Beyond the offline scope stated in \secref{sec:intro}, the live study (126 trials on DeepSeek-V3) floors both conditions at 2/21 L2
+trials because execution-framework failures dominate, so it neither
+corroborates nor contradicts the static result (\appref{sec:live}).  The
+cross-agent study (\appref{app:crossagent}) probes a different retrieval stage
+and carries no claim.  \textbf{Metric.}  Credit-only SPR over-credits the retrieval arms more than
+the baseline (\secref{sec:protocol}); scoring is automated and unblinded; and
+McNemar on majority-vote outcomes models neither task difficulty nor
+model$\times$condition interaction.
+
+\noindent\textbf{Relevance evidence.}  One pre-specified test on one model, seven
+discordant tasks and a 16-day generation gap on a provider alias; settling it
+needs a same-window rerun, which we have not done.  The category filter is in
+every retrieval condition, so its own contribution is unmeasured.  \textbf{Controls not run.}  We ablate retrieval \emph{policy}, not demonstration
+\emph{surface form}: format-only and content-masked controls, and supplying each target's resolved chain, are future work.
+
+\noindent\textbf{Models and decoding.}  Temperature differs across models
+(\secref{sec:models}); two primary models used date-pinned identifiers, and the
+other three are provider aliases, so endpoint updates between their arms cannot
+be excluded.  Three further 8--12\,B models, run at provider
+defaults, keep SAER ceilings at 7/26/34 of 60 when re-scored (7/23/33 at run time), below the four frontier primary
+models (41--52/60) but not all below Qwen3-8B's 26/60, so we claim no
+capacity threshold (\appref{app:capacity}).  Without \texttt{minecraft-data} SAER keeps only keyword and level, as on
+18/60 tasks already (\appref{app:strata}).
+
+% ============================================================
+\section{Conclusion}
+\label{sec:conclusion}
+
+Five of the seven LLM planners we tested pass only 10--30\% of two-chain tasks
+without retrieval; in 74--95\% of those failures a prerequisite is never acquired
+(\secref{sec:knowledge_gap}).  Given a shared rule text, the primary lever is the \emph{existence} of a
+same-category demonstration ($+$31\,pp on Qwen2.5-Max; $+$20\,pp debited).
+\emph{Relevance} adds an increment that neither its discordance budget nor the
+stricter scorer confirms, concentrated in the 42 tasks with ingredient overlap;
+on \emph{capacity}, the 8B model gains too.  Demonstrations are inherited, errors
+included, so their \emph{correctness} is the next lever, a natural target for
+verifiable-reward RL~\citep{zeng2025rlve}.
+
+% ============================================================
+\clearpage
+% NeurIPS 2026 instructions: "References follow the acknowledgments in the
+% camera-ready paper"; pages holding them do not count as content pages.
+\begin{ack}
+This work received no external funding.  The authors declare no competing
+interests.  The authors used Claude Code (Anthropic) to help write code and to
+draft demonstrations and text, checked the results, and take full responsibility
+for the content.
+\end{ack}
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+%% ===========================================================
+\appendix
+
+\section*{How to Read These Appendices}
+
+\paragraph{No parameter updates.}  Every condition reported anywhere in
+this paper is inference-time only: the model endpoint and its weights
+are fixed, and only the input prompt is rebuilt
+(\appref{app:prompt}).  The files named \texttt{*\_examples.json} under
+\texttt{data/training/} in the code release are \emph{frozen
+demonstrations used as prompt data}, not examples used to train or
+fine-tune any evaluated model.  No optimiser, gradient update,
+fine-tuning pass or weight persistence occurs at any point in the
+pipeline.
+
+\paragraph{Confirmatory versus exploratory.}  The confirmatory evidence
+base is the frozen 60-task benchmark evaluated under the fixed static
+evaluator of \secref{sec:protocol}, with the pre-specified 13-test
+Bonferroni family of \appref{sec:stats} ($\alpha'{=}0.0038$).  Several
+appendices below instead report an \emph{earlier} benchmark version (35
+or 42 tasks), a \emph{mismatched} weight configuration, \emph{additional}
+sub-frontier models outside the pre-specified family, or an evaluator version predating the
+\texttt{setRecipeResolver} fix.  Each of those carries
+\textbf{Exploratory} in its heading and its own caveat in its opening
+line.  They are retained for transparency and to motivate future
+ablations; \emph{no claim in the main text rests on them}, and they are
+never pooled with the confirmatory numbers.  Where an appendix figure
+disagrees with a main-text figure, the main text governs, and
+\appref{app:provenance} names the run that produced it.
+
+\paragraph{The last appendix carries no claim.}  \appref{sec:multiagent}
+reports a two-bot live study of a second retrieval stage of the same enhancer.
+It is kept so that the released system can be read end to end, exercises none
+of the components the main study varies, and can be skipped by a reader
+auditing the paper's claims.
+
+\section{Scorer Cross-Validation against the Plancraft Oracle}
+\label{app:plancraft}
+\noindent\textbf{Cross-validation against Plancraft oracle.}
+We cross-validate the ingredient-feasibility check against the
+independent, published Plancraft oracle planner~\citep{dagan2024plancraft}.
+The comparison is pinned to the 16 runs behind the primary-study rows of
+Table~\ref{tab:main}, all of Table~\ref{tab:ablation} and the per-model BM25
+rows of Table~\ref{tab:bm25_permodel} --- five models
+$\times$ \{\texttt{no\_retrieval}, \texttt{bm25}, \texttt{saer\_cold}\}, plus
+Qwen2.5-Max's \texttt{random} arm, 48 seed files.  The Gemma4 replication
+runs are not included.  Across their 11,177
+\texttt{craftRecipe} invocations the two validators agree on
+\textbf{95.8\%} (10,711/11,177; Cohen's
+$\kappa{=}0.753$~\citep{landis1977measurement}), with 427
+validator-lenient and 39 validator-strict disagreements.  Selection is by
+run identity, not by file date: an earlier revision of this script took
+``the most recent seed files'' from the results directory, which never
+looked inside the two subdirectories holding the primary runs and
+re-targeted itself every time a later ablation was added.  The figure above
+is the pinned one, reproducible with
+\texttt{node scripts/eval/plancraft\_crossval.mjs}.  The oracle is the
+published \texttt{plancraft} package (v0.3.34) called through a local batch
+shim, not a reimplementation of it, so the comparison is against the authors'
+own planner rather than our reading of it.
+
+\noindent\textbf{Per-condition false positives.}
+Table~\ref{tab:fpr} splits the disagreements by condition.  Homogeneity is
+not rejected ($\chi^2(3){=}4.78$, $p{=}0.19$, smallest expected count 27.7),
+and the per-invocation ordering --- most lenient on \texttt{no\_retrieval}
+(4.47\%), least on \texttt{saer\_cold} (3.46\%) --- does \emph{not} license the
+reading that residual leniency favours the baseline arm.  Strict-pass is a
+plan-level predicate: one leniently credited craft can carry a whole plan, so
+the quantity that matters is lenient credits \emph{per plan}, and the arms
+differ in how many crafts a plan contains.  Across the 2{,}880 plans in these
+48 files the retrieval arms issue about half again as many craft calls each
+(4.0--4.5 against \texttt{no\_retrieval}'s 2.9), and the two effects multiply
+out the other way: 0.130 leniently credited crafts per plan on
+\texttt{no\_retrieval} against 0.154 on \texttt{saer\_cold}, 0.157 on
+\texttt{bm25} and 0.167 on \texttt{random}.  We therefore claim no direction
+from this table.  It bounds recipe-level disagreement; whether scorer leniency
+can account for the reported margins is answered instead by
+\appref{app:exposure}, which charges the entire material budget --- a far
+larger change than repairing these disagreements --- and finds the existence
+effect and all five per-model effects still positive.  The scorer operates on deterministic game data, independent of SAER's
+scoring function.
+
+\begin{table}[htbp]
+\caption{Plancraft cross-validation by condition, over the pinned 48 seed
+files behind the primary-study rows of Table~\ref{tab:main},
+Table~\ref{tab:ablation} and Table~\ref{tab:bm25_permodel}.  FP = validator
+passes a craft the oracle calls unsolvable (leniency); FN = the reverse;
+FP/inv.\ = FP as a share of all invocations, not of oracle-unsolvable ones.
+Reproduce with
+\texttt{node scripts/eval/plancraft\_crossval\_stratified.mjs}.}
+\label{tab:fpr}
+\small
+\centering
+\begin{tabular}{lrrrrr}
+\toprule
+Condition & Invocations & Agree & FP & FP/inv. & FN \\
+\midrule
+\texttt{no\_retrieval}   & 2,619 & 95.1\% & 117 & 4.47\% & 11 \\
+\texttt{random}          &   724 & 94.9\% &  30 & 4.14\% &  7 \\
+\texttt{bm25}            & 3,815 & 95.9\% & 141 & 3.70\% & 15 \\
+\texttt{saer\_cold}      & 4,019 & 96.4\% & 139 & 3.46\% &  6 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent\textbf{What this agreement does and does not cover.}  The
+cross-validation walks each plan accumulating a virtual inventory that,
+like the scorer's, is credited but never debited, and puts a
+\emph{per-invocation} question to the oracle: given this inventory
+state, is this one craft solvable?  Both sides therefore receive the
+same non-consuming state, so the procedure cannot by construction detect
+a whole-plan double-spend --- the disagreements it can find are
+recipe-level, not budget-level.  The 95.8\% should accordingly be read
+as ``the two agree on single-craft feasibility given a state'', not as
+``the scored plans are materially executable''.  It also covers one of the
+scorer's six issue classes.  The other five --- tool, smelt, precondition,
+naming and goal --- have no external validation here, and the tool class is
+the one that dominates the failures of GPT-4o and Qwen2.5-Max
+(Table~\ref{tab:failmodes}).  The aggregate material
+budget is a separate question, which the scorer deliberately does not
+enforce (\appref{app:validator}) and which
+\appref{app:demoquality} takes up for the demonstration bank.
+
+\section{SAER Prompt Assembly and the No-Update Property}
+\label{app:prompt}
+
+The four component scores are defined in \secref{sec:scoring}
+(ingredient overlap $I$, keyword overlap $K$, mining-tier gap $M$, level
+proximity $L$) and are not repeated here.  What the score is \emph{used
+for} is stated here, because that is both the point at which the
+symbolic retriever hands off to the neural planner and the point at
+which the claim ``no parameter updates'' becomes checkable.
+
+Let $q$ be the request, $x$ the agent state,
+$c{=}\texttt{getIntent}(q)$ the inferred category and $D_c$ the
+corresponding demonstration set.  After scoring, the enhancer builds the
+base prompt
+\begin{equation}
+P_{\mathrm{base}}(q,x)=\operatorname{concat}\bigl(R,\;
+\operatorname{Top}_k(D_c;S),\; q\bigr),
+\label{eq:prompt}
+\end{equation}
+where $R$ is the command and rule documentation,
+$\operatorname{Top}_k$ supplies the $k{=}3$ highest-ranked
+demonstrations, and the unchanged model returns
+$\hat y_0 = M_\theta(P_{\mathrm{base}})$ with
+$\theta_{\mathrm{after}}=\theta_{\mathrm{before}}$.  Selected examples
+are serialised in descending score order, so the strongest match comes
+first within the demonstration block, which itself follows the command
+reference and precedes the task statement.
+
+The text $R$ is the same for every category and condition, and it is not
+bare.  It lists the tool recipe patterns, the pickaxe tier each ore needs, a
+generic cold-start tool chain that ends at mining iron ore, the raw-ore drop names and
+the output format.  So \texttt{no\_retrieval} measures planning from these
+rules with no retrieved demonstration, not a model given only the task.
+
+Every condition in this paper differs only in which $D_c$ and which
+ranking populate $\operatorname{Top}_k$: \texttt{no\_retrieval} sets it
+empty, \texttt{random\_retrieval} draws uniformly, \texttt{bm25} ranks
+lexically, and \texttt{saer\_cold} ranks by $S$.  Nothing else in
+Equation~\ref{eq:prompt} varies, and no term in it is learned.
+
+\section{Execution Modules}
+\label{sec:exec}
+
+The validated step array is executed by \textbf{TaskManager}, which
+maintains a last-in-first-out (LIFO) task stack with three-layer error recovery (transient
+failures, missing prerequisites, semantic errors).
+\textbf{BlockNameResolver} canonicalises fuzzy block names to official
+Minecraft~1.20.4 identifiers via environment scan,
+\texttt{minecraft-data} lookup, and hardcoded fallback.  These modules
+operate at runtime only and are not exercised by the static evaluation
+in \secref{sec:protocol}.
+
+\section{Evaluated Models}
+\label{app:models}
+Table~\ref{tab:models} lists the seven evaluated models with their scale,
+serving organisation, the exact API identifier each result was produced
+against (as recorded in the run files) and the sampling temperature the
+harness sent.  The run files record the model identifier but no sampling
+parameter, so the temperature column is read from the harness: the evaluation
+profiles of the first three models set \texttt{temperature: 0.7}; the profiles
+used for the other four set none, and the model clients add no default, so
+those requests carried no temperature and the endpoint's own default applied.
+Every within-model comparison holds the model, and hence this setting, fixed;
+the three cross-model tests of the pre-specified family compare models run
+under different settings.
+
+\begin{table}[htbp]
+\caption{Evaluated models.  Primary five-model study: \texttt{no\_retrieval}
++ \texttt{saer\_cold} (cold-start, $\gamma{=}0$).  Replication panel
+(Gemma4-26B-A4B, Gemma4-31B): \texttt{no\_retrieval} +
+\texttt{saer\_cold} + \texttt{saer\_full} (the latter warm-start, generated
+before the recipe-resolver fix of \secref{sec:protocol}, and \emph{not} directly
+comparable; the \texttt{saer\_cold} arm is, \appref{sec:stats}), plus \texttt{bm25\_retrieval}
+for the per-model BM25 comparison (\appref{app:mcnemar}).
+$\dagger$: extended thinking disabled
+(\texttt{enable\_thinking=false}); thinking-mode ablation in \appref{app:thinking} tests whether enabling it lifts the no-retrieval L2 floor.
+$\ddagger$: also the four-condition-ablation model (\secref{sec:ablation}).
+Temperature \emph{default}: no temperature was sent, so the endpoint's own default applied.}
+\label{tab:models}
+\footnotesize\renewcommand{\arraystretch}{1.1}\setlength{\tabcolsep}{4pt}
+\centering
+\begin{tabular}{llll}
+\toprule
+Model & Size / Org & API identifier & Temperature \\
+\midrule
+Qwen3-8B$^\dagger$~\citep{qwen2025qwen3}      & 8B, Alibaba     & \texttt{qwen3-8b} & 0.7 \\
+GPT-4o~\citep{openai2024gpt4o}                & ---, OpenAI            & \texttt{gpt-4o-2024-11-20} & 0.7 \\
+Claude S.~4.5~\citep{anthropic2025claude}     & ---, Anthropic         & \texttt{claude-sonnet-4-5-20250929} & 0.7 \\
+Qwen2.5-Max$^\ddagger$~\citep{yang2024qwen25} & 100B+ MoE, Alibaba     & \texttt{qwen-max} & default \\
+DeepSeek-V3~\citep{deepseek2024v3}            & 671B MoE, DeepSeek     & \texttt{deepseek-chat} & default \\
+\midrule
+Gemma4-26B-A4B~\citep{gemmateam2026gemma4}    & 26B (4B active), Google & \texttt{gemma-4-26b-a4b-it} & default \\
+Gemma4-31B~\citep{gemmateam2026gemma4}        & 31B, Google            & \texttt{gemma-4-31b-it} & default \\
+\bottomrule
+\end{tabular}
+\renewcommand{\arraystretch}{1}
+\end{table}
+
+\section{Training Data}
+\label{app:traindata}
+
+The demonstration pool consists of \textbf{25 crafting examples},
+\textbf{21 collecting examples}, and \textbf{9 combat examples}
+(55 total), built to span L1--L3 difficulty.  We wrote a small seed set by
+hand to fix the schema, an AI assistant drafted the remaining examples in that
+schema, and we checked each example by hand; \appref{app:demoquality} reports
+what that check missed.  Each example follows a step-by-step schema with explicit \texttt{preconditions}
+and \texttt{produces} fields.  L2 crafting examples each include the full
+wooden$\to$stone$\to$iron pickaxe acquisition chain as prerequisite steps.
+Combat examples are retrieved only for the five combat tasks, in the main runs
+and in the combat probe (\secref{sec:combat_design}); category filtering keeps
+them out of the crafting and collecting tasks.  As a follow-up check, we
+additionally audited all 55 examples command-by-command from an empty
+cold-start inventory, verifying every declared item-level precondition is
+satisfied by an earlier step's own output; this surfaced 7 residual gaps
+beyond the combat-pool fix of \secref{sec:combat_design} (2 crafting, 4 collecting, 1
+combat --- e.g. a tool never crafted before its use, or a byproduct
+consumed without being declared), each corrected by prepending the missing
+acquisition chain or declaring the undocumented byproduct.
+
+\paragraph{Bank revision timeline.}  Four appendices touch the bank's history,
+so we give the single ordering they all refer to.  \textbf{(i)~Before the
+freeze (2026-05-30).}  Six L2 crafting demonstrations
+(\texttt{iron\_axe}, \texttt{iron\_pickaxe}, \texttt{iron\_shovel},
+\texttt{iron\_hoe}, \texttt{shears}, \texttt{shield}) declared a stone pickaxe
+in step~2 that no earlier step crafted.  They were repaired on the superseded
+35-task benchmark, before the 60-task benchmark was frozen and before the
+earliest run reported here; the run timestamps in
+\appref{app:provenance} all postdate it.  This is the episode
+\secref{sec:knowledge_gap} cites for the correctness axis, and no reported
+number comes from the pre-repair bank.  \textbf{(ii)~Evaluated revision.}  The
+pool every reported run retrieved over, shipped as
+\texttt{data/training/crafting\_examples.json}.  \textbf{(iii)~Corrected
+revision (2026-07-22).}  Shipped beside it as
+\texttt{crafting\_examples.CORRECTED-2026-07-22.json}.  18 of the 25 crafting
+examples differ: the \texttt{stick} constant raised from 4 to 6 or 8
+(10~examples), \texttt{oak\_planks} from 8 to 12 with \texttt{oak\_log} from 2
+to 3 (9), an explicit \texttt{crafting\_table} craft step added (7), a stone
+quantity raised (2), the \texttt{crafting/gold\_shovel} prerequisite chain
+prepended (3$\to$7 steps), a furnace step added to
+\texttt{crafting/stone\_slab}, and three precondition edits including the one
+\texttt{planks}$\to$\texttt{oak\_planks} normalisation.  The quantity edits are
+the ones \appref{app:quantity} analyses; the two ingredient-set edits are the
+ones \appref{app:overlap} uses.  \textbf{(iv)~Not repaired.}  The 25 invalid
+commands of \appref{app:intent_oracle} are disclosed and left in place, since
+editing them would decouple the shipped bank from the runs.
+
+Two limits of this record.  The collecting, combat and build banks ship in a
+single revision each, so for the five non-crafting repairs of the audit above
+the pre-audit bytes are not recoverable from the release.  And the seed files
+archive each plan and the number of demonstrations used, but not their
+identities, so the prompts cannot be re-derived from the release for those
+three categories.  Neither limit touches a reported number: every SPR, PVR and
+McNemar value in this paper is a re-score of the \emph{stored plans}
+(\secref{sec:protocol}), which are archived verbatim regardless of which bank
+produced them.
+
+\section{Denominator Sensitivity}
+\label{app:denom}
+One benchmark task, \texttt{craft/iron\_horse\_armor} (L3), has no
+crafting recipe in vanilla Minecraft 1.20.4 (\texttt{mcData} lists zero
+recipes for this item; it is loot/trade-only) and no loot or trade
+command exists in the bot's action space, so it is structurally
+infeasible under our protocol regardless of model or retrieval
+condition. We verified this directly rather than by assumption:
+re-running the validator over the two canonical result directories
+(102 occurrences of this task across all models, conditions, and
+seeds) confirms \texttt{strict\_pass} and \texttt{pvr} are
+\texttt{false} in \emph{all} 102 --- a fully concordant failure.
+Widening the scan to every seed file in the repository, including
+superseded runs, yields 225 occurrences and likewise zero passes under
+either metric.
+Because a task that fails identically in both arms of every paired
+comparison contributes to neither McNemar's $b$ nor $c$, its inclusion
+cannot affect any paired significance test; it only depresses every
+condition's absolute pass rate by a constant one task.
+
+Table~\ref{tab:denom-sensitivity} reports Table~\ref{tab:main} and
+Table~\ref{tab:ablation_5cond} SPR values recomputed with
+this task excluded from the denominator ($n{=}59$). The numerator is
+identical in both columns for every row --- the task never counts as a
+pass under either denominator, so this changes only the percentage,
+not the pass count. Every McNemar $b/c/p$ in the main text and in
+Table~\ref{tab:mcnemar_appendix} below is unchanged; reported SPR percentages shift by at most $+1$--$2$\,pp and
+no significance conclusion changes in either direction. We report the
+pre-specified /60 result as primary throughout the paper and treat this
+table as a sensitivity check confirming that result is not an artefact
+of the one infeasible task.
+
+\begin{table}[tbp]
+\centering
+\caption{SPR sensitivity: primary /60 result vs.\ /59 result excluding
+the structurally invalid \texttt{craft/iron\_horse\_armor} task.}
+\label{tab:denom-sensitivity}
+\small
+\begin{tabular}{llrr}
+\toprule
+Model & Cond. & SPR /60 & SPR /59 \\
+\midrule
+Qwen3-8B      & no\_ret    & 14/60 (23\%) & 14/59 (24\%) \\
+Qwen3-8B      & saer\_cold & 26/60 (43\%) & 26/59 (44\%) \\
+GPT-4o        & no\_ret    & 23/60 (38\%) & 23/59 (39\%) \\
+GPT-4o        & saer\_cold & 41/60 (68\%) & 41/59 (69\%) \\
+Claude S.4.5  & no\_ret    & 25/60 (42\%) & 25/59 (42\%) \\
+Claude S.4.5  & saer\_cold & 51/60 (85\%) & 51/59 (86\%) \\
+Qwen2.5-Max   & no\_ret    & 19/60 (32\%) & 19/59 (32\%) \\
+Qwen2.5-Max   & random     & 38/60 (63\%) & 38/59 (64\%) \\
+Qwen2.5-Max   & bm25       & 42/60 (70\%) & 42/59 (71\%) \\
+Qwen2.5-Max   & saer\_cold & 49/60 (82\%) & 49/59 (83\%) \\
+DeepSeek-V3   & no\_ret    & 33/60 (55\%) & 33/59 (56\%) \\
+DeepSeek-V3   & saer\_cold & 52/60 (87\%) & 52/59 (88\%) \\
+Gemma4-26B    & no\_ret    & 44/60 (73\%) & 44/59 (75\%) \\
+Gemma4-26B    & saer\_cold & 48/60 (80\%) & 48/59 (81\%) \\
+Gemma4-31B    & no\_ret    & 46/60 (77\%) & 46/59 (78\%) \\
+Gemma4-31B    & saer\_cold & 53/60 (88\%) & 53/59 (90\%) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Statistical Significance}
+\label{sec:stats}
+
+The per-model McNemar exact tests (\appref{app:mcnemar};
+$b$/$c$ = SAER-only / no\_ret-only passes) ground the
+Main Results claims: SAER's per-model effect is Bonferroni-significant
+($\alpha'{=}0.0038$) for four of the five primary-study models, and
+nominally significant for the remaining one (Qwen3-8B, $p{=}0.0075$).
+Under the post hoc Holm step-down over the same 13-test family
+(\appref{app:mcnemar}) all five per-model effects are family-wise
+significant; Bonferroni remains the pre-specified primary analysis.
+All five primary-study paired-difference 95\% confidence intervals
+(method for matched proportions of \citet{newcombe1998improved}) exclude zero, from
+$[{+}7,{+}32]$\,pp (Qwen3-8B) to $[{+}36,{+}61]$\,pp (Qwen2.5-Max).  The
+Gemma4 replication panel is reported under both SAER arms.  Under
+warm-start (\texttt{saer\_full}, generated before the recipe-resolver fix) the arms read
+48/60 SPR with 57/60 PVR for Gemma4-26B and 51/60 with 58/60 for Gemma4-31B,
+against the same \texttt{no\_retrieval} baselines, giving $b{=}5$, $c{=}1$,
+$p{=}0.22$ and $b{=}5$, $c{=}0$, $p{=}0.06$; under the primary study's cold-start protocol
+--- same \texttt{saer\_cold} batch and the same validator, though the panel's
+\texttt{no\_retrieval} arm was generated 6--8 days after the primary study's
+(\appref{app:provenance}) --- they are $+$7\,pp ($b{=}8$, $c{=}4$, $p{=}0.39$) for Gemma4-26B and $+$11\,pp
+($b{=}7$, $c{=}0$, $p{=}0.0156$) for Gemma4-31B.  All four lie outside the
+13-test family and are uncorrected; the panel is excluded from the family
+because it lies outside the pre-specified grid, not because its cold-start arm
+is less comparable.  Under the debiting scorer both cold-start gains vanish
+(Gemma4-26B 35$\to$28, $p{=}0.118$; Gemma4-31B 37$\to$37;
+Table~\ref{tab:debit_permodel}).  The more informative fact about this
+panel is that both models already score above the L2 wall without
+retrieval, leaving little for retrieval to recover.
+The 13-test family (composition in \secref{sec:protocol}) is the study's fixed evaluation
+grid, set before results were examined and reported in full regardless of
+outcome: no comparison was added or dropped based on significance.  The
+Holm analysis re-thresholds that same fixed grid --- it adds no test and
+removes none --- but the decision to run it was made after the results
+were seen, so it is labelled post hoc throughout.
+
+
+
+The ablation and cross-model panels (\appref{app:mcnemar}) add that all retrieval conditions---including random---significantly
+beat no-retrieval for Qwen2.5-Max (all $p{<}0.001$; SAER-vs-BM25 there
+examined in \secref{sec:ablation}), Qwen2.5-Max and DeepSeek-V3 with SAER significantly
+outperform Qwen3-8B with SAER (the only two cross-model tests against it), and
+DeepSeek-V3 and Qwen2.5-Max converge ($b{=}5$, $c{=}2$,
+$p{=}0.453$, n.s.).
+
+\section{Live Execution: a Framework-Bound Axis}
+\label{sec:live}
+
+To test whether static plan quality transfers to embodied execution, we
+ran 21 of the 60 benchmark tasks --- seven per tier, chosen for staging
+tractability rather than by a pre-specified rule --- on a live
+Minecraft~1.20.4 server under
+DeepSeek-V3 in two conditions (no\_retrieval, saer\_cold) $\times$ three
+seeds (126 trials; \appref{app:livecombat}), scoring \emph{strict}
+completion (goal item obtained) and \emph{prerequisite-chain} completion
+(direct ingredients assembled, terminal craft excluded).
+
+\textbf{Live does not separate the conditions, and the reason is
+diagnostic.}  The 21 tasks split seven per tier, so a per-tier denominator of
+21 counts trials (7 tasks $\times$ 3 seeds) while \emph{21 tasks} counts
+tasks.  At the L2 discrimination tier both conditions floor at
+2/21 trials (10\%) under \emph{both} metrics, and 11 of 21 tasks fail under both
+in all three seeds---a symmetry no knowledge-driven account predicts.  A
+failure-mode audit places most failures outside the knowledge axis:
+33/42 (79\%) of no\_retrieval failures are framework-execution errors
+(Mineflayer sync races) against 2 prerequisite-chain gaps, and 21/46
+saer\_cold failures trace to a since-fixed defect mis-marking bundled craft
+steps as successful (\appref{app:livecombat}); since the prerequisite-chain metric
+excludes the terminal craft yet the L2 floor holds, the failure sits
+\emph{upstream}.  At L1 the two conditions are close (strict 15/21
+vs.\ 18/21, tying at 18/21 on the prerequisite-chain metric), and SAER's
+examples lengthen plans (5.4 vs.\ 4.3 steps).  Live completion is therefore
+governed by an execution-reliability axis floored equally for both
+conditions, leaving no headroom for a plan-quality difference: a scope
+limitation, not evidence either way (details in \appref{app:livecombat}).
+
+%% ============================================================
+%% NeurIPS 2026 workshop submission (NEmo -- Neuro-Symbolic Embodied
+%% Intelligence).  Non-archival; concurrent submission permitted.
+%% The NEmo OpenReview form accepts a single PDF and no supplementary
+%% file, so every section the body cites is included in the appendices
+%% here rather than shipped separately.
+%% ============================================================
+
+\section{Combat Subgroup: An Existence Probe}
+\label{sec:combat_probe}
+
+The combat probe (design \secref{sec:combat_design}; per-condition table in \appref{app:livecombat}) reproduces the
+existence effect on the combat subgroup: \texttt{no\_retrieval} passes
+0/5 while random, BM25 and \texttt{saer\_cold} each pass the same
+3/5 tasks.  The split sits at L1--L2 (0/1 and 0/2 without retrieval
+vs.\ 1/1 and 2/2 with it); on the run-time verdicts quoted here both L3
+tasks fail under every condition, so the top tier has no headroom.
+(Under the uniform re-scoring of \secref{sec:protocol},
+\texttt{combat/kill\_blaze} passes under \texttt{saer\_cold}, which
+reads 4/5 rather than 3/5; both sets are given in
+\appref{app:livecombat}.)  It cannot rank the variants: the margin
+is at most one task, and at $n{=}5$ even a perfect 5--0 discordant split gives
+$p{=}0.0625$ two-sided.  These five tasks are members of the 60-task
+benchmark and are already counted in every $/60$ cell of
+Table~\ref{tab:main}; the probe re-runs them with the near-duplicate
+templates removed, so it is a subgroup analysis of the primary study
+and not an independent replication of it.  We therefore read combat as an underpowered existence
+check only and draw the relevance conclusion solely from the
+60-task ablation (\secref{sec:ablation}).
+
+\section{Weight Configuration Ablation Detail (Exploratory, 35-Task Benchmark)}
+\label{app:weights}
+
+\noindent\textbf{Exploratory; not confirmatory for the deployed
+scorer.}  This study used the original 35-task benchmark, Qwen-8B
+(\texttt{qwen3-vl-8b-instruct}, a different model from the main study's
+Qwen3-8B), and
+an older \emph{four}-component formulation with 4:3:2:1 weights, in
+which $\alpha,\beta,\gamma,\delta$ corresponded to ingredient overlap,
+keyword overlap, mining-tool compatibility and difficulty match.  The
+frozen 60-task results are produced by the current cold-start scorer,
+which is \emph{three}-component --- $(\alpha,\beta,\delta){=}(0.50,0.35,0.15)$ with
+the mining-tier term at $\gamma{=}0$ under an empty inventory (\secref{sec:scoring}).
+The configuration exercised here is therefore not the configuration
+deployed in Table~\ref{tab:main}.  The historical result motivates
+a new ablation of the deployed weights; it does not validate them, and
+no main-text claim rests on it.  Table~\ref{tab:weights_ablation}
+reports the configurations tried.
+
+\paragraph{The template-correctness episode, on the same benchmark.}
+\secref{sec:knowledge_gap} cites one contrast for the correctness facet, and it
+comes from this benchmark rather than the frozen one.  Six L2 crafting
+demonstrations (\texttt{iron\_axe}, \texttt{iron\_pickaxe},
+\texttt{iron\_shovel}, \texttt{iron\_hoe}, \texttt{shears}, \texttt{shield})
+declared \texttt{stone\_pickaxe:1} as a step-2 precondition while no earlier
+step crafted a wooden or stone pickaxe, and the planners followed the template
+verbatim.  Under the scorer of the time, \texttt{saer\_cold} read \textbf{1/13}
+at L2 against \texttt{random\_retrieval}'s \textbf{6/13} --- the retriever that
+selects the most structurally similar demonstration is the one that inherits
+its defect, so a relevance-ranked retriever can fall \emph{below} a random one
+when the bank is wrong.  That is the whole of what this episode licenses, and
+three limits bound it.  It is a single run per arm with no paired test, so the
+figures carry no interval.  After the repair \texttt{saer\_cold} read 11--12/13
+across three runs, but two validator bugs were fixed in the same batch (a
+\texttt{None (assume access:trees)} string parsed as an item requirement, and
+\texttt{produces} inference running only when a step declared no outputs), so
+the post-repair half cannot be attributed to the bank.  And the repair predates
+the freeze of the 60-task benchmark and every run reported in this paper: the
+earliest timestamp in Table~\ref{tab:provenance} is later, so no reported
+number comes from the defective bank.  A controlled version of this contrast
+--- the same frozen benchmark, defective and repaired banks crossed with SAER
+and random --- is the experiment the correctness facet still lacks.
+
+\begin{table}[tbp]
+\centering
+\caption{Weight configuration ablation: averaged strict SPR over 3 seeds
+(original 35-task benchmark, Qwen-8B, empty starting inventory; the older
+four-component formulation, not the cold-start vector of \secref{sec:scoring}).}
+\label{tab:weights_ablation}
+\small
+\begin{tabular}{lccccr}
+\toprule
+Configuration & $\alpha$ & $\beta$ & $\gamma$ & $\delta$ & Avg.~SPR \\
+\midrule
+ingredient\_only & 1.00 & 0.00 & 0.00 & 0.00 & 28.6\% \\
+keyword\_only    & 0.00 & 1.00 & 0.00 & 0.00 & 36.2\% \\
+equal (0.25$\times$4) & 0.25 & 0.25 & 0.25 & 0.25 & 39.0\% \\
+\textbf{SAER (4:3:2:1)} & \textbf{0.40} & \textbf{0.30} & \textbf{0.20} & \textbf{0.10} & \textbf{73.3\%} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Within the iron-tool category, four of the six iron training examples share
+an identical declared ingredient set (\texttt{shears} lacks the stick,
+\texttt{shield} substitutes planks); ingredient overlap alone cannot differentiate
+them, so retrieval degrades to random selection within the correct
+material tier.  The 4:3:2:1 assignment was fixed before benchmark
+evaluation.
+
+\paragraph{What this table does and does not corroborate.}  A weight vector
+invites the reading that its \emph{ordering}
+$\alpha{>}\beta{>}\gamma{>}\delta$ was established somewhere.  It was not, and
+this table is the closest thing to a test of it, so we state precisely what it
+supports.
+
+\emph{Not corroborated: the ordering.}  The two single-dimension rows
+run the other way --- keyword alone (36.2\%) scores above ingredient
+alone (28.6\%), while the ordering places ingredient first.  Single
+dimensions in isolation are a weak probe of a dimension's marginal
+contribution inside a combination, so we do not read the reversal as
+refuting the ordering either; the honest statement is that this table
+is silent on the ordering, and no experiment in this paper measures it.
+The weight ordering of \secref{sec:scoring} should therefore be read as the
+design rationale it is, fixed before evaluation, not as an empirically
+ranked result.
+
+\emph{Not corroborated: the necessity of calibration.}  The $+$34\,pp
+gap over equal weighting reads at first as confirming that a
+calibrated rather than uniform combination is necessary.  It does not
+support that reading, and we set it aside rather than carry it
+forward.  \appref{app:deployed_ablation} re-runs
+the comparison against the \emph{deployed} weights on the frozen
+60-task benchmark, under the fixed validator, on two models, and finds
+no detectable difference between calibrated and uniform weighting ---
+with the direction of the (non-significant) difference inconsistent
+across the two models.
+
+\emph{What does survive.}  Combining the dimensions beats both
+single-dimension rows in this table (73.3\% against 28.6\% and 36.2\%).
+On the frozen benchmark we show only that the combination is not interchangeable
+with any single dimension --- collapsing to one re-orders the selected
+demonstrations for 48--58 of 60 tasks --- not that it scores higher there.  The deployed
+weights are best described as one pre-specified working point among
+several that perform comparably, and the 35-task gap above is retained
+as a record of what the older four-component configuration did on the
+older benchmark, not as evidence about the deployed scorer.
+
+% ============================================================
+\section{Deployed-Configuration Ablations (Exploratory)}
+\label{app:deployed_ablation}
+
+\noindent\textbf{Exploratory; outside the confirmatory family.}  The
+comparisons below are run on the frozen 60-task benchmark under the
+fixed validator of \secref{sec:protocol}, but they were specified after the
+primary study and are excluded from the 13-test Bonferroni family of
+\secref{sec:protocol}.  They are reported to address the question
+\appref{app:weights} raises --- whether the \emph{deployed} weights are
+better than uniform ones --- and they find no advantage for them.  They
+cannot establish equivalence either: restricting each weight comparison to
+its divergent subset leaves $b{+}c \le 2$ discordant tasks, and the
+smallest two-sided exact $p$ attainable at $b{+}c$ discordances is
+$2 \cdot 0.5^{\,b+c}$, i.e.\ 0.5 at $b{+}c{=}2$ and 1.0 at $b{+}c \le 1$.
+The four weight rows of Table~\ref{tab:deployed_ablation} therefore could
+not have reached significance under any outcome; read them as
+inconclusive, not as demonstrated equivalence.  The $k$ comparisons, run
+on all 60 tasks, have more discordance budget ($b{+}c{=}8$ and 4) but the
+$k{=}5$ row is likewise pinned at its attainable floor of 0.125.
+
+Two weight comparisons are run on the subset of tasks for which the two
+configurations' ordered top-$k$ retrieval actually diverges, since where
+retrieval is identical the prompts are identical, so any outcome difference
+there cannot be a weight effect; each comparison
+therefore has its own 18-task subset and its own baseline count.  The
+top-$k$ comparisons run on all 60 tasks.  Every right-hand arm was generated
+on 07-31, 40 days after the 06-21 \texttt{saer\_cold} arm it is compared
+with, and both models are served under provider aliases (\texttt{qwen-max},
+\texttt{deepseek-chat}), so an endpoint change is a rival explanation for any
+difference here, as it is for the relevance test (\appref{app:provenance}).
+Table~\ref{tab:deployed_ablation} reports all six.  As elsewhere, $b$ counts
+tasks passing only under the right-hand configuration and $c$ only
+under the left-hand one, so left $+\,b-c=$ right.
+
+\begin{table}[htbp]
+\centering
+\caption{Deployed-configuration ablations (majority vote over 3 seeds,
+McNemar exact).  ``Deployed'' is the cold-start
+$(\alpha,\beta,\delta){=}(0.50,0.35,0.15)$ scorer of \secref{sec:scoring} at $k{=}3$;
+``equal'' weights the same active dimensions uniformly; ``5-dim'' adds a
+prerequisite-chain term to the four terms of Equation~\ref{eq:score}.  Source runs in
+Table~\ref{tab:provenance}.  No comparison reaches nominal
+significance, and the sign of the weight effect is inconsistent across
+the two models.}
+\label{tab:deployed_ablation}
+\small
+\begin{tabular}{llccccr}
+\toprule
+Comparison & Model & $n$ & Left $\rightarrow$ Right & $b$ & $c$ & $p$ \\
+\midrule
+deployed $\rightarrow$ equal & Qwen2.5-Max & 18 & 13 $\rightarrow$ 15 & 2 & 0 & 0.500 \\
+deployed $\rightarrow$ equal & DeepSeek-V3 & 18 & 15 $\rightarrow$ 14 & 0 & 1 & 1.000 \\
+deployed $\rightarrow$ 5-dim & Qwen2.5-Max & 18 & 16 $\rightarrow$ 15 & 0 & 1 & 1.000 \\
+deployed $\rightarrow$ 5-dim & DeepSeek-V3 & 18 & 16 $\rightarrow$ 16 & 0 & 0 & 1.000 \\
+\midrule
+$k{=}3 \rightarrow k{=}1$    & Qwen2.5-Max & 60 & 49 $\rightarrow$ 43 & 1 & 7 & 0.0703 \\
+$k{=}3 \rightarrow k{=}5$    & Qwen2.5-Max & 60 & 49 $\rightarrow$ 45 & 0 & 4 & 0.125 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{What this shows.}  Calibrated and uniform weighting are
+indistinguishable on both models, and the direction of the
+(non-significant) difference reverses between them ($+2$ tasks on
+Qwen2.5-Max, $-1$ on DeepSeek-V3).  Adding a fifth prerequisite-chain
+dimension does not help either.  We therefore withdraw the reading that
+\appref{app:weights}'s $+$34\,pp gap over equal weighting establishes
+that calibration is necessary; the deployed weights are one defensible
+working point, not a demonstrated optimum.  The top-$k$ rows are
+similarly indicative rather than confirmatory: $k{=}3$ is the best of
+the three values tried on the one model tested, with an inverted-U
+shape, but neither contrast reaches nominal significance.  None of this
+affects the primary claims, which compare retrieval against no
+retrieval rather than one retrieval configuration against another.
+
+\section{Three-Way Retrieval Comparison (Exploratory, 42-Task Benchmark)}
+\label{app:threeway}
+
+\noindent\textbf{Exploratory; predates the final benchmark and the
+validator fix.}  This study uses the earlier 42-task benchmark and is
+not combined with any confirmatory result.
+
+Table~\ref{tab:3way} supplements \secref{sec:ricl} with a SBERT comparison on the
+original 42-task benchmark with Qwen-8B (\texttt{qwen3-vl-8b-instruct}, as in
+\appref{app:weights}, not the main study's Qwen3-8B).  SBERT achieves the same overall
+pass rate as BM25 (74\%) but with a complementary per-level profile:
+stronger at L3 (79\% vs.\ 50\%) and weaker at L1/L2 (67--75\% vs.\
+83--88\%).  Neither method dominates overall ($p{=}1.0$, n.s.).
+These runs predate the validator fix of \secref{sec:protocol} and were not
+re-validated (SBERT embeddings are no longer reproducible at the same
+model revision), so this table should be read as the earlier 42-task
+study, not as part of the
+60-task results; no paper claim rests on them.
+
+\begin{table}[tbp]
+\centering
+\caption{Supplementary: BM25 vs.\ SBERT vs.\ SAER-cold
+(Qwen-8B, 42-task benchmark, majority vote).}
+\label{tab:3way}
+\small
+\begin{tabular}{lrrr}
+\toprule
+ & BM25 & SBERT & SAER-cold \\
+\midrule
+Overall (mv)   & 31/42 (74\%) & 31/42 (74\%) & \textbf{34/42 (81\%)} \\
+L1 (12)        & 10/12 (83\%) & 8/12 (67\%)  & \textbf{11/12 (92\%)} \\
+L2 (16)        & 14/16 (88\%) & 12/16 (75\%) & \textbf{15/16 (94\%)} \\
+L3 (14)        & 7/14 (50\%)  & \textbf{11/14 (79\%)} & 8/14 (57\%) \\
+Mean seed rate & 73.8\%       & 61.9\%        & \textbf{74.6\%} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Structural-Overlap Robustness Check}
+\label{app:overlap}
+\label{app:overlap-robustness}
+
+Exact target-name disjointness does not preclude structural
+(ingredient/prerequisite) overlap, so we additionally computed, for
+each of the 44 CRAFT-category held-out tasks, the ingredient-set
+Jaccard similarity to its nearest demonstration (query set = the
+task's declared final-craft materials; demonstration set = the union
+of \texttt{items.inventory} preconditions across all of its plan
+steps, i.e.\ its full prerequisite chain).  The nearest demonstration
+is never a zero-overlap match (min$=$0.143, mean$=$0.386,
+max$=$1.000, $n{=}44$); the 16 COLLECT/COMBAT tasks are excluded from
+this specific metric because they have no declared final-craft
+materials by task design (they collect raw blocks or kill mobs rather
+than craft from ingredients), not because they are structurally
+unrelated to the demonstration pool.
+
+This measure is asymmetric---the query side uses only final-craft
+materials while the demonstration side uses each example's full
+prerequisite chain---which could overstate similarity. As a
+robustness check we recomputed a symmetric variant, expanding the
+query side to its own full prerequisite chain via the same static
+dependency resolution used elsewhere in the pipeline (applied offline
+from an empty inventory). The symmetric measure is lower and flatter
+(min$=$0.000, mean$=$0.290, max$=$0.500, $n{=}44$) than the
+asymmetric one, with no task reaching the near-duplicate range (0/44
+above 0.75). At stricter thresholds, the asymmetric measure has 14/44
+tasks at or above 0.5, 4/44 at or above 0.75, and 4/44 at or above 0.9
+(i.e.\ 4 near-duplicate matches), whereas the symmetric measure has
+only 3/44 at or above 0.5 and 0/44 at or above 0.75 or 0.9---confirming
+that the apparent near-duplicates are an artefact of the asymmetric
+comparison. The four asymmetric-measure exact matches (Jaccard$=$1.0:
+\texttt{wooden\_sword}, \texttt{oak\_sign}, \texttt{wooden\_shovel},
+\texttt{oak\_fence}, each matched to a wooden-tool demonstration)
+arise because these tasks' declared material sets contain only two
+items (a stick and a plank), so any other two-item wooden-tool set is
+trivially identical---not because of retrieval-pool duplication; none
+of the four survive under the symmetric measure.
+
+\paragraph{Which bank revision.}  The crafting bank was revised after the
+evaluation runs; 18 of its 25 examples differ between the two revisions, in
+the edit classes enumerated in \appref{app:traindata}.  Both revisions ship in
+the code and data release, and all three overlap scripts
+(\texttt{jaccard\_overlap\_holdout\_vs\_demos.mjs},
+\texttt{jaccard\_overlap\_symmetric.mjs},
+\texttt{overlap\_tercile\_stratify.mjs}) take the bank path from the
+\texttt{CRAFTING\_BANK} environment variable, so either block of
+Table~\ref{tab:overlap-tercile} is reproducible.  The two questions this
+section answers call for different revisions.  For the \emph{contamination
+bound}, the corrected revision is the conservative choice, and the figures in
+the two paragraphs above are computed on it: the two edits that touch ingredient sets ---
+repairing the \texttt{crafting/gold\_shovel} prerequisite chain (3$\to$7
+steps) and normalising one \texttt{planks}$\to$\texttt{oak\_planks}
+precondition string --- both enlarge the demonstration side and therefore
+\emph{raise} every measured overlap; the remaining edits change quantities
+only, which this metric does not read.  Under the
+evaluation-time revision --- the pool the reported runs actually
+retrieved over --- overlap is uniformly lower: asymmetric min$=$0.167,
+mean$=$0.317; symmetric mean$=$0.188, max$=$0.333, with
+\textbf{0/44} tasks at or above 0.5 (versus 3/44), and \textbf{one}
+exact asymmetric match rather than four.  We use the higher estimates for the
+bound so that it is not flattered by the pool we ship.  For \emph{where the gain
+occurs}, the evaluation-time revision is the relevant one, since it is the pool
+the runs actually retrieved over; \secref{sec:tasks} quotes it, and it leads
+Table~\ref{tab:overlap-tercile}.
+
+We further stratified SAER's SPR gain on Qwen2.5-Max
+(\texttt{no\_retrieval}$\to$\texttt{saer\_cold}) by overlap tercile
+(low/mid/high, $n{=}15/15/14$) to test whether the gain is
+concentrated in high-overlap, near-duplicate tasks---which would
+undercut a generalisation claim.  On the evaluation-time bank the gain rises
+monotonically with overlap ($+6/{+}8/{+}10$ asymmetric, $+5/{+}9/{+}10$
+symmetric; Table~\ref{tab:overlap-tercile}, upper block).  This does not
+support a near-duplicate explanation, for two reasons.  First, under that bank there are no near-duplicates for the
+gain to concentrate in: the symmetric measure spans $0.000$--$0.333$
+across all 44 tasks, so its ``high'' tercile ($0.231$--$0.333$) is a
+low-overlap stratum in absolute terms, and a gradient across a range
+that never reaches $0.5$ cannot be retrieval of a near-copy.  Second,
+the tercile is confounded with difficulty by construction: that
+stratum is seven \texttt{iron\_*} items, three \texttt{stone\_*}
+items, \texttt{cauldron}, \texttt{minecart}, \texttt{compass} and
+\texttt{lever}---the iron- and stone-tier multi-hop chains, which
+share ingredients with the demonstrations and with each other simply
+because those tiers have few distinct inputs.  Its no-retrieval floor
+is \textbf{0/14}, the L2 bottleneck this paper is about, whereas the
+corresponding low-overlap tercile starts from 7/15.  Under the corrected bank
+the direction reverses: the gain is largest in the low- and mid-overlap
+terciles (lower block), so the gradient is not stable across bank revisions,
+and we draw no direction from either panel.  Overlap tercile is therefore
+substantially a proxy for prerequisite depth; what flips between the two
+panels is which end of that depth axis the terciles land on, not whether the
+gain comes from retrieving near-copies.
+
+\paragraph{Gathering and combat tasks.}  Ingredient Jaccard is empty for the
+16 non-crafting tasks, which declare no required materials, so we check them
+for the overlap that does apply to them: whether a task's goal item is already
+the target of a demonstration in the bank it retrieves from (retrieval is
+category-filtered, so each category is compared with its own bank).  The check
+(\texttt{scripts/\allowbreak eval/\allowbreak collect\_\allowbreak overlap\_\allowbreak check.mjs}) runs first on the combat
+tasks as a positive control and aborts unless it recovers the five known
+near-duplicates of \secref{sec:combat_design}; it does (5/5).  On the 11
+gathering tasks against the 21 collecting demonstrations, no task's goal item
+is the final product of any demonstration (0/11); one, \texttt{gravel},
+appears as an intermediate collection step in two demonstrations
+(\texttt{collect/flint}, \texttt{collect/blaze\_rod}).  The gathering tier
+therefore holds no near-duplicate of the combat kind.
+
+\begin{table}[tbp]
+\centering
+\caption{SAER's SPR gain on Qwen2.5-Max
+(\texttt{no\_retrieval}$\to$\texttt{saer\_cold}), stratified by
+structural-overlap tercile, under both bank revisions.  Jaccard ranges
+are given per cell.  Reproduce the upper block with the shipped
+default and the lower block with
+\texttt{CRAFTING\_BANK=data/\allowbreak training/\allowbreak crafting\_examples.CORRECTED-2026-07-22.json}.}
+\label{tab:overlap-tercile}
+\small
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Overlap tercile ($n$) & Low (15) & Mid (15) & High (14) \\
+\midrule
+\multicolumn{4}{@{}l}{\emph{Evaluation-time bank (the pool the runs retrieved over; primary)}} \\
+Asymmetric & 6$\to$12 & 1$\to$9 & 3$\to$13 \\
+\quad Jaccard range & .167--.250 & .250--.333 & .333--1.00 \\
+Symmetric  & 7$\to$12 & 3$\to$12 & 0$\to$10 \\
+\quad Jaccard range & .000--.182 & .182--.214 & .231--.333 \\
+\midrule
+\multicolumn{4}{@{}l}{\emph{Corrected bank (conservative contamination bound)}} \\
+Asymmetric & 0$\to$10 & 0$\to$12 & 10$\to$12 \\
+\quad Jaccard range & .143--.250 & .250--.400 & .500--1.00 \\
+Symmetric  & 6$\to$12 & 0$\to$13 & 4$\to$9 \\
+\quad Jaccard range & .000--.273 & .273--.300 & .300--.500 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Number Provenance}
+\label{app:provenance}
+
+Every SPR, PVR and McNemar value in the main text is recomputed from
+the per-seed plan files listed in Table~\ref{tab:provenance} by a single
+script (\texttt{scripts/\allowbreak eval/\allowbreak mcnemar\_table.mjs -{}-rescore}), which
+re-validates all three stored seed plans of each run with the fixed
+validator (\secref{sec:protocol}, \emph{Re-validation}) and then applies the
+per-task majority vote.  The script also asserts the McNemar identity
+$\mathrm{SPR}_{\text{saer}} = \mathrm{SPR}_{\text{no\_ret}} + b - c$ for
+every model row, so the main text's cross-architecture table and
+Table~\ref{tab:mcnemar_appendix} below cannot drift apart.  Note that the per-run summary files shipped alongside the plan
+files were written at generation time, i.e.\ before the validator fix,
+and therefore do \emph{not} match the reported numbers; the per-seed
+plan files are the authoritative record.
+
+\paragraph{Generation epochs, and which comparison is exposed.}  Re-validation
+fixes scoring, not generation, so the timestamps below still matter.  The
+existence step is the best-protected comparison in the paper:
+Qwen2.5-Max's \texttt{no\_retrieval} and \texttt{random} runs are 2.5 hours
+apart in the same directory (20260604\_213651 and 20260605\_000159), and all
+five \texttt{no\_retrieval} arms predate their \texttt{saer\_cold} arms
+because the recipe-resolver fix forced the SAER side to be regenerated
+(\secref{sec:protocol}).  The relevance step is the worst-protected one.  Four
+models' BM25 arms were generated inside the same 06-20/06-21 window as their
+\texttt{saer\_cold} arms, but Qwen2.5-Max's BM25 run is from 06-05 and its
+\texttt{saer\_cold} run from 06-21 --- 16 days, across a directory change, on
+\texttt{qwen-max}, which is a provider alias rather than a date-pinned
+identifier (\secref{sec:limits}).  That pair is the family's only relevance
+test ($b{=}7$, $c{=}0$), so an endpoint change during those 16 days is a rival
+explanation we cannot exclude, and re-validating stored plans does not touch
+it.  Settling it needs a same-window rerun of that one arm, which we have not
+done.
+
+\begin{table}[tbp]
+\centering
+\caption{Source runs.  Cells give the run timestamp; the directory
+prefix is \texttt{scripts/\allowbreak eval/\allowbreak results/} plus $^{c}$\,=\,\texttt{canonical/},
+$^{f}$\,=\,\texttt{fixed\_mcdata/}, or no marker for the results root.
+Each run contributes three seed files (\texttt{\_s1}--\texttt{\_s3}).}
+\label{tab:provenance}
+\scriptsize
+\begin{tabular}{@{}lll@{}}
+\toprule
+Model & Condition & Run timestamp \\
+\midrule
+Qwen3-8B      & no\_retrieval & 20260605\_213048$^{c}$ \\
+              & bm25          & 20260620\_191130$^{c}$ \\
+              & saer\_cold    & 20260621\_004648$^{f}$ \\
+GPT-4o        & no\_retrieval & 20260605\_213059$^{c}$ \\
+              & bm25          & 20260621\_121743$^{f}$ \\
+              & saer\_cold    & 20260621\_013640$^{f}$ \\
+Claude S.~4.5 & no\_retrieval & 20260605\_233949$^{c}$ \\
+              & bm25          & 20260621\_144209$^{f}$ \\
+              & saer\_cold    & 20260621\_021308$^{f}$ \\
+Qwen2.5-Max   & no\_retrieval & 20260604\_213651$^{c}$ \\
+              & random        & 20260605\_000159$^{c}$ \\
+              & bm25          & 20260605\_004805$^{c}$ \\
+              & saer\_cold    & 20260621\_001120$^{f}$ \\
+DeepSeek-V3   & no\_retrieval & 20260604\_231018$^{c}$ \\
+              & bm25          & 20260621\_115631$^{f}$ \\
+              & saer\_cold    & 20260621\_011658$^{f}$ \\
+Gemma4-26B    & no\_retrieval & 20260611\_204737 \\
+              & bm25          & 20260621\_153049$^{f}$ \\
+              & saer\_cold    & 20260621\_144219$^{f}$ \\
+              & saer\_full    & 20260612\_025602 \\
+Gemma4-31B    & no\_retrieval & 20260612\_235009 \\
+              & bm25          & 20260621\_211600$^{f}$ \\
+              & saer\_cold    & 20260621\_202849$^{f}$ \\
+              & saer\_full    & 20260613\_122627 \\
+\midrule
+\multicolumn{3}{@{}l}{\emph{Deployed-configuration ablations
+(\appref{app:deployed_ablation}); 18-task divergent subsets}} \\
+Qwen2.5-Max   & equal weights & 20260731\_132239 \\
+              & 5-dim         & 20260731\_133856 \\
+DeepSeek-V3   & equal weights & 20260731\_135442 \\
+              & 5-dim         & 20260731\_140056 \\
+\midrule
+\multicolumn{3}{@{}l}{\emph{Top-$k$ ablation
+(\appref{app:deployed_ablation}); full 60 tasks}} \\
+Qwen2.5-Max   & $k{=}1$       & 20260731\_142747 \\
+              & $k{=}5$       & 20260731\_151943 \\
+\midrule
+\multicolumn{3}{@{}l}{Combat probe (Qwen2.5-Max, 20260703):
+\texttt{combat\_holdout/} (R3), \texttt{combat\_holdout\_r4/} (R4)} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{McNemar Tests: Per-Model, Ablation and Cross-Model Panels}
+\label{app:mcnemar}
+
+Table~\ref{tab:mcnemar_appendix} reports every test in the pre-specified
+Bonferroni family (\appref{sec:stats}): five per-model \texttt{saer\_cold} vs.\
+\texttt{no\_retrieval} comparisons, the five-row Qwen2.5-Max ablation
+panel, and three cross-model SAER comparisons, $k{=}13$, so
+$\alpha'{=}0.05/13{=}0.0038$.  One test appears in two panels
+(Qwen2.5-Max \texttt{saer\_cold} vs.\ \texttt{no\_retrieval} is both the
+per-model test and the third ablation row); we count it twice, which
+makes the correction conservative rather than lenient, and no verdict
+changes at $k{=}12$ ($\alpha'{=}0.0042$).  The two-model Gemma4
+replication panel is excluded from this family (\appref{sec:stats}).
+The same 13 hypotheses are re-examined under Holm's step-down procedure
+below; the family membership is identical, only the thresholding differs.
+The duplicate is conservative for Bonferroni but exactly neutral for
+Holm: the duplicated $p$ is the smallest in the family, so removing it
+leaves every remaining threshold $\alpha/(m{-}i{+}1)$ unchanged and the
+set of rejected hypotheses is the same at $k{=}12$.
+
+\begin{table}[tbp]
+\centering
+\caption{McNemar exact test (majority vote, $n{=}60$).  $b$/$c$ =
+condition-A-only / condition-B-only passes.  $\star$=$p{<}0.05$,
+\sigB=$p{<}0.01$, \sigC=$p{<}0.001$, n.s.\ $=p{\geq}0.05$; stars mark
+nominal $p$, and only $p{<}\alpha'{=}0.0038$ survives the pre-specified
+Bonferroni correction.  Holm verdicts over the same 13 tests are in
+Table~\ref{tab:holm}.}
+\label{tab:mcnemar_appendix}
+\small
+\begin{tabular}{@{}lcccl@{}}
+\toprule
+Comparison & $b$ & $c$ & $b{+}c$ & $p$-value \\
+\midrule
+\multicolumn{5}{@{}l}{\textit{Per-model: \texttt{saer\_cold} vs.\ \texttt{no\_retrieval}}} \\
+\quad Qwen3-8B                 & 15 & 3 & 18 & 0.0075~\sigB \\
+\quad GPT-4o                   & 19 & 1 & 20 & $<$0.001~\sigC \\
+\quad Claude S.~4.5            & 26 & 0 & 26 & $<$0.001~\sigC \\
+\quad Qwen2.5-Max              & 30 & 0 & 30 & $<$0.001~\sigC \\
+\quad DeepSeek-V3              & 21 & 2 & 23 & $<$0.001~\sigC \\
+\midrule
+\multicolumn{5}{@{}l}{\textit{Qwen2.5-Max four-condition ablation}} \\
+\quad random vs.\ no\_ret      & 19 & 0 & 19 & $<$0.001~\sigC \\
+\quad bm25 vs.\ no\_ret        & 24 & 1 & 25 & $<$0.001~\sigC \\
+\quad saer\_cold vs.\ no\_ret  & 30 & 0 & 30 & $<$0.001~\sigC \\
+\quad bm25 vs.\ random         &  9 & 5 & 14 & 0.424~n.s. \\
+\quad saer\_cold vs.\ bm25     &  7 & 0 &  7 & 0.0156~$\star$ \\
+\midrule
+\multicolumn{5}{@{}l}{\textit{Cross-model SAER comparisons}} \\
+\quad Qwen2.5-Max vs.\ Qwen3-8B    & 23 & 0 & 23 & $<$0.001~\sigC \\
+\quad DeepSeek-V3 vs.\ Qwen3-8B    & 26 & 0 & 26 & $<$0.001~\sigC \\
+\quad DeepSeek-V3 vs.\ Qwen2.5-Max &  5 & 2 &  7 & 0.453~n.s. \\
+\midrule
+\multicolumn{5}{@{}l}{\textit{Outside the family: replication panel,
+\texttt{saer\_full} vs.\ \texttt{bm25}}} \\
+\quad Gemma4-26B               &  1 & 1 &  2 & 1.0~n.s. \\
+\quad Gemma4-31B               &  0 & 2 &  2 & 0.500~n.s. \\
+\multicolumn{5}{@{}l}{\textit{Outside the family: replication panel,
+\texttt{saer\_cold} vs.\ \texttt{bm25}}} \\
+\quad Gemma4-26B               &  4 & 4 &  8 & 1.0~n.s. \\
+\quad Gemma4-31B               &  0 & 0 &  0 & 1.0~n.s. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The last four rows quantify how closely the replication panel tracks
+BM25.  With \texttt{saer\_full} each model has $b{+}c{=}2$ discordant
+tasks of 60, i.e.\ 58/60 (97\%) concordant; with the cold-start arm
+Gemma4-26B has 8 (52/60, 87\%) and Gemma4-31B none (60/60).
+They are listed for provenance only.  The panel is excluded from the
+Bonferroni family for the reason given in \appref{sec:stats} --- it is a
+replication panel outside the pre-specified evaluation grid --- so these
+are nominal $p$-values attached to a descriptive comparison.  Its
+cold-start arm is protocol-comparable to the primary study and is
+reported in Table~\ref{tab:main} and \appref{sec:stats}; the exclusion
+does not turn on comparability.
+
+\paragraph{Per-model \texttt{saer\_cold} vs.\ \texttt{bm25}.}
+\secref{sec:ablation} summarises the five models' SAER-over-BM25 margins
+(four higher, GPT-4o one task lower); Table~\ref{tab:bm25_permodel} tabulates all five so they can be
+checked directly.  \textbf{Only the Qwen2.5-Max row belongs to the
+pre-specified 13-test family} (it is the fifth ablation row); the other
+four are descriptive and were not added to the family, so the Bonferroni
+and Holm counts of \appref{sec:stats} are unchanged by this table.  The
+family-level statement about relevance is the one-sided sign test over
+the 4--1 split ($p{=}0.188$), not any single row here.
+
+\begin{table}[tbp]
+\centering
+\caption{Per-model \texttt{saer\_cold} vs.\ \texttt{bm25} (majority vote,
+$n{=}60$).  $b$/$c$ = SAER-only / BM25-only passes.  Descriptive:
+only the Qwen2.5-Max row is a member of the pre-specified 13-test family;
+the other four rows carry uncorrected nominal $p$-values and no
+family-wise verdict.  Reproduce with
+\texttt{node scripts/\allowbreak eval/\allowbreak mcnemar\_table.mjs -{}-rescore}
+(rows labelled \texttt{bm25 delta:}).}
+\label{tab:bm25_permodel}
+\small
+\begin{tabular}{@{}lccccl@{}}
+\toprule
+Model & \texttt{bm25} & \texttt{saer\_cold} & $b$ & $c$ & $p$-value \\
+\midrule
+Qwen3-8B                   & 21/60 & 26/60 & 6 & 1 & 0.125~n.s. \\
+GPT-4o                     & 42/60 & 41/60 & 6 & 7 & 1.0~n.s. \\
+Claude S.~4.5              & 44/60 & 51/60 & 8 & 1 & 0.0391~$\star$ \\
+Qwen2.5-Max$^{\ddagger}$   & 42/60 & 49/60 & 7 & 0 & 0.0156~$\star$ \\
+DeepSeek-V3                & 46/60 & 52/60 & 7 & 1 & 0.0703~n.s. \\
+\bottomrule
+\end{tabular}
+
+\vspace{2pt}
+{\footnotesize $^{\ddagger}$ in the pre-specified family
+(Table~\ref{tab:mcnemar_appendix}, ablation panel).}
+\end{table}
+
+\paragraph{Holm step-down: a post hoc sensitivity analysis, not a
+replacement.}  The Bonferroni correction above is the pre-specified
+primary analysis, and every headline verdict in the main text is a
+Bonferroni verdict.  Bonferroni is, however, conservative: it holds all
+13 tests to the same threshold no matter how small the smallest
+$p$-values are.  We therefore also report Holm's sequentially rejective
+procedure~\citep{holm1979simple} over the identical 13 hypotheses.  Holm
+controls the same family-wise error rate in the strong sense and is
+uniformly more powerful, so relative to Bonferroni it can only add
+rejections, never withdraw one.  We state plainly that this analysis was
+added \emph{after} the results were known.  It is reported alongside the
+pre-specified correction rather than in place of it, and it changes no
+$p$-value, no effect size and no experimental number in this paper ---
+only which of the two thresholding rules a given $p$ is being measured
+against.  Choosing between them after the fact, and reporting only the
+more favourable one, would not be a defensible analysis; both are given
+wherever they disagree.
+
+Holm sorts the 13 $p$-values ascending and compares the $i$-th against
+$\alpha/(m{-}i{+}1)$ with $m{=}13$, stopping at the first
+non-rejection and retaining every hypothesis from there on
+(Table~\ref{tab:holm}).  Nine tests clear even the strictest, rank-1
+threshold $\alpha/13{=}0.0038$ and are rejected under both procedures.
+Holm additionally rejects two: the Qwen3-8B per-model test
+($p{=}0.0075$ against $\alpha/4{=}0.0125$) and \texttt{saer\_cold} vs.\
+BM25 ($p{=}0.0156$ against $\alpha/3{=}0.0167$).  The step-down then
+halts at rank 12 ($p{=}0.424$ against $\alpha/2{=}0.025$), so both null
+results remain null under either rule.  Holm thus rejects 11 of 13
+where Bonferroni rejects 9 of 13, and the two affected claims are
+flagged as such in \secref{sec:protocol}, \secref{sec:mainresults} and
+\secref{sec:ablation}.
+
+\emph{Robustness.}  The Holm verdict does not depend on the precise
+values of the nine smallest $p$-values, only on the fact that they are
+small.  Every one of them falls below the rank-1 threshold $0.0038$ ---
+the largest is $6.6{\times}10^{-5}$ (DeepSeek-V3 per-model, $b{=}21$,
+$c{=}2$), a margin of roughly $58\times$ --- so any permutation of their
+internal ordering still satisfies all nine of the ranks-1--9
+comparisons and leaves ranks 10--13 untouched.  The two Holm-only
+rejections are the only verdicts in the family that turn on a $p$-value
+close to its threshold ($0.0075$ vs.\ $0.0125$, and $0.0156$ vs.\
+$0.0167$; the latter by a factor of $1.07$), and both are reported as
+Holm-only wherever they appear.
+
+\emph{Sensitivity to the family size.}  What the two Holm-only rejections
+\emph{do} depend on is $m$, and we report that dependence rather than
+leave it to be discovered.  Holding the observed $p$-values fixed and
+enlarging the family: \texttt{saer\_cold} vs.\ BM25 ($p{=}0.0156$, rank
+11) is rejected at $m{=}13$ ($\alpha/3{=}0.0167$) and fails at
+$m{=}14$ ($\alpha/4{=}0.0125$); the Qwen3-8B per-model test
+($p{=}0.0075$, rank 10) survives to $m{=}15$ and fails at $m{=}16$.  The
+first of these has no margin at all: the relevance verdict holds only at
+the family size we pre-specified.  Two enlargements are worth naming.
+Adding the four sibling per-model \texttt{saer\_cold}-vs-BM25 tests of
+Table~\ref{tab:bm25_permodel} --- same hypothesis, four more models ---
+gives $m{=}17$, at which Holm and Bonferroni both reject 9 and
+\emph{both} Holm-only rejections disappear.  Adding every test reported
+anywhere in this paper ($m{\approx}41$) still rejects the nine core
+comparisons under both rules.  The existence result and the four
+per-model SAER effects are therefore robust to the family boundary; the
+relevance result is not, and \secref{sec:ablation} states it as such.
+
+\begin{table}[tbp]
+\centering
+\caption{Holm step-down over the same 13-test family, $\alpha{=}0.05$,
+$m{=}13$.  Tests are sorted by $p$; rejection requires
+$p{\leq}\alpha/(m{-}i{+}1)$ and stops at the first failure.  The nine
+$p{<}0.001$ entries are shown at their exact binomial values so the
+comparisons can be checked directly.  B/H = rejected under
+Bonferroni~/~Holm.}
+\label{tab:holm}
+\small
+\begin{tabular}{@{}rlccc@{}}
+\toprule
+$i$ & Test & $p$ & $\alpha/(m{-}i{+}1)$ & B~/~H \\
+\midrule
+1  & per-model Qwen2.5-Max      & $1.9{\times}10^{-9}$ & 0.00385 & \checkmark~/~\checkmark \\
+2  & ablation saer\_cold vs.\ no\_ret & $1.9{\times}10^{-9}$ & 0.00417 & \checkmark~/~\checkmark \\
+3  & per-model Claude S.~4.5    & $3.0{\times}10^{-8}$ & 0.00455 & \checkmark~/~\checkmark \\
+4  & cross DeepSeek vs.\ Qwen3-8B & $3.0{\times}10^{-8}$ & 0.00500 & \checkmark~/~\checkmark \\
+5  & cross Qwen2.5-Max vs.\ Qwen3-8B & $2.4{\times}10^{-7}$ & 0.00556 & \checkmark~/~\checkmark \\
+6  & ablation bm25 vs.\ no\_ret & $1.5{\times}10^{-6}$ & 0.00625 & \checkmark~/~\checkmark \\
+7  & ablation random vs.\ no\_ret & $3.8{\times}10^{-6}$ & 0.00714 & \checkmark~/~\checkmark \\
+8  & per-model GPT-4o           & $4.0{\times}10^{-5}$ & 0.00833 & \checkmark~/~\checkmark \\
+9  & per-model DeepSeek-V3      & $6.6{\times}10^{-5}$ & 0.01000 & \checkmark~/~\checkmark \\
+\addlinespace
+10 & per-model Qwen3-8B         & 0.0075 & 0.01250 & ---~/~\checkmark \\
+11 & ablation saer\_cold vs.\ bm25 & 0.0156 & 0.01667 & ---~/~\checkmark \\
+\addlinespace
+12 & ablation bm25 vs.\ random  & 0.424 & 0.02500 & ---~/~--- \\
+13 & cross DeepSeek vs.\ Qwen2.5-Max & 0.453 & 0.05000 & ---~/~--- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection*{Where the Retrieval Signal Applies}
+\label{app:strata}
+
+The ingredient dimension $\alpha{\cdot}I$ is the only component that reads the
+recipe graph, and it is identically zero on the 16 gathering and combat tasks
+(\secref{sec:scoring}; also on two CRAFT tasks, below).  That gives a mechanism test the paper would otherwise
+lack: if SAER's edge over BM25 comes from ingredient structure, it should be
+absent exactly where that dimension is inert.  Table~\ref{tab:strata} splits
+the paired counts accordingly.  The subsets are restrictions of the same
+majority vote, not a re-analysis, and the script asserts that the two strata
+sum to the printed $b$ and $c$.
+
+\begin{table}[htbp]
+\caption{Paired counts by task category.  CRAFT ($n{=}44$) is the category
+where $\alpha{\cdot}I$ is defined --- 42 of the 44 actually score non-zero
+against some candidate --- and the complement ($n{=}16$) is where it is
+identically zero by construction.  Reproduce with
+\texttt{node scripts/eval/mcnemar\_table.mjs --rescore --strata}.}
+\label{tab:strata}
+\small\setlength{\tabcolsep}{5pt}
+\centering
+\begin{tabular}{lrrrrrr}
+\toprule
+& \multicolumn{2}{c}{All 60} & \multicolumn{2}{c}{CRAFT (44)} & \multicolumn{2}{c}{Non-CRAFT (16)} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}
+Model & $b$/$c$ & $p$ & $b$/$c$ & $p$ & $b$/$c$ & $p$ \\
+\midrule
+\multicolumn{7}{l}{\emph{existence:} \texttt{saer\_cold} vs.\ \texttt{no\_retrieval}} \\
+~~Qwen3-8B      & 15/3 & 0.0075 & 11/1 & 0.0064 & 4/2 & 0.69 \\
+~~GPT-4o        & 19/1 & ${<}0.001$ & 15/0 & ${<}0.001$ & 4/1 & 0.38 \\
+~~Claude S.\ 4.5 & 26/0 & ${<}0.001$ & 21/0 & ${<}0.001$ & 5/0 & 0.063 \\
+~~Qwen2.5-Max   & 30/0 & ${<}0.001$ & 24/0 & ${<}0.001$ & 6/0 & 0.031 \\
+~~DeepSeek-V3   & 21/2 & ${<}0.001$ & 16/2 & 0.0013 & 5/0 & 0.063 \\
+\addlinespace
+\multicolumn{7}{l}{\emph{relevance:} \texttt{saer\_cold} vs.\ \texttt{bm25}} \\
+~~Qwen3-8B      & 6/1 & 0.125 & 5/0 & 0.063 & 1/1 & 1.00 \\
+~~GPT-4o        & 6/7 & 1.00 & 4/3 & 1.00 & 2/4 & 0.69 \\
+~~Claude S.\ 4.5 & 8/1 & 0.039 & 8/1 & 0.039 & 0/0 & --- \\
+~~Qwen2.5-Max   & 7/0 & 0.016 & 7/0 & 0.016 & 0/0 & --- \\
+~~DeepSeek-V3   & 7/1 & 0.070 & 6/1 & 0.125 & 1/0 & 1.00 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The split runs in the direction the mechanism predicts.  \emph{Existence}
+gains appear in both subsets --- off CRAFT every model is positive
+($b{-}c = 2, 3, 5, 6, 5$), so having any same-category demonstration helps even
+when no ingredient set exists to compare.  The \emph{relevance} increment does
+not: off CRAFT the five models read $(b,c) = (1,1), (2,4), (0,0), (0,0), (1,0)$
+--- three ties, one negative, one single task --- against
+$(5,0), (4,3), (8,1), (7,0), (6,1)$ on CRAFT.  All seven discordant tasks
+behind the family's one relevance test (Qwen2.5-Max, $b{=}7$, $c{=}0$) are
+CRAFT tasks, but only six lie among the 42 with a non-zero $I$: the seventh,
+\texttt{craft/flint\_and\_steel}, is ranked on $K$ and $L$ alone.  We do not
+pool these counts into a single test: the five models
+are evaluated on the same 60 tasks, so their pairs are not independent.
+
+Two consequences.  First, the increment SAER adds over a lexical retriever is
+concentrated in the tasks whose ingredient structure it can read, which is what
+its dominant weight is for; the paper's relevance claim should be read as scoped
+to CRAFT tasks, with six of its seven discordant tasks among those 42.  Second,
+18 of the 60 tasks (16 non-CRAFT plus \texttt{craft/flint\_and\_steel}, whose
+three-word name the target-item parser cannot match because it drops ``and''
+as a stop-word, and \texttt{craft/iron\_horse\_armor}, which has no 1.20.4
+recipe) score SAER on $K$ and $L$ alone, so on 30\% of the benchmark SAER
+\emph{is} a keyword retriever with a three-valued difficulty prior --- and on
+that 30\% its record against BM25 is small and mixed: net $b{-}c$ of $0$,
+$-2$, $0$, $+1$ and $+1$ in the model order of Table~\ref{tab:strata}, the
+Qwen2.5-Max $+1$ being \texttt{craft/flint\_and\_steel}.
+
+\subsection*{Dropping the Contaminated Combat Subset}
+\label{app:nocombat}
+
+Five of the nine combat demonstrations target the same five mobs as the five
+held-out combat tasks and differ only by slug prefix, which the slug-level
+held-out check does not catch (\secref{sec:combat_design}).  The probe of
+\appref{sec:combat_probe} excludes those demonstrations; the runs behind
+Table~\ref{tab:main} do not, so every retrieval arm's $/60$ includes up to five
+tasks served by a near-duplicate.  Table~\ref{tab:nocombat} recomputes the
+paired tests with those five tasks removed from the denominator.
+
+\begin{table}[htbp]
+\caption{Paired tests over the 55 non-combat tasks, against the reported
+60-task values.  Same majority vote, restricted denominator.  Reproduce with
+\texttt{node scripts/eval/mcnemar\_table.mjs --rescore --strata}.}
+\label{tab:nocombat}
+\small\setlength{\tabcolsep}{5pt}
+\centering
+\begin{tabular}{lrrrr}
+\toprule
+Comparison & 55-task & $b$/$c$ & $p$ & (60-task $p$) \\
+\midrule
+\multicolumn{5}{l}{\emph{existence:} \texttt{saer\_cold} vs.\ \texttt{no\_retrieval}} \\
+~~Qwen3-8B      & 13$\to$23 & 12/2 & 0.013 & (0.0075) \\
+~~GPT-4o        & 23$\to$40 & 18/1 & ${<}0.001$ & (${<}0.001$) \\
+~~Claude S.\ 4.5 & 25$\to$46 & 21/0 & ${<}0.001$ & (${<}0.001$) \\
+~~Qwen2.5-Max   & 18$\to$44 & 26/0 & ${<}0.001$ & (${<}0.001$) \\
+~~DeepSeek-V3   & 33$\to$48 & 17/2 & ${<}0.001$ & (${<}0.001$) \\
+\addlinespace
+\multicolumn{5}{l}{\emph{ablation on Qwen2.5-Max}} \\
+~~\texttt{random} vs.\ \texttt{no\_ret} & 18$\to$33 & 15/0 & ${<}0.001$ & (${<}0.001$) \\
+~~\texttt{bm25} vs.\ \texttt{no\_ret}   & 18$\to$37 & 20/1 & ${<}0.001$ & (${<}0.001$) \\
+~~\texttt{saer\_cold} vs.\ \texttt{bm25} & 37$\to$44 & 7/0 & 0.016 & (0.016) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+No verdict in the 13-test family changes.  The relevance test is numerically
+identical ($b{=}7$, $c{=}0$, $p{=}0.0156$) because none of its discordant tasks
+is a combat task; four of the five per-model existence tests stay below
+$10^{-3}$, and Qwen3-8B moves from 0.0075 to 0.0129, nominal in both cases and
+clearing $\alpha'$ in neither.  Absolute effect sizes shrink by 2.7--4.4\,pp
+(Qwen2.5-Max existence $+$50.0 to $+$47.3\,pp; \texttt{random} $+$31.7 to
+$+$27.3\,pp; \texttt{bm25} $+$38.3 to $+$34.5\,pp), so the headline percentages
+are the more generous of the two readings and should be quoted with that in
+mind.  We keep the 60-task denominator as primary because the benchmark was
+frozen before any run and post hoc removal of tasks is exactly what
+\secref{sec:tasks} commits against; this table is the bound on what that
+choice costs.
+
+Removing the contamination at its source --- re-running generation with
+\texttt{-{}-exclude-slugs} on the five near-duplicate demonstrations, as the
+probe does --- would need new model calls and is not done here.  The table
+above bounds the exposure from the task side instead, which is the part
+recoverable from the stored plans.
+
+\section{Four-Condition Ablation: Full Panel}
+\label{app:perseed}
+\label{app:ablation}
+
+Table~\ref{tab:ablation_5cond} gives the four-condition within-model
+ablation discussed in \secref{sec:ablation}: knowledge \emph{existence} (random retrieval
+$+$31\,pp over no-retrieval, $p{<}0.001$) is the primary lever, and SAER
+exceeds BM25 on this model (saer\_cold 82\% vs.\ BM25 70\%; $b{=}7$,
+$c{=}0$, $p{=}0.0156$)---nominally significant, but \emph{not} family-wise
+significant under the pre-specified Bonferroni correction, since
+$0.0156{>}\alpha'{=}0.0038$, and family-wise significant only under the post
+hoc Holm step-down
+($0.0156{\leq}\alpha/3{=}0.0167$, \appref{app:mcnemar}).  Per tier, BM25 trails random
+at L2 (11/20 vs.\ 14/20) but leads it at L3 (14/20 vs.\ 7/20); since BM25 and
+random do not differ overall ($b{=}9$, $c{=}5$, $p{=}0.424$), we read neither
+tier split as more than noise.
+
+\begin{table}[tbp]
+\centering
+\caption{Qwen2.5-Max four-condition ablation (60 tasks, 3 seeds, majority
+vote).  SPR and PVR are percentages of 60; \emph{Gap}, L1, L2 and L3 are task
+counts (Gap $=$ PVR$-$SPR in tasks, tiers out of 20), so the Gap column is not
+the difference of the two percentages beside it.}
+\label{tab:ablation_5cond}
+\small
+\begin{tabular}{lrrrrrrc}
+\toprule
+Condition & SPR & PVR & Gap & L1 & L2 & L3 & $\Delta$ \\
+\midrule
+no\_ret    & 32\% & 47\% & +9  & 17 & 2  & 0  & ---        \\
+random     & 63\% & 90\% & +16 & 17 & 14 & 7  & +31pp \sigC \\
+bm25       & 70\% & 88\% & +11 & 17 & 11 & 14 & +38pp \sigC \\
+saer\_cold & 82\% & 93\% & +7  & 20 & 14 & 15 & +50pp \sigC \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Thinking-Mode Ablation (Exploratory)}
+\label{app:thinking}
+
+Table~\ref{tab:thinking} reports the comparison.
+
+\begin{table}[tbp]
+\centering
+\caption{Qwen3-8B thinking-mode ablation (60 tasks, 3-seed majority vote).
+\emph{Both} rows predate the evaluation fix and carry run-time verdicts, so
+they are reported for their qualitative pattern, not for point comparison
+against Table~\ref{tab:main}; re-scored figures are in the text.}
+\label{tab:thinking}
+\small
+\begin{tabular}{lrrrrl}
+\toprule
+Condition & SPR & L1 & L2 & L3 & \\
+\midrule
+no\_ret    & 14/60~(23\%) & 14/20 & 0/20 & 0/20 & --- \\
+saer\_cold & 20/60~(33\%) & 14/20 & 3/20 & 3/20 & $+$10\,pp ($b{=}8$, $c{=}2$, $p{=}0.109$, n.s.) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+To separate reasoning depth from template generalisation, we evaluate
+Qwen3-8B with extended thinking (\texttt{enable\_thinking=true};
+same 60-task benchmark and 3-seed majority-vote protocol).  Its decoding may differ
+from the main study's Qwen3-8B runs: the release's thinking profile sets
+temperature 1 rather than 0.7, but that profile was committed after these runs,
+so the setting they used is not recorded.
+Thinking substantially raises L1 and leaves the SAER gain non-significant
+($+$10\,pp, $b{=}8$, $c{=}2$, $p{=}0.109$, n.s.).  It does not lift L2: re-scored, the
+no-retrieval row reads 2/20 there against the non-thinking run's 3/20.  L3
+does move, 2/20 to 5/20, so ``thinking does not unlock the multi-hop tiers''
+holds for L2 and is an overstatement for L3 on this single model.  The L1
+comparison must be read within one scoring regime: at run time the
+non-thinking no-retrieval baseline is 8/20 and thinking is 14/20, while after
+re-scoring the same two runs read 9/20 (the value in
+Table~\ref{tab:main}) and 15/20.  The lift is $+$6 tasks either way, but
+quoting the run-time 8/20 beside Table~\ref{tab:main}'s re-scored 9/20 would
+be mixing the two.
+Thinking amplifies single-step reasoning but cannot substitute for the
+multi-hop procedural knowledge the model has not internalised---supporting
+our characterisation of the residual constraint as template-generalisation,
+not reasoning-depth (consistent with, and complementary to, the
+latent-depth ceiling of \citet{xu2026depthceiling}).
+
+\noindent\textbf{Caveat.}  \emph{Both} rows predate the fix of
+\secref{sec:protocol}.  For the \texttt{saer\_cold} row that reaches beyond
+scoring: it was \emph{generated} with the recipe-resolver hook missing, so it
+retrieved with three of SAER's scoring dimensions disabled, and re-scoring
+repairs its verdicts, not its retrieval.  Both rows are the verdicts recorded at run time, and we report them
+only for the qualitative pattern, not for point comparison.  The
+per-seed files are in the code and data release
+(\texttt{eval\_20260606\_024017\_no\_retrieval},
+\texttt{eval\_20260606\_044848\_saer\_cold}), and re-scoring them with
+the current validator moves both conditions to 22/60, i.e.\ the
+\texttt{saer\_cold} increment becomes $0$\,pp rather than $+10$\,pp ---
+still not significant, so the conclusion that thinking does not unlock
+the multi-hop tier is unchanged.  The
+levelwise pattern is less stable than the totals: under re-scoring the
+no-retrieval row reads L1 15/20, L2 2/20, L3 5/20 rather than
+14/0/0, so ``L2/L3 stay at zero'' is an artefact of the run-time
+scorer and should be read as ``L2/L3 stay low'' instead.  This section
+is exploratory and no confirmatory claim rests on it.
+
+\section{Capacity De-aliasing with Additional Sub-frontier Models (Exploratory)}
+\label{app:capacity}
+\label{app:capacity_dealias}
+
+\noindent\textbf{Exploratory; provider-default decoding.}  The three
+models in this section are served through OpenRouter on a client path
+that does not forward the \texttt{temperature} parameter, so they run
+at provider defaults rather than the $T{=}0.7$ set for three of the five
+primary models (footnote below; per-model settings in \appref{app:models}).  They are reported as a family-diversity check on the
+capacity pattern, are not directly controlled against the main study,
+and are excluded from the confirmatory Bonferroni family of \appref{sec:stats}.
+
+\secref{sec:mainresults} makes no causal capacity claim, but it does rest
+its smallest-model observation on a single data point, Qwen3-8B, which is
+confounded with the Qwen3 generation: a small gain there could reflect
+Qwen3-family template fragility rather than model scale.  To separate the
+two, we
+run three additional \emph{cross-family, non-Qwen} open-source models
+of comparable scale under the identical 60-task, 3-seed protocol with
+the \texttt{setRecipeResolver}-fixed static evaluator (\secref{sec:protocol}):
+\textbf{Llama-3.1-8B-Instruct}, \textbf{Ministral-8B-2512}, and
+\textbf{Gemma-3-12B-it} (all served via OpenRouter).\footnote{The
+two models named as future work in an earlier draft (Mistral-7B,
+Gemma-2-9B) have been retired from our serving platform; we substitute
+their in-family successors (Ministral-8B, Gemma-3-12B) at the same
+parameter tier. The OpenRouter client path does not forward the
+\texttt{temperature} parameter to the API (a known harness limitation
+shared by all OpenRouter profiles); the models therefore run at their
+provider default temperature.}  These span $\sim$8--12B parameters and
+three independent families (Meta, Mistral, Google), so any shared
+pattern cannot be attributed to the Qwen3 generation; Gemma-3-12B also
+forms a same-family rung below the Gemma4-26B/31B models in Table~\ref{tab:main}.
+
+\textbf{Method: we compare SAER ceilings, not gains.}  The
+no-retrieval floors of small models differ by up to 7$\times$
+(Llama-3.1-8B 2/60 vs.\ Qwen3-8B 14/60), which inflates the
+no\_ret$\to$saer\_cold gain in a way uninformative about capacity.
+We therefore compare the \texttt{saer\_cold} SPR \emph{ceiling}: if the
+three new models cluster with Qwen3-8B (26/60) \emph{below} the four frontier primary models (41--52/60), the residual is not specific to the Qwen3
+generation.  We phrase the criterion this way deliberately.  An earlier
+version read 41/60 as a \emph{capacity} floor; that reading does not
+survive our own Table~\ref{tab:main}, where Gemma4-26B-A4B --- 4B active
+parameters, fewer than any model in this panel --- reaches a cold-start
+ceiling of 48/60, and Gemma4-31B reaches 53/60.  Within the Gemma family
+the ordering inverts outright: Gemma-3-12B (12B dense) ceilings at
+33/60 against 48/60 for a model with three times fewer active
+parameters.  What this panel can de-alias is family, not capacity.  We additionally report \texttt{parse\_success}
+(the fraction of tasks whose plan parsed into executable commands) to
+confirm the ceiling reflects domain knowledge rather than
+output-format compliance.  The five primary-study models are
+format-compliant under no retrieval (parse-success $\approx$100\%, verified on
+the canonical per-seed files), so for them the no-retrieval baseline is not a
+format-compliance artefact.  Table~\ref{tab:capacity_dealias} gives the three models'
+results.
+
+\begin{table}[tbp]
+\centering
+\caption{$\Delta$ differences the percentages as printed (one decimal for the
+three added models; Table~\ref{tab:main} rounds to integers).  Capacity de-aliasing: three cross-family sub-frontier models
+vs.\ the Qwen3-8B anchor.  SPR is strict majority vote over 3 seeds.
+We compare the \texttt{saer\_cold} ceiling (bold), not the gain $\Delta$:
+no-retrieval floors differ up to 7$\times$ across small models, which
+inflates $\Delta$ and makes it uninformative about capacity.
+\texttt{ps} = parse-success rate (confirms the ceiling is a knowledge
+signal, not a format artefact; saer\_cold ps should be $\approx$100\%).
+McNemar reports $b/c$ (saer\_cold-only / no-retrieval-only passes) and
+the two-tailed $p$; ${}^{**}p{<}0.01$, ${}^{***}p{<}0.001$.  The three
+new models' cells are run-time verdicts, not the uniform re-validation
+of \secref{sec:protocol}; see the scoring caveat below.}
+\label{tab:capacity_dealias}
+\footnotesize\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lcccccc}
+\toprule
+Model & no\_ret (floor) & \textbf{saer\_cold (ceiling)} & ps no/saer & $\Delta$ & McNemar $b/c$ & $p$ \\
+\midrule
+Qwen3-8B (anchor) & 14/60 (23\%) & \textbf{26/60 (43\%)} & 100/100 & $+$20.0 & 15/3 & 0.0075$^{**}$ \\
+Llama-3.1-8B      & 2/60 (3.3\%)   & \textbf{7/60 (11.7\%)}  & 100/100 & $+$8.4  & 5/0  & 0.063 \\
+Ministral-8B      & 13/60 (21.7\%) & \textbf{23/60 (38.3\%)} & 100/100 & $+$16.6 & 11/1 & 0.006$^{**}$ \\
+Gemma-3-12B       & 16/60 (26.7\%) & \textbf{33/60 (55.0\%)} & 100/100 & $+$28.3 & 18/1 & ${<}0.001^{***}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Verdict.}  Llama-3.1-8B, Ministral-8B, and Gemma-3-12B reach
+\texttt{saer\_cold} SPR of 7/60 (11.7\%), 23/60 (38.3\%), and 33/60
+(55.0\%) respectively---all below the four frontier primary models
+(41--52/60).  Against the fifth, Qwen3-8B (26/60), the comparison is not
+uniform: on the re-scored ceilings below (7, 26 and 34 of 60), Llama-3.1-8B
+sits below it, Ministral-8B level with it and Gemma-3-12B above it.
+That is the de-aliasing claim in full --- two non-Qwen families land at or
+under the Qwen3-8B level, so the residual is not an artefact of the Qwen3
+generation --- and it is all this panel establishes.  It does not establish a
+capacity threshold, and we do not claim one.  The 41/60 figure is the minimum
+over the four frontier models, not over all five and not a floor that
+parameter count predicts: the Gemma4 replication panel puts a 4B-active model at 48/60
+and a 31B model at 53/60 (Table~\ref{tab:main}), both above it, and
+inverts the within-family ordering against Gemma-3-12B's 33/60.  Within
+this panel the 12B model does out-rank the two 8B models
+(33/60 vs.\ 7--23/60), which is consistent with a capacity gradient but,
+against the Gemma4 rows, plainly not sufficient to establish
+one.\footnote{Llama-3.1-8B's near-zero no-retrieval floor is 2/60 with
+parse-success at 100\% under both conditions, which rules out one competing
+explanation --- that the floor is a formatting failure --- and only that one.
+We did not run the failure-mode breakdown of \appref{app:failmodes} on the
+three sub-frontier models, so whether the residue is missing knowledge or
+something else (a plan that parses and still never produces the goal) is
+untested here; we compare ceilings rather than no-retrieval gains because a
+floor this low makes the gain uninformative, not because its cause is
+settled.}
+
+\textbf{Scoring caveat.}  The three added rows are scored from the
+verdicts the harness recorded at run time, not from the uniform
+re-validation of \secref{sec:protocol} that produces every other table in this paper;
+the Qwen3-8B anchor row is quoted from the re-scorer.  We flag the
+mismatch rather than leave it to be discovered.  Re-scoring the same
+per-seed files with the current validator (the path taken by
+\texttt{scripts/\allowbreak eval/\allowbreak mcnemar\_table.mjs -{}-rescore}) moves the
+no-retrieval floors to 3/60, 15/60 and 20/60 and the
+\texttt{saer\_cold} ceilings to 7/60 (11.7\%), 26/60 (43.3\%) and
+34/60 (56.7\%) for Llama-3.1-8B, Ministral-8B and Gemma-3-12B, with
+McNemar $b/c$ of 5/1, 14/3 and 17/3 ($p{=}0.219$, $0.0127$, $0.0026$).
+What this section claims is unchanged: all three re-scored ceilings
+still fall below the four frontier models' 41/60, and Gemma-3-12B's 34/60
+still sits above Qwen3-8B's 26/60, so the de-aliasing reading and its one
+exception both hold under either scoring.  What moves
+is the absolute rates and the nominal significance stars (Ministral
+drops from $p{<}0.01$ to $p{<}0.05$, Gemma-3-12B from $p{<}0.001$ to
+$p{<}0.01$), which carry no weight here in any case: this panel is
+excluded from the
+confirmatory family of \appref{sec:stats} and its $p$-values are descriptive.
+
+\section{Live Execution and Combat: Detailed Results}
+\label{app:livecombat}
+\label{app:live}
+
+Table~\ref{tab:live} reports the per-level live-execution pass rates
+discussed in \appref{sec:live}.  Live completion is governed by an
+execution-reliability axis (Mineflayer sync/window races; long embodied
+mine--smelt--craft chains) that floors both conditions equally at the L2
+tier, leaving no headroom for the plan-quality difference SAER supplies;
+the figures are consistent with the bottleneck being severe but cannot
+measure it, since both arms floor together; as \secref{sec:intro},
+\appref{sec:live} and \secref{sec:limits} also state, this axis corroborates
+nothing either way.  Unlike the static evaluations, this live study runs the
+runtime \texttt{PlanValidator} with one gap-repair regeneration before
+execution, applied identically to both conditions; since the L2 floor
+is symmetric (2/21 under both \texttt{no\_retrieval} and
+\texttt{saer\_cold}), we do not read this as directional, though
+per-trial repair rates were not logged.
+
+\paragraph{Failure-mode audit (\appref{sec:live}).}
+Of the 42 \texttt{no\_retrieval} trial failures, 33 (79\%) carry an
+explicit Mineflayer synchronisation error, 4 time out, 3 abort with no
+item gained, and 2 are prerequisite-chain gaps.  The 46
+\texttt{saer\_cold} failures are distributed differently: 25 are
+prerequisite-chain gaps, and 21 of those report the same missing
+\texttt{wooden\_pickaxe}.  We traced that cluster to a runtime defect
+rather than a planning one.  A plan step whose command list bundles
+several \texttt{craftRecipe} calls was judged successful whenever any
+one of its outputs appeared in the inventory, so a final craft dropped by
+a window-sync race was recorded as complete and never retried; the
+missing tool then surfaced at the next mining step.  The defect is
+triggered by the multi-command step format that SAER's demonstrations
+induce and not by \texttt{no\_retrieval}'s one-command steps, which
+give every craft its own verification point.  Splitting bundled steps to
+one craft each removes the symptom in a three-task pilot
+(\texttt{craft/iron\_door}, \texttt{craft/cauldron},
+\texttt{craft/iron\_leggings} $\times$ 2 conditions $\times$ 3 seeds);
+the fix is confined to the live runtime and does not touch the static
+evaluation of Table~\ref{tab:main}.  A full re-run under the fix was not completed, so
+Table~\ref{tab:live} reports the pre-fix results and we do not claim a
+corrected live ranking---only that a substantial share of the
+\texttt{saer\_cold} live deficit is an execution-layer artefact.  Plan-length
+differences are not one-directional: \texttt{saer\_cold} plans are
+longer at L1 (5.4 steps against 4.3 for \texttt{no\_retrieval}) but shorter
+at L2 and L3 (9.7 and 12.2 steps against 12.6 and 16.5).
+
+Table~\ref{tab:combat} gives the per-condition combat-domain results
+(design \secref{sec:combat_design}; discussion \appref{sec:combat_probe}).  Two independent runs agree: retrieval
+of any kind lifts majority-vote SPR from 0--1/5 to 3/5, and the
+three retrieval conditions land on the \emph{identical} three tasks
+(\texttt{kill\_creeper}, \texttt{kill\_enderman}, \texttt{kill\_slime});
+\texttt{kill\_blaze} and \texttt{kill\_wither\_skeleton} fail under every
+condition and every seed on the run-time verdicts quoted here; re-scoring moves
+\texttt{kill\_blaze} (below).  That agreement is largely fixed by
+construction: with the five near-duplicates excluded the pool holds four
+demonstrations, so at $k{=}3$ any two retrieval conditions share at least two of their
+three.  The probe therefore supports the
+existence effect on the combat subgroup and supplies no evidence on retrieval
+quality.  No paired test is reported because none can be informative
+here: with 5 tasks, a perfect 5--0 discordant split gives $p{=}0.0625$
+under the two-sided exact binomial used in the main text, above
+$\alpha{=}0.05$ before the Bonferroni correction of \appref{sec:stats}, and the
+observed splits are 3--0 at best.
+
+Two contamination controls apply.  Five of the nine combat
+demonstrations target the same five mobs as the held-out tasks and
+differ only by slug prefix (\texttt{combat/creeper} vs.\
+\texttt{combat/kill\_creeper}), so the slug-level non-overlap check of
+\secref{sec:tasks} does not flag them, and the Jaccard overlap check of \appref{app:overlap} covers only the 44 CRAFT
+tasks.  Both runs below therefore
+pass \texttt{-{}-exclude-slugs} to remove those five templates from the
+retrievable pool; with them left in, every retrieval condition reaches
+5/5 and the comparison is uninformative.  Separately, the combat pool
+originally assumed a warm inventory without acquisition commands;
+\textbf{R3} uses that original pool and \textbf{R4} the corrected
+cold-start chains.  The three retrieval conditions agree across rounds
+(3/5 each); \texttt{no\_retrieval} reads 1/5 in R3 and 0/5 in R4, and we
+quote R4, the corrected pool.  The data-quality correction therefore does
+not change the conclusion.
+
+\paragraph{Run-time versus re-scored verdicts.}  Like the capacity and
+thinking-mode panels named in \secref{sec:protocol}, the combat probe
+quotes verdicts recorded at run time rather than the uniform
+re-validation, and we flag it here
+rather than leave it for a reader to discover.  Re-scoring the same
+per-seed files with the current validator
+(\texttt{scripts/\allowbreak eval/\allowbreak rescore\_combat.mjs}, shipped in the code and data
+release) moves one task: \texttt{combat/kill\_blaze} (L3) passes under
+\texttt{saer\_cold} in both rounds, so \texttt{saer\_cold} reads 4/5
+rather than 3/5, and the pooled means rise correspondingly
+(Table~\ref{tab:combat}, lower block).  \texttt{no\_retrieval} is
+unchanged in both rounds (1/5 in R3, 0/5 in R4).  The direction of the
+correction favours the method, so the main text's figures are the
+conservative ones; and the claim they support --- that at $n{=}5$ the
+probe establishes \emph{existence} on the combat subgroup but cannot \emph{rank}
+retrieval variants --- is unaffected, since a margin of one task out of
+five does not separate three conditions at this sample size.  We report
+both sets rather than silently substitute the more favourable one.
+
+\begin{table}[tbp]
+\centering
+\caption{Live execution (Minecraft 1.20.4, DeepSeek-V3, 21 held-out tasks
+$\times$ 2 conditions $\times$ 3 seeds $=$ 126 trials, 300\,s timeout,
+self-built tool chain). \emph{Strict} $=$ goal item obtained;
+\emph{Prereq} $=$ goal's direct ingredients assembled (terminal craft
+excluded). Trial-level pass rate.}
+\label{tab:live}
+\small
+\begin{tabular}{lcccc}
+\toprule
+ & \multicolumn{2}{c}{no\_retrieval} & \multicolumn{2}{c}{saer\_cold} \\
+Level & Strict & Prereq & Strict & Prereq \\
+\midrule
+L1    & 18/21 (86\%) & 18/21 (86\%) & 15/21 (71\%) & 18/21 (86\%) \\
+L2    & 2/21 (10\%)  & 2/21 (10\%)  & 2/21 (10\%)  & 2/21 (10\%) \\
+L3    & 1/21 (5\%)   & 1/21 (5\%)   & 0/21 (0\%)   & 0/21 (0\%) \\
+\midrule
+Total & 21/63 (33\%) & 21/63 (33\%) & 17/63 (27\%) & 20/63 (32\%) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[tbp]
+\centering
+\caption{Combat domain, four conditions $\times$ 5 held-out tasks
+$\times$ 3 seeds, with the five same-mob demonstrations excluded from
+the retrievable pool.  \textbf{R3} uses the original combat pool,
+\textbf{R4} the corrected cold-start acquisition chains.  ``mv'' is the
+per-task majority vote out of 5; ``mean'' is the pooled per-seed pass
+rate over 15 trials.  Upper block: the verdicts recorded at run time;
+the main text quotes the \textbf{R4} column of that block, so its
+``\texttt{no\_retrieval} 0/5'' is the R4 figure and the R3 value is
+1/5.  Lower block: the same files re-scored with the current validator
+(\texttt{scripts/\allowbreak eval/\allowbreak rescore\_combat.mjs}).}
+\label{tab:combat}
+\small
+\begin{tabular}{lcccc}
+\toprule
+& \multicolumn{2}{c}{R3 (original pool)} & \multicolumn{2}{c}{R4 (corrected)} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+Condition & mv & mean & mv & mean \\
+\midrule
+\multicolumn{5}{@{}l}{\emph{Recorded at run time (as quoted in the main text)}} \\
+no\_retrieval  & 1/5 & 20.0\% & 0/5 & 13.3\% \\
+random         & 3/5 & 53.3\% & 3/5 & 46.7\% \\
+BM25           & 3/5 & 53.3\% & 3/5 & 60.0\% \\
+saer\_cold     & 3/5 & 46.7\% & 3/5 & 53.3\% \\
+\midrule
+\multicolumn{5}{@{}l}{\emph{Re-scored with the current validator}} \\
+no\_retrieval  & 1/5 & 20.0\% & 0/5 & 13.3\% \\
+random         & 3/5 & 66.7\% & 3/5 & 60.0\% \\
+BM25           & 3/5 & 60.0\% & 3/5 & 60.0\% \\
+saer\_cold     & \textbf{4/5} & 73.3\% & \textbf{4/5} & 66.7\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{PlanValidator Pseudocode: Scorer and Runtime Validator}
+\label{app:pseudocode}
+\label{app:validator}
+
+\secref{sec:planval} of the main text notes that the precondition logic exists twice:
+once as the runtime component that gates execution, and once
+reimplemented --- single-pass and repair-free --- as the scoring
+criterion for the static experiments.  Because the two are not
+identical, and because only one of them produced the reported numbers,
+we give both rather than a single idealised sketch.
+
+\textbf{Algorithm~1 is the one that matters for every table in this paper.}
+It is the \texttt{validatePlanCorrectness} function of the static evaluation
+harness, which the re-scoring script imports directly in order to re-validate
+every stored seed plan (\appref{app:provenance}).  Algorithm~2 is the deployed
+\texttt{PlanValidator} of the agent itself: it runs in the live agent and is
+exercised by the live study of \appref{sec:live}, never by the static
+evaluations.  Both file paths are given in the code release.
+
+\begin{footnotesize}
+\begin{verbatim}
+Algorithm 1: static scoring criterion  (validatePlanCorrectness)
+Input:  steps[]  -- ordered step array parsed from the model's plan
+        inv0     -- starting inventory ([] for the cold-start benchmark)
+        goal     -- task goal item and required count
+Output: {strict_pass, pvr, issues}
+
+ 1. if steps[] is empty: return {strict_pass:false, pvr:false}
+ 2. A <- multiset(inv0)        // available items; NEVER decremented
+ 3. issues <- {} ; precsMet <- true ; goalHit <- false
+ 4. for each step s in steps[]:
+ 5.   C <- commands(s)          // action_cmd | command | freeformGoal
+ 6.   (a) declared goal achievement
+ 7.     if some p in produces(s) has p.item == goal
+ 8.        and not unrecipedCraftClaim(p, C):  goalHit <- true
+ 9.   (b) declared preconditions -- items only
+10.     for each p in preconditions(s):
+11.       if type(p) in {access, station}: continue   // assumed available
+12.       if not satisfiedBy(A, p):                   // tool tier inclusive
+13.         precsMet <- false ; issues += missing(p)
+14.   (c) implicit checks, over a within-step accumulator W <- A
+15.     for each cmd in C, in order:
+16.       if cmd = collectBlocks(b) and getRequiredTool(b) unsatisfied in W:
+17.         issues += tool-gap
+18.       if cmd = craftRecipe(x,n) and NO recipe variant of x is
+19.          satisfiable from W at ops = ceil(n / outputCount):
+20.         issues += ingredient-gap
+21.       if cmd = smeltItem(y,n), y correctly named, and W(y) < n:
+22.         issues += smelt-input-gap
+23.       if cmd = smeltItem(z) with z in {iron,gold,copper}_ore:
+24.         issues += naming-gap                       // strict only
+25.       W <- W + inferProduces(cmd)
+26.   (d) commit step outputs
+27.     O <- declared produces(s) UNION inferProduces(cmd) for cmd in C
+28.     O <- O minus every unrecipedCraftClaim item
+29.     A <- A + O                                     // no consumption
+30. if not goalHit and some x in A with x == goal and count >= goalCount:
+31.   goalHit <- true
+32. if not goalHit: issues += goal-not-produced
+33. return {strict_pass: (issues empty) and goalHit,
+34.         pvr:         precsMet and goalHit}
+\end{verbatim}
+\end{footnotesize}
+
+Four properties of Algorithm~1 are worth reading off it directly,
+because each shapes a reported number.
+
+\emph{The scorer does not model consumption, by design.}  $A$ is only
+ever extended (line 29); nothing is subtracted when a step uses a
+material.  The metric asks whether the plan gets the prerequisite
+\emph{structure} right --- does it acquire each input before it is
+needed, name it correctly, and reach the goal --- and deliberately
+leaves the material budget to the runtime, where it belongs.  That
+division of labour is implemented, not aspirational: when a craft
+fails on the bot, \texttt{skills.js} emits
+\texttt{Insufficient resources}, \texttt{\_classifyError} maps it to
+\texttt{MISSING\_ITEM}, and \texttt{\_routeRecovery} resolves the
+shortfall through \texttt{RecipeResolver.resolveDependencyChain},
+pushing an acquisition subtask that \texttt{TaskManager} executes
+before retrying the step.  Quantity is a closed loop at execution
+time, so a static scorer that also charged material budget would be
+measuring the planner for something the architecture assigns
+elsewhere.  Local quantity errors are still caught where they bite ---
+line 19 requires each craft's ingredients to be present at the point of
+use, scaled by $\lceil n/\text{outputCount}\rceil$.  What is not
+enforced is the aggregate budget across a plan; that is the hand-off to
+the runtime replenisher described above, and it is the sense in which a
+demonstration or a plan can be ``materially short''
+(\appref{app:demoquality}).
+
+\emph{Stations and access preconditions are assumed satisfied}
+(line 11).  A plan is never failed for lacking a crafting table or
+furnace.  This is deliberate --- the static setting cannot verify
+world state --- and it is the single largest respect in which the
+scorer is more permissive than the runtime validator, which does check
+stations by name.
+
+\emph{Strict and PVR diverge by construction.}  \texttt{precsMet} is
+set false only in block~(b), by \emph{declared} preconditions;
+\texttt{issues} additionally collects the implicit gaps of block~(c)
+and the naming gap of line~24.  PVR therefore measures exactly what
+\secref{sec:protocol} says it measures, and the SPR--PVR gap reported throughout the
+paper is mechanically the count of tasks whose plans declare a
+coherent precondition chain but fail an implicit tool, ingredient,
+quantity or naming check.
+
+\emph{The infeasible-task rule is explicit.}
+\texttt{unrecipedCraftClaim} (lines 8 and 28) refuses to credit a
+declared \texttt{produces} whose only supporting command is a
+\texttt{craftRecipe} call for an item with no recipe in
+\texttt{minecraft-data} 1.20.4.  This is what makes
+\texttt{craft/iron\_horse\_armor} fail in all 102 occurrences
+(\appref{app:denom}) rather than passing on a hand-declared
+output.  Apart from that rule, declared \texttt{produces} are trusted (lines 7
+and 27).  In the 16 primary-study runs they appear in no plan of a
+no-retrieval arm and in at most 12 of 180 plans of a retrieval arm, where the
+model copies a demonstration's \texttt{Produces:} line, so we re-scored those
+runs with every declared field removed: one majority-vote outcome changes in
+each GPT-4o retrieval arm (BM25 42$\to$41, \texttt{saer\_cold} 41$\to$40),
+none in any other primary-study arm, and no verdict of the pre-specified
+family moves.
+
+\begin{footnotesize}
+\begin{verbatim}
+Algorithm 2: runtime PlanValidator  (deployed agent; live study only)
+Input:  steps[], inv0
+Output: {valid, gaps}
+
+1. V <- multiset(inv0)                      // virtual inventory
+2. for each step s in steps[]:
+3.   P <- normalise(preconditions(s))
+4.        + inferImplicitPreconditions(cmd) for each cmd in commands(s)
+5.   if s contains a smeltItem command:
+6.     drop fuel terms from P               // smeltItem selects fuel itself
+7.   for each p in P:
+8.     if not satisfied(p, V): gaps += p    // access: always satisfied
+9.                                          // station: by name
+10.                                         // item: name + block-drop alias
+11.                                         //       + inclusive tool tier
+12.  V <- V - {p in P : p is an item, not a tool, not fuel}   // consumption
+13.  D <- declared produces(s) ; I <- inferProduces(cmd) for cmd in commands(s)
+14.  if I is non-empty:                     // executability constraint
+15.    for each p in D that is an item with p.name not among names(I):
+16.      gaps += unsupported-produce(p) ; drop p from D
+17.  V <- V + dedup(D + I)
+18. return {valid: gaps is empty, gaps}
+\end{verbatim}
+\end{footnotesize}
+
+Algorithm~2 differs from Algorithm~1 in four ways, all of them
+consequences of having a real world to act in: it \emph{does} track
+consumption (line 12, tools and fuel exempt), it checks station
+preconditions rather than assuming them, it exempts fuel on smelting
+steps because \texttt{smeltItem} sources its own fuel, and it enforces
+an executability constraint (lines 14--16) that rejects a declared
+\texttt{produces} no command in the step can generate.  On failure the
+enhancer issues one targeted gap-repair regeneration before execution;
+that repair path exists only here, and \secref{sec:planval} and Figure~\ref{fig:pipeline} state where it applies.  Tool-tier compatibility is inclusive in
+both algorithms: a higher tier satisfies any lower requirement.  In
+both, implicit requirements resolve against the
+\texttt{minecraft-data} 1.20.4 recipe database and the tool-tier
+lookup \texttt{RecipeResolver.getRequiredTool}.
+
+We report the divergence rather than present one algorithm as both.
+No reported number depends on Algorithm~2: the static tables are
+produced by Algorithm~1 alone, and the live study of \appref{sec:live} --- the
+only place Algorithm~2 runs --- is reported as a framework-bound
+limitation rather than as evidence for the method.
+
+% ===========================================================
+\subsection{Failure-Mode Breakdown}
+\label{app:failmodes}
+
+\secref{sec:knowledge_gap} characterises what the failures are;
+Table~\ref{tab:failmodes} counts them.  The scorer listed above emits six
+typed issues, so the breakdown is mechanical rather than
+hand-annotated: we re-score every stored seed plan with the same fixed
+validator that produces Table~\ref{tab:main}, take the majority vote over
+three seeds, and attribute a failing task to every issue class present in
+at least two of its failing seeds.  The script asserts that each
+re-scored SPR equals its published Table~\ref{tab:main} value before
+reporting, so a drifted run identifier fails loudly rather than
+silently scoring the wrong file.
+
+\begin{table}[htbp]
+\caption{Failure modes of the five primary-study models, by issue class.
+\emph{Fail} is the number of tasks failing the majority vote (60$-$SPR).
+Classes, in column order: unsatisfied declared \emph{precond}ition,
+missing craft \emph{ingred}ients, required \emph{tool} unavailable,
+\emph{smelt} input short, version-specific \emph{naming}, goal item
+\emph{no}t produced, and \emph{unattrib}uted --- the task failed in at least
+two seeds but no single class was present in two of them, so the majority
+rule assigns it none.  A
+task may exhibit several classes, so the six class columns over-count; the
+partition quoted in the text does not.
+Reproduce with \texttt{node scripts/eval/failure\_mode\_counts.mjs}.}
+\label{tab:failmodes}
+\footnotesize\setlength{\tabcolsep}{4pt}
+\centering
+\begin{tabular}{lrrrrrrrr}
+\toprule
+Model & Fail & precond. & ingred. & tool & smelt & naming & no goal & unattrib. \\
+\midrule
+\multicolumn{9}{l}{\emph{no\_retrieval}} \\
+~~Qwen3-8B & 46 & 8 & 39 & 24 & 0 & 0 & 6 & 0 \\
+~~GPT-4o & 37 & 26 & 3 & 29 & 0 & 0 & 11 & 1 \\
+~~Claude S.\ 4.5 & 35 & 27 & 30 & 2 & 0 & 0 & 7 & 0 \\
+~~Qwen2.5-Max & 41 & 30 & 14 & 33 & 1 & 0 & 6 & 0 \\
+~~DeepSeek-V3 & 27 & 14 & 10 & 3 & 0 & 0 & 6 & 2 \\
+\addlinespace
+\multicolumn{9}{l}{\emph{saer\_cold}} \\
+~~Qwen3-8B & 34 & 9 & 26 & 11 & 0 & 0 & 3 & 1 \\
+~~GPT-4o & 19 & 11 & 1 & 12 & 0 & 0 & 2 & 1 \\
+~~Claude S.\ 4.5 & 9 & 2 & 7 & 1 & 0 & 0 & 2 & 0 \\
+~~Qwen2.5-Max & 11 & 2 & 7 & 3 & 0 & 0 & 2 & 1 \\
+~~DeepSeek-V3 & 8 & 3 & 2 & 3 & 1 & 0 & 2 & 1 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{What is shared.}  Each model's failing tasks partition into three
+groups: those carrying at least one unacquired-prerequisite issue
+(precondition, ingredient, tool or smelt-input), those failing only because
+the goal item is never produced, and those the majority rule cannot attribute
+at all.  Without retrieval the first group holds 41/46 (Qwen3-8B), 31/37
+(GPT-4o), 31/35 (Claude Sonnet~4.5), 39/41 (Qwen2.5-Max) and 20/27
+(DeepSeek-V3)---74--95\% of failures.  The shared
+signature is therefore an \emph{unacquired prerequisite}, not a malformed
+or off-goal plan.  Retrieval shrinks both groups by similar proportions: the prerequisite group
+falls from 162 to 67 tasks in total (to 30, 16, 8, 8 and 5), and the goal-only
+residue from 21 to 10 (5/5/4/2/5 $\to$ 3/2/1/2/2).
+
+The third group is small but real, and we name it rather than fold it into
+the second: 0/1/0/0/2 tasks without retrieval and 1/1/0/1/1 with it fail in a
+majority of seeds while no \emph{single} class reaches that majority, because
+the three seeds fail for different reasons.  A two-way split would absorb
+them into ``goal item never produced'', which they need not exhibit at all;
+the script asserts the three-way partition sums to the failing-task count and
+that the goal-only group never exceeds the goal-not-produced column, so this
+cannot silently reappear.
+
+\textbf{What is not shared.}  \emph{Which} prerequisite is missing does
+not generalise.  Ingredient gaps run 39 tasks on Qwen3-8B against 3 on
+GPT-4o; tool gaps run 33 on Qwen2.5-Max against 2 on Claude Sonnet~4.5.
+An earlier draft of this paper asserted the same three failure modes at
+every scale; the counts do not support that, and \secref{sec:knowledge_gap}
+now states only the shared prerequisite signature.
+
+\textbf{A withdrawn mode.}  The naming-gap column is zero in every model
+and both conditions.  The scorer's naming check fires only on
+\texttt{smeltItem} applied to an ore name that Minecraft 1.17+ replaced
+with a raw-material drop (\appref{app:pseudocode}), and no majority-vote
+failure in the primary study trips it.  Version-specific naming was
+listed as a failure mode in an earlier draft on the strength of
+development-time observations; it is not observable in the reported runs
+and we no longer claim it.  Whether it would reappear under a broader
+naming check is untested.
+
+
+\section{Two Analyses of Demonstration Quality}
+\label{app:demoquality}
+
+The demonstration bank is the artefact the retrieval conditions differ
+over, so its own quality is worth measuring rather than assuming.  Two
+analyses do so.  Both are offline, require no model calls, and ship as
+runnable scripts; both are post-hoc and sit outside the confirmatory
+family of \appref{sec:stats}, with nominal $p$ throughout.  The first
+asks whether demonstration quality could explain SAER's edge over BM25
+--- it cannot, because SAER is handed the worse demonstrations and
+scores higher anyway.  The second isolates a transmission mechanism for
+the correctness axis of \secref{sec:knowledge_gap}, on a baseline of
+zero in four of the five models: planners copy numeric quantities out of the
+demonstrations they are given.
+
+\subsection*{Does Retriever Choice Change Demonstration Quality?}
+\label{app:exposure}
+
+If SAER and BM25 differed in how often they retrieve a materially broken
+demonstration, that difference would confound \secref{sec:ablation}'s
+reading of SAER's edge as a \emph{relevance} effect.  Retrieval is
+deterministic given the task and the bank, so the question is decidable
+exactly rather than by argument.
+
+\paragraph{What counts as materially broken.}  Re-walk a demonstration
+from an empty inventory over an inventory that is \emph{debited} as well
+as credited --- each produced unit spendable only once, and a
+\texttt{craftRecipe(x,n)} call charged
+$\lceil n/\text{outputCount}\rceil$ recipe applications, which is the
+conversion the deployed \texttt{skills.js} performs --- and some entries
+reach a craft they cannot afford.  On the evaluation-time bank this
+holds for 11 of the 25 crafting, 10 of the 21 collecting and 3 of the 9
+combat demonstrations.  The static scorer does not charge for the
+aggregate material budget across a plan (\appref{app:validator}), so these defects move no credit-only number reported in this paper; they
+matter here only as a property of the pool both retrievers draw from.
+
+\paragraph{The comparison.}  We recomputed both selections exactly, with
+no model calls
+(\texttt{scripts/\allowbreak eval/\allowbreak retriever\_\allowbreak defect\_\allowbreak exposure.mjs}, shipped; it
+aborts if the \texttt{setRecipeResolver} defect has regressed, since an
+inert resolver would collapse SAER to keyword matching and make the
+comparison vacuous).  The two retrievers share only 1.00 of their 3
+selections per task on average, so there is ample room for them to
+differ.
+
+They do differ, \textbf{and the difference runs against SAER}
+(Table~\ref{tab:exposure}).  SAER draws 73 of 180 defective
+demonstrations against BM25's 54, and the gap is concentrated at the
+top-ranked position (\secref{sec:context}):
+SAER's top-ranked demonstration is materially broken on 22 of 60 tasks
+against BM25's 8, and the paired split runs entirely one way --- SAER-only
+on 14 tasks, BM25-only on \emph{zero}, two-sided $p{=}0.00012$.  The per-task
+totals favour BM25 in the same direction but do not reach significance
+(26 versus 15 tasks, sign $p{=}0.117$).
+
+\begin{table}[htbp]
+\centering
+\caption{Materially broken demonstrations retrieved over the 60 frozen
+tasks at $k{=}3$, on the evaluation-time demonstration bank.  Post-hoc,
+outside the confirmatory family of \appref{sec:stats}; nominal $p$.
+$^{\ddagger}$ = the one category where the direction reverses, on $n{=}5$
+tasks drawing from a nine-example pool in which five are near-duplicates of those
+tasks (\secref{sec:combat_design}), retrieved over in full here as in
+Table~\ref{tab:main}; we do not read a direction off
+it.}
+\label{tab:exposure}
+\small
+\begin{tabular}{lrr}
+\toprule
+& SAER & BM25 \\
+\midrule
+Defective demonstrations retrieved & 73/180 & 54/180 \\
+Mean per task (of 3)               & 1.22 & 0.90 \\
+\quad CRAFT ($n{=}44$)             & 1.05 & 0.89 \\
+\quad COLLECT ($n{=}11$)           & 1.73 & 0.55 \\
+\quad COMBAT ($n{=}5$)$^{\ddagger}$ & 1.60 & 1.80 \\
+Top-1 defective                    & 22/60 & 8/60 \\
+\midrule
+\multicolumn{3}{l}{Top-1 paired: SAER-only 14, BM25-only 0, $p{=}0.00012$} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Why, and what it implies.}  The mechanism is that SAER is
+working as designed.  Its dominant dimension is ingredient overlap at
+$\alpha{=}0.50$, which matches material tier by construction, and the
+benchmark's L2/L3 tasks are iron- and diamond-tier tools.  In this bank,
+tier and brittleness are correlated: 8 of the 10 iron/diamond/gold-tier
+crafting demonstrations are materially short, against 3 of the other 15.
+SAER therefore retrieves the same-tier demonstration --- the relevant one ---
+and in this pool the relevant one is usually the broken one.  The natural
+completion is that BM25, matching lexically, is less tightly locked to tier,
+but we did not measure its tier-match rate, so that half is a conjecture: the
+counts above are equally consistent with BM25 simply selecting more diffusely.
+The claim we do make is narrower and the data carries it: the defects are
+concentrated in one tier, and all eight of them are the same hardcoded stick
+constant, diagnosed below, which the later corrected bank revision repairs.
+Separating ``property of the bank'' from ``property of the scorer'' would need
+this exposure count recomputed on the corrected revision, which the shipped
+scripts support through the \texttt{CRAFTING\_BANK} switch
+(\appref{app:overlap}) and we have not run.
+
+The consequence for \secref{sec:ablation} is the opposite of a
+confound.  SAER reaches 49/60 against BM25's 42/60 \emph{while} being
+fed the materially worse demonstrations, so demonstration quality cannot
+be what generates SAER's advantage, and the relevance reading of \secref{sec:ablation} survives this
+particular check.  Under the credit-only scorer these shortfalls cost no pass,
+so they can work against SAER only under the debited scorer that follows.  The
+relevance reading does not survive every scoring choice: the static
+scorer credits produced items without debiting them
+(\appref{app:validator}), and if material-balance violations are instead
+scored as failures, \texttt{saer\_cold} reads 33/60 against BM25's
+28/60 and the contrast loses its nominal star
+($p{=}0.0156 \rightarrow 0.125$), while BM25 (28) falls below random
+(31), inverting the ordering of \secref{sec:ablation}
+($p{=}0.375$).  Pooled over the five primary models' arms and the ablation --- the
+Gemma4 rows of Table~\ref{tab:main} are not included --- 84 of 413
+majority-vote strict passes (20.3\%) carry the violation in a majority of
+their passing seeds, and 94 (22.8\%) lose the majority vote once the budget
+is charged.  The second set contains the first: the extra ten pass twice
+on credit, once cleanly, and fall below $2$ of $3$ when the violating seed is
+withdrawn.  The 94 are what Table~\ref{tab:debit_permodel} and the debited
+columns of Table~\ref{tab:ablation} and of the primary rows of
+Table~\ref{tab:main} charge; the 20.3\% is the narrower, more
+conservative count
+(\texttt{scripts/\allowbreak eval/\allowbreak measure\_\allowbreak consumption\_\allowbreak leniency.mjs},
+shipped).  The leniency is not symmetric across conditions, which is why it
+matters here rather than as generic evaluator noise: charging the material
+budget removes 0 of \texttt{no\_retrieval}'s 19 passes, 7 of
+\texttt{random}'s 38, 14 of BM25's 42 and 16 of \texttt{saer\_cold}'s 49.  A
+scorer that never debits can only credit plans that produce things, and the
+retrieval arms produce more.
+
+What survives the stricter rule and what does not is set out in
+Table~\ref{tab:debit_permodel}.  \emph{Existence} stays family-wise
+significant (random vs.\ no retrieval, $b{=}13$, $c{=}1$, $p{=}0.0018$).  All
+five per-model SAER effects stay positive, but three rather than four clear
+$\alpha'{=}0.0038$: DeepSeek-V3 ($p{=}0.0309$) becomes nominal and Qwen3-8B
+stays nominal ($p{=}0.0127$), and BM25 vs.\ no retrieval drops from ${<}0.001$ to 0.0352.
+The relevance increment does not survive at all, which is why
+\secref{sec:ablation} reports it as directional rather than established.  An
+earlier version of this appendix asserted that every per-model effect stayed
+\emph{significant}; the per-model recomputation below does not support that,
+and the claim is withdrawn.
+Tables~\ref{tab:main} and~\ref{tab:ablation} state both scorings side by
+side; the ablation's three effects over \texttt{no\_retrieval} shrink by
+37--61\% in tasks under the stricter rule (19$\to$12, 23$\to$9, 30$\to$14).
+The replication panel, computed separately so that the pooled count
+above is unchanged, loses its credit-only gains under debiting (bottom rows).
+
+\begin{table}[htbp]
+\caption{Per-model paired tests with material-balance violations scored as
+failures.  Same runs, same majority vote, same three-seed rule; only the
+pass predicate changes.  Reproduce with
+\texttt{node scripts/\allowbreak eval/\allowbreak measure\_\allowbreak consumption\_\allowbreak leniency.mjs --mcnemar},
+and the replication rows by adding \texttt{-{}-replication}; those rows lie
+outside the pre-specified family, so their verdicts are descriptive.}
+\label{tab:debit_permodel}
+\small\setlength{\tabcolsep}{5pt}
+\centering
+\begin{tabular}{lrrrl}
+\toprule
+Comparison & SPR (/60) & $b$/$c$ & $p$ & Verdict \\
+\midrule
+\multicolumn{5}{l}{\emph{existence:} \texttt{saer\_cold} vs.\ \texttt{no\_retrieval}} \\
+~~Qwen3-8B      & 13$\to$24 & 14/3 & 0.0127 & nominal \\
+~~GPT-4o        & 20$\to$34 & 15/1 & 0.00052 & family-wise \\
+~~Claude S.\ 4.5 & 22$\to$35 & 14/1 & 0.00098 & family-wise \\
+~~Qwen2.5-Max   & 19$\to$33 & 15/1 & 0.00052 & family-wise \\
+~~DeepSeek-V3   & 25$\to$35 & 14/4 & 0.0309 & nominal \\
+\addlinespace
+\multicolumn{5}{l}{\emph{ablation on Qwen2.5-Max}} \\
+~~\texttt{random} vs.\ \texttt{no\_ret} & 19$\to$31 & 13/1 & 0.0018 & family-wise \\
+~~\texttt{bm25} vs.\ \texttt{no\_ret}   & 19$\to$28 & 12/3 & 0.0352 & nominal \\
+~~\texttt{bm25} vs.\ \texttt{random}    & 31$\to$28 & 1/4 & 0.375 & n.s. \\
+~~\texttt{saer\_cold} vs.\ \texttt{bm25} & 28$\to$33 & 6/1 & 0.125 & n.s. \\
+\addlinespace
+\multicolumn{5}{l}{\emph{replication panel:} \texttt{saer\_cold} vs.\ \texttt{no\_retrieval} (outside the family)} \\
+~~Gemma4-26B    & 35$\to$28 & 4/11 & 0.118 & n.s. \\
+~~Gemma4-31B    & 37$\to$37 & 6/6 & 1.0 & n.s. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+It also sharpens the closing claim that demonstration quality is
+the next lever --- under the debited scorer, repairing the bank should help the relevance-ranked
+retriever more than the lexical one, because the relevance-ranked one is
+the one currently being handed the broken examples.
+
+\paragraph{Status.}  The detector resolves every
+ambiguity toward ``no defect'', so both columns are lower bounds; the
+comparison is between two retrievers scored by the same detector over
+the same bank, which is what the confound question asks.
+
+\subsection*{Quantity Inheritance from the Demonstration Bank}
+\label{app:quantity}
+
+Applied to the bank rather than to the retrievers, the same detector
+asks whether the demonstrations are materially executable at all.  They
+are not, uniformly, and the shortfalls turn out to be traceable in the
+models' own output.
+
+\paragraph{The bank.}  Every failure counted above is the same kind: a
+hardcoded quantity in the shared opening --- collect logs, craft planks,
+craft sticks, craft a wooden pickaxe --- that does not scale with the
+chain the demonstration then walks.  \texttt{skills.js} reads these
+arguments as output-item counts and converts them to
+$\lceil n/\text{yield}\rceil$ recipe applications, so the constant fixes
+the budget exactly.  The two banks fail on different constants.  In the
+crafting bank, 9 of the 11 failures are \emph{sticks}: the
+\texttt{stick} argument takes only the values 2 and 4 in this revision,
+and \texttt{craftRecipe('stick', 4)} is a single application yielding
+four, whereas a demonstration that crafts a wooden, then a stone, then
+an iron tool needs six.  \texttt{crafting/iron\_axe} is representative:
+it reaches its final craft with zero sticks against the two an iron axe
+requires.  In the collecting bank 8 of the 10 failures are
+\emph{planks}: 9 of its 17 \texttt{oak\_planks} calls ask for 4, against
+3 of 25 in the crafting bank, and four planks cannot cover a crafting
+table (4), sticks (2) and a pickaxe (3).  The later corrected revision,
+supplied alongside the evaluated one, raises the stick constant to 6 and
+8 --- among other edits, which \appref{app:overlap} describes from the
+ingredient-set side --- and that is what takes its material-shortfall
+count to 1 of 25 rather than 11.  The recipe graph is available to neither
+the demonstration author nor, as the next paragraph shows, the model
+that reads it.
+
+\paragraph{The transfer.}  Because the two banks carry different
+constants, the constant a model emits is a fingerprint of what it read.
+Table~\ref{tab:quantity} counts the \texttt{oak\_planks} argument in
+every generated plan for the 11 COLLECT tasks, which retrieve from the
+collecting bank.  Under \texttt{no\_retrieval} four of the five primary
+models emit the sufficient 12 in \emph{every} trial --- 0 of 17, 0 of
+18, 0 of 8 and 0 of 15 uses of the insufficient 4.  The fifth is the
+exception that bounds the argument: Qwen3-8B parsed only 2 COLLECT plans
+without retrieval and both used 4, so its baseline is 2/2 rather than
+zero, and the contrast below is a four-model one.  Under retrieval the
+insufficient value appears: 10 of 12 trials on Qwen2.5-Max, 13 of 13 on
+Qwen3-8B, 4 of 15 on DeepSeek-V3 and 2 of 17 on GPT-4o.  The same models keep emitting 12 on
+CRAFT tasks.  The crafting bank is not uniform either --- its 25 planks calls
+read 12 eleven times, 8 ten times, 4 three times and 20 once --- so what
+separates the two categories is how often the \emph{insufficient} 4 appears:
+3 of 25 calls against the collecting bank's 9 of 17.  On CRAFT the models
+therefore emit a sufficient value that a majority of their retrieved
+demonstrations also carry; on COLLECT they emit the short one that a majority
+carries.  Random retrieval transmits it too --- 6 of its 12 COLLECT trials on
+Qwen2.5-Max, a condition Table~\ref{tab:quantity} does not tabulate --- as it
+must, since it
+draws from the same bank --- so this is a property of the demonstration pool,
+not of SAER's ranking.
+
+\begin{table}[htbp]
+\centering
+\caption{\texttt{oak\_planks} count emitted on COLLECT tasks (all seeds,
+per trial).  The retrieved collecting bank says 4, which is materially
+short; 12 suffices.  Claude Sonnet~4.5 overrides the demonstration in
+every trial.}
+\label{tab:quantity}
+\small
+\begin{tabular}{lrrrr}
+\toprule
+& \multicolumn{2}{c}{\texttt{no\_retrieval}} & \multicolumn{2}{c}{\texttt{saer\_cold}} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+Model & $n$ & \%\,$=4$ & $n$ & \%\,$=4$ \\
+\midrule
+Qwen3-8B      &  2 & 100 & 13 & 100 \\
+GPT-4o        & 17 &   0 & 17 & 12 \\
+Claude S.~4.5 & 18 &   0 & 16 &  0 \\
+Qwen2.5-Max   &  8 &   0 & 12 & 83 \\
+DeepSeek-V3   & 15 &   0 & 15 & 27 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{What this establishes.}  It supplies the transmission
+mechanism behind the correctness axis of \secref{sec:knowledge_gap},
+which the 35-task contrast of \secref{sec:knowledge_gap} shows only through
+outcomes --- SAER trails random until broken L2 demonstrations are repaired.
+Here it is operating, on a baseline of zero in the four models that have one:
+the planner reproduces a numeric argument it read, and the argument is
+wrong.  It
+also explains why the architecture assigns quantity to the runtime
+rather than to the planner --- these models demonstrably do not check a
+copied constant against the recipe graph, so something downstream has
+to.  The models differ: Claude Sonnet~4.5 overrides the
+demonstration in all 16 trials, Qwen3-8B in none of 13.  None of the
+copied quantities changes a credit-only number, since that scorer does not
+charge for them (\appref{app:validator}), which is why they survived to
+be found.
+
+We claim no dose--response from this: it does not follow that a bank's
+defect rate predicts how often plans in the corresponding category are
+themselves short, and plan length is an uncontrolled confound
+throughout, since longer chains offer more chances to under-budget
+regardless of what was retrieved.  What the fingerprint does establish,
+on a baseline of zero in four of the five models, is that these planners copy numeric
+arguments out of retrieved demonstrations without checking them against
+the recipe graph, and that a single wrong constant in one demonstration
+file propagates to most trials of every task that file serves.  It also
+bounds the bank audit of \appref{app:traindata}, which verified that
+each declared precondition is produced by an earlier step: that is a
+statement about the \emph{presence} of an item, not about the
+\emph{amount}.  The bank is short on amounts, and the audit was not
+designed to see it.
+
+% ===========================================================
+\section{Oracle Categories and the Deployment Routing Path}
+\label{app:intent_oracle}
+
+The deployed pipeline classifies a request with an LLM call
+(\texttt{getIntent()}, \secref{sec:catfilter}) and admits only
+demonstrations from the matching file.  \secref{sec:catfilter}
+enumerates the labels the classifier in the code release emits.  The
+static harness does \emph{not} run that classifier.  Instead it reads
+the ground-truth \texttt{category} field of the frozen task list, at two
+places in \texttt{scripts/eval/static\_plan\_eval.js}: the per-task loop
+calls \texttt{loadTrainingData(task.\-category)} to pick the
+demonstration file, and \texttt{generatePlan} builds the request object
+with fields \texttt{input: task.prompt} and
+\texttt{intent: task.category}, whose
+\texttt{intent} field is emitted verbatim into the prompt by
+\texttt{FewShotLearning.\-buildRequestAnalysisSection} as an
+\texttt{Intent Type:} line.  All reported numbers are therefore an
+oracle-category upper bound, and we state this rather than leave it to
+be inferred from the release.
+
+\paragraph{What it does not bias.}  Both injection points sit
+\emph{above} the \texttt{switch} over conditions.  The request object is
+constructed once and passed unchanged to every branch, and the
+demonstration pool is loaded once per task before the branch is
+selected.  Consequently \texttt{no\_retrieval} carries the same
+\texttt{Intent Type:} line as \texttt{saer\_cold} --- it simply carries
+no examples --- and \texttt{random\_retrieval},
+\texttt{bm25\_retrieval} and \texttt{saer\_cold} all sample from the
+identical, oracle-selected candidate pool.  No condition receives a
+category signal the others lack.  The oracle can therefore raise or
+lower all conditions together, but it cannot move the paired differences
+between them, and every claim in this paper is stated as such a
+difference (McNemar on paired per-task outcomes, never on a single
+condition's absolute rate).  The retriever itself never reads the label:
+\texttt{SAERScorer} contains no reference to \texttt{intent}, and its
+four component scores are computed from ingredients, tokens, tool tiers
+and difficulty alone.
+
+\paragraph{A second candidate, checked and ruled out.}  The category is one
+place the frozen task list could leak into retrieval; the difficulty tier is
+the other, because $\delta{\cdot}L$ of \secref{sec:scoring} needs a level for
+the \emph{query} and the task list carries one.  It does not come from there.
+\texttt{SAERScorer.estimateLevel} takes only the request string and matches it
+against four ordered keyword lists, defaulting to 2, and the harness passes it
+nothing else (\texttt{input: task.prompt}).  Evaluated against the frozen
+list's own tier labels it agrees on \textbf{20 of 60} tasks --- the same score
+a constant ``L2'' answer gets, since 20 of the 60 are L2 --- with 41 of the 60
+estimated as L2 and the confusions running both ways (12 L3 tasks read as L2,
+6 L2 tasks as L1).  So the fourth dimension is a weak surface heuristic, not a
+second oracle, and the tier it scores against is not the tier the benchmark
+stratifies on.
+
+\paragraph{What it does bias.}  Deployment fidelity.  If
+\texttt{getIntent()} misclassifies a request, the wrong demonstration
+file is loaded and \emph{all} retrieval conditions degrade towards the
+no-retrieval floor, because none of them can rank an example that was
+never a candidate.  The size of that degradation is a product of two
+quantities: the classifier's error rate over the 60 tasks, and the
+conditional loss given an error.  We measured the first, which makes the
+second moot here.  Running the deployed classifier over the frozen task
+list --- \texttt{determineIntentType} invoked on its shipped prompt and
+parser, DeepSeek-V3, three seeds, 180 calls, zero API failures --- gives
+\textbf{100\% routing accuracy} at the task level (60/60 under the same
+majority vote used throughout), with no task misrouted; trial-level
+label accuracy in that run was 99.4\%, and every label-discordant trial
+still routed to the same demonstration file as its ground truth, so its
+conditional loss was zero.  These are figures from one dated run against
+a live commercial endpoint rather than a deterministic quantity:
+trial-level counts, and which particular tasks come out seed-unstable,
+move between runs.  We therefore rest the argument on the majority-vote
+routing result, which is the quantity the oracle bound actually
+concerns, and on that quantity the bound is tight on this benchmark: no
+reported number would change under the deployed router.
+
+We claim this for the 60 held-out prompts only.  They are short and
+templated (``craft a wooden sword'', ``kill a creeper''), so the result
+bounds how optimistic the oracle is \emph{here}; it is not evidence that
+the classifier is robust on the free-form chat the deployed agent also
+accepts, which remains unmeasured.  Two further limits are worth
+stating.  The model was served from the first-party DeepSeek endpoint
+rather than the third-party path of the deployed profile, which serves
+the same \texttt{deepseek-v3} model.  And routing accuracy is measured
+against the oracle \texttt{category} field, so it inherits whatever
+labelling convention that field encodes.  The measurement script is
+\texttt{scripts/eval/intent\_accuracy.mjs}; it reaches the deployed
+prompt and parser through the class prototype rather than restating
+them, so it cannot drift from the shipped classifier.
+
+\paragraph{A structural routing defect, found and fixed.}  Auditing the
+classifier against the oracle exposed a defect that the oracle had been
+masking, and we report it rather than leave it in the release.  The
+classifier's category list folded combat into the movement category
+(\emph{``EXPLORE --- combat, movement, or exploration''}), and a
+separate hardcoded whitelist inside the response parser enumerated
+labels that likewise excluded \texttt{combat}, coercing any
+\texttt{combat} verdict to the \texttt{general} fallback.  The
+intent-to-file map, meanwhile, already contained a
+\texttt{combat}~$\rightarrow$~\texttt{combat\_examples.json} entry.  The
+two ends therefore disagreed, and \texttt{combat\_examples.json} was
+unreachable from the deployed path: a request such as ``attack a
+zombie'' was routed either to the collecting demonstrations, through the
+movement label, or to the crafting demonstrations, through the
+\texttt{general} default.  The frozen benchmark contains 5 combat tasks
+among 44 \texttt{craft} and 11 \texttt{collect}, so under deployment
+those five could not have been routed correctly by construction --- had
+the deployed router been in the loop at all, which for the static
+results it was not.  The node-level pipeline figure in the code release
+records this defect: the label set drawn there is the pre-fix deployment one,
+and it carries no combat entry.
+
+The code release fixes this: \texttt{combat} is now a first-class
+category with its own description and keywords, movement and exploration
+are described separately, and the parser's whitelist is derived from the
+intent-to-file map rather than restated, so the two can no longer drift
+apart.  A regression test (\texttt{tests/intent\_routing.test.js}, 34
+assertions) asserts the invariant directly: every label the map can
+route is enumerated in the classification prompt, survives the parser
+without coercion, and does not resolve to the crafting default.
+\secref{sec:catfilter} describes the fixed classifier.
+
+\paragraph{No reported number changes.}  The fix cannot move any result
+in this paper, because the static harness never calls
+\texttt{getIntent()} --- it reads the \texttt{category} field of the
+frozen task list, and that field was already \texttt{combat} for the
+five combat tasks, which already loaded
+\texttt{combat\_examples.json}.  The defect lived exclusively on the
+deployment path.  What it does change is the interpretation: before the
+fix, the combat results were an existence probe under a router that
+could not have reproduced them in deployment; after it, the deployed
+router can reach the same demonstration file the evaluation used.  The
+routing measurement above closes the half of this gap that concerns
+label accuracy: the deployed router reaches the correct demonstration
+file for all five combat tasks, as it does for all 60.  What remains
+unmeasured is the other half --- an end-to-end re-run of the main table
+under predicted rather than oracle categories, which would also carry
+the classifier's own latency and failure modes.  With routing accuracy
+at 60/60 that re-run is expected to reproduce the reported numbers, but
+we report the expectation as such rather than as a result.  Neither half
+bears on the knowledge-bottleneck claims, which are contrastive.
+
+\paragraph{Three branches are nominal rather than studied.}  The frozen
+benchmark is 44 \texttt{craft}, 11 \texttt{collect} and 5
+\texttt{combat} tasks; it contains no \texttt{cook}, \texttt{build} or
+\texttt{explore} task, and no result anywhere in this paper exercises
+those branches.  They exist in the router because the agent accepts
+free-form chat, not because they are part of the evaluated system, and
+the defect described above is correspondingly a deployment-path defect
+only.  We report it because the code release is an artefact readers may
+run, not because it bears on a measurement.
+
+\paragraph{Demonstration command validity, disclosed but not repaired.}
+The command validator shipped with the release checked only the crafting
+and collecting files.  Extending it to every routed file --- combat and
+build had never been checked, combat because it was unreachable ---
+reports 25 invalid commands: 13 in the combat file, 9 in the build file
+and 3 in the crafting file.  One defect dominates: 13 uses of
+\texttt{!equipItem}, which is not in the bot command registry (the
+registered name is \texttt{!equip}), spread across the combat and build
+files.  The remainder are 4 uses of \texttt{planks} where a specific
+wood type is required, 2 \texttt{!startBuild} calls, 3
+\texttt{!placeHere} calls naming an item rather than a placeable block
+(\texttt{flint\_and\_steel}, \texttt{water\_bucket}), and 3 counts of a
+single \texttt{!attack} call missing its second argument.  We report these rather than repair them.  The
+demonstration bank is the frozen artefact behind every reported number,
+and editing it after the fact would fork the artefact from the results;
+the validator extension is a script change and touches no data.
+
+Reachability is not uniform, so we measured it.  The build file is never
+retrieved, since no benchmark task carries that category.  The three
+crafting errors are confined to a single demonstration,
+\texttt{crafting/bow}, which the retriever selects for none of the 44
+craft tasks.  The combat file is the exception: all 9 of its
+demonstrations contain \texttt{!equipItem}, and all 5 combat tasks
+retrieve at least one of them, so every combat prompt under every
+retrieval condition carries the invalid command.
+
+\paragraph{Measuring demonstration-defect inheritance.}  That
+contamination propagates, and the propagation is measurable --- which
+makes this the one part of this appendix that is a finding rather than a
+disclosure.  Because the defect sits in \emph{every} retrieval
+condition's prompt and in \emph{no} no-retrieval prompt, the gap between
+the two arms isolates how often a planner copies a broken command
+straight out of its demonstrations.  Scanning every stored per-seed
+result file under \texttt{scripts/eval/results} (308 files, superseded
+runs included) for the string \texttt{equipItem} in the generated plan
+of a \texttt{combat/} task: it appears in \emph{0} of 505 no-retrieval
+trials, and in 726 of 1{,}016 retrieval trials (71.5\%) --- 72.9\% under
+\texttt{saer\_cold}, 74.2\% under BM25, 61.2\% under random.  A model
+given no demonstrations never invents this command; a model given these
+demonstrations copies it verbatim about three times in four.  The rate
+is the stable quantity here: an earlier, narrower sweep, whose file set is
+not recoverable, also gave 71\%, and the per-condition rates move by at most
+two points across sweep widths while the no-retrieval count is exactly
+zero at every width.  We therefore ship the scan rather than the counts:
+\texttt{scripts/eval/scan\_demo\_defect\_inheritance.mjs} states its
+file set explicitly and asserts the zero.
+
+The inheritance is invisible to the metric because the static scorer
+infers production only from \texttt{craftRecipe}, \texttt{smeltItem},
+collection and \texttt{attack} commands (an attack credits five units of the mob's
+drop, which is how a combat task reaches its goal item, e.g.\ \texttt{gunpowder}
+for \texttt{combat/kill\_creeper}); an equip step
+produces nothing under either spelling, so a wrong one is neither
+penalised nor rewarded.  Consistently, no validation issue in any
+scanned combat trial mentions \texttt{equip}.  The reported combat
+numbers are therefore unaffected, and the probe of
+\appref{sec:combat_probe} remains a statement about plan structure.  But
+the plans it scores as correct contain a command that would fail on
+contact with the bot, which is a concrete instance of the gap between
+this static metric and execution that \appref{sec:live} discusses in the
+aggregate.
+
+\paragraph{Scope of these fixes.}  None of them can move a reported
+number, and the reason is structural rather than argued: the static
+harness \texttt{scripts/eval/static\_plan\_eval.js} does not import the
+enhancer module at all.  It constructs \texttt{FewShotLearning}, \texttt{BM25Retriever} and
+\texttt{RecipeResolver} directly, scores plans with its own validator, and carries its own intent-to-file
+table.  The classifier and the routing table described above are
+reachable only from the deployed agent path.
+
+% ===========================================================
+\section{A Separate Live Probe: Structured Fact Sharing Between Two Agents}
+\label{sec:multiagent}
+\label{app:crossagent}
+\label{app:multiagent}
+\label{app:twostage}
+\label{app:two_stages}
+\label{app:implicit}
+\label{app:sharedmemory}
+
+\noindent\textbf{No claim of this paper rests on this appendix.}  It reports a
+two-bot live study of the \emph{second} retrieval stage of the same enhancer,
+kept so that the released system can be read end to end and because the
+numbers were collected under this project.  It exercises none of the
+components varied in the main study: no SAER retrieval, no plan validator, no
+executor from Figure~\ref{fig:pipeline}.  The node-level pipeline figure, the
+per-trial rows, the contact sheets of the 18 screen recordings and the scripts
+that re-derive every number below ship with the code release (under
+\texttt{evidence/\allowbreak knowledge\_reuse/}; the figure under
+\texttt{docs/\allowbreak paper/\allowbreak neurips\_ws/\allowbreak figures/}).
+
+\paragraph{The second stage.}  The procedural stage (SAER) filters
+demonstrations by intent category, ranks them by ingredient, keyword and level
+overlap, and places the top three before the planning call.  The team stage
+has the same shape over a different record: when more than one bot is active,
+a shared store (\texttt{SharedMemory}) holds \emph{world facts} (source agent,
+resource, position, confidence, timestamps, optional expiry); a query filters
+them by namespace, record type, resource, expiry, age and radius, ranks them by
+source confidence discounted by distance, and places the result in the
+consumer's prompt immediately before its single selection call.  Neither stage
+updates any weights.  The correspondence is one of shape, not shared code.
+Only the world-fact write/read path (\texttt{recordWorldFact()} /
+\texttt{queryWorldFacts()}) is on the measured route; the store's reservations,
+supply requests and work ledger are implemented but not measured here.
+
+\paragraph{Design.}  Three model endpoints (Doubao-Seed-2.0-Mini
+\texttt{doubao-seed-2-0-mini-260428}, a hosted \texttt{qwen-max} endpoint, and
+Qwen3-8B served locally through Ollama as \texttt{qwen3:8b}) $\times$ three
+sharing conditions --- none (\emph{normal}), free-form chat
+(\emph{explicit}), structured fact sharing (\emph{implicit}) --- $\times$ two
+tasks (\emph{geothermal}: collect soul sand from the one valid site;
+\emph{workstation}: reach a discovered crafting table and craft a wooden
+pickaxe) $\times$ five trials per cell, 90 trials in all.  A scout follows a
+fixed route and finds the target at its second inspection, so the discovery
+moment is constant; target identity rotates across attempts and is identical
+within each normal/explicit/implicit triplet.  Under \emph{normal} the consumer
+has no information from the scout and searches three candidate sites; under
+\emph{explicit} the scout reports over chat, which the consumer must parse;
+under \emph{implicit} the consumer reads the structured fact directly.  The
+store is rebuilt from empty for every attempt, and \emph{normal} and
+\emph{explicit} never touch it.  Each trial issues one scripted model call (two
+under \emph{explicit}: report and interpretation).  Before every attempt both
+agents' inventories and memories are cleared and the terrain reset;
+teleportation is allowed only before the trial announcement.
+
+\begin{table}[htbp]
+\caption{Cross-agent context reuse (30 trials per condition, pooled across
+models).  Post: mean post-discovery duration (s); Visits: unnecessary
+consumer-side site inspections; Calls: model calls; Chat: agent-to-agent
+messages; Cov.: physical objective verified.}
+\label{tab:multiagent}
+\small\renewcommand{\arraystretch}{1.1}\setlength{\tabcolsep}{6pt}
+\centering
+\begin{tabular}{lcccccc}
+\toprule
+Condition & Succ. & Post & Visits & Calls & Chat & Cov. \\
+\midrule
+Normal   & 30/30 & 21.58 & 22 & 30 & 0  & 1.00 \\
+Explicit & 28/30 & 18.07 & 0  & 60 & 60 & 0.93 \\
+Implicit & 30/30 & 16.73 & 0  & 30 & 0  & 1.00 \\
+\bottomrule
+\end{tabular}
+\renewcommand{\arraystretch}{1}
+\end{table}
+
+\paragraph{Results.}  Success is saturated for \emph{normal} and
+\emph{implicit} (30/30; Table~\ref{tab:multiagent}), so the signal is overhead.  \emph{Implicit} removes
+all 22 redundant consumer inspections and uses 30 model calls against
+\emph{explicit}'s 60; both are exact counts over the recorded trials, and the
+call reduction follows from the protocol rather than from model behaviour, so
+neither carries a test.  The tests belong to post-discovery duration: paired
+\emph{implicit}$-$\emph{normal} is $-4.85$\,s (bootstrap 95\% CI
+$[-6.68,-3.05]$; 26/30 faster; two-sided sign test
+$p{=}5.95{\times}10^{-5}$), and \emph{implicit}$-$\emph{explicit} is
+$-1.33$\,s ($[-2.16,-0.52]$; 24/30 faster; $p{=}0.00143$).  \emph{Explicit}'s
+two failures both occur when the consumer selects a different site from the
+one the report names.  The pooled speed-up is not uniform across endpoints
+(Table~\ref{tab:kr_permodel}): against \emph{normal} it is significant on both
+hosted APIs (10/10 faster each, $p{=}0.002$) but not on the locally served 8B
+model (6/10, $p{=}0.75$), and against \emph{explicit} its interval excludes
+zero only for Doubao.  Intervals are percentile intervals from 20{,}000 paired
+bootstrap resamples; because the five attempts per cell reuse two scenario
+templates, the inference describes the recorded protocol rather than a task
+population.  All contrasts lie outside the confirmatory family of
+\appref{sec:stats}.
+
+\begin{table}[htbp]
+\centering
+\caption{Per-model outcomes.  I/N/E $=$ \emph{implicit}, \emph{normal},
+\emph{explicit}.  ``Avoided'' $=$ excess consumer site visits eliminated
+relative to \emph{normal}.  Differences are implicit minus baseline
+post-discovery seconds with bootstrap 95\% CIs; intervals containing zero are
+inconclusive.}
+\label{tab:kr_permodel}
+\footnotesize\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lccrlr@{}}
+\toprule
+Model & Success I/N/E & Avoided & $\Delta$ vs.\ N [CI] & $\Delta$ vs.\ E [CI] & Calls I/E \\
+\midrule
+Qwen3-8B (Ollama)    & 10/10; 10/10; 9/10 & 8 & $-2.90$ $[-6.01,\,0.17]$  & $-0.05$ $[-1.35,\,1.28]$  & 10/20 \\
+Doubao-Seed-2.0-Mini & 10/10; 10/10; 10/10 & 6 & $-5.95$ $[-8.74,\,-3.27]$ & $-3.48$ $[-4.43,\,-2.54]$ & 10/20 \\
+Qwen-Max API         & 10/10; 10/10; 9/10 & 8 & $-5.70$ $[-9.18,\,-2.49]$ & $-0.47$ $[-1.18,\,0.44]$  & 10/20 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Integrity.}  An automated audit over the retained records passes
+all 18 programmed checks: exactly 90 trials, 5 per cell; all 30 triplets
+target-matched; 90 valid reset audits and 90 unique per-trial state paths;
+60 of 60 \emph{explicit} messages observed and model-generated, against none
+under \emph{implicit}; a structured-fact create-and-consume trace in all 30
+\emph{implicit} trials; and no work-progress teleportation.  No prompt in any
+condition contains the words \emph{duplicate}, \emph{overlap},
+\emph{division of labor}, \emph{role assignment} or \emph{assigned role}, so
+the coordination observed is not instructed.  The shipped logs have absolute
+paths replaced, so integrity checks should use
+\texttt{evidence/\allowbreak CHECKSUMS\_AS\_SHIPPED.txt}, not the run-time
+manifest's hashes.
+
+\paragraph{What this does not test.}  Whether a procedural remedy and a team
+remedy compose.  That needs a factorial crossing procedural retrieval (on/off)
+with team context (on/off) on tasks that require both a deep dependency chain
+and a discovery handoff, which we have not run.  A separate 120-trial
+allocation benchmark that touches the work-ledger path is not reported here
+and carries no claim.
+
+\end{document}

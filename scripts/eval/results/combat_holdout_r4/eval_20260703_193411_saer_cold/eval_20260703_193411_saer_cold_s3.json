@@ -1,0 +1,874 @@
+{
+  "meta": {
+    "timestamp": "2026-07-03T11:38:20.853Z",
+    "model": "qwen-max",
+    "condition": "saer_cold",
+    "total_tasks": 5,
+    "completed_tasks": 5,
+    "failed_tasks": 0
+  },
+  "tasks": [
+    {
+      "slug": "combat/kill_creeper",
+      "level": "L1",
+      "goal_item": "gunpowder",
+      "min_steps": 3,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Craft a stone sword and equip it",
+            "command": "!collectBlocks('oak_log', 2)",
+            "action_cmd": [
+              "!collectBlocks('oak_log', 2)",
+              "!craftRecipe('oak_planks', 8)",
+              "!craftRecipe('stick', 4)",
+              "!craftRecipe('wooden_pickaxe', 1)",
+              "!collectBlocks('stone', 2)",
+              "!craftRecipe('stone_sword', 1)",
+              "!equipItem('stone_sword')"
+            ],
+            "reasoning": "A stone sword is an effective early-game weapon. We need to gather logs to make planks and sticks, and then use a wooden pickaxe to mine stone for the sword.",
+            "preconditions": [
+              {
+                "type": "access",
+                "name": "trees",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "stone",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Find a creeper",
+            "command": "!searchForEntity('creeper', 32)",
+            "action_cmd": [
+              "!searchForEntity('creeper', 32)"
+            ],
+            "reasoning": "We need to locate a creeper to attack and collect gunpowder from it.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_sword",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "surface",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Attack and defeat the creeper",
+            "command": "!attack('creeper', true)",
+            "action_cmd": [
+              "!attack('creeper', true)"
+            ],
+            "reasoning": "Defeating the creeper will drop gunpowder, which is the goal of this task.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_sword",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "surface",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Collect gunpowder",
+            "command": "!collectDrops('gunpowder', 1)",
+            "action_cmd": [
+              "!collectDrops('gunpowder', 1)"
+            ],
+            "reasoning": "After defeating the creeper, we need to collect the gunpowder that it drops.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_sword",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "surface",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": null
+      },
+      "raw_response": "**REASONING**:\nThe user's request is to \"kill a creeper and collect gunpowder.\" This task involves combat, and the target item is gunpowder. The material type is not applicable here since gunpowder is directly collected from defeating a creeper. The tool type is also not applicable as no specific tool is required for this task.\n\nTo complete this task, we need to follow a similar pattern to the examples provided, which involve crafting a weapon (in this case, a sword) and then using it to defeat the target mob (creeper). We will craft a stone sword, as it is a common and effective weapon for early-game combat.\n\n**EXECUTION PLAN**:\nStep 1: Craft a stone sword and equip it\nPrerequisites: access:trees, access:stone\nCommand: !collectBlocks('oak_log', 2)\nCommand: !craftRecipe('oak_planks', 8)\nCommand: !craftRecipe('stick', 4)\nCommand: !craftRecipe('wooden_pickaxe', 1)\nCommand: !collectBlocks('stone', 2)\nCommand: !craftRecipe('stone_sword', 1)\nCommand: !equipItem('stone_sword')\nReasoning: A stone sword is an effective early-game weapon. We need to gather logs to make planks and sticks, and then use a wooden pickaxe to mine stone for the sword.\n\nStep 2: Find a creeper\nPrerequisites: item:stone_sword:1, access:surface\nCommand: !searchForEntity('creeper', 32)\nReasoning: We need to locate a creeper to attack and collect gunpowder from it.\n\nStep 3: Attack and defeat the creeper\nPrerequisites: item:stone_sword:1, access:surface\nCommand: !attack('creeper', true)\nReasoning: Defeating the creeper will drop gunpowder, which is the goal of this task.\n\nStep 4: Collect gunpowder\nPrerequisites: item:stone_sword:1, access:surface\nCommand: !collectDrops('gunpowder', 1)\nReasoning: After defeating the creeper, we need to collect the gunpowder that it drops.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 4,
+        "step_efficiency": 0.75,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 3,
+      "prompt_length": 10543
+    },
+    {
+      "slug": "combat/kill_enderman",
+      "level": "L2",
+      "goal_item": "ender_pearl",
+      "min_steps": 4,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Craft a crafting table",
+            "command": "!collectBlocks(\"oak_log\", 1)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 1)",
+              "!craftRecipe(\"crafting_table\", 1)"
+            ],
+            "reasoning": "A crafting table is required to craft more advanced items like sticks and tools.",
+            "preconditions": [
+              {
+                "type": "access",
+                "name": "trees",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft sticks",
+            "command": "!craftRecipe(\"oak_planks\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 4)",
+              "!craftRecipe(\"stick\", 4)"
+            ],
+            "reasoning": "Sticks are needed to craft the stone sword.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 1
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft a wooden pickaxe",
+            "command": "!craftRecipe(\"wooden_pickaxe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"wooden_pickaxe\", 1)"
+            ],
+            "reasoning": "A wooden pickaxe is needed to mine stone, which is required to craft the stone sword.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 4
+              },
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 4
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Collect stone",
+            "command": "!collectBlocks(\"stone\", 2)",
+            "action_cmd": [
+              "!collectBlocks(\"stone\", 2)"
+            ],
+            "reasoning": "Stone is the primary material needed to craft the stone sword.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "wooden_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "stone",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 5,
+            "goal": "Craft a stone sword",
+            "command": "!craftRecipe(\"stone_sword\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"stone_sword\", 1)"
+            ],
+            "reasoning": "The stone sword is the final tool needed to defeat the enderman.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone",
+                "count": 2
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 6,
+            "goal": "Equip the stone sword",
+            "command": "!equipItem(\"stone_sword\")",
+            "action_cmd": [
+              "!equipItem(\"stone_sword\")"
+            ],
+            "reasoning": "Equipping the stone sword prepares the player for combat.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_sword",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 7,
+            "goal": "Find and attack the enderman",
+            "command": "!searchForEntity(\"enderman\", 32)",
+            "action_cmd": [
+              "!searchForEntity(\"enderman\", 32)",
+              "!attack(\"enderman\", true)"
+            ],
+            "reasoning": "This step involves finding and defeating the enderman to collect ender pearls.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_sword",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "surface",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 8,
+            "goal": "Collect ender pearls",
+            "command": "!collectDrops(\"ender_pearl\", 1)",
+            "action_cmd": [
+              "!collectDrops(\"ender_pearl\", 1)"
+            ],
+            "reasoning": "After defeating the enderman, collecting the ender pearls is the final goal.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_sword",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "surface",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "stone_sword"
+      },
+      "raw_response": "**REASONING**:\nTo defeat an enderman and collect ender pearls, we need a weapon. Based on the examples provided, a stone sword is a suitable choice for combat. The user's request does not specify a material or tool type, so I will follow the pattern from Example 2 (Defeat a Zombie) and adapt it to this scenario. The target item is \"stone_sword\", the material type is \"stone\", and the tool type is \"sword\".\n\n**EXECUTION PLAN**:\nStep 1: Craft a crafting table\nPrerequisites: access:trees\nCommand: !collectBlocks(\"oak_log\", 1)\nCommand: !craftRecipe(\"crafting_table\", 1)\nReasoning: A crafting table is required to craft more advanced items like sticks and tools.\n\nStep 2: Craft sticks\nPrerequisites: item:oak_log:1, station:crafting_table\nCommand: !craftRecipe(\"oak_planks\", 4)\nCommand: !craftRecipe(\"stick\", 4)\nReasoning: Sticks are needed to craft the stone sword.\n\nStep 3: Craft a wooden pickaxe\nPrerequisites: item:stick:4, item:oak_planks:4, station:crafting_table\nCommand: !craftRecipe(\"wooden_pickaxe\", 1)\nReasoning: A wooden pickaxe is needed to mine stone, which is required to craft the stone sword.\n\nStep 4: Collect stone\nPrerequisites: item:wooden_pickaxe:1, access:stone\nCommand: !collectBlocks(\"stone\", 2)\nReasoning: Stone is the primary material needed to craft the stone sword.\n\nStep 5: Craft a stone sword\nPrerequisites: item:stone:2, item:stick:2, station:crafting_table\nCommand: !craftRecipe(\"stone_sword\", 1)\nReasoning: The stone sword is the final tool needed to defeat the enderman.\n\nStep 6: Equip the stone sword\nPrerequisites: item:stone_sword:1\nCommand: !equipItem(\"stone_sword\")\nReasoning: Equipping the stone sword prepares the player for combat.\n\nStep 7: Find and attack the enderman\nPrerequisites: item:stone_sword:1, access:surface\nCommand: !searchForEntity(\"enderman\", 32)\nCommand: !attack(\"enderman\", true)\nReasoning: This step involves finding and defeating the enderman to collect ender pearls.\n\nStep 8: Collect ender pearls\nPrerequisites: item:stone_sword:1, access:surface\nCommand: !collectDrops(\"ender_pearl\", 1)\nReasoning: After defeating the enderman, collecting the ender pearls is the final goal.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 8,
+        "step_efficiency": 0.5,
+        "issues": [
+          "Step 1: craftRecipe(\"crafting_table\", 1) missing ingredients: oak_planks x4",
+          "Step 5: missing stone x2"
+        ],
+        "lenient_issues": [
+          "Step 1: craftRecipe(\"crafting_table\", 1) missing ingredients: oak_planks x4",
+          "Step 5: missing stone x2"
+        ]
+      },
+      "examples_used": 3,
+      "prompt_length": 12983
+    },
+    {
+      "slug": "combat/kill_slime",
+      "level": "L2",
+      "goal_item": "slime_ball",
+      "min_steps": 3,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Craft a stone sword and equip it",
+            "command": "!collectBlocks('oak_log', 2)",
+            "action_cmd": [
+              "!collectBlocks('oak_log', 2)",
+              "!craftRecipe('oak_planks', 8)",
+              "!craftRecipe('stick', 4)",
+              "!craftRecipe('wooden_pickaxe', 1)",
+              "!collectBlocks('stone', 2)",
+              "!craftRecipe('stone_sword', 1)",
+              "!equipItem('stone_sword')"
+            ],
+            "reasoning": "Collect logs to craft planks and sticks.",
+            "preconditions": [
+              {
+                "type": "access",
+                "name": "trees",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "stone",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Find a slime in the swamp",
+            "command": "!searchForEntity('slime', 32)",
+            "action_cmd": [
+              "!searchForEntity('slime', 32)"
+            ],
+            "reasoning": "Locate a slime in the swamp to attack.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_sword",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "swamp",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Attack and defeat the slime to collect slimeballs",
+            "command": "!attack('slime', true)",
+            "action_cmd": [
+              "!attack('slime', true)"
+            ],
+            "reasoning": "Defeat the slime to collect slimeballs.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_sword",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "swamp",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": null
+      },
+      "raw_response": "**REASONING**:\nThe user's request is to \"hunt slimes in a swamp and collect slimeballs.\" This implies that the target item is \"slimeball,\" which is obtained by defeating slimes. No specific material or tool type is required for this task, but we need to ensure the player has a suitable weapon to defeat the slimes. We can follow the pattern from the examples where a stone sword is crafted and equipped to defeat hostile mobs. \n\n**EXECUTION PLAN**:\nStep 1: Craft a stone sword and equip it\nPrerequisites: access:trees, access:stone\nCommand: !collectBlocks('oak_log', 2)\nReasoning: Collect logs to craft planks and sticks.\nCommand: !craftRecipe('oak_planks', 8)\nReasoning: Craft planks from the collected logs.\nCommand: !craftRecipe('stick', 4)\nReasoning: Craft sticks from the planks.\nCommand: !craftRecipe('wooden_pickaxe', 1)\nReasoning: Craft a wooden pickaxe to mine stone.\nCommand: !collectBlocks('stone', 2)\nReasoning: Collect stone blocks to craft a stone sword.\nCommand: !craftRecipe('stone_sword', 1)\nReasoning: Craft a stone sword to use for combat.\nCommand: !equipItem('stone_sword')\nReasoning: Equip the stone sword to prepare for combat.\n\nStep 2: Find a slime in the swamp\nPrerequisites: item:stone_sword:1, access:swamp\nCommand: !searchForEntity('slime', 32)\nReasoning: Locate a slime in the swamp to attack.\n\nStep 3: Attack and defeat the slime to collect slimeballs\nPrerequisites: item:stone_sword:1, access:swamp\nCommand: !attack('slime', true)\nReasoning: Defeat the slime to collect slimeballs.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 3,
+        "step_efficiency": 1,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 3,
+      "prompt_length": 10561
+    },
+    {
+      "slug": "combat/kill_blaze",
+      "level": "L3",
+      "goal_item": "blaze_rod",
+      "min_steps": 6,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Craft a wooden pickaxe to mine stone",
+            "command": "!collectBlocks(\"oak_log\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 3)"
+            ],
+            "reasoning": "Logs are needed to craft planks and sticks, which are required for the pickaxe.",
+            "preconditions": [
+              {
+                "type": "access",
+                "name": "trees",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks from logs",
+            "command": "!craftRecipe(\"oak_planks\", 12)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 12)"
+            ],
+            "reasoning": "Planks are needed to craft sticks and the crafting table.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft sticks from planks",
+            "command": "!craftRecipe(\"stick\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 4)"
+            ],
+            "reasoning": "Sticks are required for the pickaxe and the sword.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 12
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft a wooden pickaxe",
+            "command": "!craftRecipe(\"wooden_pickaxe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"wooden_pickaxe\", 1)"
+            ],
+            "reasoning": "A wooden pickaxe is needed to mine stone blocks.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 6
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 5,
+            "goal": "Mine stone blocks",
+            "command": "!collectBlocks(\"stone\", 2)",
+            "action_cmd": [
+              "!collectBlocks(\"stone\", 2)"
+            ],
+            "reasoning": "Stone is needed to craft the stone sword.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "wooden_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "stone",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 6,
+            "goal": "Craft a stone sword",
+            "command": "!craftRecipe(\"stone_sword\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"stone_sword\", 1)"
+            ],
+            "reasoning": "A stone sword is a suitable weapon for defeating blazes.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone",
+                "count": 2
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 7,
+            "goal": "Enter the Nether",
+            "command": "!enterNether()",
+            "action_cmd": [
+              "!enterNether()"
+            ],
+            "reasoning": "To defeat blazes, the player must enter the Nether.",
+            "preconditions": [
+              {
+                "type": "access",
+                "name": "nether",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 8,
+            "goal": "Find and defeat blazes",
+            "command": "!searchForEntity(\"blaze\", 32)",
+            "action_cmd": [
+              "!searchForEntity(\"blaze\", 32)",
+              "!attack(\"blaze\", true)"
+            ],
+            "reasoning": "Defeat blazes to collect blaze rods.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_sword",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "nether",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 9,
+            "goal": "Collect blaze rods",
+            "command": "!collectDrops(\"blaze_rod\", 1)",
+            "action_cmd": [
+              "!collectDrops(\"blaze_rod\", 1)"
+            ],
+            "reasoning": "Collect the blaze rods after defeating the blazes.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_sword",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "nether",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "stone_sword"
+      },
+      "raw_response": "**REASONING**:\nThe user's request is to defeat blazes in the nether and collect blaze rods. This implies that the player needs a weapon to defeat the blazes. Based on the examples provided, a stone sword is a suitable weapon for combat. The target item is a \"stone_sword,\" the material type is \"stone,\" and the tool type is \"sword.\"\n\n**EXECUTION PLAN**:\nStep 1: Craft a wooden pickaxe to mine stone\nPrerequisites: access:trees\nCommand: !collectBlocks(\"oak_log\", 3)\nReasoning: Logs are needed to craft planks and sticks, which are required for the pickaxe.\n\nStep 2: Craft oak planks from logs\nPrerequisites: item:oak_log:3\nCommand: !craftRecipe(\"oak_planks\", 12)\nReasoning: Planks are needed to craft sticks and the crafting table.\n\nStep 3: Craft sticks from planks\nPrerequisites: item:oak_planks:12\nCommand: !craftRecipe(\"stick\", 4)\nReasoning: Sticks are required for the pickaxe and the sword.\n\nStep 4: Craft a wooden pickaxe\nPrerequisites: item:oak_planks:6, item:stick:2\nCommand: !craftRecipe(\"wooden_pickaxe\", 1)\nReasoning: A wooden pickaxe is needed to mine stone blocks.\n\nStep 5: Mine stone blocks\nPrerequisites: item:wooden_pickaxe:1, access:stone\nCommand: !collectBlocks(\"stone\", 2)\nReasoning: Stone is needed to craft the stone sword.\n\nStep 6: Craft a stone sword\nPrerequisites: item:stone:2, item:stick:2\nCommand: !craftRecipe(\"stone_sword\", 1)\nReasoning: A stone sword is a suitable weapon for defeating blazes.\n\nStep 7: Enter the Nether\nPrerequisites: access:nether\nCommand: !enterNether()\nReasoning: To defeat blazes, the player must enter the Nether.\n\nStep 8: Find and defeat blazes\nPrerequisites: item:stone_sword:1, access:nether\nCommand: !searchForEntity(\"blaze\", 32)\nCommand: !attack(\"blaze\", true)\nReasoning: Defeat blazes to collect blaze rods.\n\nStep 9: Collect blaze rods\nPrerequisites: item:stone_sword:1, access:nether\nCommand: !collectDrops(\"blaze_rod\", 1)\nReasoning: Collect the blaze rods after defeating the blazes.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 9,
+        "step_efficiency": 0.67,
+        "issues": [
+          "Step 6: missing stone x2"
+        ],
+        "lenient_issues": [
+          "Step 6: missing stone x2"
+        ]
+      },
+      "examples_used": 3,
+      "prompt_length": 10571
+    },
+    {
+      "slug": "combat/kill_wither_skeleton",
+      "level": "L3",
+      "goal_item": "bone",
+      "min_steps": 5,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Craft a wooden pickaxe",
+            "command": "!collectBlocks(\"oak_log\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 3)",
+              "!craftRecipe(\"oak_planks\", 12)",
+              "!craftRecipe(\"stick\", 4)",
+              "!craftRecipe(\"wooden_pickaxe\", 1)"
+            ],
+            "reasoning": "A wooden pickaxe is needed to mine stone, which is required to craft a stone pickaxe.",
+            "preconditions": [
+              {
+                "type": "access",
+                "name": "trees",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "stone",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft a stone pickaxe",
+            "command": "!collectBlocks(\"stone\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"stone\", 3)",
+              "!craftRecipe(\"stone_pickaxe\", 1)"
+            ],
+            "reasoning": "A stone pickaxe is needed to mine iron ore, which is required to craft an iron pickaxe and iron sword.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "wooden_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "stone",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Mine iron ore and smelt it into iron ingots",
+            "command": "!collectBlocks(\"iron_ore\", 6)",
+            "action_cmd": [
+              "!collectBlocks(\"iron_ore\", 6)",
+              "!smeltItem(\"raw_iron\", 6)"
+            ],
+            "reasoning": "Iron ingots are needed to craft an iron pickaxe and iron sword.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "station",
+                "name": "furnace",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "underground",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft an iron pickaxe and iron sword",
+            "command": "!craftRecipe(\"iron_pickaxe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"iron_pickaxe\", 1)",
+              "!craftRecipe(\"iron_sword\", 1)"
+            ],
+            "reasoning": "An iron sword is a good weapon for combat, and an iron pickaxe is needed to mine diamond ore if needed.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "raw_iron",
+                "count": 6
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "underground",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 5,
+            "goal": "Build a nether portal and enter the Nether",
+            "command": "!collectBlocks(\"obsidian\", 10)",
+            "action_cmd": [
+              "!collectBlocks(\"obsidian\", 10)",
+              "!collectBlocks(\"gravel\", 20)",
+              "!craftRecipe(\"flint_and_steel\", 1)",
+              "!placeHere(\"obsidian\")",
+              "!searchForBlock(\"soul_sand\", 32)",
+              "!collectBlocks(\"soul_sand\", 4)"
+            ],
+            "reasoning": "A nether portal is needed to enter the Nether, where wither skeletons can be found.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "obsidian",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "gravel",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "nether",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 6,
+            "goal": "Find and kill wither skeletons in a nether fortress to collect their bones",
+            "command": "!searchForBlock(\"nether_bricks\", 64)",
+            "action_cmd": [
+              "!searchForBlock(\"nether_bricks\", 64)",
+              "!searchForEntity(\"wither_skeleton\", 32)",
+              "!attack(\"wither_skeleton\", true)",
+              "!collectItems(\"bone\", 5)  // Collect at least 5 bones"
+            ],
+            "reasoning": "Wither skeletons drop bones when killed, and an iron sword is a suitable weapon for this task.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_sword",
+                "count": 1
+              },
+              {
+                "type": "item",
+                "name": "soul_sand",
+                "count": 4
+              },
+              {
+                "type": "access",
+                "name": "nether",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "iron_pickaxe"
+      },
+      "raw_response": "**REASONING**:\nThe user's request is to \"kill wither skeletons in a nether fortress to collect their bones.\" This implies that the target item is \"bones,\" and the primary goal is combat. The material type and tool type are not explicitly mentioned, but we can infer that a sword or other weapon will be needed for combat. We will use an iron sword as it is a common and effective weapon. The steps will follow the pattern of progressing from basic tools to more advanced ones, similar to Example 1.\n\n**EXECUTION PLAN**:\nStep 1: Craft a wooden pickaxe\nPrerequisites: access:trees, access:stone\nCommand: !collectBlocks(\"oak_log\", 3)\nCommand: !craftRecipe(\"oak_planks\", 12)\nCommand: !craftRecipe(\"stick\", 4)\nCommand: !craftRecipe(\"wooden_pickaxe\", 1)\nReasoning: A wooden pickaxe is needed to mine stone, which is required to craft a stone pickaxe.\n\nStep 2: Craft a stone pickaxe\nPrerequisites: item:wooden_pickaxe:1, access:stone\nCommand: !collectBlocks(\"stone\", 3)\nCommand: !craftRecipe(\"stone_pickaxe\", 1)\nReasoning: A stone pickaxe is needed to mine iron ore, which is required to craft an iron pickaxe and iron sword.\n\nStep 3: Mine iron ore and smelt it into iron ingots\nPrerequisites: item:stone_pickaxe:1, station:furnace, access:underground\nCommand: !collectBlocks(\"iron_ore\", 6)\nCommand: !smeltItem(\"raw_iron\", 6)\nReasoning: Iron ingots are needed to craft an iron pickaxe and iron sword.\n\nStep 4: Craft an iron pickaxe and iron sword\nPrerequisites: item:raw_iron:6, station:crafting_table, access:underground\nCommand: !craftRecipe(\"iron_pickaxe\", 1)\nCommand: !craftRecipe(\"iron_sword\", 1)\nReasoning: An iron sword is a good weapon for combat, and an iron pickaxe is needed to mine diamond ore if needed.\n\nStep 5: Build a nether portal and enter the Nether\nPrerequisites: item:iron_pickaxe:1, access:obsidian, access:gravel, access:nether\nCommand: !collectBlocks(\"obsidian\", 10)\nCommand: !collectBlocks(\"gravel\", 20)\nCommand: !craftRecipe(\"flint_and_steel\", 1)\nCommand: !placeHere(\"obsidian\")\nCommand: !searchForBlock(\"soul_sand\", 32)\nCommand: !collectBlocks(\"soul_sand\", 4)\nReasoning: A nether portal is needed to enter the Nether, where wither skeletons can be found.\n\nStep 6: Find and kill wither skeletons in a nether fortress to collect their bones\nPrerequisites: item:iron_sword:1, item:soul_sand:4, access:nether\nCommand: !searchForBlock(\"nether_bricks\", 64)\nCommand: !searchForEntity(\"wither_skeleton\", 32)\nCommand: !attack(\"wither_skeleton\", true)\nCommand: !collectItems(\"bone\", 5)  // Collect at least 5 bones\nReasoning: Wither skeletons drop bones when killed, and an iron sword is a suitable weapon for this task.\n\nBy following these steps, the player will be able to progress from basic tools to more advanced ones, build a nether portal, and then enter the Nether to find and kill wither skeletons, ultimately collecting their bones.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": true,
+        "step_count": 6,
+        "step_efficiency": 0.83,
+        "issues": [
+          "Step 5: collecting obsidian requires diamond_pickaxe, not available",
+          "Step 5: craftRecipe(\"flint_and_steel\", 1) missing ingredients: flint x1"
+        ],
+        "lenient_issues": [
+          "Step 5: collecting obsidian requires diamond_pickaxe, not available",
+          "Step 5: craftRecipe(\"flint_and_steel\", 1) missing ingredients: flint x1"
+        ]
+      },
+      "examples_used": 3,
+      "prompt_length": 13027
+    }
+  ],
+  "summary": {
+    "by_level": {
+      "L1": {
+        "total": 1,
+        "strict_tcr": "1/1",
+        "lenient_tcr": "1/1",
+        "pvr": "1/1",
+        "avg_step_efficiency": 0.75
+      },
+      "L2": {
+        "total": 2,
+        "strict_tcr": "1/2",
+        "lenient_tcr": "1/2",
+        "pvr": "1/2",
+        "avg_step_efficiency": 0.75
+      },
+      "L3": {
+        "total": 2,
+        "strict_tcr": "0/2",
+        "lenient_tcr": "0/2",
+        "pvr": "1/2",
+        "avg_step_efficiency": 0.75
+      }
+    },
+    "overall": {
+      "strict_tcr": "2/5",
+      "lenient_tcr": "2/5",
+      "pvr": "3/5",
+      "avg_step_efficiency": 0.75
+    }
+  }
+}

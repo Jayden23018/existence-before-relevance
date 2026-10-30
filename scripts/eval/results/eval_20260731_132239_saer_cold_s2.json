@@ -1,0 +1,2684 @@
+{
+  "meta": {
+    "timestamp": "2026-07-31T17:33:44.165Z",
+    "model": "qwen-max",
+    "condition": "saer_cold",
+    "total_tasks": 18,
+    "completed_tasks": 18,
+    "failed_tasks": 0
+  },
+  "tasks": [
+    {
+      "slug": "craft/iron_helmet",
+      "level": "L2",
+      "goal_item": "iron_helmet",
+      "min_steps": 5,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect logs and craft basic tools",
+            "command": "!collectBlocks(\"oak_log\", 4)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 4)",
+              "!craftRecipe(\"oak_planks\", 12)",
+              "!craftRecipe(\"crafting_table\", 1)",
+              "!craftRecipe(\"stick\", 4)",
+              "!craftRecipe(\"wooden_pickaxe\", 1)"
+            ],
+            "reasoning": "This step is necessary to gather the initial resources and create basic tools for further mining and crafting.",
+            "preconditions": [
+              {
+                "type": "access",
+                "name": "trees",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Mine cobblestone and craft a stone pickaxe",
+            "command": "!collectBlocks(\"stone\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"stone\", 3)",
+              "!craftRecipe(\"stone_pickaxe\", 1)"
+            ],
+            "reasoning": "A stone pickaxe is required to mine iron ore, which is needed for crafting the iron helmet.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "wooden_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "stone",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Mine iron ore",
+            "command": "!collectBlocks(\"iron_ore\", 5)",
+            "action_cmd": [
+              "!collectBlocks(\"iron_ore\", 5)"
+            ],
+            "reasoning": "Iron ore is needed to be smelted into iron ingots, which are the primary material for the iron helmet.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "underground",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Smelt raw iron into iron ingots",
+            "command": "!smeltItem(\"raw_iron\", 5)",
+            "action_cmd": [
+              "!smeltItem(\"raw_iron\", 5)"
+            ],
+            "reasoning": "Smelting the raw iron into iron ingots is necessary to have the correct material for crafting the iron helmet.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "raw_iron",
+                "count": 5
+              },
+              {
+                "type": "station",
+                "name": "furnace",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 5,
+            "goal": "Craft an Iron Helmet",
+            "command": "!craftRecipe(\"iron_helmet\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"iron_helmet\", 1)"
+            ],
+            "reasoning": "This is the final step where the 5 iron ingots are used to craft the iron helmet.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_ingot",
+                "count": 5
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "iron_helmet"
+      },
+      "raw_response": "**REASONING**:\nI referenced the examples provided, particularly Example 1 (Craft an Iron Chestplate) and Example 2 (Craft an Iron Sword), to understand the pattern for crafting iron items. The target item is \"iron_helmet,\" which requires 5 iron ingots. The material type is \"iron,\" and the tool type is \"helmet.\" The steps will follow the standard pattern of collecting raw materials, smelting them, and then crafting the final item.\n\n**EXECUTION PLAN**:\nStep 1: Collect logs and craft basic tools\nPrerequisites: access:trees\nCommand: !collectBlocks(\"oak_log\", 4)\nCommand: !craftRecipe(\"oak_planks\", 12)\nCommand: !craftRecipe(\"crafting_table\", 1)\nCommand: !craftRecipe(\"stick\", 4)\nCommand: !craftRecipe(\"wooden_pickaxe\", 1)\nReasoning: This step is necessary to gather the initial resources and create basic tools for further mining and crafting.\n\nStep 2: Mine cobblestone and craft a stone pickaxe\nPrerequisites: item:wooden_pickaxe:1, access:stone\nCommand: !collectBlocks(\"stone\", 3)\nCommand: !craftRecipe(\"stone_pickaxe\", 1)\nReasoning: A stone pickaxe is required to mine iron ore, which is needed for crafting the iron helmet.\n\nStep 3: Mine iron ore\nPrerequisites: item:stone_pickaxe:1, access:underground\nCommand: !collectBlocks(\"iron_ore\", 5)\nReasoning: Iron ore is needed to be smelted into iron ingots, which are the primary material for the iron helmet.\n\nStep 4: Smelt raw iron into iron ingots\nPrerequisites: item:raw_iron:5, station:furnace\nCommand: !smeltItem(\"raw_iron\", 5)\nReasoning: Smelting the raw iron into iron ingots is necessary to have the correct material for crafting the iron helmet.\n\nStep 5: Craft an Iron Helmet\nPrerequisites: item:iron_ingot:5, station:crafting_table\nCommand: !craftRecipe(\"iron_helmet\", 1)\nReasoning: This is the final step where the 5 iron ingots are used to craft the iron helmet.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 5,
+        "step_efficiency": 1,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 3,
+      "prompt_length": 11885
+    },
+    {
+      "slug": "craft/iron_boots",
+      "level": "L2",
+      "goal_item": "iron_boots",
+      "min_steps": 5,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect logs and craft basic tools",
+            "command": "!collectBlocks(\"oak_log\", 4)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 4)",
+              "!craftRecipe(\"oak_planks\", 12)",
+              "!craftRecipe(\"crafting_table\", 1)",
+              "!craftRecipe(\"stick\", 2)",
+              "!craftRecipe(\"wooden_pickaxe\", 1)"
+            ],
+            "reasoning": "Logs are needed to craft planks, sticks, and a wooden pickaxe, which is required to mine stone.",
+            "preconditions": [
+              {
+                "type": "access",
+                "name": "trees",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Mine cobblestone and craft a stone pickaxe",
+            "command": "!collectBlocks(\"stone\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"stone\", 3)",
+              "!craftRecipe(\"stone_pickaxe\", 1)"
+            ],
+            "reasoning": "A stone pickaxe is needed to mine iron ore, which requires a more durable tool than a wooden pickaxe.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "wooden_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "stone",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Mine iron ore",
+            "command": "!collectBlocks(\"iron_ore\", 4)",
+            "action_cmd": [
+              "!collectBlocks(\"iron_ore\", 4)"
+            ],
+            "reasoning": "Iron ore is required to smelt into iron ingots, which are needed to craft the iron boots.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "underground",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Smelt raw iron into iron ingots",
+            "command": "!smeltItem(\"raw_iron\", 4)",
+            "action_cmd": [
+              "!smeltItem(\"raw_iron\", 4)"
+            ],
+            "reasoning": "Raw iron obtained from mining iron ore needs to be smelted into iron ingots before it can be used for crafting.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "raw_iron",
+                "count": 4
+              },
+              {
+                "type": "station",
+                "name": "furnace",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 5,
+            "goal": "Craft iron boots",
+            "command": "!craftRecipe(\"iron_boots\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"iron_boots\", 1)"
+            ],
+            "reasoning": "With 4 iron ingots, we can now craft the iron boots as requested.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_ingot",
+                "count": 4
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "iron_boots"
+      },
+      "raw_response": "**REASONING**:\nI referenced the examples provided, particularly Example 1 and Example 2, to understand the pattern for crafting iron items. The user wants to craft iron boots, which is an armor piece. From the material quantity pattern, I know that iron boots require 4 iron ingots. The processing pattern indicates that iron ore must be smelted into iron ingots before crafting. Additionally, I need to ensure that the necessary tools (wooden pickaxe and stone pickaxe) are crafted first to mine the required materials.\n\n**EXECUTION PLAN**:\nStep 1: Collect logs and craft basic tools\nPrerequisites: access:trees\nCommand: !collectBlocks(\"oak_log\", 4)\nCommand: !craftRecipe(\"oak_planks\", 12)\nCommand: !craftRecipe(\"crafting_table\", 1)\nCommand: !craftRecipe(\"stick\", 2)\nCommand: !craftRecipe(\"wooden_pickaxe\", 1)\nReasoning: Logs are needed to craft planks, sticks, and a wooden pickaxe, which is required to mine stone.\n\nStep 2: Mine cobblestone and craft a stone pickaxe\nPrerequisites: item:wooden_pickaxe:1, access:stone\nCommand: !collectBlocks(\"stone\", 3)\nCommand: !craftRecipe(\"stone_pickaxe\", 1)\nReasoning: A stone pickaxe is needed to mine iron ore, which requires a more durable tool than a wooden pickaxe.\n\nStep 3: Mine iron ore\nPrerequisites: item:stone_pickaxe:1, access:underground\nCommand: !collectBlocks(\"iron_ore\", 4)\nReasoning: Iron ore is required to smelt into iron ingots, which are needed to craft the iron boots.\n\nStep 4: Smelt raw iron into iron ingots\nPrerequisites: item:raw_iron:4, station:furnace\nCommand: !smeltItem(\"raw_iron\", 4)\nReasoning: Raw iron obtained from mining iron ore needs to be smelted into iron ingots before it can be used for crafting.\n\nStep 5: Craft iron boots\nPrerequisites: item:iron_ingot:4, station:crafting_table\nCommand: !craftRecipe(\"iron_boots\", 1)\nReasoning: With 4 iron ingots, we can now craft the iron boots as requested.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 5,
+        "step_efficiency": 1,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 3,
+      "prompt_length": 11877
+    },
+    {
+      "slug": "craft/hopper",
+      "level": "L2",
+      "goal_item": "hopper",
+      "min_steps": 5,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect logs and craft basic tools",
+            "command": "!collectBlocks(\"oak_log\", 4)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 4)",
+              "!craftRecipe(\"oak_planks\", 12)",
+              "!craftRecipe(\"stick\", 4)",
+              "!craftRecipe(\"wooden_pickaxe\", 1)"
+            ],
+            "reasoning": "We need to start by collecting logs to make planks, sticks, and a wooden pickaxe. This will allow us to mine stone and cobblestone, which are necessary for crafting a stone pickaxe.",
+            "preconditions": [
+              {
+                "type": "access",
+                "name": "trees",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Mine cobblestone and craft stone pickaxe",
+            "command": "!collectBlocks(\"cobblestone\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"cobblestone\", 3)",
+              "!craftRecipe(\"stone_pickaxe\", 1)"
+            ],
+            "reasoning": "A stone pickaxe is needed to mine iron ore, which is required for the hopper.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "wooden_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "stone",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Mine iron ore",
+            "command": "!collectBlocks(\"iron_ore\", 5)",
+            "action_cmd": [
+              "!collectBlocks(\"iron_ore\", 5)"
+            ],
+            "reasoning": "We need 5 iron ores to smelt into iron ingots for the hopper.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "underground",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Smelt raw iron into iron ingots",
+            "command": "!smeltItem(\"raw_iron\", 5)",
+            "action_cmd": [
+              "!smeltItem(\"raw_iron\", 5)"
+            ],
+            "reasoning": "The collected iron ore drops as raw iron, which needs to be smelted into iron ingots.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "raw_iron",
+                "count": 5
+              },
+              {
+                "type": "station",
+                "name": "furnace",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 5,
+            "goal": "Craft a chest",
+            "command": "!craftRecipe(\"chest\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"chest\", 1)"
+            ],
+            "reasoning": "A chest is required to craft the hopper, and it can be crafted using 8 oak planks.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 8
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 6,
+            "goal": "Craft a hopper",
+            "command": "!craftRecipe(\"hopper\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"hopper\", 1)"
+            ],
+            "reasoning": "Finally, we combine the 5 iron ingots and 1 chest to craft the hopper.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_ingot",
+                "count": 5
+              },
+              {
+                "type": "item",
+                "name": "chest",
+                "count": 1
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "hopper"
+      },
+      "raw_response": "**REASONING**:\nThe user wants to craft a hopper. A hopper is a specific item in Minecraft that does not follow the standard tool type patterns (e.g., sword, axe, pickaxe). Instead, it requires 5 iron ingots and 1 chest. The pattern for crafting a hopper involves collecting iron ore, smelting it into iron ingots, and then combining these with a chest.\n\n**EXECUTION PLAN**:\nStep 1: Collect logs and craft basic tools\nPrerequisites: access:trees\nCommand: !collectBlocks(\"oak_log\", 4)\nCommand: !craftRecipe(\"oak_planks\", 12)\nCommand: !craftRecipe(\"stick\", 4)\nCommand: !craftRecipe(\"wooden_pickaxe\", 1)\nReasoning: We need to start by collecting logs to make planks, sticks, and a wooden pickaxe. This will allow us to mine stone and cobblestone, which are necessary for crafting a stone pickaxe.\n\nStep 2: Mine cobblestone and craft stone pickaxe\nPrerequisites: item:wooden_pickaxe:1, access:stone\nCommand: !collectBlocks(\"cobblestone\", 3)\nCommand: !craftRecipe(\"stone_pickaxe\", 1)\nReasoning: A stone pickaxe is needed to mine iron ore, which is required for the hopper.\n\nStep 3: Mine iron ore\nPrerequisites: item:stone_pickaxe:1, access:underground\nCommand: !collectBlocks(\"iron_ore\", 5)\nReasoning: We need 5 iron ores to smelt into iron ingots for the hopper.\n\nStep 4: Smelt raw iron into iron ingots\nPrerequisites: item:raw_iron:5, station:furnace\nCommand: !smeltItem(\"raw_iron\", 5)\nReasoning: The collected iron ore drops as raw iron, which needs to be smelted into iron ingots.\n\nStep 5: Craft a chest\nPrerequisites: item:oak_planks:8, station:crafting_table\nCommand: !craftRecipe(\"chest\", 1)\nReasoning: A chest is required to craft the hopper, and it can be crafted using 8 oak planks.\n\nStep 6: Craft a hopper\nPrerequisites: item:iron_ingot:5, item:chest:1, station:crafting_table\nCommand: !craftRecipe(\"hopper\", 1)\nReasoning: Finally, we combine the 5 iron ingots and 1 chest to craft the hopper.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 6,
+        "step_efficiency": 0.83,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 3,
+      "prompt_length": 11916
+    },
+    {
+      "slug": "craft/compass",
+      "level": "L3",
+      "goal_item": "compass",
+      "min_steps": 5,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect logs and craft basic tools",
+            "command": "!collectBlocks(\"oak_log\", 4)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 4)",
+              "!craftRecipe(\"oak_planks\", 12)",
+              "!craftRecipe(\"stick\", 4)",
+              "!craftRecipe(\"wooden_pickaxe\", 1)"
+            ],
+            "reasoning": "We need to start with basic tools to mine iron and redstone. Logs are used to make planks, which are then used to make sticks and a wooden pickaxe.",
+            "preconditions": [
+              {
+                "type": "access",
+                "name": "trees",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Mine cobblestone and craft stone pickaxe",
+            "command": "!collectBlocks(\"stone\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"stone\", 3)",
+              "!craftRecipe(\"stone_pickaxe\", 1)"
+            ],
+            "reasoning": "A stone pickaxe is needed to mine iron ore and redstone.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "wooden_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "stone",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Mine iron ore",
+            "command": "!collectBlocks(\"iron_ore\", 4)",
+            "action_cmd": [
+              "!collectBlocks(\"iron_ore\", 4)"
+            ],
+            "reasoning": "We need 4 iron ores to smelt into iron ingots for the compass.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "underground",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Mine redstone",
+            "command": "!collectBlocks(\"redstone_ore\", 1)",
+            "action_cmd": [
+              "!collectBlocks(\"redstone_ore\", 1)"
+            ],
+            "reasoning": "We need 1 redstone to craft the compass.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "underground",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 5,
+            "goal": "Smelt raw iron into iron ingots",
+            "command": "!smeltItem(\"raw_iron\", 4)",
+            "action_cmd": [
+              "!smeltItem(\"raw_iron\", 4)"
+            ],
+            "reasoning": "Iron ores must be smelted into iron ingots before they can be used in crafting.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "raw_iron",
+                "count": 4
+              },
+              {
+                "type": "station",
+                "name": "furnace",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 6,
+            "goal": "Craft a compass",
+            "command": "!craftRecipe(\"compass\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"compass\", 1)"
+            ],
+            "reasoning": "With the 4 iron ingots and 1 redstone, we can now craft the compass.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_ingot",
+                "count": 4
+              },
+              {
+                "type": "item",
+                "name": "redstone",
+                "count": 1
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "compass"
+      },
+      "raw_response": "**REASONING**:\nTo craft a compass, we need to recognize that a compass is not a tool but an item. The material required for a compass is 4 iron ingots and 1 redstone. The pattern recognition here is that we need to collect and process the necessary materials (iron ore and redstone) and then craft the compass. We will follow the steps of collecting raw materials, processing them if needed, and then crafting the final item.\n\n**EXECUTION PLAN**:\nStep 1: Collect logs and craft basic tools\nPrerequisites: access:trees\nCommand: !collectBlocks(\"oak_log\", 4)\nCommand: !craftRecipe(\"oak_planks\", 12)\nCommand: !craftRecipe(\"stick\", 4)\nCommand: !craftRecipe(\"wooden_pickaxe\", 1)\nReasoning: We need to start with basic tools to mine iron and redstone. Logs are used to make planks, which are then used to make sticks and a wooden pickaxe.\n\nStep 2: Mine cobblestone and craft stone pickaxe\nPrerequisites: item:wooden_pickaxe:1, access:stone\nCommand: !collectBlocks(\"stone\", 3)\nCommand: !craftRecipe(\"stone_pickaxe\", 1)\nReasoning: A stone pickaxe is needed to mine iron ore and redstone.\n\nStep 3: Mine iron ore\nPrerequisites: item:stone_pickaxe:1, access:underground\nCommand: !collectBlocks(\"iron_ore\", 4)\nReasoning: We need 4 iron ores to smelt into iron ingots for the compass.\n\nStep 4: Mine redstone\nPrerequisites: item:stone_pickaxe:1, access:underground\nCommand: !collectBlocks(\"redstone_ore\", 1)\nReasoning: We need 1 redstone to craft the compass.\n\nStep 5: Smelt raw iron into iron ingots\nPrerequisites: item:raw_iron:4, station:furnace\nCommand: !smeltItem(\"raw_iron\", 4)\nReasoning: Iron ores must be smelted into iron ingots before they can be used in crafting.\n\nStep 6: Craft a compass\nPrerequisites: item:iron_ingot:4, item:redstone:1, station:crafting_table\nCommand: !craftRecipe(\"compass\", 1)\nReasoning: With the 4 iron ingots and 1 redstone, we can now craft the compass.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": true,
+        "step_count": 6,
+        "step_efficiency": 0.83,
+        "issues": [
+          "Step 4: collecting redstone_ore requires iron_pickaxe, not available"
+        ],
+        "lenient_issues": [
+          "Step 4: collecting redstone_ore requires iron_pickaxe, not available"
+        ]
+      },
+      "examples_used": 3,
+      "prompt_length": 11918
+    },
+    {
+      "slug": "craft/iron_block",
+      "level": "L3",
+      "goal_item": "iron_block",
+      "min_steps": 4,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect logs and craft basic tools",
+            "command": "!collectBlocks(\"oak_log\", 4)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 4)",
+              "!craftRecipe(\"oak_planks\", 12)",
+              "!craftRecipe(\"stick\", 4)",
+              "!craftRecipe(\"wooden_pickaxe\", 1)"
+            ],
+            "reasoning": "We need logs to craft planks, sticks, and a wooden pickaxe. The wooden pickaxe is needed to mine cobblestone.",
+            "preconditions": [
+              {
+                "type": "access",
+                "name": "trees",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Mine cobblestone and craft a stone pickaxe",
+            "command": "!collectBlocks(\"stone\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"stone\", 3)",
+              "!craftRecipe(\"stone_pickaxe\", 1)"
+            ],
+            "reasoning": "A stone pickaxe is needed to mine iron ore, which requires a better pickaxe than a wooden one.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "wooden_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "stone",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Mine iron ore",
+            "command": "!collectBlocks(\"iron_ore\", 9)",
+            "action_cmd": [
+              "!collectBlocks(\"iron_ore\", 9)"
+            ],
+            "reasoning": "We need 9 iron ore to smelt into 9 iron ingots, which are required to craft an iron block.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "underground",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Smelt raw iron into iron ingots",
+            "command": "!smeltItem(\"raw_iron\", 9)",
+            "action_cmd": [
+              "!smeltItem(\"raw_iron\", 9)"
+            ],
+            "reasoning": "Iron ore drops raw iron when mined, and we need to smelt it into iron ingots to craft the iron block.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "raw_iron",
+                "count": 9
+              },
+              {
+                "type": "station",
+                "name": "furnace",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 5,
+            "goal": "Craft an Iron Block",
+            "command": "!craftRecipe(\"iron_block\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"iron_block\", 1)"
+            ],
+            "reasoning": "With 9 iron ingots, we can now craft an iron block at the crafting table.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_ingot",
+                "count": 9
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "iron_block"
+      },
+      "raw_response": "**REASONING**:\nThe user wants to craft an iron block. An iron block is made from 9 iron ingots, and iron ingots are obtained by smelting raw iron, which comes from mining iron ore. The process involves collecting logs to make a wooden pickaxe, using the wooden pickaxe to mine cobblestone for a stone pickaxe, and then using the stone pickaxe to mine iron ore. The iron ore must be smelted into iron ingots before crafting the iron block.\n\n**EXECUTION PLAN**:\nStep 1: Collect logs and craft basic tools\nPrerequisites: access:trees\nCommand: !collectBlocks(\"oak_log\", 4)\nCommand: !craftRecipe(\"oak_planks\", 12)\nCommand: !craftRecipe(\"stick\", 4)\nCommand: !craftRecipe(\"wooden_pickaxe\", 1)\nReasoning: We need logs to craft planks, sticks, and a wooden pickaxe. The wooden pickaxe is needed to mine cobblestone.\n\nStep 2: Mine cobblestone and craft a stone pickaxe\nPrerequisites: item:wooden_pickaxe:1, access:stone\nCommand: !collectBlocks(\"stone\", 3)\nCommand: !craftRecipe(\"stone_pickaxe\", 1)\nReasoning: A stone pickaxe is needed to mine iron ore, which requires a better pickaxe than a wooden one.\n\nStep 3: Mine iron ore\nPrerequisites: item:stone_pickaxe:1, access:underground\nCommand: !collectBlocks(\"iron_ore\", 9)\nReasoning: We need 9 iron ore to smelt into 9 iron ingots, which are required to craft an iron block.\n\nStep 4: Smelt raw iron into iron ingots\nPrerequisites: item:raw_iron:9, station:furnace\nCommand: !smeltItem(\"raw_iron\", 9)\nReasoning: Iron ore drops raw iron when mined, and we need to smelt it into iron ingots to craft the iron block.\n\nStep 5: Craft an Iron Block\nPrerequisites: item:iron_ingot:9, station:crafting_table\nCommand: !craftRecipe(\"iron_block\", 1)\nReasoning: With 9 iron ingots, we can now craft an iron block at the crafting table.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 5,
+        "step_efficiency": 0.8,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 3,
+      "prompt_length": 11997
+    },
+    {
+      "slug": "craft/iron_leggings",
+      "level": "L3",
+      "goal_item": "iron_leggings",
+      "min_steps": 5,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect logs and craft basic tools",
+            "command": "!collectBlocks(\"oak_log\", 4)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 4)",
+              "!craftRecipe(\"oak_planks\", 12)",
+              "!craftRecipe(\"crafting_table\", 1)",
+              "!craftRecipe(\"stick\", 4)",
+              "!craftRecipe(\"wooden_pickaxe\", 1)"
+            ],
+            "reasoning": "This step is needed to collect the initial resources and craft the basic tools required for mining.",
+            "preconditions": [
+              {
+                "type": "access",
+                "name": "trees",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Mine cobblestone and craft a stone pickaxe",
+            "command": "!collectBlocks(\"stone\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"stone\", 3)",
+              "!craftRecipe(\"stone_pickaxe\", 1)"
+            ],
+            "reasoning": "A stone pickaxe is needed to mine iron ore, which requires a more durable tool than a wooden pickaxe.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "wooden_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "stone",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Mine iron ore",
+            "command": "!collectBlocks(\"iron_ore\", 7)",
+            "action_cmd": [
+              "!collectBlocks(\"iron_ore\", 7)"
+            ],
+            "reasoning": "We need 7 iron ores to smelt into iron ingots, which are required to craft the iron leggings.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "underground",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Smelt raw iron into iron ingots",
+            "command": "!smeltItem(\"raw_iron\", 7)",
+            "action_cmd": [
+              "!smeltItem(\"raw_iron\", 7)"
+            ],
+            "reasoning": "Smelting the raw iron obtained from mining iron ore into iron ingots is necessary for crafting the leggings.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "raw_iron",
+                "count": 7
+              },
+              {
+                "type": "station",
+                "name": "furnace",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 5,
+            "goal": "Craft an Iron Leggings",
+            "command": "!craftRecipe(\"iron_leggings\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"iron_leggings\", 1)"
+            ],
+            "reasoning": "With the 7 iron ingots, we can now craft the iron leggings at the crafting table.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_ingot",
+                "count": 7
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "iron_leggings"
+      },
+      "raw_response": "**REASONING**:\nI referenced the examples provided, particularly Example 1 (Craft an Iron Chestplate) and Example 2 (Craft an Iron Sword), to understand the patterns for crafting iron items. The target item is \"iron_leggings,\" which requires 7 iron ingots. The material type is \"iron,\" and the tool type is \"leggings.\" I adapted the pattern to include the necessary steps for collecting raw materials, smelting, and crafting the final item.\n\n**EXECUTION PLAN**:\nStep 1: Collect logs and craft basic tools\nPrerequisites: access:trees\nCommand: !collectBlocks(\"oak_log\", 4)\nCommand: !craftRecipe(\"oak_planks\", 12)\nCommand: !craftRecipe(\"crafting_table\", 1)\nCommand: !craftRecipe(\"stick\", 4)\nCommand: !craftRecipe(\"wooden_pickaxe\", 1)\nReasoning: This step is needed to collect the initial resources and craft the basic tools required for mining.\n\nStep 2: Mine cobblestone and craft a stone pickaxe\nPrerequisites: item:wooden_pickaxe:1, access:stone\nCommand: !collectBlocks(\"stone\", 3)\nCommand: !craftRecipe(\"stone_pickaxe\", 1)\nReasoning: A stone pickaxe is needed to mine iron ore, which requires a more durable tool than a wooden pickaxe.\n\nStep 3: Mine iron ore\nPrerequisites: item:stone_pickaxe:1, access:underground\nCommand: !collectBlocks(\"iron_ore\", 7)\nReasoning: We need 7 iron ores to smelt into iron ingots, which are required to craft the iron leggings.\n\nStep 4: Smelt raw iron into iron ingots\nPrerequisites: item:raw_iron:7, station:furnace\nCommand: !smeltItem(\"raw_iron\", 7)\nReasoning: Smelting the raw iron obtained from mining iron ore into iron ingots is necessary for crafting the leggings.\n\nStep 5: Craft an Iron Leggings\nPrerequisites: item:iron_ingot:7, station:crafting_table\nCommand: !craftRecipe(\"iron_leggings\", 1)\nReasoning: With the 7 iron ingots, we can now craft the iron leggings at the crafting table.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 5,
+        "step_efficiency": 1,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 3,
+      "prompt_length": 11883
+    },
+    {
+      "slug": "craft/iron_trapdoor",
+      "level": "L2",
+      "goal_item": "iron_trapdoor",
+      "min_steps": 5,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect logs and craft basic tools",
+            "command": "!collectBlocks('oak_log', 4)",
+            "action_cmd": [
+              "!collectBlocks('oak_log', 4)",
+              "!craftRecipe('oak_planks', 12)",
+              "!craftRecipe('crafting_table', 1)",
+              "!craftRecipe('stick', 4)",
+              "!craftRecipe('wooden_pickaxe', 1)"
+            ],
+            "reasoning": "This step is needed to gather the initial resources and create a wooden pickaxe, which is required to mine stone and cobblestone.",
+            "preconditions": [
+              {
+                "type": "access",
+                "name": "trees",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Mine cobblestone and craft a stone pickaxe",
+            "command": "!collectBlocks('stone', 3)",
+            "action_cmd": [
+              "!collectBlocks('stone', 3)",
+              "!craftRecipe('stone_pickaxe', 1)"
+            ],
+            "reasoning": "A stone pickaxe is needed to mine iron ore, which is required to craft the iron trapdoor.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "wooden_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "stone",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Mine iron ore",
+            "command": "!collectBlocks('iron_ore', 4)",
+            "action_cmd": [
+              "!collectBlocks('iron_ore', 4)"
+            ],
+            "reasoning": "Iron ore is needed to smelt into iron ingots, which are the primary material for the iron trapdoor.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "underground",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Smelt raw iron into iron ingots",
+            "command": "!smeltItem('raw_iron', 4)",
+            "action_cmd": [
+              "!smeltItem('raw_iron', 4)"
+            ],
+            "reasoning": "Iron ore must be smelted into iron ingots before it can be used to craft the iron trapdoor.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "raw_iron",
+                "count": 4
+              },
+              {
+                "type": "station",
+                "name": "furnace",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 5,
+            "goal": "Craft an Iron Trapdoor",
+            "command": "!craftRecipe('iron_trapdoor', 1)",
+            "action_cmd": [
+              "!craftRecipe('iron_trapdoor', 1)"
+            ],
+            "reasoning": "With the iron ingots ready, the final step is to craft the iron trapdoor at the crafting table.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_ingot",
+                "count": 4
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "iron_trapdoor"
+      },
+      "raw_response": "**REASONING**:\nI referenced the examples provided, particularly Example 1 (Iron Chestplate) and Example 2 (Iron Axe), to understand the patterns for collecting and processing materials, as well as crafting the final item. The target item is an \"iron_trapdoor,\" which requires iron ingots. The material type is \"iron,\" and the tool type is \"trapdoor.\" Trapdoors in Minecraft require 4 iron ingots.\n\n**EXECUTION PLAN**:\nStep 1: Collect logs and craft basic tools\nPrerequisites: access:trees\nCommand: !collectBlocks('oak_log', 4)\nCommand: !craftRecipe('oak_planks', 12)\nCommand: !craftRecipe('crafting_table', 1)\nCommand: !craftRecipe('stick', 4)\nCommand: !craftRecipe('wooden_pickaxe', 1)\nReasoning: This step is needed to gather the initial resources and create a wooden pickaxe, which is required to mine stone and cobblestone.\n\nStep 2: Mine cobblestone and craft a stone pickaxe\nPrerequisites: item:wooden_pickaxe:1, access:stone\nCommand: !collectBlocks('stone', 3)\nCommand: !craftRecipe('stone_pickaxe', 1)\nReasoning: A stone pickaxe is needed to mine iron ore, which is required to craft the iron trapdoor.\n\nStep 3: Mine iron ore\nPrerequisites: item:stone_pickaxe:1, access:underground\nCommand: !collectBlocks('iron_ore', 4)\nReasoning: Iron ore is needed to smelt into iron ingots, which are the primary material for the iron trapdoor.\n\nStep 4: Smelt raw iron into iron ingots\nPrerequisites: item:raw_iron:4, station:furnace\nCommand: !smeltItem('raw_iron', 4)\nReasoning: Iron ore must be smelted into iron ingots before it can be used to craft the iron trapdoor.\n\nStep 5: Craft an Iron Trapdoor\nPrerequisites: item:iron_ingot:4, station:crafting_table\nCommand: !craftRecipe('iron_trapdoor', 1)\nReasoning: With the iron ingots ready, the final step is to craft the iron trapdoor at the crafting table.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 5,
+        "step_efficiency": 1,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 3,
+      "prompt_length": 12003
+    },
+    {
+      "slug": "craft/iron_door",
+      "level": "L2",
+      "goal_item": "iron_door",
+      "min_steps": 5,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect logs and craft basic tools",
+            "command": "!collectBlocks(\"oak_log\", 4)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 4)",
+              "!craftRecipe(\"oak_planks\", 12)",
+              "!craftRecipe(\"crafting_table\", 1)",
+              "!craftRecipe(\"stick\", 2)",
+              "!craftRecipe(\"wooden_pickaxe\", 1)"
+            ],
+            "reasoning": "This step ensures we have the basic tools and a crafting table to proceed with further steps.",
+            "preconditions": [
+              {
+                "type": "access",
+                "name": "trees",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Mine cobblestone and craft stone pickaxe",
+            "command": "!collectBlocks(\"stone\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"stone\", 3)",
+              "!craftRecipe(\"stone_pickaxe\", 1)"
+            ],
+            "reasoning": "A stone pickaxe is needed to mine iron ore.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "wooden_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "stone",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Mine iron ore",
+            "command": "!collectBlocks(\"iron_ore\", 6)",
+            "action_cmd": [
+              "!collectBlocks(\"iron_ore\", 6)"
+            ],
+            "reasoning": "We need 6 iron ores to smelt into iron ingots for the iron door.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "underground",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Smelt raw iron into iron ingots",
+            "command": "!smeltItem(\"raw_iron\", 6)",
+            "action_cmd": [
+              "!smeltItem(\"raw_iron\", 6)"
+            ],
+            "reasoning": "Smelting raw iron into iron ingots is necessary before crafting the iron door.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "raw_iron",
+                "count": 6
+              },
+              {
+                "type": "station",
+                "name": "furnace",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 5,
+            "goal": "Craft an Iron Door",
+            "command": "!craftRecipe(\"iron_door\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"iron_door\", 1)"
+            ],
+            "reasoning": "With 6 iron ingots, we can now craft the iron door at the crafting table.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_ingot",
+                "count": 6
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "iron_door"
+      },
+      "raw_response": "**REASONING**:\nTo craft an iron door, I referenced the patterns from the examples provided. The target item is \"iron_door\", and the material type is \"iron\". Iron doors do not fall into the standard tool types (sword, axe, pickaxe, shovel, hoe), but they still require iron ingots. An iron door requires 6 iron ingots. The steps will follow the pattern of collecting raw materials, processing them, and then crafting the final item.\n\n**EXECUTION PLAN**:\nStep 1: Collect logs and craft basic tools\nPrerequisites: access:trees\nCommand: !collectBlocks(\"oak_log\", 4)\nCommand: !craftRecipe(\"oak_planks\", 12)\nCommand: !craftRecipe(\"crafting_table\", 1)\nCommand: !craftRecipe(\"stick\", 2)\nCommand: !craftRecipe(\"wooden_pickaxe\", 1)\nReasoning: This step ensures we have the basic tools and a crafting table to proceed with further steps.\n\nStep 2: Mine cobblestone and craft stone pickaxe\nPrerequisites: item:wooden_pickaxe:1, access:stone\nCommand: !collectBlocks(\"stone\", 3)\nCommand: !craftRecipe(\"stone_pickaxe\", 1)\nReasoning: A stone pickaxe is needed to mine iron ore.\n\nStep 3: Mine iron ore\nPrerequisites: item:stone_pickaxe:1, access:underground\nCommand: !collectBlocks(\"iron_ore\", 6)\nReasoning: We need 6 iron ores to smelt into iron ingots for the iron door.\n\nStep 4: Smelt raw iron into iron ingots\nPrerequisites: item:raw_iron:6, station:furnace\nCommand: !smeltItem(\"raw_iron\", 6)\nReasoning: Smelting raw iron into iron ingots is necessary before crafting the iron door.\n\nStep 5: Craft an Iron Door\nPrerequisites: item:iron_ingot:6, station:crafting_table\nCommand: !craftRecipe(\"iron_door\", 1)\nReasoning: With 6 iron ingots, we can now craft the iron door at the crafting table.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 5,
+        "step_efficiency": 1,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 3,
+      "prompt_length": 11995
+    },
+    {
+      "slug": "craft/iron_bars",
+      "level": "L2",
+      "goal_item": "iron_bars",
+      "min_steps": 5,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect logs and craft basic tools",
+            "command": "!collectBlocks(\"oak_log\", 4)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 4)",
+              "!craftRecipe(\"oak_planks\", 12)",
+              "!craftRecipe(\"crafting_table\", 1)",
+              "!craftRecipe(\"stick\", 4)",
+              "!craftRecipe(\"wooden_pickaxe\", 1)"
+            ],
+            "reasoning": "This step provides the necessary tools (wooden pickaxe) and components (sticks) for further steps. The wooden pickaxe is needed to mine stone and cobblestone, which will be used to make a stone pickaxe.",
+            "preconditions": [
+              {
+                "type": "access",
+                "name": "trees",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Mine cobblestone and craft a stone pickaxe",
+            "command": "!collectBlocks(\"stone\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"stone\", 3)",
+              "!craftRecipe(\"stone_pickaxe\", 1)"
+            ],
+            "reasoning": "A stone pickaxe is required to mine iron ore, which is needed to craft iron bars.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "wooden_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "stone",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Mine iron ore",
+            "command": "!collectBlocks(\"iron_ore\", 6)",
+            "action_cmd": [
+              "!collectBlocks(\"iron_ore\", 6)"
+            ],
+            "reasoning": "Iron ore is needed to produce iron ingots, which are the primary material for crafting iron bars.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "underground",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Smelt raw iron into iron ingots",
+            "command": "!smeltItem(\"raw_iron\", 6)",
+            "action_cmd": [
+              "!smeltItem(\"raw_iron\", 6)"
+            ],
+            "reasoning": "Raw iron from the mined iron ore needs to be smelted into iron ingots before it can be used to craft iron bars.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "raw_iron",
+                "count": 6
+              },
+              {
+                "type": "station",
+                "name": "furnace",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 5,
+            "goal": "Craft iron bars",
+            "command": "!craftRecipe(\"iron_bars\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"iron_bars\", 1)"
+            ],
+            "reasoning": "With 6 iron ingots, we can now craft iron bars at the crafting table.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_ingot",
+                "count": 6
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "iron_bars"
+      },
+      "raw_response": "**REASONING**:\nThe user's request is to \"craft iron bars.\" Iron bars are not a tool but a block, and they require 6 iron ingots to craft. The material type is iron, and the target item is iron_bars. The pattern for crafting iron bars involves collecting iron ore, smelting it into iron ingots, and then using the iron ingots to craft the iron bars.\n\n**EXECUTION PLAN**:\nStep 1: Collect logs and craft basic tools\nPrerequisites: access:trees\nCommand: !collectBlocks(\"oak_log\", 4)\nCommand: !craftRecipe(\"oak_planks\", 12)\nCommand: !craftRecipe(\"crafting_table\", 1)\nCommand: !craftRecipe(\"stick\", 4)\nCommand: !craftRecipe(\"wooden_pickaxe\", 1)\nReasoning: This step provides the necessary tools (wooden pickaxe) and components (sticks) for further steps. The wooden pickaxe is needed to mine stone and cobblestone, which will be used to make a stone pickaxe.\n\nStep 2: Mine cobblestone and craft a stone pickaxe\nPrerequisites: item:wooden_pickaxe:1, access:stone\nCommand: !collectBlocks(\"stone\", 3)\nCommand: !craftRecipe(\"stone_pickaxe\", 1)\nReasoning: A stone pickaxe is required to mine iron ore, which is needed to craft iron bars.\n\nStep 3: Mine iron ore\nPrerequisites: item:stone_pickaxe:1, access:underground\nCommand: !collectBlocks(\"iron_ore\", 6)\nReasoning: Iron ore is needed to produce iron ingots, which are the primary material for crafting iron bars.\n\nStep 4: Smelt raw iron into iron ingots\nPrerequisites: item:raw_iron:6, station:furnace\nCommand: !smeltItem(\"raw_iron\", 6)\nReasoning: Raw iron from the mined iron ore needs to be smelted into iron ingots before it can be used to craft iron bars.\n\nStep 5: Craft iron bars\nPrerequisites: item:iron_ingot:6, station:crafting_table\nCommand: !craftRecipe(\"iron_bars\", 1)\nReasoning: With 6 iron ingots, we can now craft iron bars at the crafting table.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 5,
+        "step_efficiency": 1,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 3,
+      "prompt_length": 11989
+    },
+    {
+      "slug": "craft/clock",
+      "level": "L3",
+      "goal_item": "clock",
+      "min_steps": 6,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect logs and craft basic tools",
+            "command": "!collectBlocks(\"oak_log\", 4)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 4)",
+              "!craftRecipe(\"oak_planks\", 12)",
+              "!craftRecipe(\"stick\", 4)",
+              "!craftRecipe(\"wooden_pickaxe\", 1)"
+            ],
+            "reasoning": "We need to start by collecting logs to make planks, sticks, and a wooden pickaxe for mining stone.",
+            "preconditions": [
+              {
+                "type": "access",
+                "name": "trees",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Mine cobblestone and craft a stone pickaxe",
+            "command": "!collectBlocks(\"stone\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"stone\", 3)",
+              "!craftRecipe(\"stone_pickaxe\", 1)"
+            ],
+            "reasoning": "We need a stone pickaxe to mine iron ore, which is required for making an iron pickaxe to mine gold and redstone.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "wooden_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "stone",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Mine iron ore, smelt, and craft iron pickaxe",
+            "command": "!collectBlocks(\"iron_ore\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"iron_ore\", 3)",
+              "!smeltItem(\"raw_iron\", 3)",
+              "!craftRecipe(\"iron_pickaxe\", 1)"
+            ],
+            "reasoning": "An iron pickaxe is needed to mine gold and redstone.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              },
+              {
+                "type": "station",
+                "name": "furnace",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "underground",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Mine gold ore",
+            "command": "!collectBlocks(\"gold_ore\", 4)",
+            "action_cmd": [
+              "!collectBlocks(\"gold_ore\", 4)"
+            ],
+            "reasoning": "We need 4 gold ores to smelt into gold ingots.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "underground",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 5,
+            "goal": "Smelt raw gold into gold ingots",
+            "command": "!smeltItem(\"raw_gold\", 4)",
+            "action_cmd": [
+              "!smeltItem(\"raw_gold\", 4)"
+            ],
+            "reasoning": "Gold ore needs to be smelted into gold ingots before crafting the clock.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "raw_gold",
+                "count": 4
+              },
+              {
+                "type": "station",
+                "name": "furnace",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 6,
+            "goal": "Mine redstone",
+            "command": "!collectBlocks(\"redstone_ore\", 1)",
+            "action_cmd": [
+              "!collectBlocks(\"redstone_ore\", 1)"
+            ],
+            "reasoning": "We need 1 redstone to craft the clock.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "underground",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 7,
+            "goal": "Craft a clock",
+            "command": "!craftRecipe(\"clock\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"clock\", 1)"
+            ],
+            "reasoning": "With 4 gold ingots and 1 redstone, we can now craft the clock.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "gold_ingot",
+                "count": 4
+              },
+              {
+                "type": "item",
+                "name": "redstone",
+                "count": 1
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "clock"
+      },
+      "raw_response": "**REASONING**:\nTo craft a clock, we need to identify the target item, which is \"clock\". A clock in Minecraft is made from 4 gold ingots and 1 redstone. The material type is gold and redstone, and the tool type is not applicable since a clock is not a tool. We will follow the pattern of collecting raw materials, processing them if needed, and then crafting the final item.\n\n**EXECUTION PLAN**:\nStep 1: Collect logs and craft basic tools\nPrerequisites: access:trees\nCommand: !collectBlocks(\"oak_log\", 4)\nCommand: !craftRecipe(\"oak_planks\", 12)\nCommand: !craftRecipe(\"stick\", 4)\nCommand: !craftRecipe(\"wooden_pickaxe\", 1)\nReasoning: We need to start by collecting logs to make planks, sticks, and a wooden pickaxe for mining stone.\n\nStep 2: Mine cobblestone and craft a stone pickaxe\nPrerequisites: item:wooden_pickaxe:1, access:stone\nCommand: !collectBlocks(\"stone\", 3)\nCommand: !craftRecipe(\"stone_pickaxe\", 1)\nReasoning: We need a stone pickaxe to mine iron ore, which is required for making an iron pickaxe to mine gold and redstone.\n\nStep 3: Mine iron ore, smelt, and craft iron pickaxe\nPrerequisites: item:stone_pickaxe:1, item:stick:2, station:furnace, access:underground\nCommand: !collectBlocks(\"iron_ore\", 3)\nCommand: !smeltItem(\"raw_iron\", 3)\nCommand: !craftRecipe(\"iron_pickaxe\", 1)\nReasoning: An iron pickaxe is needed to mine gold and redstone.\n\nStep 4: Mine gold ore\nPrerequisites: item:iron_pickaxe:1, access:underground\nCommand: !collectBlocks(\"gold_ore\", 4)\nReasoning: We need 4 gold ores to smelt into gold ingots.\n\nStep 5: Smelt raw gold into gold ingots\nPrerequisites: item:raw_gold:4, station:furnace\nCommand: !smeltItem(\"raw_gold\", 4)\nReasoning: Gold ore needs to be smelted into gold ingots before crafting the clock.\n\nStep 6: Mine redstone\nPrerequisites: item:iron_pickaxe:1, access:underground\nCommand: !collectBlocks(\"redstone_ore\", 1)\nReasoning: We need 1 redstone to craft the clock.\n\nStep 7: Craft a clock\nPrerequisites: item:gold_ingot:4, item:redstone:1, station:crafting_table\nCommand: !craftRecipe(\"clock\", 1)\nReasoning: With 4 gold ingots and 1 redstone, we can now craft the clock.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 7,
+        "step_efficiency": 0.86,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 3,
+      "prompt_length": 12720
+    },
+    {
+      "slug": "combat/kill_creeper",
+      "level": "L1",
+      "goal_item": "gunpowder",
+      "min_steps": 3,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Craft a stone sword and equip it",
+            "command": "!collectBlocks('oak_log', 2)",
+            "action_cmd": [
+              "!collectBlocks('oak_log', 2)",
+              "!craftRecipe('oak_planks', 8)",
+              "!craftRecipe('stick', 4)",
+              "!craftRecipe('wooden_pickaxe', 1)",
+              "!collectBlocks('stone', 2)",
+              "!craftRecipe('stone_sword', 1)",
+              "!equipItem('stone_sword')"
+            ],
+            "reasoning": "A stone sword is a suitable weapon to defeat a creeper. First, we need to gather logs and craft planks, then sticks, and finally the stone sword.",
+            "preconditions": [
+              {
+                "type": "access",
+                "name": "trees",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "stone",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Locate the creeper before it gets close",
+            "command": "!searchForEntity('creeper', 32)",
+            "action_cmd": [
+              "!searchForEntity('creeper', 32)"
+            ],
+            "reasoning": "We need to find the creeper to engage in combat. Using the searchForEntity command helps locate the creeper within a 32-block radius.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_sword",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "surface",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Defeat the creeper using hit-and-retreat pattern",
+            "command": "!attack('creeper', true)",
+            "action_cmd": [
+              "!attack('creeper', true)"
+            ],
+            "reasoning": "Engage the creeper in combat using the stone sword. The hit-and-retreat pattern is effective to avoid taking damage.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_sword",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "surface",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Collect gunpowder from the defeated creeper",
+            "command": "!collectDrops('gunpowder', 1)",
+            "action_cmd": [
+              "!collectDrops('gunpowder', 1)"
+            ],
+            "reasoning": "After defeating the creeper, collect the gunpowder that drops as a reward.",
+            "preconditions": [],
+            "produces": null
+          }
+        ],
+        "target": null
+      },
+      "raw_response": "**REASONING**:\nThe user's request is to \"kill a creeper and collect gunpowder.\" This implies that the player needs a weapon to defeat the creeper. The target item is not explicitly mentioned, but a stone sword is a suitable choice for this task. The material type is stone, and the tool type is a sword. The pattern from Example 3 (Defeat a Creeper) is closely followed, with the addition of collecting gunpowder after defeating the creeper.\n\n**EXECUTION PLAN**:\nStep 1: Craft a stone sword and equip it\nPrerequisites: access:trees, access:stone\nCommand: !collectBlocks('oak_log', 2)\nCommand: !craftRecipe('oak_planks', 8)\nCommand: !craftRecipe('stick', 4)\nCommand: !craftRecipe('wooden_pickaxe', 1)\nCommand: !collectBlocks('stone', 2)\nCommand: !craftRecipe('stone_sword', 1)\nCommand: !equipItem('stone_sword')\nReasoning: A stone sword is a suitable weapon to defeat a creeper. First, we need to gather logs and craft planks, then sticks, and finally the stone sword.\n\nStep 2: Locate the creeper before it gets close\nPrerequisites: item:stone_sword:1, access:surface\nCommand: !searchForEntity('creeper', 32)\nReasoning: We need to find the creeper to engage in combat. Using the searchForEntity command helps locate the creeper within a 32-block radius.\n\nStep 3: Defeat the creeper using hit-and-retreat pattern\nPrerequisites: item:stone_sword:1, access:surface\nCommand: !attack('creeper', true)\nReasoning: Engage the creeper in combat using the stone sword. The hit-and-retreat pattern is effective to avoid taking damage.\n\nStep 4: Collect gunpowder from the defeated creeper\nPrerequisites: None\nCommand: !collectDrops('gunpowder', 1)\nReasoning: After defeating the creeper, collect the gunpowder that drops as a reward.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 4,
+        "step_efficiency": 0.75,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 3,
+      "prompt_length": 11916
+    },
+    {
+      "slug": "combat/kill_enderman",
+      "level": "L2",
+      "goal_item": "ender_pearl",
+      "min_steps": 4,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Craft a stone pickaxe from scratch",
+            "command": "!collectBlocks('oak_log', 3)",
+            "action_cmd": [
+              "!collectBlocks('oak_log', 3)",
+              "!craftRecipe('oak_planks', 12)",
+              "!craftRecipe('stick', 4)",
+              "!craftRecipe('wooden_pickaxe', 1)",
+              "!collectBlocks('stone', 3)",
+              "!craftRecipe('stone_pickaxe', 1)"
+            ],
+            "reasoning": "We need a stone pickaxe to mine iron ore, which is required to craft the iron sword and helmet. This step follows the cold-start tool chain pattern.",
+            "preconditions": [
+              {
+                "type": "access",
+                "name": "trees",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "stone",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Mine iron ore and craft an iron sword and iron helmet",
+            "command": "!collectBlocks('iron_ore', 7)",
+            "action_cmd": [
+              "!collectBlocks('iron_ore', 7)",
+              "!smeltItem('raw_iron', 7)",
+              "!collectBlocks('oak_log', 1)",
+              "!craftRecipe('oak_planks', 4)",
+              "!craftRecipe('stick', 2)",
+              "!craftRecipe('iron_sword', 1)",
+              "!craftRecipe('iron_helmet', 1)",
+              "!equipItem('iron_sword')",
+              "!equipItem('iron_helmet')"
+            ],
+            "reasoning": "An iron sword and helmet are necessary to have a better chance of defeating the enderman. Iron ore needs to be smelted into ingots before crafting.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "station",
+                "name": "furnace",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "underground",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Mine cobblestone and build a 2-block high ceiling shelter",
+            "command": "!collectBlocks('stone', 6)",
+            "action_cmd": [
+              "!collectBlocks('stone', 6)",
+              "!placeHere('cobblestone')"
+            ],
+            "reasoning": "A 2-block high ceiling shelter is useful to protect against the enderman's attacks while fighting it.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "stone",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Find an enderman and provoke it",
+            "command": "!searchForEntity('enderman', 48)",
+            "action_cmd": [
+              "!searchForEntity('enderman', 48)"
+            ],
+            "reasoning": "We need to locate an enderman to engage in combat and collect ender pearls.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_sword",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "surface",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 5,
+            "goal": "Stand under the 2-block shelter and attack the enderman's legs",
+            "command": "!attack('enderman', true)",
+            "action_cmd": [
+              "!attack('enderman', true)"
+            ],
+            "reasoning": "Attacking the enderman's legs from under the 2-block shelter prevents it from teleporting away, making it easier to defeat and collect ender pearls.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_sword",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "surface",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": null
+      },
+      "raw_response": "**REASONING**:\nTo defeat an enderman and collect ender pearls, we need to craft a basic weapon and some protective gear. The user's request does not specify the type of tool or material, so I will follow the pattern from Example 3, where an iron sword and iron helmet were crafted. This example provides a good template for preparing to fight an enderman. The target item is an iron sword, the material type is iron, and the tool type is a sword.\n\n**EXECUTION PLAN**:\nStep 1: Craft a stone pickaxe from scratch\nPrerequisites: access:trees, access:stone\nCommand: !collectBlocks('oak_log', 3)\nCommand: !craftRecipe('oak_planks', 12)\nCommand: !craftRecipe('stick', 4)\nCommand: !craftRecipe('wooden_pickaxe', 1)\nCommand: !collectBlocks('stone', 3)\nCommand: !craftRecipe('stone_pickaxe', 1)\nReasoning: We need a stone pickaxe to mine iron ore, which is required to craft the iron sword and helmet. This step follows the cold-start tool chain pattern.\n\nStep 2: Mine iron ore and craft an iron sword and iron helmet\nPrerequisites: item:stone_pickaxe:1, station:furnace, access:underground\nCommand: !collectBlocks('iron_ore', 7)\nCommand: !smeltItem('raw_iron', 7)\nCommand: !collectBlocks('oak_log', 1)\nCommand: !craftRecipe('oak_planks', 4)\nCommand: !craftRecipe('stick', 2)\nCommand: !craftRecipe('iron_sword', 1)\nCommand: !craftRecipe('iron_helmet', 1)\nCommand: !equipItem('iron_sword')\nCommand: !equipItem('iron_helmet')\nReasoning: An iron sword and helmet are necessary to have a better chance of defeating the enderman. Iron ore needs to be smelted into ingots before crafting.\n\nStep 3: Mine cobblestone and build a 2-block high ceiling shelter\nPrerequisites: item:stone_pickaxe:1, access:stone\nCommand: !collectBlocks('stone', 6)\nCommand: !placeHere('cobblestone')\nReasoning: A 2-block high ceiling shelter is useful to protect against the enderman's attacks while fighting it.\n\nStep 4: Find an enderman and provoke it\nPrerequisites: item:iron_sword:1, access:surface\nCommand: !searchForEntity('enderman', 48)\nReasoning: We need to locate an enderman to engage in combat and collect ender pearls.\n\nStep 5: Stand under the 2-block shelter and attack the enderman's legs\nPrerequisites: item:iron_sword:1, access:surface\nCommand: !attack('enderman', true)\nReasoning: Attacking the enderman's legs from under the 2-block shelter prevents it from teleporting away, making it easier to defeat and collect ender pearls.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 5,
+        "step_efficiency": 0.8,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 3,
+      "prompt_length": 15480
+    },
+    {
+      "slug": "combat/kill_slime",
+      "level": "L2",
+      "goal_item": "slime_ball",
+      "min_steps": 3,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Craft a stone pickaxe from scratch",
+            "command": "!collectBlocks('oak_log', 3)",
+            "action_cmd": [
+              "!collectBlocks('oak_log', 3)",
+              "!craftRecipe('oak_planks', 12)",
+              "!craftRecipe('stick', 4)",
+              "!craftRecipe('wooden_pickaxe', 1)",
+              "!collectBlocks('stone', 3)",
+              "!craftRecipe('stone_pickaxe', 1)"
+            ],
+            "reasoning": "A stone pickaxe is needed to mine iron ore, which is required to craft an iron sword.",
+            "preconditions": [
+              {
+                "type": "access",
+                "name": "trees",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "stone",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Mine iron ore and craft an iron sword",
+            "command": "!collectBlocks('iron_ore', 3)",
+            "action_cmd": [
+              "!collectBlocks('iron_ore', 3)",
+              "!smeltItem('raw_iron', 3)",
+              "!collectBlocks('oak_log', 1)",
+              "!craftRecipe('oak_planks', 4)",
+              "!craftRecipe('stick', 2)",
+              "!craftRecipe('iron_sword', 1)",
+              "!equipItem('iron_sword')"
+            ],
+            "reasoning": "An iron sword is a suitable weapon for hunting slimes. It requires 2 iron ingots and 1 stick.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "station",
+                "name": "furnace",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "underground",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Find slimes in a swamp biome at night",
+            "command": "!searchForEntity('slime', 48)",
+            "action_cmd": [
+              "!searchForEntity('slime', 48)"
+            ],
+            "reasoning": "Slimes spawn in swamps at night, and we need to locate them to defeat them and collect slimeballs.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_sword",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "surface",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Defeat slimes of all sizes to collect slimeballs",
+            "command": "!attack('slime', true)",
+            "action_cmd": [
+              "!attack('slime', true)"
+            ],
+            "reasoning": "Defeating slimes will drop slimeballs, which is the goal of the user's request.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_sword",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "surface",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": null
+      },
+      "raw_response": "**REASONING**:\nThe user's request is to \"hunt slimes in a swamp and collect slimeballs.\" This does not involve crafting a specific tool, but rather involves combat. The target item here is the slimeball, which is obtained by defeating slimes. No material or tool type is specified, so we need to ensure the player has a basic weapon, such as an iron sword, for the task. We will follow the pattern from Example 1, where the player crafts a stone pickaxe, then an iron sword, and finally hunts the slimes.\n\n**EXECUTION PLAN**:\nStep 1: Craft a stone pickaxe from scratch\nPrerequisites: access:trees, access:stone\nCommand: !collectBlocks('oak_log', 3)\nCommand: !craftRecipe('oak_planks', 12)\nCommand: !craftRecipe('stick', 4)\nCommand: !craftRecipe('wooden_pickaxe', 1)\nCommand: !collectBlocks('stone', 3)\nCommand: !craftRecipe('stone_pickaxe', 1)\nReasoning: A stone pickaxe is needed to mine iron ore, which is required to craft an iron sword.\n\nStep 2: Mine iron ore and craft an iron sword\nPrerequisites: item:stone_pickaxe:1, station:furnace, access:underground\nCommand: !collectBlocks('iron_ore', 3)\nCommand: !smeltItem('raw_iron', 3)\nCommand: !collectBlocks('oak_log', 1)\nCommand: !craftRecipe('oak_planks', 4)\nCommand: !craftRecipe('stick', 2)\nCommand: !craftRecipe('iron_sword', 1)\nCommand: !equipItem('iron_sword')\nReasoning: An iron sword is a suitable weapon for hunting slimes. It requires 2 iron ingots and 1 stick.\n\nStep 3: Find slimes in a swamp biome at night\nPrerequisites: item:iron_sword:1, access:surface\nCommand: !searchForEntity('slime', 48)\nReasoning: Slimes spawn in swamps at night, and we need to locate them to defeat them and collect slimeballs.\n\nStep 4: Defeat slimes of all sizes to collect slimeballs\nPrerequisites: item:iron_sword:1, access:surface\nCommand: !attack('slime', true)\nReasoning: Defeating slimes will drop slimeballs, which is the goal of the user's request.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 4,
+        "step_efficiency": 0.75,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 3,
+      "prompt_length": 13443
+    },
+    {
+      "slug": "combat/kill_blaze",
+      "level": "L3",
+      "goal_item": "blaze_rod",
+      "min_steps": 6,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Craft an iron pickaxe from scratch",
+            "command": "!collectBlocks('oak_log', 3)",
+            "action_cmd": [
+              "!collectBlocks('oak_log', 3)",
+              "!craftRecipe('oak_planks', 12)",
+              "!craftRecipe('stick', 4)",
+              "!craftRecipe('wooden_pickaxe', 1)",
+              "!collectBlocks('stone', 3)",
+              "!craftRecipe('stone_pickaxe', 1)",
+              "!collectBlocks('iron_ore', 3)",
+              "!smeltItem('raw_iron', 3)",
+              "!craftRecipe('iron_pickaxe', 1)"
+            ],
+            "reasoning": "We need an iron pickaxe to mine diamond ore, which is necessary for crafting a diamond pickaxe. The iron pickaxe is crafted from raw materials collected and processed.",
+            "preconditions": [
+              {
+                "type": "station",
+                "name": "furnace",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "trees",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "stone",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "underground",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Mine diamond ore and craft a diamond pickaxe",
+            "command": "!collectBlocks('diamond_ore', 3)",
+            "action_cmd": [
+              "!collectBlocks('diamond_ore', 3)",
+              "!collectBlocks('oak_log', 1)",
+              "!craftRecipe('oak_planks', 4)",
+              "!craftRecipe('stick', 2)",
+              "!craftRecipe('diamond_pickaxe', 1)"
+            ],
+            "reasoning": "A diamond pickaxe is required to mine obsidian, which is needed to build the Nether portal. The diamond pickaxe is crafted from diamond ore and sticks.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "underground",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Mine obsidian, iron ore, and collect gravel for portal materials",
+            "command": "!searchForBlock('obsidian', 32)",
+            "action_cmd": [
+              "!searchForBlock('obsidian', 32)",
+              "!collectBlocks('obsidian', 10)",
+              "!collectBlocks('iron_ore', 2)",
+              "!smeltItem('raw_iron', 2)",
+              "!collectBlocks('gravel', 4)",
+              "!craftRecipe('flint_and_steel', 1)"
+            ],
+            "reasoning": "Obsidian is needed to build the Nether portal, and flint and steel are required to light it. Iron ingots are used to craft flint and steel.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "diamond_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "item",
+                "name": "stone_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "station",
+                "name": "furnace",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "underground",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft a shield for blaze fireball protection",
+            "command": "!collectBlocks('oak_log', 2)",
+            "action_cmd": [
+              "!collectBlocks('oak_log', 2)",
+              "!craftRecipe('oak_planks', 8)",
+              "!craftRecipe('shield', 1)",
+              "!equipItem('shield')"
+            ],
+            "reasoning": "A shield is essential for protecting against Blaze fireballs in the Nether.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_ingot",
+                "count": 1
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "trees",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 5,
+            "goal": "Build and activate the nether portal",
+            "command": "!placeHere('obsidian')",
+            "action_cmd": [
+              "!placeHere('obsidian')",
+              "!placeHere('flint_and_steel')"
+            ],
+            "reasoning": "The Nether portal is built using obsidian and activated with flint and steel.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "obsidian",
+                "count": 10
+              },
+              {
+                "type": "item",
+                "name": "flint_and_steel",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "surface",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 6,
+            "goal": "Find a nether fortress",
+            "command": "!searchForBlock('nether_bricks', 64)",
+            "action_cmd": [
+              "!searchForBlock('nether_bricks', 64)"
+            ],
+            "reasoning": "Nether fortresses are the primary locations where Blazes spawn. Finding one is crucial for the next step.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "shield",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "nether",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 7,
+            "goal": "Defeat blazes and collect blaze rods",
+            "command": "!attack('blaze', true)",
+            "action_cmd": [
+              "!attack('blaze', true)"
+            ],
+            "reasoning": "The final step is to defeat Blazes and collect blaze rods, which are the goal of the user's request.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "shield",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "nether",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": null
+      },
+      "raw_response": "**REASONING**:\nThe user's request is to \"defeat blazes in the nether and collect blaze rods.\" This task does not explicitly mention a specific tool or material, but it implies that the player needs to be well-equipped to enter the Nether and combat Blazes. The examples provided show that we need to craft a pickaxe and other tools to prepare for the Nether. I will reference Example 1, which involves preparing for the Nether by crafting an iron pickaxe and then a diamond pickaxe, and also creating a shield for protection.\n\n**EXECUTION PLAN**:\nStep 1: Craft an iron pickaxe from scratch\nPrerequisites: station:furnace, access:trees, access:stone, access:underground\nCommand: !collectBlocks('oak_log', 3)\nCommand: !craftRecipe('oak_planks', 12)\nCommand: !craftRecipe('stick', 4)\nCommand: !craftRecipe('wooden_pickaxe', 1)\nCommand: !collectBlocks('stone', 3)\nCommand: !craftRecipe('stone_pickaxe', 1)\nCommand: !collectBlocks('iron_ore', 3)\nCommand: !smeltItem('raw_iron', 3)\nCommand: !craftRecipe('iron_pickaxe', 1)\nReasoning: We need an iron pickaxe to mine diamond ore, which is necessary for crafting a diamond pickaxe. The iron pickaxe is crafted from raw materials collected and processed.\n\nStep 2: Mine diamond ore and craft a diamond pickaxe\nPrerequisites: item:iron_pickaxe:1, access:underground\nCommand: !collectBlocks('diamond_ore', 3)\nCommand: !collectBlocks('oak_log', 1)\nCommand: !craftRecipe('oak_planks', 4)\nCommand: !craftRecipe('stick', 2)\nCommand: !craftRecipe('diamond_pickaxe', 1)\nReasoning: A diamond pickaxe is required to mine obsidian, which is needed to build the Nether portal. The diamond pickaxe is crafted from diamond ore and sticks.\n\nStep 3: Mine obsidian, iron ore, and collect gravel for portal materials\nPrerequisites: item:diamond_pickaxe:1, item:stone_pickaxe:1, station:furnace, access:underground\nCommand: !searchForBlock('obsidian', 32)\nCommand: !collectBlocks('obsidian', 10)\nCommand: !collectBlocks('iron_ore', 2)\nCommand: !smeltItem('raw_iron', 2)\nCommand: !collectBlocks('gravel', 4)\nCommand: !craftRecipe('flint_and_steel', 1)\nReasoning: Obsidian is needed to build the Nether portal, and flint and steel are required to light it. Iron ingots are used to craft flint and steel.\n\nStep 4: Craft a shield for blaze fireball protection\nPrerequisites: item:iron_ingot:1, station:crafting_table, access:trees\nCommand: !collectBlocks('oak_log', 2)\nCommand: !craftRecipe('oak_planks', 8)\nCommand: !craftRecipe('shield', 1)\nCommand: !equipItem('shield')\nReasoning: A shield is essential for protecting against Blaze fireballs in the Nether.\n\nStep 5: Build and activate the nether portal\nPrerequisites: item:obsidian:10, item:flint_and_steel:1, access:surface\nCommand: !placeHere('obsidian')\nCommand: !placeHere('flint_and_steel')\nReasoning: The Nether portal is built using obsidian and activated with flint and steel.\n\nStep 6: Find a nether fortress\nPrerequisites: item:shield:1, access:nether\nCommand: !searchForBlock('nether_bricks', 64)\nReasoning: Nether fortresses are the primary locations where Blazes spawn. Finding one is crucial for the next step.\n\nStep 7: Defeat blazes and collect blaze rods\nPrerequisites: item:shield:1, access:nether\nCommand: !attack('blaze', true)\nReasoning: The final step is to defeat Blazes and collect blaze rods, which are the goal of the user's request.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 7,
+        "step_efficiency": 0.86,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 3,
+      "prompt_length": 13453
+    },
+    {
+      "slug": "craft/stonecutter",
+      "level": "L2",
+      "goal_item": "stonecutter",
+      "min_steps": 5,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect logs and craft basic tools",
+            "command": "!collectBlocks(\"oak_log\", 4)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 4)",
+              "!craftRecipe(\"oak_planks\", 12)",
+              "!craftRecipe(\"stick\", 4)",
+              "!craftRecipe(\"wooden_pickaxe\", 1)"
+            ],
+            "reasoning": "We need to start with basic tools to mine cobblestone and iron ore. Logs are collected to make planks, sticks, and a wooden pickaxe.",
+            "preconditions": [
+              {
+                "type": "access",
+                "name": "trees",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Mine cobblestone and craft stone pickaxe",
+            "command": "!collectBlocks(\"stone\", 4)",
+            "action_cmd": [
+              "!collectBlocks(\"stone\", 4)",
+              "!craftRecipe(\"stone_pickaxe\", 1)"
+            ],
+            "reasoning": "Cobblestone is needed to craft the stonecutter, and a stone pickaxe is required to mine iron ore more efficiently.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "wooden_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "stone",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Mine iron ore",
+            "command": "!collectBlocks(\"iron_ore\", 1)",
+            "action_cmd": [
+              "!collectBlocks(\"iron_ore\", 1)"
+            ],
+            "reasoning": "Iron ore is needed to smelt into an iron ingot, which is a component of the stonecutter.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "underground",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Smelt raw iron into iron ingots",
+            "command": "!smeltItem(\"raw_iron\", 1)",
+            "action_cmd": [
+              "!smeltItem(\"raw_iron\", 1)"
+            ],
+            "reasoning": "Raw iron obtained from mining iron ore needs to be smelted into an iron ingot.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "raw_iron",
+                "count": 1
+              },
+              {
+                "type": "station",
+                "name": "furnace",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 5,
+            "goal": "Craft the stonecutter",
+            "command": "!craftRecipe(\"stonecutter\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"stonecutter\", 1)"
+            ],
+            "reasoning": "With the required materials (cobblestone and iron ingot), we can now craft the stonecutter at the crafting table.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "cobblestone",
+                "count": 3
+              },
+              {
+                "type": "item",
+                "name": "iron_ingot",
+                "count": 1
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "stonecutter"
+      },
+      "raw_response": "**REASONING**:\nTo craft a stonecutter, we need to follow the steps for collecting and processing materials. The stonecutter is a crafting station that requires 3 cobblestone and 1 iron ingot. We will reference the patterns from the examples, particularly the material quantity and processing patterns, as well as the dependency pattern for crafting components.\n\n**EXECUTION PLAN**:\nStep 1: Collect logs and craft basic tools\nPrerequisites: access:trees\nCommand: !collectBlocks(\"oak_log\", 4)\nCommand: !craftRecipe(\"oak_planks\", 12)\nCommand: !craftRecipe(\"stick\", 4)\nCommand: !craftRecipe(\"wooden_pickaxe\", 1)\nReasoning: We need to start with basic tools to mine cobblestone and iron ore. Logs are collected to make planks, sticks, and a wooden pickaxe.\n\nStep 2: Mine cobblestone and craft stone pickaxe\nPrerequisites: item:wooden_pickaxe:1, access:stone\nCommand: !collectBlocks(\"stone\", 4)\nCommand: !craftRecipe(\"stone_pickaxe\", 1)\nReasoning: Cobblestone is needed to craft the stonecutter, and a stone pickaxe is required to mine iron ore more efficiently.\n\nStep 3: Mine iron ore\nPrerequisites: item:stone_pickaxe:1, access:underground\nCommand: !collectBlocks(\"iron_ore\", 1)\nReasoning: Iron ore is needed to smelt into an iron ingot, which is a component of the stonecutter.\n\nStep 4: Smelt raw iron into iron ingots\nPrerequisites: item:raw_iron:1, station:furnace\nCommand: !smeltItem(\"raw_iron\", 1)\nReasoning: Raw iron obtained from mining iron ore needs to be smelted into an iron ingot.\n\nStep 5: Craft the stonecutter\nPrerequisites: item:cobblestone:3, item:iron_ingot:1, station:crafting_table\nCommand: !craftRecipe(\"stonecutter\", 1)\nReasoning: With the required materials (cobblestone and iron ingot), we can now craft the stonecutter at the crafting table.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": true,
+        "step_count": 5,
+        "step_efficiency": 1,
+        "issues": [
+          "Step 5: craftRecipe(\"stonecutter\", 1) missing ingredients: stone x3"
+        ],
+        "lenient_issues": [
+          "Step 5: craftRecipe(\"stonecutter\", 1) missing ingredients: stone x3"
+        ]
+      },
+      "examples_used": 3,
+      "prompt_length": 11776
+    },
+    {
+      "slug": "craft/jukebox",
+      "level": "L3",
+      "goal_item": "jukebox",
+      "min_steps": 5,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect logs and craft basic tools",
+            "command": "!collectBlocks(\"oak_log\", 4)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 4)",
+              "!craftRecipe(\"oak_planks\", 16)",
+              "!craftRecipe(\"stick\", 4)",
+              "!craftRecipe(\"wooden_pickaxe\", 1)"
+            ],
+            "reasoning": "We need logs to make planks and sticks, and a wooden pickaxe to mine stone.",
+            "preconditions": [
+              {
+                "type": "access",
+                "name": "trees",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Mine cobblestone and craft a stone pickaxe",
+            "command": "!collectBlocks(\"stone\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"stone\", 3)",
+              "!craftRecipe(\"stone_pickaxe\", 1)"
+            ],
+            "reasoning": "A stone pickaxe is needed to mine iron ore, which is required to craft an iron pickaxe.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "wooden_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "stone",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Mine iron ore and smelt it into iron ingots",
+            "command": "!collectBlocks(\"iron_ore\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"iron_ore\", 3)",
+              "!smeltItem(\"raw_iron\", 3)",
+              "!craftRecipe(\"iron_pickaxe\", 1)"
+            ],
+            "reasoning": "An iron pickaxe is required to mine diamonds.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "station",
+                "name": "furnace",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "underground",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Mine diamonds",
+            "command": "!collectBlocks(\"diamond_ore\", 1)",
+            "action_cmd": [
+              "!collectBlocks(\"diamond_ore\", 1)"
+            ],
+            "reasoning": "Diamonds are needed to craft the jukebox.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "underground",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 5,
+            "goal": "Craft a Jukebox",
+            "command": "!craftRecipe(\"jukebox\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"jukebox\", 1)"
+            ],
+            "reasoning": "This is the final step to craft the jukebox using 8 planks and 1 diamond.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "diamond",
+                "count": 1
+              },
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 8
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "jukebox"
+      },
+      "raw_response": "**REASONING**:\nTo craft a jukebox, we need to follow the standard crafting process. A jukebox is made from 8 wooden planks and 1 diamond. The pattern for crafting a jukebox involves collecting logs, converting them into planks, and then using those planks along with a diamond to craft the jukebox. The diamond does not need to be smelted, but it needs to be mined with an iron pickaxe or better.\n\n**EXECUTION PLAN**:\nStep 1: Collect logs and craft basic tools\nPrerequisites: access:trees\nCommand: !collectBlocks(\"oak_log\", 4)\nCommand: !craftRecipe(\"oak_planks\", 16)\nCommand: !craftRecipe(\"stick\", 4)\nCommand: !craftRecipe(\"wooden_pickaxe\", 1)\nReasoning: We need logs to make planks and sticks, and a wooden pickaxe to mine stone.\n\nStep 2: Mine cobblestone and craft a stone pickaxe\nPrerequisites: item:wooden_pickaxe:1, access:stone\nCommand: !collectBlocks(\"stone\", 3)\nCommand: !craftRecipe(\"stone_pickaxe\", 1)\nReasoning: A stone pickaxe is needed to mine iron ore, which is required to craft an iron pickaxe.\n\nStep 3: Mine iron ore and smelt it into iron ingots\nPrerequisites: item:stone_pickaxe:1, station:furnace, access:underground\nCommand: !collectBlocks(\"iron_ore\", 3)\nCommand: !smeltItem(\"raw_iron\", 3)\nCommand: !craftRecipe(\"iron_pickaxe\", 1)\nReasoning: An iron pickaxe is required to mine diamonds.\n\nStep 4: Mine diamonds\nPrerequisites: item:iron_pickaxe:1, access:underground\nCommand: !collectBlocks(\"diamond_ore\", 1)\nReasoning: Diamonds are needed to craft the jukebox.\n\nStep 5: Craft a Jukebox\nPrerequisites: item:diamond:1, item:oak_planks:8, station:crafting_table\nCommand: !craftRecipe(\"jukebox\", 1)\nReasoning: This is the final step to craft the jukebox using 8 planks and 1 diamond.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 5,
+        "step_efficiency": 1,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 3,
+      "prompt_length": 11146
+    },
+    {
+      "slug": "craft/anvil",
+      "level": "L3",
+      "goal_item": "anvil",
+      "min_steps": 6,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect logs and craft basic tools",
+            "command": "!collectBlocks(\"oak_log\", 4)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 4)",
+              "!craftRecipe(\"oak_planks\", 12)",
+              "!craftRecipe(\"stick\", 4)",
+              "!craftRecipe(\"wooden_pickaxe\", 1)"
+            ],
+            "reasoning": "We need basic tools to start mining iron ore. This step provides the necessary wooden pickaxe.",
+            "preconditions": [
+              {
+                "type": "access",
+                "name": "trees",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Mine cobblestone and craft a stone pickaxe",
+            "command": "!collectBlocks(\"stone\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"stone\", 3)",
+              "!craftRecipe(\"stone_pickaxe\", 1)"
+            ],
+            "reasoning": "A stone pickaxe is needed to mine iron ore more efficiently.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "wooden_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "stone",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Mine iron ore",
+            "command": "!collectBlocks(\"iron_ore\", 31)",
+            "action_cmd": [
+              "!collectBlocks(\"iron_ore\", 31)"
+            ],
+            "reasoning": "We need 31 iron ore to smelt into 31 iron ingots, which are required to craft the anvil.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "underground",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Smelt raw iron into iron ingots",
+            "command": "!smeltItem(\"raw_iron\", 31)",
+            "action_cmd": [
+              "!smeltItem(\"raw_iron\", 31)"
+            ],
+            "reasoning": "Smelting the raw iron into iron ingots is necessary for crafting the anvil.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "raw_iron",
+                "count": 31
+              },
+              {
+                "type": "station",
+                "name": "furnace",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 5,
+            "goal": "Craft iron blocks",
+            "command": "!craftRecipe(\"iron_block\", 3)",
+            "action_cmd": [
+              "!craftRecipe(\"iron_block\", 3)"
+            ],
+            "reasoning": "We need 3 iron blocks, each crafted from 9 iron ingots, to make the anvil.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_ingot",
+                "count": 27
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 6,
+            "goal": "Craft an anvil",
+            "command": "!craftRecipe(\"anvil\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"anvil\", 1)"
+            ],
+            "reasoning": "The anvil is crafted using 3 iron blocks and 4 iron ingots.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_block",
+                "count": 3
+              },
+              {
+                "type": "item",
+                "name": "iron_ingot",
+                "count": 4
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "anvil"
+      },
+      "raw_response": "**REASONING**:\nTo craft an anvil, we need to identify the materials and steps required. An anvel is made from 3 iron blocks and 4 iron ingots. Each iron block is crafted from 9 iron ingots. Therefore, we need a total of 31 iron ingots (27 for the iron blocks and 4 additional ingots). We will follow the pattern of collecting raw materials, smelting them, and then crafting the final item.\n\n**EXECUTION PLAN**:\nStep 1: Collect logs and craft basic tools\nPrerequisites: access:trees\nCommand: !collectBlocks(\"oak_log\", 4)\nCommand: !craftRecipe(\"oak_planks\", 12)\nCommand: !craftRecipe(\"stick\", 4)\nCommand: !craftRecipe(\"wooden_pickaxe\", 1)\nReasoning: We need basic tools to start mining iron ore. This step provides the necessary wooden pickaxe.\n\nStep 2: Mine cobblestone and craft a stone pickaxe\nPrerequisites: item:wooden_pickaxe:1, access:stone\nCommand: !collectBlocks(\"stone\", 3)\nCommand: !craftRecipe(\"stone_pickaxe\", 1)\nReasoning: A stone pickaxe is needed to mine iron ore more efficiently.\n\nStep 3: Mine iron ore\nPrerequisites: item:stone_pickaxe:1, access:underground\nCommand: !collectBlocks(\"iron_ore\", 31)\nReasoning: We need 31 iron ore to smelt into 31 iron ingots, which are required to craft the anvil.\n\nStep 4: Smelt raw iron into iron ingots\nPrerequisites: item:raw_iron:31, station:furnace\nCommand: !smeltItem(\"raw_iron\", 31)\nReasoning: Smelting the raw iron into iron ingots is necessary for crafting the anvil.\n\nStep 5: Craft iron blocks\nPrerequisites: item:iron_ingot:27, station:crafting_table\nCommand: !craftRecipe(\"iron_block\", 3)\nReasoning: We need 3 iron blocks, each crafted from 9 iron ingots, to make the anvil.\n\nStep 6: Craft an anvil\nPrerequisites: item:iron_block:3, item:iron_ingot:4, station:crafting_table\nCommand: !craftRecipe(\"anvil\", 1)\nReasoning: The anvil is crafted using 3 iron blocks and 4 iron ingots.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 6,
+        "step_efficiency": 1,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 3,
+      "prompt_length": 11843
+    },
+    {
+      "slug": "craft/note_block",
+      "level": "L3",
+      "goal_item": "note_block",
+      "min_steps": 6,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect logs and craft basic tools",
+            "command": "!collectBlocks('oak_log', 4)",
+            "action_cmd": [
+              "!collectBlocks('oak_log', 4)",
+              "!craftRecipe('oak_planks', 32)",
+              "!craftRecipe('stick', 4)",
+              "!craftRecipe('wooden_pickaxe', 1)"
+            ],
+            "reasoning": "We need logs to make planks and sticks, and a wooden pickaxe to mine stone and later redstone ore.",
+            "preconditions": [
+              {
+                "type": "access",
+                "name": "trees",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Mine cobblestone and craft stone pickaxe",
+            "command": "!collectBlocks('stone', 3)",
+            "action_cmd": [
+              "!collectBlocks('stone', 3)",
+              "!craftRecipe('stone_pickaxe', 1)"
+            ],
+            "reasoning": "A stone pickaxe is needed to mine redstone ore.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "wooden_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "stone",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Mine redstone ore",
+            "command": "!collectBlocks('redstone_ore', 1)",
+            "action_cmd": [
+              "!collectBlocks('redstone_ore', 1)"
+            ],
+            "reasoning": "Redstone is a key component for the note block.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "underground",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft a Note Block",
+            "command": "!craftRecipe('note_block', 1)",
+            "action_cmd": [
+              "!craftRecipe('note_block', 1)"
+            ],
+            "reasoning": "With 8 planks and 1 redstone, we can craft a note block.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 8
+              },
+              {
+                "type": "item",
+                "name": "redstone",
+                "count": 1
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "note_block"
+      },
+      "raw_response": "**REASONING**:\nTo craft a note block, I referenced the standard crafting process. Note blocks are crafted using 8 planks and 1 redstone. The material type is wood (for planks) and redstone. No smelting is required for this item. The steps will involve collecting logs to make planks and mining redstone ore to get redstone.\n\n**EXECUTION PLAN**:\nStep 1: Collect logs and craft basic tools\nPrerequisites: access:trees\nCommand: !collectBlocks('oak_log', 4)\nCommand: !craftRecipe('oak_planks', 32)\nCommand: !craftRecipe('stick', 4)\nCommand: !craftRecipe('wooden_pickaxe', 1)\nReasoning: We need logs to make planks and sticks, and a wooden pickaxe to mine stone and later redstone ore.\n\nStep 2: Mine cobblestone and craft stone pickaxe\nPrerequisites: item:wooden_pickaxe:1, access:stone\nCommand: !collectBlocks('stone', 3)\nCommand: !craftRecipe('stone_pickaxe', 1)\nReasoning: A stone pickaxe is needed to mine redstone ore.\n\nStep 3: Mine redstone ore\nPrerequisites: item:stone_pickaxe:1, access:underground\nCommand: !collectBlocks('redstone_ore', 1)\nReasoning: Redstone is a key component for the note block.\n\nStep 4: Craft a Note Block\nPrerequisites: item:oak_planks:8, item:redstone:1, station:crafting_table\nCommand: !craftRecipe('note_block', 1)\nReasoning: With 8 planks and 1 redstone, we can craft a note block.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": true,
+        "step_count": 4,
+        "step_efficiency": 1,
+        "issues": [
+          "Step 1: craftRecipe(\"oak_planks\", 32) missing ingredients: oak_log x8",
+          "Step 3: collecting redstone_ore requires iron_pickaxe, not available"
+        ],
+        "lenient_issues": [
+          "Step 1: craftRecipe(\"oak_planks\", 32) missing ingredients: oak_log x8",
+          "Step 3: collecting redstone_ore requires iron_pickaxe, not available"
+        ]
+      },
+      "examples_used": 3,
+      "prompt_length": 11070
+    }
+  ],
+  "summary": {
+    "by_level": {
+      "L1": {
+        "total": 1,
+        "strict_tcr": "1/1",
+        "lenient_tcr": "1/1",
+        "pvr": "1/1",
+        "avg_step_efficiency": 0.75
+      },
+      "L2": {
+        "total": 9,
+        "strict_tcr": "8/9",
+        "lenient_tcr": "8/9",
+        "pvr": "9/9",
+        "avg_step_efficiency": 0.93
+      },
+      "L3": {
+        "total": 8,
+        "strict_tcr": "6/8",
+        "lenient_tcr": "6/8",
+        "pvr": "8/8",
+        "avg_step_efficiency": 0.92
+      }
+    },
+    "overall": {
+      "strict_tcr": "15/18",
+      "lenient_tcr": "15/18",
+      "pvr": "18/18",
+      "avg_step_efficiency": 0.92
+    }
+  }
+}

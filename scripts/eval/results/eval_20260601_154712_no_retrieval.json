@@ -1,0 +1,119 @@
+{
+  "meta": {
+    "timestamp": "2026-06-01T07:47:19.043Z",
+    "model": "qwen3-vl-8b-instruct",
+    "condition": "no_retrieval",
+    "total_tasks": 1,
+    "completed_tasks": 1,
+    "failed_tasks": 0
+  },
+  "tasks": [
+    {
+      "slug": "craft/ladder",
+      "level": "L1",
+      "goal_item": "ladder",
+      "min_steps": 2,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect oak logs",
+            "command": "!collectBlocks(\"oak_log\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 3)"
+            ],
+            "reasoning": "Logs are needed to make planks, which are needed to make sticks, which are needed to make the ladder. Three logs are sufficient to produce enough planks and sticks.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks",
+            "command": "!craftRecipe(\"oak_planks\", 12)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 12)"
+            ],
+            "reasoning": "Planks are crafted from logs at a crafting table. Twelve planks are needed to make 6 sticks (since each stick requires 2 planks).",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft sticks",
+            "command": "!craftRecipe(\"stick\", 6)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 6)"
+            ],
+            "reasoning": "Each stick requires 2 planks. Six sticks are needed for one ladder, so we craft six sticks.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 12
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft a ladder",
+            "command": "!craftRecipe(\"ladder\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"ladder\", 1)"
+            ],
+            "reasoning": "A ladder requires 6 sticks arranged in a specific pattern on a crafting table. This is the final step in the crafting chain.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 6
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "ladder"
+      },
+      "raw_response": "**REASONING**:  \nThe user requested to craft a ladder. In Minecraft, a ladder is not a tool but a building block made from sticks. The pattern for crafting ladders requires 6 sticks (no material processing needed). Since sticks are crafted from planks, and planks come from logs, I must follow the dependency chain: collect logs → craft planks → craft sticks → craft ladder. No smelting or mining tools required for logs. The ladder recipe uses only sticks — no raw materials beyond wood.\n\n**EXECUTION PLAN**:\nStep 1: Collect oak logs\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 3)\nReasoning: Logs are needed to make planks, which are needed to make sticks, which are needed to make the ladder. Three logs are sufficient to produce enough planks and sticks.\n\nStep 2: Craft oak planks\nPrerequisites: item:oak_log:3\nCommand: !craftRecipe(\"oak_planks\", 12)\nReasoning: Planks are crafted from logs at a crafting table. Twelve planks are needed to make 6 sticks (since each stick requires 2 planks).\n\nStep 3: Craft sticks\nPrerequisites: item:oak_planks:12\nCommand: !craftRecipe(\"stick\", 6)\nReasoning: Each stick requires 2 planks. Six sticks are needed for one ladder, so we craft six sticks.\n\nStep 4: Craft a ladder\nPrerequisites: item:stick:6\nCommand: !craftRecipe(\"ladder\", 1)\nReasoning: A ladder requires 6 sticks arranged in a specific pattern on a crafting table. This is the final step in the crafting chain.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": true,
+        "step_count": 4,
+        "step_efficiency": 0.5,
+        "issues": [
+          "Step 4: craftRecipe(\"ladder\", 1) missing ingredients: stick x7"
+        ],
+        "lenient_issues": [
+          "Step 4: craftRecipe(\"ladder\", 1) missing ingredients: stick x7"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7609
+    }
+  ],
+  "summary": {
+    "by_level": {
+      "L1": {
+        "total": 1,
+        "strict_tcr": "0/1",
+        "lenient_tcr": "0/1",
+        "pvr": "1/1",
+        "avg_step_efficiency": 0.5
+      }
+    },
+    "overall": {
+      "strict_tcr": "0/1",
+      "lenient_tcr": "0/1",
+      "pvr": "1/1",
+      "avg_step_efficiency": 0.5
+    }
+  }
+}

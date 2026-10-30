@@ -1,0 +1,155 @@
+{
+  "meta": {
+    "timestamp": "2026-06-07T03:43:02.984Z",
+    "model": "gemma4:12b-mlx",
+    "condition": "no_retrieval",
+    "total_tasks": 1,
+    "completed_tasks": 1,
+    "failed_tasks": 0
+  },
+  "tasks": [
+    {
+      "slug": "craft/wooden_sword",
+      "level": "L1",
+      "goal_item": "wooden_sword",
+      "min_steps": 2,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect oak logs",
+            "command": "!collectBlocks(\"oak_log\", 6)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 6)"
+            ],
+            "reasoning": "Collecting raw materials. No tool is required for wood according to the Mining Tool Requirement Pattern.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks",
+            "command": "***!craftRecipe(\"oak_planks\", 24)",
+            "action_cmd": [
+              "***!craftRecipe(\"oak_planks\", 24)"
+            ],
+            "reasoning": "Processing logs into planks. This is a processing step which provides the base material for all other components.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 6
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft crafting table",
+            "command": "***!craftRecipe(\"crafting_table\", 1)",
+            "action_cmd": [
+              "***!craftRecipe(\"crafting_table\", 1)"
+            ],
+            "reasoning": "A crafting table is required as a station for subsequent crafting steps according to the Dependency Pattern.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_plank",
+                "count": 4
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft sticks",
+            "command": "***!craftRecipe(\"stick\", 4)",
+            "action_cmd": [
+              "***!craftRecipe(\"stick\", 4)"
+            ],
+            "reasoning": "Sticks are a dependency for the sword handle. I am crafting 4 to ensure at least 1 is available after any internal processing.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_plank",
+                "count": 2
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 5,
+            "goal": "Craft wooden sword",
+            "command": "***!craftRecipe(\"wooden_sword\", 1)",
+            "action_cmd": [
+              "***!craftRecipe(\"wooden_sword\", 1)"
+            ],
+            "reasoning": "Final assembly of the sword using 2 material units (oak_planks) and 1 stick as per the Quantity Pattern.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_plank",
+                "count": 2
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 1
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "wooden_sword"
+      },
+      "raw_response": "REASONING:\nI analyzed the user request \"craft a wooden sword\".\n- Target item: wooden_sword\n- Material type: wood (processed into oak_planks)\n- Tool type: sword\n\nFollowing the Quantity Pattern, a sword requires 2 material units plus 1 stick. For a wooden sword, these units are oak_planks.\nI followed the Dependency Pattern by ensuring that logs were collected first, processed into planks, and then used to create a crafting table and sticks before the final assembly.\nI applied the Processing Pattern: Logs -> Planks (processing) -> Sticks (components).\n\nEXECUTION PLAN:\nStep 1: Collect oak logs\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 6)\nReasoning: Collecting raw materials. No tool is required for wood according to the Mining Tool Requirement Pattern.\n\nStep 2: Craft oak planks\nPrerequisites: item:oak_log:6\nCommand: ***!craftRecipe(\"oak_planks\", 24)\nReasoning: Processing logs into planks. This is a processing step which provides the base material for all other components.\n\nStep 3: Craft crafting table\nPrerequisites: item:oak_plank:4\nCommand: ***!craftRecipe(\"crafting_table\", 1)\nReasoning: A crafting table is required as a station for subsequent crafting steps according to the Dependency Pattern.\n\nStep 4: Craft sticks\nPrerequisites: item:oak_plank:2, station:crafting_table\nCommand: ***!craftRecipe(\"stick\", 4)\nReasoning: Sticks are a dependency for the sword handle. I am crafting 4 to ensure at least 1 is available after any internal processing.\n\nStep 5: Craft wooden sword\nPrerequisites: item:oak_plank:2, item:stick:1, station:crafting_table\nCommand: ***!craftRecipe(\"wooden_sword\", 1)\nReasoning: Final assembly of the sword using 2 material units (oak_planks) and 1 stick as per the Quantity Pattern.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 5,
+        "step_efficiency": 0.4,
+        "issues": [
+          "Step 3: missing oak_plank x4",
+          "Step 4: missing oak_plank x2",
+          "Step 5: missing oak_plank x2"
+        ],
+        "lenient_issues": [
+          "Step 3: missing oak_plank x4",
+          "Step 4: missing oak_plank x2",
+          "Step 5: missing oak_plank x2"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7621
+    }
+  ],
+  "summary": {
+    "by_level": {
+      "L1": {
+        "total": 1,
+        "strict_tcr": "0/1",
+        "lenient_tcr": "0/1",
+        "pvr": "0/1",
+        "avg_step_efficiency": 0.4
+      }
+    },
+    "overall": {
+      "strict_tcr": "0/1",
+      "lenient_tcr": "0/1",
+      "pvr": "0/1",
+      "avg_step_efficiency": 0.4
+    }
+  }
+}

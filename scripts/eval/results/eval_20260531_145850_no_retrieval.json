@@ -1,0 +1,119 @@
+{
+  "meta": {
+    "timestamp": "2026-05-31T06:59:21.468Z",
+    "model": "qwen-max",
+    "condition": "no_retrieval",
+    "total_tasks": 1,
+    "completed_tasks": 1,
+    "failed_tasks": 0
+  },
+  "tasks": [
+    {
+      "slug": "craft/ladder",
+      "level": "L1",
+      "goal_item": "ladder",
+      "min_steps": 2,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect logs",
+            "command": "!collectBlocks(\"oak_log\", 2)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 2)"
+            ],
+            "reasoning": "We need logs to start the process of making planks and then sticks.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks",
+            "command": "!craftRecipe(\"oak_planks\", 8)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 8)"
+            ],
+            "reasoning": "Planks are needed to craft sticks, and each log can be crafted into 4 planks.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 2
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft sticks",
+            "command": "!craftRecipe(\"stick\", 7)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 7)"
+            ],
+            "reasoning": "Sticks are required to craft the ladder, and 7 sticks are needed for one ladder.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 8
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft the ladder",
+            "command": "!craftRecipe(\"ladder\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"ladder\", 1)"
+            ],
+            "reasoning": "With 7 sticks, we can now craft the final ladder.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 7
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "ladder"
+      },
+      "raw_response": "**REASONING**:\nTo craft a ladder, we need to follow the pattern for crafting items that require sticks. Ladders are made from 7 sticks, and sticks are crafted from planks, which in turn are crafted from logs. The user's request is to craft a ladder, so the target item is \"ladder\". The material type is wood (logs), and the tool type is not applicable here as ladders are not tools.\n\n**EXECUTION PLAN**:\nStep 1: Collect logs\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 2)\nReasoning: We need logs to start the process of making planks and then sticks.\n\nStep 2: Craft oak planks\nPrerequisites: item:oak_log:2\nCommand: !craftRecipe(\"oak_planks\", 8)\nReasoning: Planks are needed to craft sticks, and each log can be crafted into 4 planks.\n\nStep 3: Craft sticks\nPrerequisites: item:oak_planks:8\nCommand: !craftRecipe(\"stick\", 7)\nReasoning: Sticks are required to craft the ladder, and 7 sticks are needed for one ladder.\n\nStep 4: Craft the ladder\nPrerequisites: item:stick:7\nCommand: !craftRecipe(\"ladder\", 1)\nReasoning: With 7 sticks, we can now craft the final ladder.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 4,
+        "step_efficiency": 0.5,
+        "issues": [
+          "Goal item \"ladder\" not produced by any step"
+        ],
+        "lenient_issues": [
+          "Goal item \"ladder\" not produced by any step"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7609
+    }
+  ],
+  "summary": {
+    "by_level": {
+      "L1": {
+        "total": 1,
+        "strict_tcr": "0/1",
+        "lenient_tcr": "0/1",
+        "pvr": "0/1",
+        "avg_step_efficiency": 0.5
+      }
+    },
+    "overall": {
+      "strict_tcr": "0/1",
+      "lenient_tcr": "0/1",
+      "pvr": "0/1",
+      "avg_step_efficiency": 0.5
+    }
+  }
+}

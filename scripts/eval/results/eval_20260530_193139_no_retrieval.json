@@ -1,0 +1,141 @@
+{
+  "meta": {
+    "timestamp": "2026-05-30T11:31:45.023Z",
+    "model": "deepseek-chat",
+    "condition": "no_retrieval",
+    "total_tasks": 1,
+    "completed_tasks": 1,
+    "failed_tasks": 0
+  },
+  "tasks": [
+    {
+      "slug": "craft/wooden_sword",
+      "level": "L1",
+      "goal_item": "wooden_sword",
+      "min_steps": 2,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect logs for planks",
+            "command": "!collectBlocks(\"log\", 1)",
+            "action_cmd": [
+              "!collectBlocks(\"log\", 1)"
+            ],
+            "reasoning": "First, collect raw wood logs to process into planks. One log yields 4 planks, which is enough for the sword and stick.",
+            "preconditions": [],
+            "produces": {
+              "type": "item",
+              "name": "log",
+              "count": 1
+            }
+          },
+          {
+            "step": 2,
+            "goal": "Craft planks from logs",
+            "command": "!craftRecipe(\"planks\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"planks\", 4)"
+            ],
+            "reasoning": "Convert logs into planks, the base material for wooden items and sticks. 1 log → 4 planks.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "log",
+                "count": 1
+              }
+            ],
+            "produces": {
+              "type": "item",
+              "name": "planks",
+              "count": 4
+            }
+          },
+          {
+            "step": 3,
+            "goal": "Craft sticks from planks",
+            "command": "!craftRecipe(\"stick\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 1)"
+            ],
+            "reasoning": "Craft 1 stick for the sword handle. Uses 2 planks as per the standard stick recipe. Remaining 2 planks will be used for the sword blade.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "planks",
+                "count": 2
+              }
+            ],
+            "produces": {
+              "type": "item",
+              "name": "stick",
+              "count": 1
+            }
+          },
+          {
+            "step": 4,
+            "goal": "Craft the wooden sword",
+            "command": "!craftRecipe(\"wooden_sword\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"wooden_sword\", 1)"
+            ],
+            "reasoning": "Craft the final item. A wooden sword requires 2 planks (material) and 1 stick (handle) placed in the crafting grid. This is the last step per dependency order.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "planks",
+                "count": 2
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 1
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": {
+              "type": "item",
+              "name": "wooden_sword",
+              "count": 1
+            }
+          }
+        ],
+        "target": "wooden_sword"
+      },
+      "raw_response": "**REASONING**:  \nI analyzed the user request \"craft a wooden sword\" and identified:  \n- Target item: `wooden_sword`  \n- Material type: `wood` (from logs/planks)  \n- Tool type: `sword` (requires 2 material units + 1 stick per the pattern)  \n\nI referenced the Material Quantity Pattern from the examples: Swords always need **2 material units + 1 stick**. For wood, logs must be processed into planks, then planks can be used directly (no smelting needed). Planks can also be crafted into sticks.  \n\nI adapted the pattern from the examples:  \n- Collect logs (raw material)  \n- Craft planks from logs  \n- Craft sticks from planks (required for sword handle)  \n- Craft the wooden sword (2 planks + 1 stick)  \n\nNo smelting is needed since wood doesn't require furnace processing. The plan follows dependency order: raw materials → components → final item.\n\n**EXECUTION PLAN**:  \n\nStep 1: Collect logs for planks  \nPrerequisites: None  \nProduces: item:log:1  \nCommand: !collectBlocks(\"log\", 1)  \nReasoning: First, collect raw wood logs to process into planks. One log yields 4 planks, which is enough for the sword and stick.  \n\nStep 2: Craft planks from logs  \nPrerequisites: item:log:1  \nProduces: item:planks:4  \nCommand: !craftRecipe(\"planks\", 4)  \nReasoning: Convert logs into planks, the base material for wooden items and sticks. 1 log → 4 planks.  \n\nStep 3: Craft sticks from planks  \nPrerequisites: item:planks:2  \nProduces: item:stick:1  \nCommand: !craftRecipe(\"stick\", 1)  \nReasoning: Craft 1 stick for the sword handle. Uses 2 planks as per the standard stick recipe. Remaining 2 planks will be used for the sword blade.  \n\nStep 4: Craft the wooden sword  \nPrerequisites: item:planks:2, item:stick:1, station:crafting_table  \nProduces: item:wooden_sword:1  \nCommand: !craftRecipe(\"wooden_sword\", 1)  \nReasoning: Craft the final item. A wooden sword requires 2 planks (material) and 1 stick (handle) placed in the crafting grid. This is the last step per dependency order.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 4,
+        "step_efficiency": 0.5,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 0,
+      "prompt_length": 6472
+    }
+  ],
+  "summary": {
+    "by_level": {
+      "L1": {
+        "total": 1,
+        "strict_tcr": "1/1",
+        "lenient_tcr": "1/1",
+        "pvr": "1/1",
+        "avg_step_efficiency": 0.5
+      }
+    },
+    "overall": {
+      "strict_tcr": "1/1",
+      "lenient_tcr": "1/1",
+      "pvr": "1/1",
+      "avg_step_efficiency": 0.5
+    }
+  }
+}

@@ -1,0 +1,358 @@
+{
+  "_comment": "Live bot evaluation manifest — 21 held-out tasks (all ⊂ static-60 eval_tasks.json; enables task-level static↔live correspondence), L1×7/L2×7/L3×7. No overlap with data/training/*_examples.json. Raw ore staged as world blocks; no pickaxe/furnace pre-given — bot must self-build tool chain (wooden→stone→iron pickaxe + furnace from staged cobblestone/stone). saer_cold pins cold-start weights in the harness. 2 conditions × 5 seeds × {2–3 models}. All tasks have both stone AND cobblestone staged (充足原材料). No biome-dependent collect tasks (sugar_cane replaced with pumpkin).",
+  "config": {
+    "spawn": {
+      "x": 0,
+      "y": 64,
+      "z": 0
+    },
+    "botName": "Max",
+    "profile": "max.json",
+    "seedOffset": 30,
+    "stagingZOffset": 3,
+    "rcon": {
+      "host": "127.0.0.1",
+      "port": 25575,
+      "password": "livebot_eval"
+    },
+    "_portNote": "25575 = RCON port (server.properties rcon.port). 55916 = game port (settings.js). These are separate."
+  },
+  "conditions": [
+    "no_retrieval",
+    "saer_cold"
+  ],
+  "seeds": 3,
+  "tasks": [
+    {
+      "slug": "craft/wooden_sword",
+      "prompt": "craft a wooden sword",
+      "goal_item": "wooden_sword",
+      "goal_count": 1,
+      "level": "L1",
+      "category": "CRAFT",
+      "materials": [
+        { "type": "oak_log", "count": 6 },
+        { "type": "stone", "count": 16 },
+        { "type": "cobblestone", "count": 16 }
+      ],
+      "prePlaceFurnace": false,
+      "notes": "L1 baseline. oak_log→planks→sticks+sword. stone+cobblestone staged in case LLM plans a tool chain."
+    },
+    {
+      "slug": "craft/chest",
+      "prompt": "craft a chest",
+      "goal_item": "chest",
+      "goal_count": 1,
+      "level": "L1",
+      "category": "CRAFT",
+      "materials": [
+        { "type": "oak_log", "count": 6 },
+        { "type": "stone", "count": 16 },
+        { "type": "cobblestone", "count": 16 }
+      ],
+      "prePlaceFurnace": false,
+      "notes": "8 planks + crafting table = 12 planks = 3 logs. Buffer to 6."
+    },
+    {
+      "slug": "craft/ladder",
+      "prompt": "craft a ladder",
+      "goal_item": "ladder",
+      "goal_count": 1,
+      "level": "L1",
+      "category": "CRAFT",
+      "materials": [
+        { "type": "oak_log", "count": 6 },
+        { "type": "stone", "count": 16 },
+        { "type": "cobblestone", "count": 16 }
+      ],
+      "prePlaceFurnace": false,
+      "notes": "7 sticks = 3.5 planks = 1 log. Buffer logs for crafting table."
+    },
+    {
+      "slug": "craft/oak_door",
+      "prompt": "craft an oak door",
+      "goal_item": "oak_door",
+      "goal_count": 1,
+      "level": "L1",
+      "category": "CRAFT",
+      "materials": [
+        { "type": "oak_log", "count": 6 },
+        { "type": "stone", "count": 16 },
+        { "type": "cobblestone", "count": 16 }
+      ],
+      "prePlaceFurnace": false,
+      "notes": "6 planks for door + 4 planks crafting table = 10 planks = 3 logs. Buffer to 6."
+    },
+    {
+      "slug": "craft/wooden_shovel",
+      "prompt": "craft a wooden shovel",
+      "goal_item": "wooden_shovel",
+      "goal_count": 1,
+      "level": "L1",
+      "category": "CRAFT",
+      "materials": [
+        { "type": "oak_log", "count": 6 },
+        { "type": "stone", "count": 16 },
+        { "type": "cobblestone", "count": 16 }
+      ],
+      "prePlaceFurnace": false,
+      "notes": "L1. 1 plank head + 2 sticks + crafting table. No pickaxe needed."
+    },
+    {
+      "slug": "collect/gravel",
+      "prompt": "collect some gravel",
+      "goal_item": "gravel",
+      "goal_count": 4,
+      "level": "L1",
+      "category": "COLLECT",
+      "materials": [
+        { "type": "gravel", "count": 10 }
+      ],
+      "prePlaceFurnace": false,
+      "collectSetup": null,
+      "notes": "Pure collect. Gravel staged as world blocks, mined by hand."
+    },
+    {
+      "slug": "collect/pumpkin",
+      "prompt": "collect a pumpkin",
+      "goal_item": "pumpkin",
+      "goal_count": 1,
+      "level": "L1",
+      "category": "COLLECT",
+      "materials": [
+        { "type": "pumpkin", "count": 4 }
+      ],
+      "prePlaceFurnace": false,
+      "collectSetup": null,
+      "notes": "Pure collect. Pumpkin blocks staged via /setblock, mined by hand. Replaced sugar_cane (water-adjacency staging risk). No biome dependency."
+    },
+    {
+      "slug": "craft/iron_helmet",
+      "prompt": "craft an iron helmet",
+      "goal_item": "iron_helmet",
+      "goal_count": 1,
+      "level": "L2",
+      "category": "CRAFT",
+      "materials": [
+        { "type": "iron_ore", "count": 10 },
+        { "type": "oak_log", "count": 6 },
+        { "type": "stone", "count": 16 },
+        { "type": "cobblestone", "count": 24 }
+      ],
+      "prePlaceFurnace": false,
+      "notes": "L2: mine iron_ore → smelt raw_iron → craft iron_helmet (5 ingots). cobblestone×24 covers stone_pickaxe(3)+furnace(8)+buffer."
+    },
+    {
+      "slug": "craft/iron_boots",
+      "prompt": "craft iron boots",
+      "goal_item": "iron_boots",
+      "goal_count": 1,
+      "level": "L2",
+      "category": "CRAFT",
+      "materials": [
+        { "type": "iron_ore", "count": 8 },
+        { "type": "oak_log", "count": 6 },
+        { "type": "stone", "count": 16 },
+        { "type": "cobblestone", "count": 24 }
+      ],
+      "prePlaceFurnace": false,
+      "notes": "L2: 4 iron_ingots. cobblestone×24 covers stone_pickaxe(3)+furnace(8)+buffer."
+    },
+    {
+      "slug": "craft/stone_bricks",
+      "prompt": "craft stone bricks",
+      "goal_item": "stone_bricks",
+      "goal_count": 4,
+      "level": "L2",
+      "category": "CRAFT",
+      "materials": [
+        { "type": "oak_log", "count": 6 },
+        { "type": "stone", "count": 20 },
+        { "type": "cobblestone", "count": 24 }
+      ],
+      "prePlaceFurnace": false,
+      "notes": "L2: mine cobblestone→smelt→stone→craft stone_bricks. stone×20 gives mining targets; cobblestone×24 covers furnace(8)+stone_pickaxe(3)+smelt input(4)+buffer."
+    },
+    {
+      "slug": "craft/iron_bars",
+      "prompt": "craft iron bars",
+      "goal_item": "iron_bars",
+      "goal_count": 16,
+      "level": "L2",
+      "category": "CRAFT",
+      "materials": [
+        { "type": "iron_ore", "count": 8 },
+        { "type": "oak_log", "count": 6 },
+        { "type": "stone", "count": 16 },
+        { "type": "cobblestone", "count": 24 }
+      ],
+      "prePlaceFurnace": false,
+      "notes": "L2: 6 iron_ingots → 16 iron_bars. cobblestone×24 covers stone_pickaxe(3)+furnace(8)+buffer."
+    },
+    {
+      "slug": "craft/stone_button",
+      "prompt": "craft a stone button",
+      "goal_item": "stone_button",
+      "goal_count": 1,
+      "level": "L2",
+      "category": "CRAFT",
+      "materials": [
+        { "type": "oak_log", "count": 6 },
+        { "type": "stone", "count": 16 },
+        { "type": "cobblestone", "count": 24 }
+      ],
+      "prePlaceFurnace": false,
+      "notes": "L2: cobblestone→smelt→stone→craft stone_button. cobblestone×24 covers furnace(8)+stone_pickaxe(3)+smelt input+button+buffer."
+    },
+    {
+      "slug": "craft/cauldron",
+      "prompt": "craft a cauldron",
+      "goal_item": "cauldron",
+      "goal_count": 1,
+      "level": "L2",
+      "category": "CRAFT",
+      "materials": [
+        { "type": "iron_ore", "count": 8 },
+        { "type": "oak_log", "count": 6 },
+        { "type": "stone", "count": 16 },
+        { "type": "cobblestone", "count": 24 }
+      ],
+      "prePlaceFurnace": false,
+      "notes": "L2: 7 iron_ingot. Chain: wooden→stone pickaxe (from staged cobblestone) → mine iron_ore → smelt → craft cauldron. cobblestone×24 covers furnace(8)+stone_pickaxe(3)+buffer."
+    },
+    {
+      "slug": "craft/iron_door",
+      "prompt": "craft an iron door",
+      "goal_item": "iron_door",
+      "goal_count": 1,
+      "level": "L2",
+      "category": "CRAFT",
+      "materials": [
+        { "type": "iron_ore", "count": 10 },
+        { "type": "oak_log", "count": 6 },
+        { "type": "stone", "count": 16 },
+        { "type": "cobblestone", "count": 24 }
+      ],
+      "prePlaceFurnace": false,
+      "notes": "L2: 6 iron_ingot. Same iron chain as iron_helmet/boots. cobblestone×24 covers full chain."
+    },
+    {
+      "slug": "craft/diamond_axe",
+      "prompt": "craft a diamond axe",
+      "goal_item": "diamond_axe",
+      "goal_count": 1,
+      "level": "L3",
+      "category": "CRAFT",
+      "materials": [
+        { "type": "diamond_ore", "count": 3 },
+        { "type": "iron_ore", "count": 6 },
+        { "type": "oak_log", "count": 8 },
+        { "type": "stone", "count": 16 },
+        { "type": "cobblestone", "count": 24 }
+      ],
+      "prePlaceFurnace": false,
+      "notes": "L3: wooden→stone→iron pickaxe chain, then mine diamond_ore, craft diamond_axe. iron_ore×6 covers iron_pickaxe(3 ingots)+buffer. cobblestone×24 covers furnace(8)+stone_pickaxe(3)+buffer."
+    },
+    {
+      "slug": "craft/diamond_boots",
+      "prompt": "craft diamond boots",
+      "goal_item": "diamond_boots",
+      "goal_count": 1,
+      "level": "L3",
+      "category": "CRAFT",
+      "materials": [
+        { "type": "diamond_ore", "count": 4 },
+        { "type": "iron_ore", "count": 6 },
+        { "type": "oak_log", "count": 6 },
+        { "type": "stone", "count": 16 },
+        { "type": "cobblestone", "count": 24 }
+      ],
+      "prePlaceFurnace": false,
+      "notes": "L3: 4 diamonds needed. Same iron→diamond chain. iron_ore×6 buffer for iron_pickaxe chain."
+    },
+    {
+      "slug": "craft/golden_pickaxe",
+      "prompt": "craft a golden pickaxe",
+      "goal_item": "golden_pickaxe",
+      "goal_count": 1,
+      "level": "L3",
+      "category": "CRAFT",
+      "materials": [
+        { "type": "gold_ore", "count": 4 },
+        { "type": "iron_ore", "count": 6 },
+        { "type": "oak_log", "count": 6 },
+        { "type": "stone", "count": 16 },
+        { "type": "cobblestone", "count": 24 }
+      ],
+      "prePlaceFurnace": false,
+      "notes": "L3: gold_ore→smelt raw_gold→craft golden pickaxe. iron_ore×6 for iron_pickaxe to mine staged gold_ore. cobblestone×24 covers full chain."
+    },
+    {
+      "slug": "craft/anvil",
+      "prompt": "craft an anvil",
+      "goal_item": "anvil",
+      "goal_count": 1,
+      "level": "L3",
+      "category": "CRAFT",
+      "materials": [
+        { "type": "iron_ore", "count": 40 },
+        { "type": "oak_log", "count": 6 },
+        { "type": "stone", "count": 16 },
+        { "type": "cobblestone", "count": 24 }
+      ],
+      "prePlaceFurnace": false,
+      "notes": "L3: 3 iron_blocks(27 ingots)+4 iron_ingots=31 ingots + 3 for iron_pickaxe = 34. Buffer to 40. cobblestone×24 covers furnace+stone_pickaxe+buffer."
+    },
+    {
+      "slug": "craft/compass",
+      "prompt": "craft a compass",
+      "goal_item": "compass",
+      "goal_count": 1,
+      "level": "L3",
+      "category": "CRAFT",
+      "materials": [
+        { "type": "iron_ore", "count": 10 },
+        { "type": "redstone_ore", "count": 2 },
+        { "type": "oak_log", "count": 6 },
+        { "type": "stone", "count": 16 },
+        { "type": "cobblestone", "count": 24 }
+      ],
+      "prePlaceFurnace": false,
+      "notes": "L3: dual ore chain — iron_ore(wooden→stone→iron pickaxe chain, 3 ingots for pickaxe+4 for compass=7min,buf10) + redstone_ore(needs iron_pickaxe to mine). True multi-hop: furnace+stone_pickaxe+smelt+iron_pickaxe+mine_redstone+craft. SAER benefit: iron chain examples. Training has no compass."
+    },
+    {
+      "slug": "craft/clock",
+      "prompt": "craft a clock",
+      "goal_item": "clock",
+      "goal_count": 1,
+      "level": "L3",
+      "category": "CRAFT",
+      "materials": [
+        { "type": "gold_ore", "count": 4 },
+        { "type": "redstone_ore", "count": 2 },
+        { "type": "iron_ore", "count": 6 },
+        { "type": "oak_log", "count": 6 },
+        { "type": "stone", "count": 16 },
+        { "type": "cobblestone", "count": 24 }
+      ],
+      "prePlaceFurnace": false,
+      "notes": "L3: 4 gold_ingot(smelt raw_gold)+1 redstone. iron_ore×6 for iron_pickaxe to mine staged ores. cobblestone×24 covers full chain."
+    },
+    {
+      "slug": "craft/iron_leggings",
+      "prompt": "craft iron leggings",
+      "goal_item": "iron_leggings",
+      "goal_count": 1,
+      "level": "L3",
+      "category": "CRAFT",
+      "materials": [
+        { "type": "iron_ore", "count": 14 },
+        { "type": "oak_log", "count": 6 },
+        { "type": "stone", "count": 16 },
+        { "type": "cobblestone", "count": 24 }
+      ],
+      "prePlaceFurnace": false,
+      "notes": "L3: 7 iron_ingots + 3 for iron_pickaxe = 10 minimum. Buffer to 14. cobblestone×24 covers full chain."
+    }
+  ]
+}

@@ -1,0 +1,1549 @@
+[
+  {
+    "slug": "combat/zombie",
+    "name": "Defeat a Zombie",
+    "tab": "combat",
+    "level": "L1",
+    "rationale": "Zombies are the most common hostile mob, appearing at night and in unlit caves. Defeating them yields rotten flesh and occasional iron drops.",
+    "actual": "Craft a stone sword using wood and cobblestone, find a zombie at night or in a dark cave, and defeat it in melee combat.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Craft a stone sword and equip it",
+        "action_nl": "Collect two oak logs, craft planks and sticks, craft a wooden pickaxe (needed to mine stone), mine two cobblestone, then craft and equip a stone sword.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 2)",
+          "!craftRecipe('oak_planks', 8)",
+          "!craftRecipe('stick', 4)",
+          "!craftRecipe('wooden_pickaxe', 1)",
+          "!collectBlocks('stone', 2)",
+          "!craftRecipe('stone_sword', 1)",
+          "!equipItem('stone_sword')"
+        ],
+        "verify_cmd": [
+          "!inventory('stone_sword')"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees",
+            "stone"
+          ]
+        },
+        "expected": "Stone sword equipped.",
+        "notes": "Stone sword deals 5 damage per hit. Zombie has 20 HP so it takes 4 hits to kill. Even a wooden sword (4 damage, 5 hits) is acceptable.",
+        "produces": {
+          "type": "item",
+          "name": "stone_sword",
+          "count": 1
+        }
+      },
+      {
+        "step": 2,
+        "goal": "Find a zombie",
+        "action_nl": "Search for zombies at night or in unlit caves.",
+        "action_cmd": [
+          "!searchForEntity('zombie', 32)"
+        ],
+        "verify_cmd": [],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "equipped": [
+              "stone_sword"
+            ],
+            "optional": []
+          },
+          "access": [
+            "surface"
+          ]
+        },
+        "expected": "Zombie located nearby.",
+        "notes": "Zombies spawn when light level is 7 or below. Common at night on the surface or in caves. They burn in sunlight so daytime underground caves are reliable spawn zones."
+      },
+      {
+        "step": 3,
+        "goal": "Attack and defeat the zombie",
+        "action_nl": "Approach and attack the zombie repeatedly until it is defeated.",
+        "action_cmd": [
+          "!attack('zombie', true)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "equipped": [
+              "stone_sword"
+            ],
+            "optional": []
+          },
+          "access": [
+            "surface"
+          ]
+        },
+        "expected": "Zombie defeated; rotten flesh dropped.",
+        "notes": "Zombies deal 3 damage per hit on Normal difficulty. Keep moving sideways to avoid some hits. Rotten flesh restores hunger but causes 80% chance of food poisoning.",
+        "produces": {
+          "type": "item",
+          "name": "rotten_flesh",
+          "count": 1
+        }
+      }
+    ]
+  },
+  {
+    "slug": "combat/skeleton",
+    "name": "Defeat a Skeleton",
+    "tab": "combat",
+    "level": "L1",
+    "rationale": "Skeletons are ranged attackers that drop bones (for bone meal) and arrows. Closing distance quickly is the key to defeating them safely with a melee weapon.",
+    "actual": "Craft a stone sword, locate a skeleton, sprint into melee range to limit arrow exposure, and defeat it.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Craft a stone sword and equip it",
+        "action_nl": "Collect two oak logs, craft planks and sticks, craft a wooden pickaxe (needed to mine stone), mine two cobblestone, then craft and equip a stone sword.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 2)",
+          "!craftRecipe('oak_planks', 8)",
+          "!craftRecipe('stick', 4)",
+          "!craftRecipe('wooden_pickaxe', 1)",
+          "!collectBlocks('stone', 2)",
+          "!craftRecipe('stone_sword', 1)",
+          "!equipItem('stone_sword')"
+        ],
+        "verify_cmd": [
+          "!inventory('stone_sword')"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees",
+            "stone"
+          ]
+        },
+        "expected": "Stone sword equipped.",
+        "notes": "Stone sword deals 5 damage and kills a skeleton (20 HP) in 4 hits. Getting close quickly minimises arrow hits.",
+        "produces": {
+          "type": "item",
+          "name": "stone_sword",
+          "count": 1
+        }
+      },
+      {
+        "step": 2,
+        "goal": "Find a skeleton",
+        "action_nl": "Search for skeletons at night or in unlit caves.",
+        "action_cmd": [
+          "!searchForEntity('skeleton', 32)"
+        ],
+        "verify_cmd": [],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "equipped": [
+              "stone_sword"
+            ],
+            "optional": []
+          },
+          "access": [
+            "surface"
+          ]
+        },
+        "expected": "Skeleton located nearby.",
+        "notes": "Skeletons spawn at light level 7 or below. They burn in sunlight. Fight them at night or underground. They flee from wolves."
+      },
+      {
+        "step": 3,
+        "goal": "Sprint into melee range and defeat the skeleton",
+        "action_nl": "Sprint directly at the skeleton to close distance before it fires many arrows, then attack until defeated.",
+        "action_cmd": [
+          "!attack('skeleton', true)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "equipped": [
+              "stone_sword"
+            ],
+            "optional": []
+          },
+          "access": [
+            "surface"
+          ]
+        },
+        "expected": "Skeleton defeated; bones and arrows dropped.",
+        "notes": "Skeletons back away while shooting. Sprint into melee range immediately — you will take 1-2 arrow hits but avoid a prolonged ranged exchange. Use cover (trees, walls) to break line-of-sight if needed.",
+        "produces": {
+          "type": "item",
+          "name": "bone",
+          "count": 1
+        }
+      }
+    ]
+  },
+  {
+    "slug": "combat/spider",
+    "name": "Defeat a Spider",
+    "tab": "combat",
+    "level": "L1",
+    "rationale": "Spiders drop string (needed for bows, fishing rods, and wool) and spider eyes. They are always hostile underground and at night.",
+    "actual": "Craft a stone sword, find a spider in a cave or at night, and defeat it before it can jump onto you.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Craft a stone sword and equip it",
+        "action_nl": "Collect two oak logs, craft planks and sticks, craft a wooden pickaxe (needed to mine stone), mine two cobblestone, then craft and equip a stone sword.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 2)",
+          "!craftRecipe('oak_planks', 8)",
+          "!craftRecipe('stick', 4)",
+          "!craftRecipe('wooden_pickaxe', 1)",
+          "!collectBlocks('stone', 2)",
+          "!craftRecipe('stone_sword', 1)",
+          "!equipItem('stone_sword')"
+        ],
+        "verify_cmd": [
+          "!inventory('stone_sword')"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees",
+            "stone"
+          ]
+        },
+        "expected": "Stone sword equipped.",
+        "notes": "Stone sword deals 5 damage per hit. Spider has 16 HP so it takes 4 hits to kill.",
+        "produces": {
+          "type": "item",
+          "name": "stone_sword",
+          "count": 1
+        }
+      },
+      {
+        "step": 2,
+        "goal": "Find a spider",
+        "action_nl": "Search for spiders in dark caves or on the surface at night.",
+        "action_cmd": [
+          "!searchForEntity('spider', 32)"
+        ],
+        "verify_cmd": [],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "equipped": [
+              "stone_sword"
+            ],
+            "optional": []
+          },
+          "access": [
+            "surface"
+          ]
+        },
+        "expected": "Spider located nearby.",
+        "notes": "Spiders are neutral in daylight (light level 9+) but hostile at night and always hostile in caves. They can climb walls and jump 2-3 blocks horizontally."
+      },
+      {
+        "step": 3,
+        "goal": "Attack and defeat the spider",
+        "action_nl": "Engage the spider quickly before it jumps, attacking repeatedly until defeated.",
+        "action_cmd": [
+          "!attack('spider', true)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "equipped": [
+              "stone_sword"
+            ],
+            "optional": []
+          },
+          "access": [
+            "surface"
+          ]
+        },
+        "expected": "Spider defeated; string dropped.",
+        "notes": "Spiders deal 2 damage per hit but attack quickly. Do not fight near cliffs — they can jump and push you off. Cave spiders (smaller, found in mineshafts) deal less damage but inflict poison.",
+        "produces": {
+          "type": "item",
+          "name": "string",
+          "count": 1
+        }
+      }
+    ]
+  },
+  {
+    "slug": "combat/creeper",
+    "name": "Defeat a Creeper",
+    "tab": "combat",
+    "level": "L1",
+    "rationale": "Creepers drop gunpowder used for TNT, fireworks, and fire charges. They explode when within 3 blocks, so a hit-and-retreat pattern is essential to collect the drop without dying.",
+    "actual": "Craft a stone sword, spot the creeper at safe distance, and defeat it using a hit-and-retreat pattern to prevent its explosion.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Craft a stone sword and equip it",
+        "action_nl": "Collect two oak logs, craft planks and sticks, craft a wooden pickaxe (needed to mine stone), mine two cobblestone, then craft and equip a stone sword.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 2)",
+          "!craftRecipe('oak_planks', 8)",
+          "!craftRecipe('stick', 4)",
+          "!craftRecipe('wooden_pickaxe', 1)",
+          "!collectBlocks('stone', 2)",
+          "!craftRecipe('stone_sword', 1)",
+          "!equipItem('stone_sword')"
+        ],
+        "verify_cmd": [
+          "!inventory('stone_sword')"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees",
+            "stone"
+          ]
+        },
+        "expected": "Stone sword equipped.",
+        "notes": "Stone sword kills a creeper (20 HP) in 4 hits. A sword with Knockback enchantment is ideal as it pushes the creeper back after each hit.",
+        "produces": {
+          "type": "item",
+          "name": "stone_sword",
+          "count": 1
+        }
+      },
+      {
+        "step": 2,
+        "goal": "Locate the creeper before it gets close",
+        "action_nl": "Search for creepers and identify one while maintaining more than 5 blocks of distance.",
+        "action_cmd": [
+          "!searchForEntity('creeper', 32)"
+        ],
+        "verify_cmd": [],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "equipped": [
+              "stone_sword"
+            ],
+            "optional": []
+          },
+          "access": [
+            "surface"
+          ]
+        },
+        "expected": "Creeper spotted at safe distance.",
+        "notes": "Creepers make no walking sound and blend into grass. Watch for their tall green silhouette. The fuse (hissing sound) triggers when within 3 blocks and lasts 1.5 seconds."
+      },
+      {
+        "step": 3,
+        "goal": "Defeat the creeper using hit-and-retreat pattern",
+        "action_nl": "Strike the creeper once with the sword, immediately sprint back 4+ blocks to reset the fuse, then repeat until it is dead.",
+        "action_cmd": [
+          "!attack('creeper', true)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "equipped": [
+              "stone_sword"
+            ],
+            "optional": []
+          },
+          "access": [
+            "surface"
+          ]
+        },
+        "expected": "Creeper defeated without exploding; gunpowder dropped.",
+        "notes": "Hit once → retreat 4+ blocks → wait for hiss to stop → repeat. Takes 4 stone-sword hits. If the fuse activates, sprint away immediately — explosion range is about 4 blocks and deals up to 49 damage at the centre.",
+        "produces": {
+          "type": "item",
+          "name": "gunpowder",
+          "count": 1
+        }
+      }
+    ]
+  },
+  {
+    "slug": "combat/enderman",
+    "name": "Defeat an Enderman",
+    "tab": "combat",
+    "level": "L2",
+    "rationale": "Endermen drop ender pearls needed to craft Eyes of Ender and locate the End portal. They have 40 HP, teleport when attacked, and deal 7 damage per hit — iron gear and a shelter tactic are required.",
+    "actual": "Starting from scratch: craft a stone pickaxe, mine iron ore, smelt it, craft and equip an iron sword and helmet, build a 2-block shelter, then attack the enderman's legs from safety.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Craft a stone pickaxe from scratch",
+        "action_nl": "Collect oak logs, craft into planks and sticks, craft a wooden pickaxe, mine cobblestone, then craft a stone pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 3)",
+          "!craftRecipe('oak_planks', 12)",
+          "!craftRecipe('stick', 4)",
+          "!craftRecipe('wooden_pickaxe', 1)",
+          "!collectBlocks('stone', 3)",
+          "!craftRecipe('stone_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory('stone_pickaxe')"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees",
+            "stone"
+          ]
+        },
+        "expected": "Stone pickaxe in inventory.",
+        "notes": "Always start here when nothing is in inventory. wooden_pickaxe needs 3 planks + 2 sticks; stone_pickaxe needs 3 cobblestone + 2 sticks.",
+        "produces": {
+          "type": "item",
+          "name": "stone_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 2,
+        "goal": "Mine iron ore and craft an iron sword and iron helmet",
+        "action_nl": "Mine 7 iron ore with the stone pickaxe, smelt into iron ingots, craft sticks, then craft and equip an iron sword and iron helmet.",
+        "action_cmd": [
+          "!collectBlocks('iron_ore', 7)",
+          "!smeltItem('raw_iron', 7)",
+          "!collectBlocks('oak_log', 1)",
+          "!craftRecipe('oak_planks', 4)",
+          "!craftRecipe('stick', 2)",
+          "!craftRecipe('iron_sword', 1)",
+          "!craftRecipe('iron_helmet', 1)",
+          "!equipItem('iron_sword')",
+          "!equipItem('iron_helmet')"
+        ],
+        "verify_cmd": [
+          "!inventory('iron_sword')",
+          "!inventory('iron_helmet')"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "stone_pickaxe:1"
+            ],
+            "nearby": [
+              "furnace"
+            ],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ],
+          "resources": {
+            "fuel": 7
+          }
+        },
+        "expected": "Iron sword and iron helmet crafted and equipped.",
+        "notes": "Iron sword (6 damage) kills an enderman in 7 hits. Iron helmet reduces head damage.",
+        "produces": [
+          {
+            "type": "item",
+            "name": "iron_sword",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "iron_helmet",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "step": 3,
+        "goal": "Mine cobblestone and build a 2-block high ceiling shelter",
+        "action_nl": "Mine 6 cobblestone blocks with the stone pickaxe, then place them to form a roof exactly 2 blocks above ground level.",
+        "action_cmd": [
+          "!collectBlocks('stone', 6)",
+          "!placeHere('cobblestone')"
+        ],
+        "verify_cmd": [],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "stone_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "stone"
+          ]
+        },
+        "expected": "2-block high shelter built nearby.",
+        "notes": "Endermen are exactly 3 blocks tall. Under a 2-block ceiling they cannot reach you with melee but you can attack their legs.",
+        "produces": {
+          "type": "item",
+          "name": "cobblestone",
+          "count": 6
+        }
+      },
+      {
+        "step": 4,
+        "goal": "Find an enderman and provoke it",
+        "action_nl": "Search for an enderman at night, look at its torso to trigger aggression, then retreat under the shelter.",
+        "action_cmd": [
+          "!searchForEntity('enderman', 48)"
+        ],
+        "verify_cmd": [],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "equipped": [
+              "iron_sword"
+            ],
+            "optional": []
+          },
+          "access": [
+            "surface"
+          ]
+        },
+        "expected": "Enderman found and angered.",
+        "notes": "Endermen spawn at night in the overworld. Do NOT look at them until positioned near the shelter."
+      },
+      {
+        "step": 5,
+        "goal": "Stand under the 2-block shelter and attack the enderman's legs",
+        "action_nl": "Retreat under the 2-block ceiling and attack the enderman repeatedly — it cannot reach you but you can hit it.",
+        "action_cmd": [
+          "!attack('enderman', true)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "equipped": [
+              "iron_sword"
+            ],
+            "optional": []
+          },
+          "access": [
+            "surface"
+          ]
+        },
+        "expected": "Enderman defeated; ender pearl dropped.",
+        "notes": "Iron sword kills it in 7 hits. Each enderman drops 0-1 ender pearl.",
+        "produces": {
+          "type": "item",
+          "name": "ender_pearl",
+          "count": 1
+        }
+      }
+    ]
+  },
+  {
+    "slug": "combat/slime",
+    "name": "Hunt Slimes for Slimeballs",
+    "tab": "combat",
+    "level": "L2",
+    "rationale": "Slimeballs are required for crafting sticky pistons, leads, and magma cream. They drop only from small slimes, which are created by splitting larger slimes through combat.",
+    "actual": "Starting from scratch: craft a stone pickaxe, mine iron ore, smelt it, craft and equip an iron sword, then find and defeat slimes in a swamp — large splits into medium, medium splits into small, small drops slimeballs.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Craft a stone pickaxe from scratch",
+        "action_nl": "Collect oak logs, craft into planks and sticks, craft a wooden pickaxe, mine cobblestone, then craft a stone pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 3)",
+          "!craftRecipe('oak_planks', 12)",
+          "!craftRecipe('stick', 4)",
+          "!craftRecipe('wooden_pickaxe', 1)",
+          "!collectBlocks('stone', 3)",
+          "!craftRecipe('stone_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory('stone_pickaxe')"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees",
+            "stone"
+          ]
+        },
+        "expected": "Stone pickaxe in inventory.",
+        "notes": "Always start here when nothing is in inventory. wooden_pickaxe needs 3 planks + 2 sticks; stone_pickaxe needs 3 cobblestone + 2 sticks.",
+        "produces": {
+          "type": "item",
+          "name": "stone_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 2,
+        "goal": "Mine iron ore and craft an iron sword",
+        "action_nl": "Mine 3 iron ore with the stone pickaxe, smelt into ingots using a furnace, collect logs for sticks, craft and equip an iron sword.",
+        "action_cmd": [
+          "!collectBlocks('iron_ore', 3)",
+          "!smeltItem('raw_iron', 3)",
+          "!collectBlocks('oak_log', 1)",
+          "!craftRecipe('oak_planks', 4)",
+          "!craftRecipe('stick', 2)",
+          "!craftRecipe('iron_sword', 1)",
+          "!equipItem('iron_sword')"
+        ],
+        "verify_cmd": [
+          "!inventory('iron_sword')"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "stone_pickaxe:1"
+            ],
+            "nearby": [
+              "furnace"
+            ],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ],
+          "resources": {
+            "fuel": 3
+          }
+        },
+        "expected": "Iron sword crafted and equipped.",
+        "notes": "collectBlocks('iron_ore') produces raw_iron, not iron_ore. The smelt step must use raw_iron. Iron sword deals 6 damage per hit.",
+        "produces": {
+          "type": "item",
+          "name": "iron_sword",
+          "count": 1
+        }
+      },
+      {
+        "step": 3,
+        "goal": "Find slimes in a swamp biome at night",
+        "action_nl": "Travel to a swamp biome and search for slimes at night.",
+        "action_cmd": [
+          "!searchForEntity('slime', 48)"
+        ],
+        "verify_cmd": [],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "equipped": [
+              "iron_sword"
+            ],
+            "optional": []
+          },
+          "access": [
+            "surface"
+          ]
+        },
+        "expected": "Slime located nearby.",
+        "notes": "Slimes spawn in swamp biomes at night. Three sizes: large (3×3), medium (2×2), small (1×1). Only small slimes drop slimeballs."
+      },
+      {
+        "step": 4,
+        "goal": "Defeat slimes of all sizes to collect slimeballs",
+        "action_nl": "Kill the large slime — it splits into medium slimes. Kill mediums — they split into small slimes. Kill smalls to collect slimeball drops.",
+        "action_cmd": [
+          "!attack('slime', true)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "equipped": [
+              "iron_sword"
+            ],
+            "optional": []
+          },
+          "access": [
+            "surface"
+          ]
+        },
+        "expected": "All slimes defeated; slimeballs collected.",
+        "notes": "Large slime splits into 2-4 medium; medium splits into 2-4 small. Each small drops 0-2 slimeballs. One large slime can yield up to 8 slimeballs total.",
+        "produces": {
+          "type": "item",
+          "name": "slime_ball",
+          "count": 2
+        }
+      }
+    ]
+  },
+  {
+    "slug": "combat/blaze",
+    "name": "Defeat Blazes in a Nether Fortress",
+    "tab": "combat",
+    "level": "L3",
+    "rationale": "Blazes drop blaze rods needed to craft a brewing stand and Eyes of Ender for reaching the End dimension. They shoot fireballs, require a nether portal to reach, and need a shield for protection.",
+    "actual": "Mine diamonds to craft a diamond pickaxe, mine obsidian for a nether portal, craft a shield for fireball blocking, build and activate the portal, find a nether fortress, then defeat blazes.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Craft an iron pickaxe from scratch",
+        "action_nl": "Collect oak logs, craft wooden pickaxe, mine stone for stone_pickaxe, then mine iron ore and smelt it, craft sticks, and craft an iron pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 3)",
+          "!craftRecipe('oak_planks', 12)",
+          "!craftRecipe('stick', 4)",
+          "!craftRecipe('wooden_pickaxe', 1)",
+          "!collectBlocks('stone', 3)",
+          "!craftRecipe('stone_pickaxe', 1)",
+          "!collectBlocks('iron_ore', 3)",
+          "!smeltItem('raw_iron', 3)",
+          "!craftRecipe('iron_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory('iron_pickaxe')"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [
+              "furnace"
+            ],
+            "optional": []
+          },
+          "access": [
+            "trees",
+            "stone",
+            "underground"
+          ],
+          "resources": {
+            "fuel": 3
+          }
+        },
+        "expected": "Iron pickaxe in inventory.",
+        "notes": "Full cold-start chain. collectBlocks('iron_ore') produces raw_iron — smelt raw_iron not iron_ore. iron_pickaxe needs 3 iron_ingots + 2 sticks.",
+        "produces": {
+          "type": "item",
+          "name": "iron_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 2,
+        "goal": "Mine diamond ore and craft a diamond pickaxe",
+        "action_nl": "Use the iron pickaxe to mine 3 diamond ore deep underground (below Y=-58). Diamond ore drops diamond directly — NO smelting. Collect oak logs for sticks, then craft a diamond pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('diamond_ore', 3)",
+          "!collectBlocks('oak_log', 1)",
+          "!craftRecipe('oak_planks', 4)",
+          "!craftRecipe('stick', 2)",
+          "!craftRecipe('diamond_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory('diamond_pickaxe')"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "iron_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "Diamond pickaxe in inventory.",
+        "notes": "IMPORTANT: diamond_ore drops diamond (not raw_diamond). Do NOT add a smeltItem step for diamonds — diamonds are used directly. Diamond pickaxe is the only tool that can mine obsidian.",
+        "produces": {
+          "type": "item",
+          "name": "diamond_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 3,
+        "goal": "Mine obsidian, iron ore, and collect gravel for portal materials",
+        "action_nl": "Find obsidian near lava, mine 10 blocks with the diamond pickaxe. Also mine 2 iron ore and collect 4 gravel (for flint). Smelt iron and craft flint and steel to light the portal.",
+        "action_cmd": [
+          "!searchForBlock('obsidian', 32)",
+          "!collectBlocks('obsidian', 10)",
+          "!collectBlocks('iron_ore', 2)",
+          "!smeltItem('raw_iron', 2)",
+          "!collectBlocks('gravel', 4)",
+          "!craftRecipe('flint_and_steel', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory('obsidian')",
+          "!inventory('flint_and_steel')"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "diamond_pickaxe:1",
+              "stone_pickaxe:1"
+            ],
+            "nearby": [
+              "furnace"
+            ],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ],
+          "resources": {
+            "fuel": 2
+          }
+        },
+        "expected": "10 obsidian and 1 flint_and_steel in inventory; 1 spare iron ingot remaining.",
+        "notes": "Obsidian forms where flowing water touches a lava source block. Natural obsidian pools exist near lava lakes underground. Flint_and_steel needs 1 flint (from gravel, ~10% drop rate per block — collect 4+ for reliability) and 1 iron ingot.",
+        "produces": [
+          {
+            "type": "item",
+            "name": "obsidian",
+            "count": 10
+          },
+          {
+            "type": "item",
+            "name": "flint_and_steel",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "step": 4,
+        "goal": "Craft a shield for blaze fireball protection",
+        "action_nl": "Collect oak logs, craft planks, and use the spare iron ingot to craft a shield. Equip it.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 2)",
+          "!craftRecipe('oak_planks', 8)",
+          "!craftRecipe('shield', 1)",
+          "!equipItem('shield')"
+        ],
+        "verify_cmd": [
+          "!inventory('shield')"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "iron_ingot:1"
+            ],
+            "nearby": [
+              "crafting_table"
+            ],
+            "optional": []
+          },
+          "access": [
+            "trees"
+          ]
+        },
+        "expected": "Shield crafted and equipped.",
+        "notes": "A shield blocks 100% of blaze fireball damage when raised (right-click held). After blocking an explosion it has a 5-second cooldown. Without a shield, each fireball burst deals 5-6 damage (2.5-3 hearts). Fire resistance potions are an alternative but harder to obtain.",
+        "produces": {
+          "type": "item",
+          "name": "shield",
+          "count": 1
+        }
+      },
+      {
+        "step": 5,
+        "goal": "Build and activate the nether portal",
+        "action_nl": "Place obsidian blocks in a 4-wide × 5-tall rectangular frame (10 blocks total, excluding corners) and light the inside with flint and steel.",
+        "action_cmd": [
+          "!placeHere('obsidian')",
+          "!placeHere('flint_and_steel')"
+        ],
+        "verify_cmd": [],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "obsidian:10",
+              "flint_and_steel:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "surface"
+          ]
+        },
+        "expected": "Nether portal frame built and purple portal active.",
+        "notes": "Minimum portal is 2 blocks wide × 3 tall (inside), requiring 10 obsidian (corners can be any block but obsidian is standard). Light any inner obsidian block to activate. The portal makes a whooshing sound when active. Step inside and wait 4 seconds to teleport."
+      },
+      {
+        "step": 6,
+        "goal": "Find a nether fortress",
+        "action_nl": "Enter the Nether and search for the distinctive nether brick blocks that form a fortress structure.",
+        "action_cmd": [
+          "!searchForBlock('nether_bricks', 64)"
+        ],
+        "verify_cmd": [],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "shield:1"
+            ],
+            "nearby": [],
+            "equipped": [
+              "shield"
+            ],
+            "optional": []
+          },
+          "access": [
+            "nether"
+          ]
+        },
+        "expected": "Nether fortress located with blaze spawner.",
+        "notes": "Nether fortresses are large dark bridge-like structures made of nether brick. They contain blaze spawners on interior walkways. Fortresses generate in strips aligned to the Z-axis — travel along the X-axis to find one faster. Beware ghasts (ranged), piglins, and magma cubes while searching."
+      },
+      {
+        "step": 7,
+        "goal": "Defeat blazes and collect blaze rods",
+        "action_nl": "Block fireball volleys with the shield, then move in to attack with a sword during the pause between bursts.",
+        "action_cmd": [
+          "!attack('blaze', true)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "equipped": [
+              "shield"
+            ],
+            "optional": [
+              "iron_sword",
+              "stone_sword"
+            ]
+          },
+          "access": [
+            "nether"
+          ]
+        },
+        "expected": "Blaze defeated; blaze rod dropped.",
+        "notes": "Blazes shoot 3 fireballs per burst then pause for 2 seconds. Raise shield during the burst, attack during the pause. Blazes have 20 HP. Snowballs deal 3 damage each and cancel the blaze's attack — very effective if available. Each blaze drops 0-1 blaze rods. Brewing stand requires 1 rod; Eyes of Ender require 2 more.",
+        "produces": {
+          "type": "item",
+          "name": "blaze_rod",
+          "count": 1
+        }
+      }
+    ]
+  },
+  {
+    "slug": "combat/wither",
+    "name": "Defeat the Wither Boss",
+    "tab": "combat",
+    "level": "L3",
+    "rationale": "The Wither is a player-summoned boss. Defeating it drops a nether star — the sole ingredient for a beacon, which provides permanent status effect buffs. Requires diamond gear and careful two-phase combat.",
+    "actual": "Progress from wood to a diamond pickaxe, build a Nether portal and gather soul sand, collect 3 wither skeleton skulls from a Nether fortress, mine diamonds for full armor and a bow, spawn the Wither in an enclosed underground room, and fight through Phase 1 (bow) and Phase 2 (sword).",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Progress tools from wood to stone pickaxe",
+        "action_nl": "Gather logs, craft basic wooden tools and a crafting table, then mine stone with the wooden pickaxe to craft a stone pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 4)",
+          "!craftRecipe('crafting_table', 1)",
+          "!craftRecipe('oak_planks', 12)",
+          "!craftRecipe('stick', 6)",
+          "!craftRecipe('wooden_pickaxe', 1)",
+          "!collectBlocks('stone', 3)",
+          "!craftRecipe('stone_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees",
+            "stone"
+          ]
+        },
+        "expected": "Stone pickaxe crafted, ready to mine iron ore.",
+        "notes": "This is the standard wood→stone tool-tier progression shared by nearly every deep item chain.",
+        "produces": {
+          "type": "item",
+          "name": "stone_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 2,
+        "goal": "Mine iron and craft an iron pickaxe and iron sword",
+        "action_nl": "Mine iron ore with the stone pickaxe, smelt it into iron ingots, then craft an iron pickaxe (needed to mine diamond ore) and an iron sword (needed for the Nether fortress fight).",
+        "action_cmd": [
+          "!collectBlocks('iron_ore', 6)",
+          "!smeltItem('raw_iron', 6)",
+          "!craftRecipe('iron_pickaxe', 1)",
+          "!craftRecipe('iron_sword', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "stone_pickaxe:1"
+            ],
+            "nearby": [
+              "crafting_table",
+              "furnace"
+            ],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "Iron pickaxe and iron sword crafted; one spare iron ingot remains for flint_and_steel.",
+        "notes": "Diamond ore requires at least an iron pickaxe to mine — a stone pickaxe cannot harvest it.",
+        "produces": [
+          {
+            "type": "item",
+            "name": "iron_pickaxe",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "iron_sword",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "step": 3,
+        "goal": "Mine diamond ore and craft a diamond pickaxe",
+        "action_nl": "Mine diamond ore with the iron pickaxe and craft a diamond pickaxe — the minimum tool tier able to mine obsidian.",
+        "action_cmd": [
+          "!collectBlocks('diamond_ore', 3)",
+          "!craftRecipe('diamond_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "iron_pickaxe:1"
+            ],
+            "nearby": [
+              "crafting_table"
+            ],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "Diamond pickaxe crafted, ready to mine obsidian for the Nether portal.",
+        "notes": "Obsidian is diamond-pickaxe-tier — attempting to mine it with iron or lower yields nothing.",
+        "produces": {
+          "type": "item",
+          "name": "diamond_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 4,
+        "goal": "Build a nether portal and collect 4 soul sand",
+        "action_nl": "Mine obsidian with the diamond pickaxe, craft flint and steel, build and activate a nether portal, then enter the Nether and collect 4 soul sand from the floor.",
+        "action_cmd": [
+          "!collectBlocks('obsidian', 10)",
+          "!collectBlocks('gravel', 20)",
+          "!craftRecipe('flint_and_steel', 1)",
+          "!placeHere('obsidian')",
+          "!searchForBlock('soul_sand', 32)",
+          "!collectBlocks('soul_sand', 4)"
+        ],
+        "verify_cmd": [
+          "!inventory('soul_sand')"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "diamond_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "underground",
+            "nether"
+          ]
+        },
+        "expected": "4 soul sand in inventory.",
+        "notes": "Soul sand is common on the Nether floor, especially in the Soul Sand Valley biome (pale blue fog, blue fire). It has a brown pitted texture and slows movement. Collect exactly 4 — the wither summoning pattern uses 3 for the base row and 1 for the centre of the T. Mining ~20 gravel reliably yields flint even without a shovel (chance-based drop, no Silk Touch).",
+        "produces": [
+          {
+            "type": "item",
+            "name": "soul_sand",
+            "count": 4
+          },
+          {
+            "type": "item",
+            "name": "flint",
+            "count": 3
+          }
+        ]
+      },
+      {
+        "step": 5,
+        "goal": "Kill wither skeletons in a nether fortress until 3 skulls drop",
+        "action_nl": "Find a nether fortress, locate wither skeletons, and kill them repeatedly until 3 wither skeleton skulls are collected.",
+        "action_cmd": [
+          "!searchForBlock('nether_bricks', 64)",
+          "!searchForEntity('wither_skeleton', 32)",
+          "!attack('wither_skeleton', true)"
+        ],
+        "verify_cmd": [
+          "!inventory('wither_skeleton_skull')"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "iron_sword:1",
+              "soul_sand:4"
+            ],
+            "nearby": [],
+            "equipped": [
+              "iron_sword"
+            ],
+            "optional": []
+          },
+          "access": [
+            "nether"
+          ]
+        },
+        "expected": "3 wither skeleton skulls in inventory.",
+        "notes": "Wither skeletons have a 2.5% skull drop rate (5.5% with Looting III). Expect to kill 40-120 skeletons per skull session. Wither skeletons are 3 blocks tall, carry stone swords, deal 7 damage, and inflict Wither II (health drain) for 10 seconds per hit — bring milk or golden apples. They only spawn in nether fortresses.",
+        "produces": {
+          "type": "item",
+          "name": "wither_skeleton_skull",
+          "count": 3
+        }
+      },
+      {
+        "step": 6,
+        "goal": "Kill a spider for string",
+        "action_nl": "Find and kill a spider to collect string for the bow.",
+        "action_cmd": [
+          "!searchForEntity('spider', 32)",
+          "!attack('spider', true)"
+        ],
+        "verify_cmd": [
+          "!inventory('string')"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "surface"
+          ]
+        },
+        "expected": "At least 3 string in inventory.",
+        "notes": "Spiders drop 0-2 string per kill; may need multiple kills for 3. Any weapon (or bare hands) works against a spider this early.",
+        "produces": {
+          "type": "item",
+          "name": "string",
+          "count": 3
+        }
+      },
+      {
+        "step": 7,
+        "goal": "Mine diamonds and craft full diamond armor, a diamond sword, and a bow with arrows",
+        "action_nl": "Mine at least 26 diamond ore with the iron pickaxe, then craft full diamond armor (helmet, chestplate, leggings, boots), a diamond sword, a bow, and 32 arrows.",
+        "action_cmd": [
+          "!collectBlocks('diamond_ore', 26)",
+          "!craftRecipe('diamond_sword', 1)",
+          "!craftRecipe('diamond_helmet', 1)",
+          "!craftRecipe('diamond_chestplate', 1)",
+          "!craftRecipe('diamond_leggings', 1)",
+          "!craftRecipe('diamond_boots', 1)",
+          "!craftRecipe('bow', 1)",
+          "!craftRecipe('arrow', 32)",
+          "!equipItem('diamond_sword')"
+        ],
+        "verify_cmd": [
+          "!inventory('diamond_sword')",
+          "!inventory('diamond_chestplate')",
+          "!inventory('bow')"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "iron_pickaxe:1",
+              "string:3",
+              "flint:3",
+              "stick:3"
+            ],
+            "nearby": [
+              "crafting_table"
+            ],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "Full diamond armor, diamond sword, bow, and 32 arrows ready.",
+        "notes": "Diamond counts: sword=2, helmet=5, chestplate=8, leggings=7, boots=4 → 26 total. Full diamond armor provides 80% damage reduction. The Wither fires explosive wither skulls dealing 8+ damage — without this gear the fight is nearly impossible. Bow requires 3 sticks + 3 string; arrows require flint + stick + feather each.",
+        "produces": [
+          {
+            "type": "item",
+            "name": "diamond_sword",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "diamond_chestplate",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "bow",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "step": 8,
+        "goal": "Build an enclosed underground room and spawn the Wither",
+        "action_nl": "Dig a room at least 5×5×5 blocks underground. Place 4 soul sand in a T-shape (3 in a row, 1 centred above) then place the 3 skulls on the top row to spawn the Wither.",
+        "action_cmd": [
+          "!placeHere('soul_sand')"
+        ],
+        "verify_cmd": [],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "soul_sand:4",
+              "wither_skeleton_skull:3"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "Wither spawned; 11-second invulnerability countdown begins.",
+        "notes": "Spawn underground in a closed room to prevent the Wither from flying away and to limit its movement. The Wither breaks most blocks (except obsidian, bedrock, barriers) — a room with stone or cobblestone walls is fine. Do NOT place the last skull while standing directly above it. Back away immediately after spawning — it creates a massive explosion when the invulnerability ends."
+      },
+      {
+        "step": 9,
+        "goal": "Fight Wither Phase 1 with the bow until it reaches 50% health",
+        "action_nl": "Equip the bow and shoot the Wither from a distance while using the room walls as cover against wither skull projectiles.",
+        "action_cmd": [
+          "!attack('wither', true)"
+        ],
+        "verify_cmd": [],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "bow:1",
+              "arrow:32",
+              "diamond_sword:1"
+            ],
+            "nearby": [],
+            "equipped": [
+              "bow"
+            ],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "Wither health reduced to 50%; Phase 2 explosion occurs.",
+        "notes": "Phase 1: Wither flies and fires two projectile types. Black wither skulls can be deflected by hitting with a sword; blue wither skulls cannot. Wither Sickness (Wither II effect from skull hits) drains health — consume milk to cure. When Wither reaches 50% HP, it creates a large explosion and gains a blue shield that makes it immune to arrows.",
+        "produces": []
+      },
+      {
+        "step": 10,
+        "goal": "Fight Wither Phase 2 with the diamond sword until defeated",
+        "action_nl": "Switch to diamond sword — Phase 2 Wither is immune to projectiles. Attack in melee repeatedly until the Wither is destroyed.",
+        "action_cmd": [
+          "!equipItem('diamond_sword')",
+          "!attack('wither', true)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "diamond_sword:1"
+            ],
+            "nearby": [],
+            "equipped": [
+              "diamond_sword"
+            ],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "Wither defeated; nether star dropped.",
+        "notes": "Phase 2 Wither hovers near ground level and charges at the player. Its blue shield deflects ALL projectiles including arrows, snowballs, and splash potions — only melee works. Diamond sword (7 damage) kills it in about 25 hits. Strength II potions halve the hits required. The nether star is indestructible and cannot be destroyed by explosions.",
+        "produces": {
+          "type": "item",
+          "name": "nether_star",
+          "count": 1
+        }
+      }
+    ]
+  },
+  {
+    "slug": "combat/wither_skeleton",
+    "name": "Kill Wither Skeletons for Bones",
+    "tab": "combat",
+    "level": "L3",
+    "rationale": "Wither skeletons spawn exclusively inside Nether fortresses and drop bones (and rarely wither skeleton skulls). Reaching them requires building a Nether portal and equipping a sword.",
+    "actual": "Start from zero inventory: craft an iron pickaxe, then a diamond pickaxe, then build a Nether portal, find a Nether fortress, craft an iron sword, and defeat wither skeletons to collect bones.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Craft an iron pickaxe from scratch",
+        "action_nl": "Gather oak logs, craft planks and sticks, craft a wooden pickaxe, mine stone and craft a stone pickaxe, mine iron ore, smelt raw iron, and craft an iron pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 3)",
+          "!craftRecipe('oak_planks', 12)",
+          "!craftRecipe('stick', 4)",
+          "!craftRecipe('wooden_pickaxe', 1)",
+          "!collectBlocks('stone', 3)",
+          "!craftRecipe('stone_pickaxe', 1)",
+          "!collectBlocks('iron_ore', 3)",
+          "!smeltItem('raw_iron', 3)",
+          "!craftRecipe('iron_pickaxe', 1)"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees",
+            "stone",
+            "underground"
+          ]
+        },
+        "expected": "Player has an iron pickaxe.",
+        "notes": "Start from ZERO inventory. wooden_pickaxe is required to mine stone. stone_pickaxe is required to mine iron_ore. collectBlocks('iron_ore') drops raw_iron — use smeltItem('raw_iron', 3) to get iron ingots.",
+        "produces": {
+          "type": "item",
+          "name": "iron_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 2,
+        "goal": "Mine diamond ore and craft a diamond pickaxe",
+        "action_nl": "Use the iron pickaxe to mine 3 diamond ore blocks, then craft a diamond pickaxe. Diamond pickaxe is the only tool that can mine obsidian.",
+        "action_cmd": [
+          "!collectBlocks('diamond_ore', 3)",
+          "!collectBlocks('oak_log', 1)",
+          "!craftRecipe('oak_planks', 4)",
+          "!craftRecipe('stick', 2)",
+          "!craftRecipe('diamond_pickaxe', 1)"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "iron_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "Player has a diamond pickaxe.",
+        "notes": "IMPORTANT: collectBlocks('diamond_ore') drops diamond directly — do NOT add a smeltItem step for diamonds.",
+        "produces": {
+          "type": "item",
+          "name": "diamond_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 3,
+        "goal": "Mine obsidian and extra iron, craft flint_and_steel and iron sword",
+        "action_nl": "Search for and mine 10 obsidian blocks with the diamond pickaxe. Mine extra iron ore and smelt it into ingots. Collect gravel for flint. Craft flint_and_steel (to ignite the portal) and an iron sword (for combat).",
+        "action_cmd": [
+          "!searchForBlock('obsidian', 32)",
+          "!collectBlocks('obsidian', 10)",
+          "!collectBlocks('iron_ore', 4)",
+          "!smeltItem('raw_iron', 4)",
+          "!collectBlocks('gravel', 4)",
+          "!craftRecipe('flint_and_steel', 1)",
+          "!craftRecipe('iron_sword', 1)",
+          "!equipItem('iron_sword')"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "diamond_pickaxe:1",
+              "stone_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "Player has obsidian, flint_and_steel, and an iron sword equipped.",
+        "notes": "Only diamond pickaxe can mine obsidian. Iron sword (6 attack damage) is required for effective combat against wither skeletons (20 HP). Wither skeletons inflict the Wither effect on hit.",
+        "produces": [
+          {
+            "type": "item",
+            "name": "flint_and_steel",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "iron_sword",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "step": 4,
+        "goal": "Build and activate the nether portal",
+        "action_nl": "Place obsidian blocks in a 4x5 rectangular frame and use flint_and_steel to ignite the portal.",
+        "action_cmd": [
+          "!placeHere('obsidian')",
+          "!placeHere('flint_and_steel')"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "obsidian:10",
+              "flint_and_steel:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "surface"
+          ]
+        },
+        "expected": "Nether portal is active and player can travel to the Nether.",
+        "notes": "A minimum frame requires 10 obsidian (4-wide × 5-tall with corners removed). Use flint_and_steel inside the frame to ignite it.",
+        "produces": {
+          "type": "structure",
+          "name": "nether_portal"
+        }
+      },
+      {
+        "step": 5,
+        "goal": "Find a nether fortress",
+        "action_nl": "Search for nether_bricks blocks which indicate the presence of a Nether fortress where wither skeletons spawn.",
+        "action_cmd": [
+          "!searchForBlock('nether_bricks', 64)"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "iron_sword:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "nether"
+          ]
+        },
+        "expected": "Player is near a nether fortress.",
+        "notes": "Wither skeletons ONLY spawn inside Nether fortress structures. Search in a large radius; fortresses can be far apart.",
+        "produces": {
+          "type": "location",
+          "name": "nether_fortress"
+        }
+      },
+      {
+        "step": 6,
+        "goal": "Defeat wither skeletons and collect bones",
+        "action_nl": "Attack wither skeletons until bones drop.",
+        "action_cmd": [
+          "!attack('wither_skeleton', true)"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "iron_sword:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "nether"
+          ]
+        },
+        "expected": "Player has collected at least 1 bone.",
+        "notes": "Wither skeletons drop 0-2 bones per kill and rarely drop their skull. They move quickly and deal Wither effect — keep moving and avoid prolonged engagements.",
+        "produces": {
+          "type": "item",
+          "name": "bone",
+          "count": 1
+        }
+      }
+    ]
+  }
+]

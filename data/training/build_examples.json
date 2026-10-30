@@ -1,0 +1,739 @@
+[
+  {
+    "slug": "build/simple_house",
+    "name": "Build a Simple House",
+    "tab": "build",
+    "level": "L1",
+    "rationale": "Build a simple shelter to protect yourself from monsters at night.",
+    "actual": "Use blocks to construct a basic house with walls, roof, door, and windows.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Gather building materials",
+        "action_nl": "Collect at least 64 blocks of building material (cobblestone, wood planks, etc.)",
+        "action_cmd": [
+          "!collectBlocks('cobblestone', 64)"
+        ],
+        "verify_cmd": [
+          "!inventory('cobblestone')"
+        ],
+        "preconditions": [
+          "Access to stone or wood",
+          "Pickaxe for mining stone"
+        ],
+        "expected": "At least 64 building blocks in inventory.",
+        "notes": "Cobblestone is durable and easy to obtain. Wood planks are also good for building."
+      },
+      {
+        "step": 2,
+        "goal": "Prepare the building site",
+        "action_nl": "Clear a flat area for the house foundation",
+        "action_cmd": [
+          "!inventory"
+        ],
+        "verify_cmd": [],
+        "preconditions": [
+          "Flat ground available"
+        ],
+        "expected": "Building site is ready.",
+        "notes": "A 5x5 or 7x7 area is good for a simple house."
+      },
+      {
+        "step": 3,
+        "goal": "Build the floor and walls",
+        "action_nl": "Place blocks to create a floor and 3-block high walls",
+        "action_cmd": [
+          "!startBuild"
+        ],
+        "verify_cmd": [],
+        "preconditions": [
+          "Building materials in inventory",
+          "Flat area prepared"
+        ],
+        "expected": "Basic house structure with walls.",
+        "notes": "Leave spaces for door and windows."
+      },
+      {
+        "step": 4,
+        "goal": "Add roof and door",
+        "action_nl": "Place blocks on top for roof and craft/place a door",
+        "action_cmd": [
+          "!craftRecipe('oak_door', 1)",
+          "!startBuild"
+        ],
+        "verify_cmd": [
+          "!inventory('oak_door')"
+        ],
+        "preconditions": [
+          "House walls completed",
+          "Materials for door (6 planks)"
+        ],
+        "expected": "House with roof and door.",
+        "notes": "Stairs or slabs make nice roof shapes."
+      }
+    ]
+  },
+  {
+    "slug": "build/crafting_table",
+    "name": "Place a Crafting Table",
+    "tab": "build",
+    "level": "L1",
+    "rationale": "A Crafting Table is essential for crafting most items in Minecraft.",
+    "actual": "Craft a Crafting Table and place it in a convenient location.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Collect logs",
+        "action_nl": "Find and collect at least 1 log from any tree",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory('oak_log')"
+        ],
+        "preconditions": [
+          "Access to trees"
+        ],
+        "expected": "At least 1 log in inventory.",
+        "notes": "Any tree type works: oak, birch, spruce, etc."
+      },
+      {
+        "step": 2,
+        "goal": "Craft wooden planks",
+        "action_nl": "Convert the log into wooden planks",
+        "action_cmd": [
+          "!craftRecipe('planks', 4)"
+        ],
+        "verify_cmd": [
+          "!inventory('planks')"
+        ],
+        "preconditions": [
+          "Log in inventory"
+        ],
+        "expected": "4 wooden planks in inventory.",
+        "notes": "Each log produces 4 planks."
+      },
+      {
+        "step": 3,
+        "goal": "Craft a Crafting Table",
+        "action_nl": "Use 4 wooden planks to craft a Crafting Table",
+        "action_cmd": [
+          "!craftRecipe('crafting_table', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory('crafting_table')"
+        ],
+        "preconditions": [
+          "At least 4 wooden planks in inventory"
+        ],
+        "expected": "Crafting Table in inventory.",
+        "notes": "The Crafting Table is placed as a block, not held."
+      },
+      {
+        "step": 4,
+        "goal": "Place the Crafting Table",
+        "action_nl": "Select the Crafting Table and place it on the ground",
+        "action_cmd": [
+          "!placeHere('crafting_table')"
+        ],
+        "verify_cmd": [],
+        "preconditions": [
+          "Crafting Table in inventory",
+          "Flat ground available"
+        ],
+        "expected": "Crafting Table placed in the world.",
+        "notes": "Place it somewhere accessible and safe."
+      }
+    ]
+  },
+  {
+    "slug": "build/tower",
+    "name": "Build a Simple Tower",
+    "tab": "build",
+    "level": "L1",
+    "rationale": "A tall tower provides a vantage point to survey the surrounding area and spot landmarks.",
+    "actual": "Collect cobblestone and stack blocks vertically to build a 6-block high observation tower.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Collect cobblestone for the tower",
+        "action_nl": "Mine at least 12 cobblestone blocks to build the tower pillar",
+        "action_cmd": [
+          "!collectBlocks('cobblestone', 12)"
+        ],
+        "verify_cmd": [
+          "!inventory('cobblestone')"
+        ],
+        "preconditions": [
+          "Access to stone underground or on surface",
+          "Wooden pickaxe or better"
+        ],
+        "expected": "At least 12 cobblestone in inventory.",
+        "notes": "Extra cobblestone is useful for stairs or a platform at the top."
+      },
+      {
+        "step": 2,
+        "goal": "Find a suitable building location",
+        "action_nl": "Choose a flat, open area to build the tower",
+        "action_cmd": [
+          "!searchForBlock('grass_block', 16)"
+        ],
+        "verify_cmd": [],
+        "preconditions": [
+          "Open flat terrain nearby"
+        ],
+        "expected": "Suitable flat location identified.",
+        "notes": "Build on high ground for maximum visibility."
+      },
+      {
+        "step": 3,
+        "goal": "Stack blocks 6 high to form the tower",
+        "action_nl": "Jump and place cobblestone blocks vertically to build a 6-block high pillar",
+        "action_cmd": [
+          "!placeHere('cobblestone')"
+        ],
+        "verify_cmd": [],
+        "preconditions": [
+          "Cobblestone in inventory",
+          "Flat ground to start from"
+        ],
+        "expected": "A 6-block tall tower standing vertically.",
+        "notes": "Place blocks while jumping: stand on each new block to place the next one higher. Add a small platform at the top for safety."
+      }
+    ]
+  },
+  {
+    "slug": "build/wall",
+    "name": "Build a Defensive Wall",
+    "tab": "build",
+    "level": "L1",
+    "rationale": "A defensive wall protects a base area from hostile mobs by blocking their path.",
+    "actual": "Collect 32 cobblestone and place them in a straight line to create a 2-block high defensive wall.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Collect cobblestone for the wall",
+        "action_nl": "Mine at least 32 cobblestone blocks for the wall construction",
+        "action_cmd": [
+          "!collectBlocks('cobblestone', 32)"
+        ],
+        "verify_cmd": [
+          "!inventory('cobblestone')"
+        ],
+        "preconditions": [
+          "Access to stone",
+          "Pickaxe available"
+        ],
+        "expected": "At least 32 cobblestone in inventory.",
+        "notes": "A 16-block long wall at 2 blocks high requires 32 cobblestone."
+      },
+      {
+        "step": 2,
+        "goal": "Survey the perimeter to wall off",
+        "action_nl": "Walk along the area boundary to identify where the wall should go",
+        "action_cmd": [
+          "!searchForBlock('grass_block', 32)"
+        ],
+        "verify_cmd": [],
+        "preconditions": [
+          "Clear line of sight for planning"
+        ],
+        "expected": "Wall path identified.",
+        "notes": "Choose a straight line along one side of the base."
+      },
+      {
+        "step": 3,
+        "goal": "Place cobblestone in a line to form the wall",
+        "action_nl": "Place cobblestone blocks side by side in a straight line, two blocks high",
+        "action_cmd": [
+          "!placeHere('cobblestone')"
+        ],
+        "verify_cmd": [],
+        "preconditions": [
+          "Cobblestone in inventory",
+          "Clear ground along wall path"
+        ],
+        "expected": "A continuous 2-block high wall of cobblestone.",
+        "notes": "Mobs cannot jump over a 2-block high wall. Make sure there are no gaps."
+      }
+    ]
+  },
+  {
+    "slug": "build/bridge",
+    "name": "Build a Simple Bridge",
+    "tab": "build",
+    "level": "L1",
+    "rationale": "A bridge allows safe crossing over gaps, ravines, or water without falling.",
+    "actual": "Collect cobblestone and place blocks over a gap to create a walkable bridge.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Collect cobblestone for the bridge",
+        "action_nl": "Mine at least 20 cobblestone blocks for the bridge construction",
+        "action_cmd": [
+          "!collectBlocks('cobblestone', 20)"
+        ],
+        "verify_cmd": [
+          "!inventory('cobblestone')"
+        ],
+        "preconditions": [
+          "Access to stone",
+          "Pickaxe available"
+        ],
+        "expected": "At least 20 cobblestone in inventory.",
+        "notes": "Extra cobblestone allows for railings or a wider bridge."
+      },
+      {
+        "step": 2,
+        "goal": "Position at the edge of the gap",
+        "action_nl": "Walk to the edge of the ravine or gap to start bridging",
+        "action_cmd": [
+          "!searchForBlock('cobblestone', 8)"
+        ],
+        "verify_cmd": [],
+        "preconditions": [
+          "Gap or ravine nearby"
+        ],
+        "expected": "Standing at the edge of the gap, ready to bridge.",
+        "notes": "Be careful not to fall. Crouch (shift) to prevent falling off edges."
+      },
+      {
+        "step": 3,
+        "goal": "Place cobblestone over the gap",
+        "action_nl": "Sneak to the edge and place cobblestone blocks forward across the gap",
+        "action_cmd": [
+          "!placeHere('cobblestone')"
+        ],
+        "verify_cmd": [],
+        "preconditions": [
+          "Cobblestone in inventory",
+          "Standing at edge of gap"
+        ],
+        "expected": "A solid cobblestone bridge spanning the gap.",
+        "notes": "Place blocks while crouching to avoid falling. Place one block forward, step onto it, repeat."
+      }
+    ]
+  },
+  {
+    "slug": "build/farm_plot",
+    "name": "Build a Farm Plot",
+    "tab": "build",
+    "level": "L2",
+    "rationale": "A farm plot provides a renewable food source by growing crops like wheat, carrots, or potatoes.",
+    "actual": "Collect wood, craft a hoe, clear an area near water, and till soil to prepare farmland for planting.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Collect wood for crafting",
+        "action_nl": "Chop down trees to collect logs for crafting a hoe and fences",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 5)"
+        ],
+        "verify_cmd": [
+          "!inventory('oak_log')"
+        ],
+        "preconditions": [
+          "Access to trees nearby"
+        ],
+        "expected": "At least 5 logs in inventory.",
+        "notes": "Logs will be converted to planks and sticks for tools."
+      },
+      {
+        "step": 2,
+        "goal": "Craft a wooden hoe",
+        "action_nl": "Convert logs to planks and sticks, then craft a wooden hoe",
+        "action_cmd": [
+          "!craftRecipe('planks', 8)",
+          "!craftRecipe('stick', 4)",
+          "!craftRecipe('wooden_hoe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory('wooden_hoe')"
+        ],
+        "preconditions": [
+          "Logs in inventory"
+        ],
+        "expected": "Wooden hoe crafted and ready.",
+        "notes": "A hoe is required to till dirt into farmland."
+      },
+      {
+        "step": 3,
+        "goal": "Clear a flat area near water",
+        "action_nl": "Find a water source and clear grass and flowers from a 9x9 area",
+        "action_cmd": [
+          "!searchForBlock('water', 16)"
+        ],
+        "verify_cmd": [],
+        "preconditions": [
+          "Hoe in inventory",
+          "Water source within 4 blocks of farm site"
+        ],
+        "expected": "Flat dirt area adjacent to water, free of grass and plants.",
+        "notes": "Farmland must be within 4 blocks of water to stay hydrated."
+      },
+      {
+        "step": 4,
+        "goal": "Till the soil with the hoe",
+        "action_nl": "Equip the wooden hoe and right-click dirt blocks to till them into farmland",
+        "action_cmd": [
+          "!equipItem('wooden_hoe')"
+        ],
+        "verify_cmd": [],
+        "preconditions": [
+          "Wooden hoe equipped",
+          "Flat dirt cleared near water"
+        ],
+        "expected": "Tilled farmland rows ready for planting seeds.",
+        "notes": "Tilled soil near water turns dark, indicating it is hydrated and ready for crops."
+      }
+    ]
+  },
+  {
+    "slug": "build/furnace_station",
+    "name": "Build a Smelting Station",
+    "tab": "build",
+    "level": "L2",
+    "rationale": "A smelting station with furnace and chests provides an organized area for cooking food and smelting ores.",
+    "actual": "Collect cobblestone, craft a furnace and chests, place them together, and organize the workstation.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Collect cobblestone for furnace",
+        "action_nl": "Mine at least 8 cobblestone blocks to craft a furnace",
+        "action_cmd": [
+          "!collectBlocks('cobblestone', 8)"
+        ],
+        "verify_cmd": [
+          "!inventory('cobblestone')"
+        ],
+        "preconditions": [
+          "Access to stone",
+          "Pickaxe available"
+        ],
+        "expected": "At least 8 cobblestone in inventory.",
+        "notes": "A furnace requires exactly 8 cobblestone to craft."
+      },
+      {
+        "step": 2,
+        "goal": "Craft the furnace",
+        "action_nl": "Use 8 cobblestone to craft a furnace at the crafting table",
+        "action_cmd": [
+          "!craftRecipe('furnace', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory('furnace')"
+        ],
+        "preconditions": [
+          "At least 8 cobblestone in inventory",
+          "Crafting table available"
+        ],
+        "expected": "Furnace crafted.",
+        "notes": "If no crafting table is nearby, craft one from logs first."
+      },
+      {
+        "step": 3,
+        "goal": "Place the furnace",
+        "action_nl": "Find a suitable spot and place the furnace on the ground",
+        "action_cmd": [
+          "!placeHere('furnace')"
+        ],
+        "verify_cmd": [],
+        "preconditions": [
+          "Furnace in inventory",
+          "Flat ground available"
+        ],
+        "expected": "Furnace placed and ready to use.",
+        "notes": "Place the furnace in a well-lit, accessible area."
+      },
+      {
+        "step": 4,
+        "goal": "Craft and place storage chests nearby",
+        "action_nl": "Collect extra wood, craft chests, and place them next to the furnace for organized storage",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 4)",
+          "!craftRecipe('planks', 8)",
+          "!craftRecipe('chest', 2)",
+          "!placeHere('chest')"
+        ],
+        "verify_cmd": [
+          "!inventory('chest')"
+        ],
+        "preconditions": [
+          "Logs available",
+          "Furnace already placed"
+        ],
+        "expected": "Smelting station with furnace and 2 chests for input/output organization.",
+        "notes": "Use one chest for raw materials (ores, food) and another for smelted outputs."
+      }
+    ]
+  },
+  {
+    "slug": "build/storage_room",
+    "name": "Build a Storage Room",
+    "tab": "build",
+    "level": "L2",
+    "rationale": "A dedicated storage room with organized chests keeps items sorted and easy to find.",
+    "actual": "Collect wood, craft multiple chests, clear a room, place chests in rows, and label them by category.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Collect wood for chests and room construction",
+        "action_nl": "Chop down trees to collect at least 20 logs for crafting chests and building walls",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 20)"
+        ],
+        "verify_cmd": [
+          "!inventory('oak_log')"
+        ],
+        "preconditions": [
+          "Access to trees"
+        ],
+        "expected": "At least 20 logs in inventory.",
+        "notes": "Each chest requires 8 planks (2 logs). Plan for 6-8 chests plus building material."
+      },
+      {
+        "step": 2,
+        "goal": "Craft chests from planks",
+        "action_nl": "Convert logs to planks and craft 8 chests for storage",
+        "action_cmd": [
+          "!craftRecipe('planks', 32)",
+          "!craftRecipe('chest', 8)"
+        ],
+        "verify_cmd": [
+          "!inventory('chest')"
+        ],
+        "preconditions": [
+          "Logs in inventory"
+        ],
+        "expected": "8 chests crafted and in inventory.",
+        "notes": "Two chests placed next to each other form a double chest with double capacity."
+      },
+      {
+        "step": 3,
+        "goal": "Clear a room for storage",
+        "action_nl": "Dig out or clear a room at least 5x5x3 blocks in size",
+        "action_cmd": [
+          "!collectBlocks('dirt', 30)"
+        ],
+        "verify_cmd": [],
+        "preconditions": [
+          "Area available for excavation"
+        ],
+        "expected": "An enclosed room with flat floor and walls.",
+        "notes": "A 5x5x3 room can fit 4 double chests along one wall with walking space."
+      },
+      {
+        "step": 4,
+        "goal": "Place chests in organized rows",
+        "action_nl": "Place chests side by side along the walls to form double chests",
+        "action_cmd": [
+          "!placeHere('chest')"
+        ],
+        "verify_cmd": [],
+        "preconditions": [
+          "Chests in inventory",
+          "Room cleared with flat floor"
+        ],
+        "expected": "Chests placed in neat rows along the walls.",
+        "notes": "Leave a 1-block gap between chest rows for walking access."
+      },
+      {
+        "step": 5,
+        "goal": "Label and organize chests by category",
+        "action_nl": "Add signs above each chest to label categories (ores, food, tools, building, misc)",
+        "action_cmd": [
+          "!craftRecipe('oak_sign', 4)",
+          "!placeHere('oak_sign')"
+        ],
+        "verify_cmd": [
+          "!inventory('oak_sign')"
+        ],
+        "preconditions": [
+          "Logs and planks for signs",
+          "Chests placed in position"
+        ],
+        "expected": "Labeled storage room with categories for easy item sorting.",
+        "notes": "Suggested categories: Ores/Ingots, Food, Tools/Weapons, Building Blocks, Redstone, Misc."
+      }
+    ]
+  },
+  {
+    "slug": "build/nether_portal",
+    "name": "Build a Nether Portal",
+    "tab": "build",
+    "level": "L3",
+    "rationale": "A Nether Portal provides access to the Nether dimension for rare resources like nether quartz, blaze rods, and ancient debris.",
+    "actual": "Collect obsidian with a diamond pickaxe, build a 4x5 portal frame, and light it with Flint and Steel.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Collect obsidian with a diamond pickaxe",
+        "action_nl": "First obtain a diamond pickaxe, then mine at least 10 obsidian blocks from lava-water intersections",
+        "action_cmd": [
+          "!collectBlocks('diamond_ore', 3)",
+          "!craftRecipe('diamond_pickaxe', 1)",
+          "!collectBlocks('obsidian', 10)"
+        ],
+        "verify_cmd": [
+          "!inventory('diamond_pickaxe')",
+          "!inventory('obsidian')"
+        ],
+        "preconditions": [
+          "Access to deep underground for diamonds",
+          "Iron pickaxe or better for mining diamond ore",
+          "Water bucket to create obsidian from lava",
+          "Diamond pickaxe required (obsidian breaks too slowly with other tools)"
+        ],
+        "expected": "10 obsidian blocks and a diamond pickaxe in inventory.",
+        "notes": "Obsidian forms when flowing water touches lava source blocks. Mining obsidian takes ~10 seconds with diamond pickaxe. Do NOT use any other pickaxe — the block will break without dropping."
+      },
+      {
+        "step": 2,
+        "goal": "Build the portal frame (4x5)",
+        "action_nl": "Place obsidian blocks in a vertical 4-wide by 5-tall rectangle, leaving the center hollow",
+        "action_cmd": [
+          "!placeHere('obsidian')"
+        ],
+        "verify_cmd": [],
+        "preconditions": [
+          "10 obsidian blocks in inventory",
+          "Flat ground for the portal base",
+          "Clear vertical space (5 blocks high)"
+        ],
+        "expected": "A hollow obsidian frame 4 blocks wide and 5 blocks tall.",
+        "notes": "The minimum portal is 4x5 (corners optional). Bottom: 4 wide, sides: 3 high each, top: 4 wide. Only 10 obsidian needed if corners are omitted."
+      },
+      {
+        "step": 3,
+        "goal": "Craft Flint and Steel and light the portal",
+        "action_nl": "Craft Flint and Steel from iron ingot and flint, then right-click the portal frame interior to ignite it",
+        "action_cmd": [
+          "!collectBlocks('gravel', 3)",
+          "!craftRecipe('flint_and_steel', 1)",
+          "!equipItem('flint_and_steel')"
+        ],
+        "verify_cmd": [
+          "!inventory('flint_and_steel')"
+        ],
+        "preconditions": [
+          "Iron ingot in inventory",
+          "Flint from mining gravel",
+          "Portal frame completed"
+        ],
+        "expected": "Nether portal lit with purple swirl effect inside the frame.",
+        "notes": "Flint drops from mining gravel (10% chance). The portal will emit a purple particle effect and a portal sound when lit successfully."
+      }
+    ]
+  },
+  {
+    "slug": "build/mob_trap",
+    "name": "Build a Simple Mob Trap",
+    "tab": "build",
+    "level": "L3",
+    "rationale": "A mob trap automatically damages and kills hostile mobs to collect their drops safely.",
+    "actual": "Collect materials, dig a pit, set up water flows, add signs to control water, and create a dark spawning room above.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Collect building materials",
+        "action_nl": "Gather cobblestone, signs, water buckets, and building blocks for the trap",
+        "action_cmd": [
+          "!collectBlocks('cobblestone', 64)",
+          "!collectBlocks('oak_log', 10)"
+        ],
+        "verify_cmd": [
+          "!inventory('cobblestone')",
+          "!inventory('oak_log')"
+        ],
+        "preconditions": [
+          "Access to stone and wood",
+          "Pickaxe available",
+          "Iron ingot for bucket (if no bucket)"
+        ],
+        "expected": "At least 64 cobblestone and 10 logs in inventory.",
+        "notes": "You will also need signs (from planks + sticks) and a water bucket. Craft these from the collected materials."
+      },
+      {
+        "step": 2,
+        "goal": "Dig a collection pit",
+        "action_nl": "Dig a 2-block deep pit where mob drops will collect",
+        "action_cmd": [
+          "!collectBlocks('dirt', 20)"
+        ],
+        "verify_cmd": [],
+        "preconditions": [
+          "Shovel or pickaxe available",
+          "Open area for construction"
+        ],
+        "expected": "A 2-block deep pit dug into the ground.",
+        "notes": "The pit should be at the bottom of the trap where items will collect. Make it at least 3x3."
+      },
+      {
+        "step": 3,
+        "goal": "Add water flows to push mobs down",
+        "action_nl": "Place water source blocks at the top of channels to create flowing water that pushes mobs toward the pit",
+        "action_cmd": [
+          "!craftRecipe('bucket', 1)",
+          "!placeHere('water_bucket')"
+        ],
+        "verify_cmd": [],
+        "preconditions": [
+          "Iron ingot for bucket",
+          "Water source nearby to fill bucket",
+          "Channels dug toward pit"
+        ],
+        "expected": "Water flowing from all sides toward the central pit.",
+        "notes": "Water flows can carry mobs up to 8 blocks. Place water sources at opposite corners of the spawning floor."
+      },
+      {
+        "step": 4,
+        "goal": "Add signs to control water flow",
+        "action_nl": "Place signs at the edges of the pit to stop water from flowing into the collection area",
+        "action_cmd": [
+          "!craftRecipe('stick', 6)",
+          "!craftRecipe('oak_sign', 4)",
+          "!placeHere('oak_sign')"
+        ],
+        "verify_cmd": [
+          "!inventory('oak_sign')"
+        ],
+        "preconditions": [
+          "Planks and sticks for signs",
+          "Water channels already placed"
+        ],
+        "expected": "Signs blocking water from entering the item collection pit.",
+        "notes": "Signs act as water barriers. Place them on the walls around the pit edge to stop water flow."
+      },
+      {
+        "step": 5,
+        "goal": "Create a dark spawning room above",
+        "action_nl": "Build an enclosed dark room above the water channels for mobs to spawn in",
+        "action_cmd": [
+          "!placeHere('cobblestone')"
+        ],
+        "verify_cmd": [],
+        "preconditions": [
+          "Cobblestone for walls and ceiling",
+          "Water channels and pit already built below"
+        ],
+        "expected": "A fully enclosed dark room above the trap where mobs spawn and fall into water.",
+        "notes": "The room must be completely dark (no light sources) and enclosed. Hostile mobs spawn in darkness. Build it at least 3 blocks high."
+      },
+      {
+        "step": 6,
+        "goal": "Add a drop chute and collection point",
+        "action_nl": "Create a fall chute from the dark room down to the pit so mobs take fall damage",
+        "action_cmd": [
+          "!placeHere('cobblestone')"
+        ],
+        "verify_cmd": [],
+        "preconditions": [
+          "Dark spawning room built",
+          "Pit and water flows ready below"
+        ],
+        "expected": "Mobs spawn in dark room, get pushed by water, fall down chute, and die in pit.",
+        "notes": "A fall of 22-23 blocks kills most mobs. Stand near the collection pit to pick up drops safely."
+      }
+    ]
+  }
+]

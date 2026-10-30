@@ -1,0 +1,27 @@
+{
+  "_comment": "Qwen3-8B enable_thinking=true ablation — 2 conditions × 3 seeds",
+  "_purpose": "Reviewer concern: does enable_thinking=false artificially suppress Qwen3-8B? Compare results with qwen8b_eval (thinking=false) runs from June 5.",
+  "_compare_against": [
+    "eval_20260605_*_no_retrieval_*  (qwen8b_eval, thinking=false): no_ret=11/60 (20%)",
+    "eval_20260605_*_saer_cold_*     (qwen8b_eval, thinking=false): saer_cold=17/60 (28%), p=0.23 n.s."
+  ],
+  "pause_between_jobs": 90,
+  "queue": [
+    {
+      "label": "Qwen3-8B (thinking=true) no_retrieval",
+      "profile": "qwen3_thinking_eval",
+      "mode": "no_retrieval",
+      "seeds": 3,
+      "retries": 3,
+      "provider": "aliyun"
+    },
+    {
+      "label": "Qwen3-8B (thinking=true) saer_cold",
+      "profile": "qwen3_thinking_eval",
+      "mode": "saer_cold",
+      "seeds": 3,
+      "retries": 3,
+      "provider": "aliyun"
+    }
+  ]
+}

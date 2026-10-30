@@ -1,0 +1,120 @@
+{
+  "meta": {
+    "timestamp": "2026-06-11T12:47:21.742Z",
+    "model": "gemma-4-26b-a4b-it",
+    "condition": "no_retrieval",
+    "total_tasks": 1,
+    "completed_tasks": 1,
+    "failed_tasks": 0
+  },
+  "tasks": [
+    {
+      "slug": "craft/wooden_sword",
+      "level": "L1",
+      "goal_item": "wooden_sword",
+      "min_steps": 2,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect oak logs",
+            "command": "!collectBlocks(\"oak_log\", 2)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 2)"
+            ],
+            "reasoning": "Logs are the base material needed to create planks and sticks.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks",
+            "command": "!craftRecipe(\"oak_planks\", 8)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 8)"
+            ],
+            "reasoning": "Logs must be converted into planks to serve as the material units for the sword and for making sticks.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 2
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft sticks",
+            "command": "!craftRecipe(\"stick\", 2)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 2)"
+            ],
+            "reasoning": "Sticks are required for the sword handle.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 4
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft wooden sword",
+            "command": "!craftRecipe(\"wooden_sword\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"wooden_sword\", 1)"
+            ],
+            "reasoning": "Following the sword pattern, 2 material units (planks) and 1 stick are used to craft the final item.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 2
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "wooden_sword"
+      },
+      "raw_response": "REASONING:\nI identified the target item as wooden_sword, the material as wood, and the tool type as sword. I applied the Material Quantity Pattern which dictates that swords require 2 material units and 1 stick. I followed the Material Processing Pattern to convert logs into planks and planks into sticks. I organized the plan following the Step Structure Pattern, ensuring all dependencies (logs to planks to sticks to sword) are met in the correct order.\n\nEXECUTION PLAN:\nStep 1: Collect oak logs\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 2)\nReasoning: Logs are the base material needed to create planks and sticks.\n\nStep 2: Craft oak planks\nPrerequisites: item:oak_log:2\nCommand: !craftRecipe(\"oak_planks\", 8)\nReasoning: Logs must be converted into planks to serve as the material units for the sword and for making sticks.\n\nStep 3: Craft sticks\nPrerequisites: item:oak_planks:4\nCommand: !craftRecipe(\"stick\", 2)\nReasoning: Sticks are required for the sword handle.\n\nStep 4: Craft wooden sword\nPrerequisites: item:oak_planks:2, item:stick:1\nCommand: !craftRecipe(\"wooden_sword\", 1)\nReasoning: Following the sword pattern, 2 material units (planks) and 1 stick are used to craft the final item.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 4,
+        "step_efficiency": 0.5,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 0,
+      "prompt_length": 7621
+    }
+  ],
+  "summary": {
+    "by_level": {
+      "L1": {
+        "total": 1,
+        "strict_tcr": "1/1",
+        "lenient_tcr": "1/1",
+        "pvr": "1/1",
+        "avg_step_efficiency": 0.5
+      }
+    },
+    "overall": {
+      "strict_tcr": "1/1",
+      "lenient_tcr": "1/1",
+      "pvr": "1/1",
+      "avg_step_efficiency": 0.5
+    }
+  }
+}

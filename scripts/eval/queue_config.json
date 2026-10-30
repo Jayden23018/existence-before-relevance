@@ -1,0 +1,121 @@
+{
+  "_comment": "SAER experiment queue. Updated 2026-06-04: eval_tasks.json replaced 24 tasks (clean eval). ALL old results invalid. Full re-run required.",
+  "pause_between_jobs": 60,
+  "queue": [
+    {
+      "_comment": "=== PHASE 1: Aliyun API — run NOW, no balance issue ===",
+      "_comment2": "Cross-model main table: no_retrieval + saer_cold for 3 models"
+    },
+    {
+      "label": "Qwen-max no_retrieval [new eval]",
+      "profile": "qwen",
+      "mode": "no_retrieval",
+      "seeds": 3,
+      "retries": 3,
+      "provider": "aliyun"
+    },
+    {
+      "label": "Qwen-max saer_cold [new eval]",
+      "profile": "qwen",
+      "mode": "saer_cold",
+      "seeds": 3,
+      "retries": 3,
+      "provider": "aliyun"
+    },
+    {
+      "label": "Qwen3-8B no_retrieval [new eval]",
+      "profile": "qwen8b_eval",
+      "mode": "no_retrieval",
+      "seeds": 3,
+      "retries": 3,
+      "provider": "aliyun"
+    },
+    {
+      "label": "Qwen3-8B saer_cold [new eval]",
+      "profile": "qwen8b_eval",
+      "mode": "saer_cold",
+      "seeds": 3,
+      "retries": 3,
+      "provider": "aliyun"
+    },
+    {
+      "label": "DeepSeek-V3 no_retrieval [new eval]",
+      "profile": "deepseek_eval",
+      "mode": "no_retrieval",
+      "seeds": 3,
+      "retries": 3,
+      "provider": "deepseek"
+    },
+    {
+      "label": "DeepSeek-V3 saer_cold [new eval]",
+      "profile": "deepseek_eval",
+      "mode": "saer_cold",
+      "seeds": 3,
+      "retries": 3,
+      "provider": "deepseek"
+    },
+    {
+      "_comment": "=== PHASE 1b: Ablation (Qwen-max as reference, all 5 conditions) ===",
+      "_comment2": "Needed for paper §5.2 ablation table"
+    },
+    {
+      "label": "Qwen-max random_retrieval [ablation]",
+      "profile": "qwen",
+      "mode": "random_retrieval",
+      "seeds": 3,
+      "retries": 3,
+      "provider": "aliyun"
+    },
+    {
+      "label": "Qwen-max bm25_retrieval [ablation]",
+      "profile": "qwen",
+      "mode": "bm25_retrieval",
+      "seeds": 3,
+      "retries": 3,
+      "provider": "aliyun"
+    },
+    {
+      "label": "Qwen-max saer_warm [ablation]",
+      "profile": "qwen",
+      "mode": "saer_warm",
+      "seeds": 3,
+      "retries": 3,
+      "provider": "aliyun"
+    },
+    {
+      "_comment": "=== PHASE 2: 302.ai — BLOCKED until balance topped up ==="
+    },
+    {
+      "label": "GPT-4o no_retrieval [new eval]",
+      "profile": "gpt4o_eval",
+      "mode": "no_retrieval",
+      "seeds": 3,
+      "retries": 3,
+      "provider": "302ai"
+    },
+    {
+      "label": "GPT-4o saer_cold [new eval]",
+      "profile": "gpt4o_eval",
+      "mode": "saer_cold",
+      "seeds": 3,
+      "retries": 3,
+      "provider": "302ai"
+    },
+    {
+      "label": "Claude Sonnet 4.5 no_retrieval [new eval]",
+      "profile": "claude_eval",
+      "mode": "no_retrieval",
+      "seeds": 3,
+      "retries": 3,
+      "provider": "302ai"
+    },
+    {
+      "label": "Claude Sonnet 4.5 saer_cold [new eval]",
+      "profile": "claude_eval",
+      "mode": "saer_cold",
+      "seeds": 3,
+      "retries": 3,
+      "provider": "302ai"
+    }
+  ]
+}

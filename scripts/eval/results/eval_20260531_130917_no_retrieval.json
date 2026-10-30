@@ -1,0 +1,617 @@
+{
+  "meta": {
+    "timestamp": "2026-05-31T05:11:01.995Z",
+    "model": "qwen-max",
+    "condition": "no_retrieval",
+    "total_tasks": 5,
+    "completed_tasks": 5,
+    "failed_tasks": 0
+  },
+  "tasks": [
+    {
+      "slug": "combat/kill_creeper",
+      "level": "L1",
+      "goal_item": "gunpowder",
+      "min_steps": 3,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Kill a creeper",
+            "command": "!newAction(\"kill_creeper\")",
+            "action_cmd": [
+              "!newAction(\"kill_creeper\")"
+            ],
+            "reasoning": "The first step is to kill a creeper, which will drop gunpowder.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Collect gunpowder",
+            "command": "!collectBlocks(\"gunpowder\", 1)",
+            "action_cmd": [
+              "!collectBlocks(\"gunpowder\", 1)"
+            ],
+            "reasoning": "After killing the creeper, the next step is to collect the gunpowder that it drops.",
+            "preconditions": [
+              "item:creeper_drop:gunpowder:1"
+            ],
+            "produces": null
+          }
+        ],
+        "target": null
+      },
+      "raw_response": "**REASONING**:\nThe user's request is to \"kill a creeper and collect gunpowder.\" This implies that the target item is gunpowder, which is a material dropped by creepers. There is no specific tool or material type involved in this request, as it is a combat-related task.\n\n**EXECUTION PLAN**:\nStep 1: Kill a creeper\nPrerequisites: None\nCommand: !newAction(\"kill_creeper\")\nReasoning: The first step is to kill a creeper, which will drop gunpowder.\n\nStep 2: Collect gunpowder\nPrerequisites: item:creeper_drop:gunpowder:1\nCommand: !collectBlocks(\"gunpowder\", 1)\nReasoning: After killing the creeper, the next step is to collect the gunpowder that it drops.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 2,
+        "step_efficiency": 1,
+        "issues": [
+          "Step 2: missing item:creeper_drop:gunpowder:1"
+        ],
+        "lenient_issues": [
+          "Step 2: missing item:creeper_drop:gunpowder:1"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7654
+    },
+    {
+      "slug": "combat/kill_enderman",
+      "level": "L2",
+      "goal_item": "ender_pearl",
+      "min_steps": 4,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect logs",
+            "command": "!collectBlocks(\"oak_log\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 3)"
+            ],
+            "reasoning": "Logs are needed to make planks, which are then used to make sticks and a crafting table.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks",
+            "command": "!craftRecipe(\"oak_planks\", 12)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 12)"
+            ],
+            "reasoning": "Planks are required to make sticks and a crafting table.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft sticks",
+            "command": "!craftRecipe(\"stick\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 4)"
+            ],
+            "reasoning": "Sticks are needed for the iron sword and to make a pickaxe.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 12
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft a wooden pickaxe",
+            "command": "!craftRecipe(\"wooden_pickaxe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"wooden_pickaxe\", 1)"
+            ],
+            "reasoning": "A wooden pickaxe is needed to mine stone, which is required to make a stone pickaxe.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 8
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 5,
+            "goal": "Collect stone",
+            "command": "!collectBlocks(\"stone\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"stone\", 3)"
+            ],
+            "reasoning": "Stone is needed to make a stone pickaxe, which is required to mine iron ore.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "wooden_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "stone",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 6,
+            "goal": "Craft a stone pickaxe",
+            "command": "!craftRecipe(\"stone_pickaxe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"stone_pickaxe\", 1)"
+            ],
+            "reasoning": "A stone pickaxe is needed to mine iron ore.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "cobblestone",
+                "count": 3
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 7,
+            "goal": "Collect iron ore",
+            "command": "!collectBlocks(\"iron_ore\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"iron_ore\", 3)"
+            ],
+            "reasoning": "Iron ore is needed to smelt into iron ingots, which are used to craft the iron sword.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "underground",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 8,
+            "goal": "Craft a furnace",
+            "command": "!craftRecipe(\"furnace\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"furnace\", 1)"
+            ],
+            "reasoning": "A furnace is needed to smelt the iron ore into iron ingots.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "cobblestone",
+                "count": 8
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 9,
+            "goal": "Smelt raw iron into iron ingots",
+            "command": "!smeltItem(\"raw_iron\", 3)",
+            "action_cmd": [
+              "!smeltItem(\"raw_iron\", 3)"
+            ],
+            "reasoning": "Iron ore must be smelted into iron ingots to be used in crafting.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "raw_iron",
+                "count": 3
+              },
+              {
+                "type": "station",
+                "name": "furnace",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 10,
+            "goal": "Craft an iron sword",
+            "command": "!craftRecipe(\"iron_sword\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"iron_sword\", 1)"
+            ],
+            "reasoning": "The iron sword is the final tool needed to defeat an enderman.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_ingot",
+                "count": 2
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 11,
+            "goal": "Defeat an enderman and collect ender pearls",
+            "command": "!newAction(\"defeat_enderman_and_collect_ender_pearls\")",
+            "action_cmd": [
+              "!newAction(\"defeat_enderman_and_collect_ender_pearls\")"
+            ],
+            "reasoning": "With the iron sword, the player can now defeat an enderman and collect ender pearls.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_sword",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "end",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "iron_sword"
+      },
+      "raw_response": "**REASONING**:\nThe user's request is to \"defeat an enderman and collect ender pearls.\" To defeat an enderman, a player will need a weapon. Since the user did not specify a particular type of weapon, I will assume they want a basic iron sword, as it is a common and effective choice for combat. The target item is \"iron_sword,\" the material type is \"iron,\" and the tool type is \"sword.\"\n\nTo craft an iron sword, we need 2 iron ingots and 1 stick. Iron ore needs to be smelted into iron ingots before it can be used. We also need to ensure that we have a furnace to smelt the iron and a crafting table to craft the sword. If the player does not already have these, we will need to include steps to create them.\n\n**EXECUTION PLAN**:\n\nStep 1: Collect logs\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 3)\nReasoning: Logs are needed to make planks, which are then used to make sticks and a crafting table.\n\nStep 2: Craft oak planks\nPrerequisites: item:oak_log:3\nCommand: !craftRecipe(\"oak_planks\", 12)\nReasoning: Planks are required to make sticks and a crafting table.\n\nStep 3: Craft sticks\nPrerequisites: item:oak_planks:12\nCommand: !craftRecipe(\"stick\", 4)\nReasoning: Sticks are needed for the iron sword and to make a pickaxe.\n\nStep 4: Craft a wooden pickaxe\nPrerequisites: item:oak_planks:8, item:stick:2\nCommand: !craftRecipe(\"wooden_pickaxe\", 1)\nReasoning: A wooden pickaxe is needed to mine stone, which is required to make a stone pickaxe.\n\nStep 5: Collect stone\nPrerequisites: item:wooden_pickaxe:1, access:stone\nCommand: !collectBlocks(\"stone\", 3)\nReasoning: Stone is needed to make a stone pickaxe, which is required to mine iron ore.\n\nStep 6: Craft a stone pickaxe\nPrerequisites: item:cobblestone:3, item:stick:2\nCommand: !craftRecipe(\"stone_pickaxe\", 1)\nReasoning: A stone pickaxe is needed to mine iron ore.\n\nStep 7: Collect iron ore\nPrerequisites: item:stone_pickaxe:1, access:underground\nCommand: !collectBlocks(\"iron_ore\", 3)\nReasoning: Iron ore is needed to smelt into iron ingots, which are used to craft the iron sword.\n\nStep 8: Craft a furnace\nPrerequisites: item:cobblestone:8\nCommand: !craftRecipe(\"furnace\", 1)\nReasoning: A furnace is needed to smelt the iron ore into iron ingots.\n\nStep 9: Smelt raw iron into iron ingots\nPrerequisites: item:raw_iron:3, station:furnace\nCommand: !smeltItem(\"raw_iron\", 3)\nReasoning: Iron ore must be smelted into iron ingots to be used in crafting.\n\nStep 10: Craft an iron sword\nPrerequisites: item:iron_ingot:2, item:stick:1\nCommand: !craftRecipe(\"iron_sword\", 1)\nReasoning: The iron sword is the final tool needed to defeat an enderman.\n\nStep 11: Defeat an enderman and collect ender pearls\nPrerequisites: item:iron_sword:1, access:end\nCommand: !newAction(\"defeat_enderman_and_collect_ender_pearls\")\nReasoning: With the iron sword, the player can now defeat an enderman and collect ender pearls.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 11,
+        "step_efficiency": 0.36,
+        "issues": [
+          "Step 6: missing cobblestone x3",
+          "Step 8: missing cobblestone x8",
+          "Goal item \"ender_pearl\" not produced by any step"
+        ],
+        "lenient_issues": [
+          "Step 6: missing cobblestone x3",
+          "Step 8: missing cobblestone x8",
+          "Goal item \"ender_pearl\" not produced by any step"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7668
+    },
+    {
+      "slug": "combat/kill_slime",
+      "level": "L2",
+      "goal_item": "slime_ball",
+      "min_steps": 3,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Hunt slimes in a swamp",
+            "command": "!collectBlocks(\"slimeball\", 10)",
+            "action_cmd": [
+              "!collectBlocks(\"slimeball\", 10)"
+            ],
+            "reasoning": "The user wants to collect slimeballs, which are obtained by defeating slimes in a swamp. The command `!collectBlocks` is used to simulate the collection of slimeballs. The number 10 is arbitrary and can be adjusted based on the user's needs.",
+            "preconditions": [],
+            "produces": null
+          }
+        ],
+        "target": null
+      },
+      "raw_response": "**REASONING**:\nThe user's request is to \"hunt slimes in a swamp and collect slimeballs.\" This does not directly involve crafting a specific tool or item, but rather focuses on the collection of a material, which is slimeballs. Slimeballs are collected by defeating slimes, which naturally spawn in swamps. No specific tool or material is required for this task, so we will focus on the collection process.\n\n**EXECUTION PLAN**:\nStep 1: Hunt slimes in a swamp\nPrerequisites: None\nCommand: !collectBlocks(\"slimeball\", 10)\nReasoning: The user wants to collect slimeballs, which are obtained by defeating slimes in a swamp. The command `!collectBlocks` is used to simulate the collection of slimeballs. The number 10 is arbitrary and can be adjusted based on the user's needs.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 1,
+        "step_efficiency": 1,
+        "issues": [
+          "Goal item \"slime_ball\" not produced by any step"
+        ],
+        "lenient_issues": [
+          "Goal item \"slime_ball\" not produced by any step"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7672
+    },
+    {
+      "slug": "combat/kill_blaze",
+      "level": "L3",
+      "goal_item": "blaze_rod",
+      "min_steps": 6,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect oak logs",
+            "command": "!collectBlocks(\"oak_log\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 3)"
+            ],
+            "reasoning": "Oak logs are needed to craft planks, which are then used to craft sticks. Sticks are required for crafting the iron sword.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks",
+            "command": "!craftRecipe(\"oak_planks\", 12)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 12)"
+            ],
+            "reasoning": "Oak planks are crafted from oak logs and are used to craft sticks.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft sticks",
+            "command": "!craftRecipe(\"stick\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 4)"
+            ],
+            "reasoning": "Sticks are required for crafting the iron sword. Two sticks are needed for one sword, but we craft four to have some extra.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 12
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Mine iron ore with stone pickaxe",
+            "command": "!collectBlocks(\"iron_ore\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"iron_ore\", 3)"
+            ],
+            "reasoning": "Iron ore is needed to smelt into iron ingots, which are then used to craft the iron sword. We need at least three iron ores to make two iron ingots, which is enough for one iron sword.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "underground",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 5,
+            "goal": "Smelt iron ore into iron ingots",
+            "command": "!smeltItem(\"raw_iron\", 3)",
+            "action_cmd": [
+              "!smeltItem(\"raw_iron\", 3)"
+            ],
+            "reasoning": "Iron ore must be smelted into iron ingots before it can be used for crafting the iron sword.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "raw_iron",
+                "count": 3
+              },
+              {
+                "type": "station",
+                "name": "furnace",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 6,
+            "goal": "Craft iron sword",
+            "command": "!craftRecipe(\"iron_sword\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"iron_sword\", 1)"
+            ],
+            "reasoning": "The final step is to craft the iron sword using two iron ingots and two sticks. This sword will be used to defeat blazes in the nether and collect blaze rods.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_ingot",
+                "count": 2
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "iron_sword"
+      },
+      "raw_response": "**REASONING**:\nThe user's request is to \"defeat blazes in the nether and collect blaze rods.\" This implies that the target item is a weapon or tool that can be used to defeat blazes. A common choice for this task would be a sword, as it is effective in combat. The material type is not specified, so we will choose a commonly available and effective material, such as iron, for the sword. Therefore, the target item is \"iron_sword,\" the material type is \"iron,\" and the tool type is \"sword.\"\n\n**EXECUTION PLAN**:\nStep 1: Collect oak logs\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 3)\nReasoning: Oak logs are needed to craft planks, which are then used to craft sticks. Sticks are required for crafting the iron sword.\n\nStep 2: Craft oak planks\nPrerequisites: item:oak_log:3\nCommand: !craftRecipe(\"oak_planks\", 12)\nReasoning: Oak planks are crafted from oak logs and are used to craft sticks.\n\nStep 3: Craft sticks\nPrerequisites: item:oak_planks:12\nCommand: !craftRecipe(\"stick\", 4)\nReasoning: Sticks are required for crafting the iron sword. Two sticks are needed for one sword, but we craft four to have some extra.\n\nStep 4: Mine iron ore with stone pickaxe\nPrerequisites: item:stone_pickaxe:1, access:underground\nCommand: !collectBlocks(\"iron_ore\", 3)\nReasoning: Iron ore is needed to smelt into iron ingots, which are then used to craft the iron sword. We need at least three iron ores to make two iron ingots, which is enough for one iron sword.\n\nStep 5: Smelt iron ore into iron ingots\nPrerequisites: item:raw_iron:3, station:furnace\nCommand: !smeltItem(\"raw_iron\", 3)\nReasoning: Iron ore must be smelted into iron ingots before it can be used for crafting the iron sword.\n\nStep 6: Craft iron sword\nPrerequisites: item:iron_ingot:2, item:stick:2\nCommand: !craftRecipe(\"iron_sword\", 1)\nReasoning: The final step is to craft the iron sword using two iron ingots and two sticks. This sword will be used to defeat blazes in the nether and collect blaze rods.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 6,
+        "step_efficiency": 1,
+        "issues": [
+          "Step 4: missing stone_pickaxe",
+          "Step 4: collecting iron_ore requires stone_pickaxe, not available",
+          "Goal item \"blaze_rod\" not produced by any step"
+        ],
+        "lenient_issues": [
+          "Step 4: missing stone_pickaxe",
+          "Step 4: collecting iron_ore requires stone_pickaxe, not available",
+          "Goal item \"blaze_rod\" not produced by any step"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7682
+    },
+    {
+      "slug": "combat/kill_wither_skeleton",
+      "level": "L3",
+      "goal_item": "bone",
+      "min_steps": 5,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Craft a nether portal",
+            "command": "!collectBlocks(\"obsidian\", 10)",
+            "action_cmd": [
+              "!collectBlocks(\"obsidian\", 10)"
+            ],
+            "reasoning": "To enter the Nether, we need to build a nether portal, which requires obsidian blocks.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Enter the Nether",
+            "command": "!newAction(\"enter_nether\")",
+            "action_cmd": [
+              "!newAction(\"enter_nether\")"
+            ],
+            "reasoning": "After building the nether portal, we need to enter the Nether to find a nether fortress.",
+            "preconditions": [
+              {
+                "type": "station",
+                "name": "nether_portal",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Find a nether fortress",
+            "command": "!newAction(\"find_nether_fortress\")",
+            "action_cmd": [
+              "!newAction(\"find_nether_fortress\")"
+            ],
+            "reasoning": "Once in the Nether, we need to locate a nether fortress where wither skeletons spawn.",
+            "preconditions": [
+              {
+                "type": "access",
+                "name": "nether",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Kill wither skeletons and collect bones",
+            "command": "!newAction(\"kill_wither_skeletons_and_collect_bones\", 5)",
+            "action_cmd": [
+              "!newAction(\"kill_wither_skeletons_and_collect_bones\", 5)"
+            ],
+            "reasoning": "In the nether fortress, we will engage in combat with wither skeletons and collect their bones.",
+            "preconditions": [
+              {
+                "type": "access",
+                "name": "nether_fortress",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": null
+      },
+      "raw_response": "**REASONING**:\nThe user's request is to \"kill wither skeletons in a nether fortress to collect their bones.\" This implies that the target item is \"bone\" and the material type is \"bone\" as well. The tool type is not explicitly mentioned, but since the user wants to collect bones, no specific tool needs to be crafted. The goal is to go to a nether fortress and kill wither skeletons to collect their bones.\n\n**EXECUTION PLAN**:\nStep 1: Craft a nether portal\nPrerequisites: None\nCommand: !collectBlocks(\"obsidian\", 10)\nReasoning: To enter the Nether, we need to build a nether portal, which requires obsidian blocks.\n\nStep 2: Enter the Nether\nPrerequisites: station:nether_portal\nCommand: !newAction(\"enter_nether\")\nReasoning: After building the nether portal, we need to enter the Nether to find a nether fortress.\n\nStep 3: Find a nether fortress\nPrerequisites: access:nether\nCommand: !newAction(\"find_nether_fortress\")\nReasoning: Once in the Nether, we need to locate a nether fortress where wither skeletons spawn.\n\nStep 4: Kill wither skeletons and collect bones\nPrerequisites: access:nether_fortress\nCommand: !newAction(\"kill_wither_skeletons_and_collect_bones\", 5)\nReasoning: In the nether fortress, we will engage in combat with wither skeletons and collect their bones.\n\n### Material Transformations\n- No material transformations are needed for this task as the goal is to collect bones directly from wither skeletons.\n\n### Critical Rules:\n- The target item is \"bone,\" and the material type is also \"bone.\"\n- No specific tool type is required for this task.\n- The steps are in dependency order: first, we build a nether portal, then enter the Nether, find a nether fortress, and finally, collect the bones.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 4,
+        "step_efficiency": 1,
+        "issues": [
+          "Step 1: collecting obsidian requires diamond_pickaxe, not available",
+          "Goal item \"bone\" not produced by any step"
+        ],
+        "lenient_issues": [
+          "Step 1: collecting obsidian requires diamond_pickaxe, not available",
+          "Goal item \"bone\" not produced by any step"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7712
+    }
+  ],
+  "summary": {
+    "by_level": {
+      "L1": {
+        "total": 1,
+        "strict_tcr": "0/1",
+        "lenient_tcr": "0/1",
+        "pvr": "0/1",
+        "avg_step_efficiency": 1
+      },
+      "L2": {
+        "total": 2,
+        "strict_tcr": "0/2",
+        "lenient_tcr": "0/2",
+        "pvr": "0/2",
+        "avg_step_efficiency": 0.68
+      },
+      "L3": {
+        "total": 2,
+        "strict_tcr": "0/2",
+        "lenient_tcr": "0/2",
+        "pvr": "0/2",
+        "avg_step_efficiency": 1
+      }
+    },
+    "overall": {
+      "strict_tcr": "0/5",
+      "lenient_tcr": "0/5",
+      "pvr": "0/5",
+      "avg_step_efficiency": 0.87
+    }
+  }
+}

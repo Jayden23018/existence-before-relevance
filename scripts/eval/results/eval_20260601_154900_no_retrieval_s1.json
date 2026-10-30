@@ -1,0 +1,3583 @@
+{
+  "meta": {
+    "timestamp": "2026-06-01T08:14:20.735Z",
+    "model": "claude-sonnet-4-5-20250929",
+    "condition": "no_retrieval",
+    "total_tasks": 60,
+    "completed_tasks": 18,
+    "failed_tasks": 42
+  },
+  "tasks": [
+    {
+      "slug": "craft/wooden_sword",
+      "level": "L1",
+      "goal_item": "wooden_sword",
+      "min_steps": 2,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect oak logs from trees",
+            "command": "!collectBlocks(\"oak_log\", 2)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 2)"
+            ],
+            "reasoning": "Logs are the raw material needed to make both oak planks (for the sword blade) and sticks (for the handle). Collecting 2 logs gives enough planks for both purposes.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks from logs",
+            "command": "!craftRecipe(\"oak_planks\", 8)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 8)"
+            ],
+            "reasoning": "Each log yields 4 planks. We need 2 planks for the sword and 2 planks to make sticks, so 8 planks is more than sufficient and ensures no shortage.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 2
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft sticks from oak planks",
+            "command": "!craftRecipe(\"stick\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 4)"
+            ],
+            "reasoning": "Sticks are required as the handle component for the wooden sword. 2 planks yield 4 sticks, and a sword needs 1 stick.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 8
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft the wooden sword",
+            "command": "!craftRecipe(\"wooden_sword\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"wooden_sword\", 1)"
+            ],
+            "reasoning": "A sword requires 2 material units placed vertically with 1 stick below them. Using 2 oak planks and 1 stick produces the wooden sword. This is the final step after all components are ready.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 2
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 1
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "wooden_sword"
+      },
+      "raw_response": "**REASONING**:\nThe user wants to craft a wooden sword. Analyzing the request:\n- Target item: wooden_sword\n- Material type: wood (oak planks)\n- Tool type: sword\n\nApplying the Quantity Pattern: Swords require 2 material units + 1 stick.\nFor a wooden sword, the 2 material units are oak planks (crafted from logs).\nSticks are also crafted from planks, which come from logs.\nWood/planks do not require smelting, so no furnace step is needed.\nI need to collect logs first, craft planks, then craft sticks, then craft the wooden sword.\n\n**EXECUTION PLAN**:\n\nStep 1: Collect oak logs from trees\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 2)\nReasoning: Logs are the raw material needed to make both oak planks (for the sword blade) and sticks (for the handle). Collecting 2 logs gives enough planks for both purposes.\n\nStep 2: Craft oak planks from logs\nPrerequisites: item:oak_log:2\nCommand: !craftRecipe(\"oak_planks\", 8)\nReasoning: Each log yields 4 planks. We need 2 planks for the sword and 2 planks to make sticks, so 8 planks is more than sufficient and ensures no shortage.\n\nStep 3: Craft sticks from oak planks\nPrerequisites: item:oak_planks:8\nCommand: !craftRecipe(\"stick\", 4)\nReasoning: Sticks are required as the handle component for the wooden sword. 2 planks yield 4 sticks, and a sword needs 1 stick.\n\nStep 4: Craft the wooden sword\nPrerequisites: item:oak_planks:2, item:stick:1, station:crafting_table\nCommand: !craftRecipe(\"wooden_sword\", 1)\nReasoning: A sword requires 2 material units placed vertically with 1 stick below them. Using 2 oak planks and 1 stick produces the wooden sword. This is the final step after all components are ready.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 4,
+        "step_efficiency": 0.5,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 0,
+      "prompt_length": 7621
+    },
+    {
+      "slug": "craft/stone_pickaxe",
+      "level": "L1",
+      "goal_item": "stone_pickaxe",
+      "min_steps": 3,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect oak logs from trees",
+            "command": "!collectBlocks(\"oak_log\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 3)"
+            ],
+            "reasoning": "Logs are needed to craft planks, which are needed to craft sticks and a wooden pickaxe. No tool is required to collect logs.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks from logs",
+            "command": "!craftRecipe(\"oak_planks\", 12)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 12)"
+            ],
+            "reasoning": "Planks are required to craft sticks and the wooden pickaxe body. 3 logs yield 12 planks, which is sufficient for both.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft sticks from planks",
+            "command": "!craftRecipe(\"stick\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 4)"
+            ],
+            "reasoning": "Sticks are needed as handles for both the wooden pickaxe and the stone pickaxe. Each pickaxe requires 2 sticks.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 12
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft a wooden pickaxe",
+            "command": "!craftRecipe(\"wooden_pickaxe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"wooden_pickaxe\", 1)"
+            ],
+            "reasoning": "A wooden pickaxe is the minimum tool required to mine stone or cobblestone. Without it, collectBlocks for stone will fail.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 3
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 5,
+            "goal": "Collect cobblestone using the wooden pickaxe",
+            "command": "!collectBlocks(\"stone\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"stone\", 3)"
+            ],
+            "reasoning": "A stone pickaxe requires 3 units of cobblestone. Mining stone blocks yields cobblestone directly, no smelting needed.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "wooden_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "stone",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 6,
+            "goal": "Craft the stone pickaxe",
+            "command": "!craftRecipe(\"stone_pickaxe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"stone_pickaxe\", 1)"
+            ],
+            "reasoning": "This is the final crafting step. With 3 cobblestone and 2 sticks available, the stone pickaxe can now be crafted following the pickaxe quantity pattern of 3 material units plus 2 sticks.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "cobblestone",
+                "count": 3
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "stone_pickaxe"
+      },
+      "raw_response": "**REASONING**:\nThe user wants to craft a stone pickaxe. Analyzing the request:\n- Target item: stone_pickaxe\n- Material type: stone (cobblestone)\n- Tool type: pickaxe\n\nApplying the patterns:\n- Pickaxes require 3 material units + 2 sticks\n- Stone/cobblestone does not need smelting, but does require a wooden pickaxe to mine it\n- Sticks require planks, which require logs\n- Full cold-start assumed: nothing in inventory\n\nFollowing the cold-start tool chain pattern:\n1. Collect logs to get wood for planks and sticks\n2. Craft planks from logs\n3. Craft sticks from planks\n4. Craft a wooden pickaxe (prerequisite for mining stone)\n5. Collect cobblestone using the wooden pickaxe\n6. Craft the stone pickaxe\n\n**EXECUTION PLAN**:\n\nStep 1: Collect oak logs from trees\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 3)\nReasoning: Logs are needed to craft planks, which are needed to craft sticks and a wooden pickaxe. No tool is required to collect logs.\n\nStep 2: Craft oak planks from logs\nPrerequisites: item:oak_log:3\nCommand: !craftRecipe(\"oak_planks\", 12)\nReasoning: Planks are required to craft sticks and the wooden pickaxe body. 3 logs yield 12 planks, which is sufficient for both.\n\nStep 3: Craft sticks from planks\nPrerequisites: item:oak_planks:12\nCommand: !craftRecipe(\"stick\", 4)\nReasoning: Sticks are needed as handles for both the wooden pickaxe and the stone pickaxe. Each pickaxe requires 2 sticks.\n\nStep 4: Craft a wooden pickaxe\nPrerequisites: item:oak_planks:3, item:stick:2\nCommand: !craftRecipe(\"wooden_pickaxe\", 1)\nReasoning: A wooden pickaxe is the minimum tool required to mine stone or cobblestone. Without it, collectBlocks for stone will fail.\n\nStep 5: Collect cobblestone using the wooden pickaxe\nPrerequisites: item:wooden_pickaxe:1, access:stone\nCommand: !collectBlocks(\"stone\", 3)\nReasoning: A stone pickaxe requires 3 units of cobblestone. Mining stone blocks yields cobblestone directly, no smelting needed.\n\nStep 6: Craft the stone pickaxe\nPrerequisites: item:cobblestone:3, item:stick:2\nCommand: !craftRecipe(\"stone_pickaxe\", 1)\nReasoning: This is the final crafting step. With 3 cobblestone and 2 sticks available, the stone pickaxe can now be crafted following the pickaxe quantity pattern of 3 material units plus 2 sticks.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 6,
+        "step_efficiency": 0.5,
+        "issues": [
+          "Step 6: missing cobblestone x3",
+          "Step 6: craftRecipe(\"stone_pickaxe\", 1) missing ingredients: cobblestone x3"
+        ],
+        "lenient_issues": [
+          "Step 6: missing cobblestone x3",
+          "Step 6: craftRecipe(\"stone_pickaxe\", 1) missing ingredients: cobblestone x3"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7623
+    },
+    {
+      "slug": "craft/wooden_axe",
+      "level": "L1",
+      "goal_item": "wooden_axe",
+      "min_steps": 2,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect oak logs from trees",
+            "command": "!collectBlocks(\"oak_log\", 2)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 2)"
+            ],
+            "reasoning": "Logs are the raw material needed to craft planks, which are used for both the axe material and sticks. No tools or prerequisites are needed to collect logs by hand.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks from logs",
+            "command": "!craftRecipe(\"oak_planks\", 8)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 8)"
+            ],
+            "reasoning": "Each log yields 4 planks. We need 3 planks for the axe head and at least 2 planks to craft sticks, totaling a minimum of 5 planks. Crafting 8 gives us sufficient material.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 2
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft sticks from planks",
+            "command": "!craftRecipe(\"stick\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 4)"
+            ],
+            "reasoning": "Axes require 2 sticks as handles. Sticks are crafted from planks (2 planks = 4 sticks). This step produces enough sticks for the axe.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 8
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft the wooden axe",
+            "command": "!craftRecipe(\"wooden_axe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"wooden_axe\", 1)"
+            ],
+            "reasoning": "A wooden axe requires 3 wood planks and 2 sticks following the axe quantity pattern (3 material units + 2 sticks). All materials are now available from the previous steps.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 3
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "wooden_axe"
+      },
+      "raw_response": "**REASONING**:\nThe user wants to craft a wooden axe. Analyzing the request:\n- Target item: wooden_axe\n- Material type: wood (oak planks, derived from logs)\n- Tool type: axe\n\nApplying the patterns:\n- Axes require 3 material units + 2 sticks\n- Wood does not need smelting; logs are crafted into planks first\n- Planks are needed for sticks as well\n- No furnace needed since wood is used directly\n- Steps: collect logs, craft planks, craft sticks, craft wooden axe\n\nAn axe needs 3 planks and 2 sticks. Sticks require planks (2 planks = 4 sticks). So total planks needed: 3 (for axe head) + 2 (for sticks) = at least 5 planks. One log = 4 planks, so 2 logs are sufficient (8 planks total gives us room).\n\n**EXECUTION PLAN**:\n\nStep 1: Collect oak logs from trees\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 2)\nReasoning: Logs are the raw material needed to craft planks, which are used for both the axe material and sticks. No tools or prerequisites are needed to collect logs by hand.\n\nStep 2: Craft oak planks from logs\nPrerequisites: item:oak_log:2\nCommand: !craftRecipe(\"oak_planks\", 8)\nReasoning: Each log yields 4 planks. We need 3 planks for the axe head and at least 2 planks to craft sticks, totaling a minimum of 5 planks. Crafting 8 gives us sufficient material.\n\nStep 3: Craft sticks from planks\nPrerequisites: item:oak_planks:8\nCommand: !craftRecipe(\"stick\", 4)\nReasoning: Axes require 2 sticks as handles. Sticks are crafted from planks (2 planks = 4 sticks). This step produces enough sticks for the axe.\n\nStep 4: Craft the wooden axe\nPrerequisites: item:oak_planks:3, item:stick:2\nCommand: !craftRecipe(\"wooden_axe\", 1)\nReasoning: A wooden axe requires 3 wood planks and 2 sticks following the axe quantity pattern (3 material units + 2 sticks). All materials are now available from the previous steps.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 4,
+        "step_efficiency": 0.5,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 0,
+      "prompt_length": 7617
+    },
+    {
+      "slug": "craft/torch_batch",
+      "level": "L1",
+      "goal_item": "torch",
+      "min_steps": 3,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect oak logs to make planks, sticks, and a crafting table",
+            "command": "!collectBlocks(\"oak_log\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 3)"
+            ],
+            "reasoning": "Logs are needed to craft planks, which are used to make sticks and a crafting table. Sticks are a component of torches.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks from logs",
+            "command": "!craftRecipe(\"oak_planks\", 12)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 12)"
+            ],
+            "reasoning": "Planks are needed to craft sticks and a crafting table.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft a crafting table",
+            "command": "!craftRecipe(\"crafting_table\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"crafting_table\", 1)"
+            ],
+            "reasoning": "A crafting table is required for crafting recipes.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 4
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft sticks from planks",
+            "command": "!craftRecipe(\"stick\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 4)"
+            ],
+            "reasoning": "Sticks are a required ingredient for torches.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 2
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 5,
+            "goal": "Craft a wooden pickaxe to mine coal ore",
+            "command": "!craftRecipe(\"wooden_pickaxe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"wooden_pickaxe\", 1)"
+            ],
+            "reasoning": "A wooden pickaxe is needed to mine coal ore blocks.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 3
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 6,
+            "goal": "Collect coal ore (drops coal directly)",
+            "command": "!collectBlocks(\"coal_ore\", 1)",
+            "action_cmd": [
+              "!collectBlocks(\"coal_ore\", 1)"
+            ],
+            "reasoning": "Mining coal ore drops coal directly, no smelting needed. 1 coal is enough to craft 4 torches.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "wooden_pickaxe",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 7,
+            "goal": "Craft 4 torches using coal and sticks",
+            "command": "!craftRecipe(\"torch\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"torch\", 4)"
+            ],
+            "reasoning": "The torch recipe uses 1 coal and 1 stick to produce 4 torches, which is exactly what the user requested.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "coal",
+                "count": 1
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 1
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "torch"
+      },
+      "raw_response": "REASONING:\nThe user wants to craft 4 torches. Torches are crafted from coal (or charcoal) and sticks. Each torch recipe produces 4 torches using 1 coal and 1 stick. To get coal, I need to mine coal ore (which drops coal directly, no smelting needed). To get sticks, I need logs to make planks, then planks to make sticks. I also need a wooden pickaxe to mine stone/coal ore. The recipe for 4 torches requires 1 coal and 1 stick.\n\nTarget item: torch\nMaterial: coal and stick\nTool type: torch (utility item, not a tool)\n\nEXECUTION PLAN:\n\nStep 1: Collect oak logs to make planks, sticks, and a crafting table\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 3)\nReasoning: Logs are needed to craft planks, which are used to make sticks and a crafting table. Sticks are a component of torches.\n\nStep 2: Craft oak planks from logs\nPrerequisites: item:oak_log:3\nCommand: !craftRecipe(\"oak_planks\", 12)\nReasoning: Planks are needed to craft sticks and a crafting table.\n\nStep 3: Craft a crafting table\nPrerequisites: item:oak_planks:4\nCommand: !craftRecipe(\"crafting_table\", 1)\nReasoning: A crafting table is required for crafting recipes.\n\nStep 4: Craft sticks from planks\nPrerequisites: item:oak_planks:2\nCommand: !craftRecipe(\"stick\", 4)\nReasoning: Sticks are a required ingredient for torches.\n\nStep 5: Craft a wooden pickaxe to mine coal ore\nPrerequisites: item:oak_planks:3, item:stick:2, station:crafting_table\nCommand: !craftRecipe(\"wooden_pickaxe\", 1)\nReasoning: A wooden pickaxe is needed to mine coal ore blocks.\n\nStep 6: Collect coal ore (drops coal directly)\nPrerequisites: item:wooden_pickaxe:1\nCommand: !collectBlocks(\"coal_ore\", 1)\nReasoning: Mining coal ore drops coal directly, no smelting needed. 1 coal is enough to craft 4 torches.\n\nStep 7: Craft 4 torches using coal and sticks\nPrerequisites: item:coal:1, item:stick:1, station:crafting_table\nCommand: !craftRecipe(\"torch\", 4)\nReasoning: The torch recipe uses 1 coal and 1 stick to produce 4 torches, which is exactly what the user requested.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 7,
+        "step_efficiency": 0.43,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 0,
+      "prompt_length": 7611
+    },
+    {
+      "slug": "craft/wooden_hoe",
+      "level": "L1",
+      "goal_item": "wooden_hoe",
+      "min_steps": 2,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect oak logs from trees",
+            "command": "!collectBlocks(\"oak_log\", 2)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 2)"
+            ],
+            "reasoning": "Logs are the base raw material for wooden tools. We need enough logs to produce planks for both the hoe head material (2 planks) and sticks (2 sticks require 2 planks). 1 log yields 4 planks, so 2 logs gives us 8 planks which is more than enough.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks from logs",
+            "command": "!craftRecipe(\"oak_planks\", 8)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 8)"
+            ],
+            "reasoning": "Oak planks are needed both as the 2 material units for the hoe head and as the input for crafting sticks. 2 logs yield 8 planks, covering all requirements.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 2
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft sticks from planks",
+            "command": "!craftRecipe(\"stick\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 4)"
+            ],
+            "reasoning": "A hoe requires 2 sticks as the handle. Crafting 4 sticks uses 2 planks and ensures we have enough for the recipe.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 8
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft the wooden hoe",
+            "command": "!craftRecipe(\"wooden_hoe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"wooden_hoe\", 1)"
+            ],
+            "reasoning": "This is the final crafting step. A wooden hoe requires exactly 2 oak planks and 2 sticks, matching the hoe quantity pattern. This step must come last after all materials are prepared.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 2
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "wooden_hoe"
+      },
+      "raw_response": "**REASONING**:\nThe user wants to craft a wooden hoe. Analyzing the request:\n- Target item: wooden_hoe\n- Material type: wood (oak planks)\n- Tool type: hoe\n\nApplying the Hoe Quantity Pattern: hoes require 2 material units + 2 sticks.\nFor a wooden hoe, the material is oak planks (crafted from logs).\nLogs are a raw material that need to be collected first, then crafted into planks, then into sticks.\nWood/planks do not require smelting, so no furnace step is needed.\nThe dependency order is: collect logs → craft planks → craft sticks → craft wooden hoe.\n\n**EXECUTION PLAN**:\n\nStep 1: Collect oak logs from trees\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 2)\nReasoning: Logs are the base raw material for wooden tools. We need enough logs to produce planks for both the hoe head material (2 planks) and sticks (2 sticks require 2 planks). 1 log yields 4 planks, so 2 logs gives us 8 planks which is more than enough.\n\nStep 2: Craft oak planks from logs\nPrerequisites: item:oak_log:2\nCommand: !craftRecipe(\"oak_planks\", 8)\nReasoning: Oak planks are needed both as the 2 material units for the hoe head and as the input for crafting sticks. 2 logs yield 8 planks, covering all requirements.\n\nStep 3: Craft sticks from planks\nPrerequisites: item:oak_planks:8\nCommand: !craftRecipe(\"stick\", 4)\nReasoning: A hoe requires 2 sticks as the handle. Crafting 4 sticks uses 2 planks and ensures we have enough for the recipe.\n\nStep 4: Craft the wooden hoe\nPrerequisites: item:oak_planks:2, item:stick:2, station:crafting_table\nCommand: !craftRecipe(\"wooden_hoe\", 1)\nReasoning: This is the final crafting step. A wooden hoe requires exactly 2 oak planks and 2 sticks, matching the hoe quantity pattern. This step must come last after all materials are prepared.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 4,
+        "step_efficiency": 0.5,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 0,
+      "prompt_length": 7617
+    },
+    {
+      "slug": "craft/crafting_table",
+      "level": "L1",
+      "goal_item": "crafting_table",
+      "min_steps": 1,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect oak logs from the environment",
+            "command": "!collectBlocks(\"oak_log\", 1)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 1)"
+            ],
+            "reasoning": "Logs are the raw material needed to make planks. One log yields 4 planks, which is exactly enough for a crafting table. No tool is required to collect logs.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks from the collected log",
+            "command": "!craftRecipe(\"oak_planks\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 4)"
+            ],
+            "reasoning": "One oak log converts into 4 oak planks. A crafting table requires exactly 4 planks arranged in a 2x2 grid, so this step produces the necessary quantity.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft the crafting table from oak planks",
+            "command": "!craftRecipe(\"crafting_table\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"crafting_table\", 1)"
+            ],
+            "reasoning": "Four oak planks arranged in a 2x2 crafting grid produce one crafting table. This is the final step and the target item requested by the user.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 4
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "crafting_table"
+      },
+      "raw_response": "**REASONING**:\nThe user wants to craft a crafting table. A crafting table is made from 4 wooden planks arranged in a 2x2 pattern. Planks come from logs, which can be collected directly from the environment with no tool required. No smelting is needed. The dependency chain is: collect logs → craft planks → craft crafting table.\n\n**EXECUTION PLAN**:\n\nStep 1: Collect oak logs from the environment\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 1)\nReasoning: Logs are the raw material needed to make planks. One log yields 4 planks, which is exactly enough for a crafting table. No tool is required to collect logs.\n\nStep 2: Craft oak planks from the collected log\nPrerequisites: item:oak_log:1\nCommand: !craftRecipe(\"oak_planks\", 4)\nReasoning: One oak log converts into 4 oak planks. A crafting table requires exactly 4 planks arranged in a 2x2 grid, so this step produces the necessary quantity.\n\nStep 3: Craft the crafting table from oak planks\nPrerequisites: item:oak_planks:4\nCommand: !craftRecipe(\"crafting_table\", 1)\nReasoning: Four oak planks arranged in a 2x2 crafting grid produce one crafting table. This is the final step and the target item requested by the user.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 3,
+        "step_efficiency": 0.33,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 0,
+      "prompt_length": 7625
+    },
+    {
+      "slug": "collect/bamboo",
+      "level": "L1",
+      "goal_item": "bamboo",
+      "min_steps": 1,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect bamboo from the environment",
+            "command": "!collectBlocks(\"bamboo\", 8)",
+            "action_cmd": [
+              "!collectBlocks(\"bamboo\", 8)"
+            ],
+            "reasoning": "Bamboo is a natural plant block found in jungle biomes that requires no tool to collect. A simple collectBlocks command is sufficient to gather the requested 8 bamboo directly from the environment with no prior crafting or processing steps needed.",
+            "preconditions": [],
+            "produces": null
+          }
+        ],
+        "target": null
+      },
+      "raw_response": "**REASONING**:\nThe user wants to collect 8 bamboo. Bamboo is a natural plant found in jungle biomes in Minecraft. It does not require any tool to collect (no pickaxe needed), and it does not need any crafting or smelting. This is a straightforward collection task using the collectBlocks command. Bamboo grows naturally and can be broken by hand or any tool, so no prerequisite items or workstations are needed.\n\nTarget item: bamboo\nMaterial type: bamboo (natural plant)\nTool type: none required (collection only)\n\n**EXECUTION PLAN**:\nStep 1: Collect bamboo from the environment\nPrerequisites: None\nCommand: !collectBlocks(\"bamboo\", 8)\nReasoning: Bamboo is a natural plant block found in jungle biomes that requires no tool to collect. A simple collectBlocks command is sufficient to gather the requested 8 bamboo directly from the environment with no prior crafting or processing steps needed.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 1,
+        "step_efficiency": 1,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 0,
+      "prompt_length": 7615
+    },
+    {
+      "slug": "collect/sugar_cane",
+      "level": "L1",
+      "goal_item": "sugar_cane",
+      "min_steps": 1,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect sugar cane from the environment",
+            "command": "!collectBlocks(\"sugar_cane\", 4)",
+            "action_cmd": [
+              "!collectBlocks(\"sugar_cane\", 4)"
+            ],
+            "reasoning": "Sugar cane is a natural plant that spawns near water and can be collected directly by hand with no tool required. No crafting, smelting, or prerequisite steps are needed. This single command fulfills the user's request to collect 4 sugar cane.",
+            "preconditions": [],
+            "produces": null
+          }
+        ],
+        "target": null
+      },
+      "raw_response": "**REASONING**:\nThe user wants to collect 4 sugar cane. This is a simple COLLECT intent with no crafting or smelting required. Sugar cane is a natural plant that grows near water in the Minecraft world. It does not require any tool to collect, and it does not need processing. This is a straightforward collectBlocks task with no prerequisites.\n\nTarget item: sugar_cane\nMaterial type: sugar_cane (natural plant, no processing needed)\nTool type: None required (sugar cane can be broken by hand)\n\n**EXECUTION PLAN**:\nStep 1: Collect sugar cane from the environment\nPrerequisites: None\nCommand: !collectBlocks(\"sugar_cane\", 4)\nReasoning: Sugar cane is a natural plant that spawns near water and can be collected directly by hand with no tool required. No crafting, smelting, or prerequisite steps are needed. This single command fulfills the user's request to collect 4 sugar cane.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 1,
+        "step_efficiency": 1,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 0,
+      "prompt_length": 7623
+    },
+    {
+      "slug": "collect/dirt",
+      "level": "L1",
+      "goal_item": "dirt",
+      "min_steps": 1,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect 8 dirt blocks from the environment",
+            "command": "!collectBlocks(\"dirt\", 8)",
+            "action_cmd": [
+              "!collectBlocks(\"dirt\", 8)"
+            ],
+            "reasoning": "Dirt requires no tool to collect and no processing. A single collectBlocks command is sufficient to fulfill the user's request of gathering 8 dirt blocks.",
+            "preconditions": [],
+            "produces": null
+          }
+        ],
+        "target": null
+      },
+      "raw_response": "REASONING:\nThe user wants to collect 8 dirt blocks. Dirt is a simple block that requires no tool and no processing. According to the Mining Tool Requirement Pattern, wood, dirt, sand, and gravel require no tool. This is a straightforward single-step collection task with no prerequisites, no smelting, and no crafting needed.\n\nEXECUTION PLAN:\n\nStep 1: Collect 8 dirt blocks from the environment\nPrerequisites: None\nCommand: !collectBlocks(\"dirt\", 8)\nReasoning: Dirt requires no tool to collect and no processing. A single collectBlocks command is sufficient to fulfill the user's request of gathering 8 dirt blocks.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 1,
+        "step_efficiency": 1,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 0,
+      "prompt_length": 7625
+    },
+    {
+      "slug": "collect/andesite",
+      "level": "L1",
+      "goal_item": "andesite",
+      "min_steps": 1,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect oak logs to craft a wooden pickaxe",
+            "command": "!collectBlocks(\"oak_log\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 3)"
+            ],
+            "reasoning": "Logs are needed to craft planks, sticks, and ultimately a wooden pickaxe. No tool is required to collect logs.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks from logs",
+            "command": "!craftRecipe(\"oak_planks\", 12)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 12)"
+            ],
+            "reasoning": "Planks are needed to craft sticks and the wooden pickaxe head.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft sticks from planks",
+            "command": "!craftRecipe(\"stick\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 4)"
+            ],
+            "reasoning": "Sticks are required as the handle component for crafting a wooden pickaxe.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 4
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft a wooden pickaxe",
+            "command": "!craftRecipe(\"wooden_pickaxe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"wooden_pickaxe\", 1)"
+            ],
+            "reasoning": "A wooden pickaxe is the minimum tool required to collect stone-type blocks like andesite. Without it, andesite cannot be efficiently collected.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 3
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 5,
+            "goal": "Collect 8 andesite",
+            "command": "!collectBlocks(\"andesite\", 8)",
+            "action_cmd": [
+              "!collectBlocks(\"andesite\", 8)"
+            ],
+            "reasoning": "Andesite is a stone-variant block that requires at least a wooden pickaxe to mine. With the wooden pickaxe crafted in the previous step, we can now collect the 8 andesite blocks as requested by the user.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "wooden_pickaxe",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "wooden_pickaxe"
+      },
+      "raw_response": "REASONING:\nThe user wants to collect 8 andesite. Andesite is a stone-type block, which requires at least a wooden pickaxe to mine efficiently. Since we are starting from scratch (cold start), we need to first gather logs, craft a wooden pickaxe, then use it to collect the andesite. Andesite is a stone-variant block, so a wooden pickaxe is sufficient to collect it. No smelting or further processing is needed since the user only wants to collect the blocks, not craft anything from them.\n\nEXECUTION PLAN:\n\nStep 1: Collect oak logs to craft a wooden pickaxe\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 3)\nReasoning: Logs are needed to craft planks, sticks, and ultimately a wooden pickaxe. No tool is required to collect logs.\n\nStep 2: Craft oak planks from logs\nPrerequisites: item:oak_log:3\nCommand: !craftRecipe(\"oak_planks\", 12)\nReasoning: Planks are needed to craft sticks and the wooden pickaxe head.\n\nStep 3: Craft sticks from planks\nPrerequisites: item:oak_planks:4\nCommand: !craftRecipe(\"stick\", 4)\nReasoning: Sticks are required as the handle component for crafting a wooden pickaxe.\n\nStep 4: Craft a wooden pickaxe\nPrerequisites: item:oak_planks:3, item:stick:2\nCommand: !craftRecipe(\"wooden_pickaxe\", 1)\nReasoning: A wooden pickaxe is the minimum tool required to collect stone-type blocks like andesite. Without it, andesite cannot be efficiently collected.\n\nStep 5: Collect 8 andesite\nPrerequisites: item:wooden_pickaxe:1\nCommand: !collectBlocks(\"andesite\", 8)\nReasoning: Andesite is a stone-variant block that requires at least a wooden pickaxe to mine. With the wooden pickaxe crafted in the previous step, we can now collect the 8 andesite blocks as requested by the user.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 5,
+        "step_efficiency": 0.2,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 0,
+      "prompt_length": 7619
+    },
+    {
+      "slug": "craft/iron_pickaxe",
+      "level": "L2",
+      "goal_item": "iron_pickaxe",
+      "min_steps": 5,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect oak logs to bootstrap the tool chain",
+            "command": "!collectBlocks(\"oak_log\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 3)"
+            ],
+            "reasoning": "Logs are needed to craft planks, sticks, and a wooden pickaxe so we can mine stone.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks from logs",
+            "command": "!craftRecipe(\"oak_planks\", 12)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 12)"
+            ],
+            "reasoning": "Planks are required to craft sticks and a wooden pickaxe.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft sticks from planks",
+            "command": "!craftRecipe(\"stick\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 4)"
+            ],
+            "reasoning": "Sticks are required for crafting all pickaxes.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 4
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft wooden pickaxe to mine stone",
+            "command": "!craftRecipe(\"wooden_pickaxe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"wooden_pickaxe\", 1)"
+            ],
+            "reasoning": "A wooden pickaxe is needed to collect cobblestone, which is required to craft a stone pickaxe.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 3
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 5,
+            "goal": "Collect stone to craft a stone pickaxe",
+            "command": "!collectBlocks(\"stone\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"stone\", 3)"
+            ],
+            "reasoning": "A stone pickaxe is required to mine iron ore. Cobblestone is obtained by mining stone blocks.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "wooden_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "stone",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 6,
+            "goal": "Craft stone pickaxe to mine iron ore",
+            "command": "!craftRecipe(\"stone_pickaxe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"stone_pickaxe\", 1)"
+            ],
+            "reasoning": "Iron ore requires a stone pickaxe or better to mine. This fulfills that prerequisite.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "cobblestone",
+                "count": 3
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 7,
+            "goal": "Collect iron ore underground",
+            "command": "!collectBlocks(\"iron_ore\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"iron_ore\", 3)"
+            ],
+            "reasoning": "Iron pickaxe requires 3 iron ingots, so we need at least 3 iron ore. collectBlocks drops raw_iron, not iron_ore.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "underground",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 8,
+            "goal": "Smelt raw iron into iron ingots",
+            "command": "!smeltItem(\"raw_iron\", 3)",
+            "action_cmd": [
+              "!smeltItem(\"raw_iron\", 3)"
+            ],
+            "reasoning": "Iron ore drops raw_iron which must be smelted into iron_ingots before crafting. We need 3 ingots for a pickaxe.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "raw_iron",
+                "count": 3
+              },
+              {
+                "type": "station",
+                "name": "furnace",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 9,
+            "goal": "Craft iron pickaxe",
+            "command": "!craftRecipe(\"iron_pickaxe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"iron_pickaxe\", 1)"
+            ],
+            "reasoning": "This is the final step. Iron pickaxe requires 3 iron ingots placed across the top row and 2 sticks in the middle column, matching the pickaxe quantity pattern of 3 material units and 2 sticks.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_ingot",
+                "count": 3
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "iron_pickaxe"
+      },
+      "raw_response": "REASONING:\nTarget item: iron_pickaxe\nMaterial type: iron\nTool type: pickaxe\n\nPickaxes require 3 material units and 2 sticks. Iron is an ore material, so it must be smelted into ingots before crafting. I also need sticks, which come from planks, which come from logs. Mining iron ore requires a stone pickaxe, which in turn requires a wooden pickaxe. I will follow the full cold-start tool chain since no inventory is assumed.\n\nEXECUTION PLAN:\n\nStep 1: Collect oak logs to bootstrap the tool chain\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 3)\nReasoning: Logs are needed to craft planks, sticks, and a wooden pickaxe so we can mine stone.\n\nStep 2: Craft oak planks from logs\nPrerequisites: item:oak_log:3\nCommand: !craftRecipe(\"oak_planks\", 12)\nReasoning: Planks are required to craft sticks and a wooden pickaxe.\n\nStep 3: Craft sticks from planks\nPrerequisites: item:oak_planks:4\nCommand: !craftRecipe(\"stick\", 4)\nReasoning: Sticks are required for crafting all pickaxes.\n\nStep 4: Craft wooden pickaxe to mine stone\nPrerequisites: item:oak_planks:3, item:stick:2\nCommand: !craftRecipe(\"wooden_pickaxe\", 1)\nReasoning: A wooden pickaxe is needed to collect cobblestone, which is required to craft a stone pickaxe.\n\nStep 5: Collect stone to craft a stone pickaxe\nPrerequisites: item:wooden_pickaxe:1, access:stone\nCommand: !collectBlocks(\"stone\", 3)\nReasoning: A stone pickaxe is required to mine iron ore. Cobblestone is obtained by mining stone blocks.\n\nStep 6: Craft stone pickaxe to mine iron ore\nPrerequisites: item:cobblestone:3, item:stick:2\nCommand: !craftRecipe(\"stone_pickaxe\", 1)\nReasoning: Iron ore requires a stone pickaxe or better to mine. This fulfills that prerequisite.\n\nStep 7: Collect iron ore underground\nPrerequisites: item:stone_pickaxe:1, access:underground\nCommand: !collectBlocks(\"iron_ore\", 3)\nReasoning: Iron pickaxe requires 3 iron ingots, so we need at least 3 iron ore. collectBlocks drops raw_iron, not iron_ore.\n\nStep 8: Smelt raw iron into iron ingots\nPrerequisites: item:raw_iron:3, station:furnace\nCommand: !smeltItem(\"raw_iron\", 3)\nReasoning: Iron ore drops raw_iron which must be smelted into iron_ingots before crafting. We need 3 ingots for a pickaxe.\n\nStep 9: Craft iron pickaxe\nPrerequisites: item:iron_ingot:3, item:stick:2\nCommand: !craftRecipe(\"iron_pickaxe\", 1)\nReasoning: This is the final step. Iron pickaxe requires 3 iron ingots placed across the top row and 2 sticks in the middle column, matching the pickaxe quantity pattern of 3 material units and 2 sticks.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 9,
+        "step_efficiency": 0.56,
+        "issues": [
+          "Step 6: missing cobblestone x3",
+          "Step 6: craftRecipe(\"stone_pickaxe\", 1) missing ingredients: cobblestone x3"
+        ],
+        "lenient_issues": [
+          "Step 6: missing cobblestone x3",
+          "Step 6: craftRecipe(\"stone_pickaxe\", 1) missing ingredients: cobblestone x3"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7653
+    },
+    {
+      "slug": "craft/iron_helmet",
+      "level": "L2",
+      "goal_item": "iron_helmet",
+      "min_steps": 5,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect logs to build basic tools",
+            "command": "!collectBlocks(\"oak_log\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 3)"
+            ],
+            "reasoning": "Logs are needed to craft planks, sticks, and eventually a wooden pickaxe to mine stone.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks from logs",
+            "command": "!craftRecipe(\"oak_planks\", 12)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 12)"
+            ],
+            "reasoning": "Planks are required to craft sticks and a crafting table.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft sticks for tool handles",
+            "command": "!craftRecipe(\"stick\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 4)"
+            ],
+            "reasoning": "Sticks are needed as handles for the wooden pickaxe.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 4
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft a wooden pickaxe to mine stone",
+            "command": "!craftRecipe(\"wooden_pickaxe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"wooden_pickaxe\", 1)"
+            ],
+            "reasoning": "A wooden pickaxe is required to mine cobblestone.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 3
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 5,
+            "goal": "Mine cobblestone to craft a stone pickaxe",
+            "command": "!collectBlocks(\"stone\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"stone\", 3)"
+            ],
+            "reasoning": "Cobblestone is needed to craft a stone pickaxe, which can mine iron ore.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "wooden_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "stone",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 6,
+            "goal": "Craft a stone pickaxe to mine iron ore",
+            "command": "!craftRecipe(\"stone_pickaxe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"stone_pickaxe\", 1)"
+            ],
+            "reasoning": "A stone pickaxe is required to mine iron ore blocks.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "cobblestone",
+                "count": 3
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 7,
+            "goal": "Mine iron ore with the stone pickaxe",
+            "command": "!collectBlocks(\"iron_ore\", 5)",
+            "action_cmd": [
+              "!collectBlocks(\"iron_ore\", 5)"
+            ],
+            "reasoning": "Iron helmet requires 5 iron ingots, so 5 iron ore blocks must be mined. Mining drops raw_iron.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "underground",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 8,
+            "goal": "Craft a furnace to smelt raw iron",
+            "command": "!craftRecipe(\"furnace\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"furnace\", 1)"
+            ],
+            "reasoning": "A furnace is required to smelt raw_iron into iron_ingots.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "cobblestone",
+                "count": 8
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 9,
+            "goal": "Smelt raw iron into iron ingots",
+            "command": "!smeltItem(\"raw_iron\", 5)",
+            "action_cmd": [
+              "!smeltItem(\"raw_iron\", 5)"
+            ],
+            "reasoning": "raw_iron dropped from mining must be smelted into iron_ingots before crafting the helmet.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "raw_iron",
+                "count": 5
+              },
+              {
+                "type": "station",
+                "name": "furnace",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 10,
+            "goal": "Craft the iron helmet",
+            "command": "!craftRecipe(\"iron_helmet\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"iron_helmet\", 1)"
+            ],
+            "reasoning": "With 5 iron ingots available, the iron helmet can now be crafted using the standard helmet recipe (5 ingots in a U-shape minus the bottom row middle).",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_ingot",
+                "count": 5
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "iron_helmet"
+      },
+      "raw_response": "**REASONING**:\nThe user wants to craft an iron helmet. I need to identify the components:\n- Target item: iron_helmet\n- Material type: iron\n- Tool type: helmet\n\nAn iron helmet requires 5 iron ingots (top row: 3 ingots, middle row: left and right ingots, middle empty).\nIron ingots come from smelting raw_iron, which is dropped by mining iron_ore.\nMining iron_ore requires a stone_pickaxe or better.\nBuilding up from scratch requires: logs → wooden_pickaxe → cobblestone → stone_pickaxe → iron_ore → smelt → craft helmet.\n\n**EXECUTION PLAN**:\n\nStep 1: Collect logs to build basic tools\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 3)\nReasoning: Logs are needed to craft planks, sticks, and eventually a wooden pickaxe to mine stone.\n\nStep 2: Craft oak planks from logs\nPrerequisites: item:oak_log:3\nCommand: !craftRecipe(\"oak_planks\", 12)\nReasoning: Planks are required to craft sticks and a crafting table.\n\nStep 3: Craft sticks for tool handles\nPrerequisites: item:oak_planks:4\nCommand: !craftRecipe(\"stick\", 4)\nReasoning: Sticks are needed as handles for the wooden pickaxe.\n\nStep 4: Craft a wooden pickaxe to mine stone\nPrerequisites: item:oak_planks:3, item:stick:2\nCommand: !craftRecipe(\"wooden_pickaxe\", 1)\nReasoning: A wooden pickaxe is required to mine cobblestone.\n\nStep 5: Mine cobblestone to craft a stone pickaxe\nPrerequisites: item:wooden_pickaxe:1, access:stone\nCommand: !collectBlocks(\"stone\", 3)\nReasoning: Cobblestone is needed to craft a stone pickaxe, which can mine iron ore.\n\nStep 6: Craft a stone pickaxe to mine iron ore\nPrerequisites: item:cobblestone:3, item:stick:2\nCommand: !craftRecipe(\"stone_pickaxe\", 1)\nReasoning: A stone pickaxe is required to mine iron ore blocks.\n\nStep 7: Mine iron ore with the stone pickaxe\nPrerequisites: item:stone_pickaxe:1, access:underground\nCommand: !collectBlocks(\"iron_ore\", 5)\nReasoning: Iron helmet requires 5 iron ingots, so 5 iron ore blocks must be mined. Mining drops raw_iron.\n\nStep 8: Craft a furnace to smelt raw iron\nPrerequisites: item:cobblestone:8\nCommand: !craftRecipe(\"furnace\", 1)\nReasoning: A furnace is required to smelt raw_iron into iron_ingots.\n\nStep 9: Smelt raw iron into iron ingots\nPrerequisites: item:raw_iron:5, station:furnace\nCommand: !smeltItem(\"raw_iron\", 5)\nReasoning: raw_iron dropped from mining must be smelted into iron_ingots before crafting the helmet.\n\nStep 10: Craft the iron helmet\nPrerequisites: item:iron_ingot:5\nCommand: !craftRecipe(\"iron_helmet\", 1)\nReasoning: With 5 iron ingots available, the iron helmet can now be crafted using the standard helmet recipe (5 ingots in a U-shape minus the bottom row middle).",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 10,
+        "step_efficiency": 0.5,
+        "issues": [
+          "Step 6: missing cobblestone x3",
+          "Step 6: craftRecipe(\"stone_pickaxe\", 1) missing ingredients: cobblestone x3",
+          "Step 8: missing cobblestone x8",
+          "Step 8: craftRecipe(\"furnace\", 1) missing ingredients: cobblestone x8"
+        ],
+        "lenient_issues": [
+          "Step 6: missing cobblestone x3",
+          "Step 6: craftRecipe(\"stone_pickaxe\", 1) missing ingredients: cobblestone x3",
+          "Step 8: missing cobblestone x8",
+          "Step 8: craftRecipe(\"furnace\", 1) missing ingredients: cobblestone x8"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7651
+    },
+    {
+      "slug": "craft/iron_boots",
+      "level": "L2",
+      "goal_item": "iron_boots",
+      "min_steps": 5,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect logs to begin tool chain",
+            "command": "!collectBlocks(\"oak_log\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 3)"
+            ],
+            "reasoning": "Logs are needed to craft planks, sticks, and a crafting table, which are required to make a wooden pickaxe to start the tool chain.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks from logs",
+            "command": "!craftRecipe(\"oak_planks\", 12)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 12)"
+            ],
+            "reasoning": "Planks are needed to craft sticks and a crafting table.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft sticks from planks",
+            "command": "!craftRecipe(\"stick\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 4)"
+            ],
+            "reasoning": "Sticks are required to craft a wooden pickaxe.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 4
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft a wooden pickaxe",
+            "command": "!craftRecipe(\"wooden_pickaxe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"wooden_pickaxe\", 1)"
+            ],
+            "reasoning": "A wooden pickaxe is needed to mine stone, which is required to make a stone pickaxe.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 3
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 5,
+            "goal": "Collect stone with wooden pickaxe",
+            "command": "!collectBlocks(\"stone\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"stone\", 3)"
+            ],
+            "reasoning": "Stone is required to craft a stone pickaxe, which is needed to mine iron ore.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "wooden_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "stone",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 6,
+            "goal": "Craft a stone pickaxe",
+            "command": "!craftRecipe(\"stone_pickaxe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"stone_pickaxe\", 1)"
+            ],
+            "reasoning": "A stone pickaxe is required to mine iron ore.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone",
+                "count": 3
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 7,
+            "goal": "Collect iron ore with stone pickaxe",
+            "command": "!collectBlocks(\"iron_ore\", 4)",
+            "action_cmd": [
+              "!collectBlocks(\"iron_ore\", 4)"
+            ],
+            "reasoning": "Iron boots require 4 iron ingots, so 4 iron ore must be mined. Mining iron_ore drops raw_iron.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "underground",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 8,
+            "goal": "Smelt raw iron into iron ingots",
+            "command": "!smeltItem(\"raw_iron\", 4)",
+            "action_cmd": [
+              "!smeltItem(\"raw_iron\", 4)"
+            ],
+            "reasoning": "Raw iron must be smelted into iron ingots before they can be used in crafting. Note: use raw_iron not iron_ore as the drop name after collectBlocks.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "raw_iron",
+                "count": 4
+              },
+              {
+                "type": "station",
+                "name": "furnace",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 9,
+            "goal": "Craft iron boots",
+            "command": "!craftRecipe(\"iron_boots\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"iron_boots\", 1)"
+            ],
+            "reasoning": "With 4 iron ingots ready, iron boots can now be crafted. This is the final step in the plan.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_ingot",
+                "count": 4
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "iron_boots"
+      },
+      "raw_response": "**REASONING**:\nThe user wants to craft iron boots. Iron boots are armor, not a tool, so I need to identify the correct material quantity. Iron boots require 4 iron ingots arranged in a boot pattern in the crafting table. Since the material is iron, I need to collect iron ore, smelt it into iron ingots, and then craft the boots. Iron ore requires a stone pickaxe to mine, so I must follow the full cold-start tool chain: collect logs → craft wooden pickaxe → mine stone → craft stone pickaxe → mine iron ore → smelt raw iron → craft iron boots.\n\nTarget item: iron_boots\nMaterial type: iron\nItem type: boots (requires 4 iron ingots)\n\n**EXECUTION PLAN**:\n\nStep 1: Collect logs to begin tool chain\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 3)\nReasoning: Logs are needed to craft planks, sticks, and a crafting table, which are required to make a wooden pickaxe to start the tool chain.\n\nStep 2: Craft oak planks from logs\nPrerequisites: item:oak_log:3\nCommand: !craftRecipe(\"oak_planks\", 12)\nReasoning: Planks are needed to craft sticks and a crafting table.\n\nStep 3: Craft sticks from planks\nPrerequisites: item:oak_planks:4\nCommand: !craftRecipe(\"stick\", 4)\nReasoning: Sticks are required to craft a wooden pickaxe.\n\nStep 4: Craft a wooden pickaxe\nPrerequisites: item:oak_planks:3, item:stick:2\nCommand: !craftRecipe(\"wooden_pickaxe\", 1)\nReasoning: A wooden pickaxe is needed to mine stone, which is required to make a stone pickaxe.\n\nStep 5: Collect stone with wooden pickaxe\nPrerequisites: item:wooden_pickaxe:1, access:stone\nCommand: !collectBlocks(\"stone\", 3)\nReasoning: Stone is required to craft a stone pickaxe, which is needed to mine iron ore.\n\nStep 6: Craft a stone pickaxe\nPrerequisites: item:stone:3, item:stick:2\nCommand: !craftRecipe(\"stone_pickaxe\", 1)\nReasoning: A stone pickaxe is required to mine iron ore.\n\nStep 7: Collect iron ore with stone pickaxe\nPrerequisites: item:stone_pickaxe:1, access:underground\nCommand: !collectBlocks(\"iron_ore\", 4)\nReasoning: Iron boots require 4 iron ingots, so 4 iron ore must be mined. Mining iron_ore drops raw_iron.\n\nStep 8: Smelt raw iron into iron ingots\nPrerequisites: item:raw_iron:4, station:furnace\nCommand: !smeltItem(\"raw_iron\", 4)\nReasoning: Raw iron must be smelted into iron ingots before they can be used in crafting. Note: use raw_iron not iron_ore as the drop name after collectBlocks.\n\nStep 9: Craft iron boots\nPrerequisites: item:iron_ingot:4, station:crafting_table\nCommand: !craftRecipe(\"iron_boots\", 1)\nReasoning: With 4 iron ingots ready, iron boots can now be crafted. This is the final step in the plan.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": true,
+        "step_count": 9,
+        "step_efficiency": 0.56,
+        "issues": [
+          "Step 6: craftRecipe(\"stone_pickaxe\", 1) missing ingredients: cobblestone x3"
+        ],
+        "lenient_issues": [
+          "Step 6: craftRecipe(\"stone_pickaxe\", 1) missing ingredients: cobblestone x3"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7643
+    },
+    {
+      "slug": "collect/deepslate_coal",
+      "level": "L2",
+      "goal_item": "coal",
+      "min_steps": 1,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect oak logs from trees",
+            "command": "!collectBlocks(\"oak_log\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 3)"
+            ],
+            "reasoning": "Logs are needed to craft planks and sticks, which are required to build a wooden pickaxe. This is the starting point of the cold-start tool chain with nothing in inventory.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks from logs",
+            "command": "!craftRecipe(\"oak_planks\", 12)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 12)"
+            ],
+            "reasoning": "Planks are needed to craft sticks and the wooden pickaxe head material. 3 logs yield 12 planks, which is sufficient.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft sticks from planks",
+            "command": "!craftRecipe(\"stick\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 4)"
+            ],
+            "reasoning": "Sticks are required as handles for tool crafting. A wooden pickaxe needs 2 sticks.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 12
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft a wooden pickaxe",
+            "command": "!craftRecipe(\"wooden_pickaxe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"wooden_pickaxe\", 1)"
+            ],
+            "reasoning": "A wooden pickaxe is needed to mine stone, which is required to craft a stone pickaxe. Without this, we cannot progress to the next tier.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 3
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 5,
+            "goal": "Mine cobblestone with wooden pickaxe",
+            "command": "!collectBlocks(\"stone\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"stone\", 3)"
+            ],
+            "reasoning": "Cobblestone is the material needed to craft a stone pickaxe. Stone pickaxe is required to mine coal ore and deepslate coal ore.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "wooden_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "stone",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 6,
+            "goal": "Craft a stone pickaxe",
+            "command": "!craftRecipe(\"stone_pickaxe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"stone_pickaxe\", 1)"
+            ],
+            "reasoning": "A stone pickaxe is the minimum tier required to mine coal ore and deepslate coal ore. Without it, mining deepslate coal ore will not drop any coal.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "cobblestone",
+                "count": 3
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 7,
+            "goal": "Mine deepslate coal ore to collect coal",
+            "command": "!collectBlocks(\"deepslate_coal_ore\", 5)",
+            "action_cmd": [
+              "!collectBlocks(\"deepslate_coal_ore\", 5)"
+            ],
+            "reasoning": "Deepslate coal ore drops coal directly when mined with a stone pickaxe or better. No smelting is needed. This is the final step that fulfills the user's goal of collecting coal.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "underground",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "stone_pickaxe"
+      },
+      "raw_response": "**REASONING**:\nThe user wants to collect coal by mining deepslate coal ore. This is a COLLECT intent, not a crafting task. The target item is coal, obtained by mining deepslate_coal_ore blocks. Deepslate coal ore is a variant of coal ore and drops coal directly when mined (no smelting needed). According to the Mining Tool Requirement Pattern, coal ore requires a stone_pickaxe or better. This means I need to build up the full cold-start tool chain: collect logs, craft wooden pickaxe, mine stone, craft stone pickaxe, then mine deepslate coal ore.\n\nTarget item: coal\nSource block: deepslate_coal_ore\nTool required: stone_pickaxe (or better)\nProcessing needed: None (coal drops directly from ore)\n\n**EXECUTION PLAN**:\n\nStep 1: Collect oak logs from trees\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 3)\nReasoning: Logs are needed to craft planks and sticks, which are required to build a wooden pickaxe. This is the starting point of the cold-start tool chain with nothing in inventory.\n\nStep 2: Craft oak planks from logs\nPrerequisites: item:oak_log:3\nCommand: !craftRecipe(\"oak_planks\", 12)\nReasoning: Planks are needed to craft sticks and the wooden pickaxe head material. 3 logs yield 12 planks, which is sufficient.\n\nStep 3: Craft sticks from planks\nPrerequisites: item:oak_planks:12\nCommand: !craftRecipe(\"stick\", 4)\nReasoning: Sticks are required as handles for tool crafting. A wooden pickaxe needs 2 sticks.\n\nStep 4: Craft a wooden pickaxe\nPrerequisites: item:oak_planks:3, item:stick:2\nCommand: !craftRecipe(\"wooden_pickaxe\", 1)\nReasoning: A wooden pickaxe is needed to mine stone, which is required to craft a stone pickaxe. Without this, we cannot progress to the next tier.\n\nStep 5: Mine cobblestone with wooden pickaxe\nPrerequisites: item:wooden_pickaxe:1, access:stone\nCommand: !collectBlocks(\"stone\", 3)\nReasoning: Cobblestone is the material needed to craft a stone pickaxe. Stone pickaxe is required to mine coal ore and deepslate coal ore.\n\nStep 6: Craft a stone pickaxe\nPrerequisites: item:cobblestone:3, item:stick:2\nCommand: !craftRecipe(\"stone_pickaxe\", 1)\nReasoning: A stone pickaxe is the minimum tier required to mine coal ore and deepslate coal ore. Without it, mining deepslate coal ore will not drop any coal.\n\nStep 7: Mine deepslate coal ore to collect coal\nPrerequisites: item:stone_pickaxe:1, access:underground\nCommand: !collectBlocks(\"deepslate_coal_ore\", 5)\nReasoning: Deepslate coal ore drops coal directly when mined with a stone pickaxe or better. No smelting is needed. This is the final step that fulfills the user's goal of collecting coal.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 7,
+        "step_efficiency": 0.14,
+        "issues": [
+          "Step 6: missing cobblestone x3",
+          "Step 6: craftRecipe(\"stone_pickaxe\", 1) missing ingredients: cobblestone x3"
+        ],
+        "lenient_issues": [
+          "Step 6: missing cobblestone x3",
+          "Step 6: craftRecipe(\"stone_pickaxe\", 1) missing ingredients: cobblestone x3"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7665
+    },
+    {
+      "slug": "craft/iron_axe",
+      "level": "L2",
+      "goal_item": "iron_axe",
+      "min_steps": 4,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect oak logs to bootstrap tool chain",
+            "command": "!collectBlocks(\"oak_log\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 3)"
+            ],
+            "reasoning": "Logs are needed to craft planks, sticks, and eventually a wooden pickaxe to begin mining stone.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks from logs",
+            "command": "!craftRecipe(\"oak_planks\", 12)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 12)"
+            ],
+            "reasoning": "Planks are needed to craft sticks and to build a crafting table and furnace.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft sticks for tool handles",
+            "command": "!craftRecipe(\"stick\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 4)"
+            ],
+            "reasoning": "Sticks are required for crafting pickaxes and the final iron axe.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 4
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft a wooden pickaxe to mine stone",
+            "command": "!craftRecipe(\"wooden_pickaxe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"wooden_pickaxe\", 1)"
+            ],
+            "reasoning": "A wooden pickaxe is required to collect cobblestone, which is needed for a stone pickaxe and a furnace.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 3
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 5,
+            "goal": "Collect cobblestone for stone pickaxe and furnace",
+            "command": "!collectBlocks(\"stone\", 11)",
+            "action_cmd": [
+              "!collectBlocks(\"stone\", 11)"
+            ],
+            "reasoning": "Need at least 3 cobblestone for a stone pickaxe and 8 cobblestone for a furnace.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "wooden_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "stone",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 6,
+            "goal": "Craft a stone pickaxe to mine iron ore",
+            "command": "!craftRecipe(\"stone_pickaxe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"stone_pickaxe\", 1)"
+            ],
+            "reasoning": "A stone pickaxe is required to mine iron ore.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "cobblestone",
+                "count": 3
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 7,
+            "goal": "Craft a furnace to smelt iron ore",
+            "command": "!craftRecipe(\"furnace\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"furnace\", 1)"
+            ],
+            "reasoning": "A furnace is required to smelt raw iron into iron ingots.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "cobblestone",
+                "count": 8
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 8,
+            "goal": "Mine iron ore underground",
+            "command": "!collectBlocks(\"iron_ore\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"iron_ore\", 3)"
+            ],
+            "reasoning": "An iron axe requires 3 iron ingots, so 3 iron ore blocks must be mined. collectBlocks on iron_ore drops raw_iron.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "underground",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 9,
+            "goal": "Smelt raw iron into iron ingots",
+            "command": "!smeltItem(\"raw_iron\", 3)",
+            "action_cmd": [
+              "!smeltItem(\"raw_iron\", 3)"
+            ],
+            "reasoning": "Raw iron must be smelted into iron ingots before it can be used in crafting the axe.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "raw_iron",
+                "count": 3
+              },
+              {
+                "type": "station",
+                "name": "furnace",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 10,
+            "goal": "Craft the iron axe",
+            "command": "!craftRecipe(\"iron_axe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"iron_axe\", 1)"
+            ],
+            "reasoning": "With 3 iron ingots and 2 sticks available, the iron axe can now be crafted following the axe quantity pattern of 3 material units plus 2 sticks.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_ingot",
+                "count": 3
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "iron_axe"
+      },
+      "raw_response": "**REASONING**:\nThe user wants to craft an iron axe. I will identify the components and apply the learned patterns.\n\nTarget item: iron_axe\nMaterial type: iron\nTool type: axe\n\nApplying the patterns:\n- Axes require 3 material units + 2 sticks (Material Quantity Pattern)\n- Iron must be smelted from raw ore before use (Material Processing Pattern)\n- Iron ore requires a stone pickaxe to mine (Mining Tool Requirement Pattern)\n- Sticks require planks, which require logs (Dependency Pattern)\n- Smelting requires a furnace (Dependency Pattern)\n- Since we assume a cold start, we must build up from logs to wooden pickaxe to stone pickaxe to iron ore\n\n**EXECUTION PLAN**:\n\nStep 1: Collect oak logs to bootstrap tool chain\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 3)\nReasoning: Logs are needed to craft planks, sticks, and eventually a wooden pickaxe to begin mining stone.\n\nStep 2: Craft oak planks from logs\nPrerequisites: item:oak_log:3\nCommand: !craftRecipe(\"oak_planks\", 12)\nReasoning: Planks are needed to craft sticks and to build a crafting table and furnace.\n\nStep 3: Craft sticks for tool handles\nPrerequisites: item:oak_planks:4\nCommand: !craftRecipe(\"stick\", 4)\nReasoning: Sticks are required for crafting pickaxes and the final iron axe.\n\nStep 4: Craft a wooden pickaxe to mine stone\nPrerequisites: item:oak_planks:3, item:stick:2\nCommand: !craftRecipe(\"wooden_pickaxe\", 1)\nReasoning: A wooden pickaxe is required to collect cobblestone, which is needed for a stone pickaxe and a furnace.\n\nStep 5: Collect cobblestone for stone pickaxe and furnace\nPrerequisites: item:wooden_pickaxe:1, access:stone\nCommand: !collectBlocks(\"stone\", 11)\nReasoning: Need at least 3 cobblestone for a stone pickaxe and 8 cobblestone for a furnace.\n\nStep 6: Craft a stone pickaxe to mine iron ore\nPrerequisites: item:cobblestone:3, item:stick:2\nCommand: !craftRecipe(\"stone_pickaxe\", 1)\nReasoning: A stone pickaxe is required to mine iron ore.\n\nStep 7: Craft a furnace to smelt iron ore\nPrerequisites: item:cobblestone:8, station:crafting_table\nCommand: !craftRecipe(\"furnace\", 1)\nReasoning: A furnace is required to smelt raw iron into iron ingots.\n\nStep 8: Mine iron ore underground\nPrerequisites: item:stone_pickaxe:1, access:underground\nCommand: !collectBlocks(\"iron_ore\", 3)\nReasoning: An iron axe requires 3 iron ingots, so 3 iron ore blocks must be mined. collectBlocks on iron_ore drops raw_iron.\n\nStep 9: Smelt raw iron into iron ingots\nPrerequisites: item:raw_iron:3, station:furnace\nCommand: !smeltItem(\"raw_iron\", 3)\nReasoning: Raw iron must be smelted into iron ingots before it can be used in crafting the axe.\n\nStep 10: Craft the iron axe\nPrerequisites: item:iron_ingot:3, item:stick:2, station:crafting_table\nCommand: !craftRecipe(\"iron_axe\", 1)\nReasoning: With 3 iron ingots and 2 sticks available, the iron axe can now be crafted following the axe quantity pattern of 3 material units plus 2 sticks.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 10,
+        "step_efficiency": 0.4,
+        "issues": [
+          "Step 6: missing cobblestone x3",
+          "Step 6: craftRecipe(\"stone_pickaxe\", 1) missing ingredients: cobblestone x3",
+          "Step 7: missing cobblestone x8",
+          "Step 7: craftRecipe(\"furnace\", 1) missing ingredients: cobblestone x8"
+        ],
+        "lenient_issues": [
+          "Step 6: missing cobblestone x3",
+          "Step 6: craftRecipe(\"stone_pickaxe\", 1) missing ingredients: cobblestone x3",
+          "Step 7: missing cobblestone x8",
+          "Step 7: craftRecipe(\"furnace\", 1) missing ingredients: cobblestone x8"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7645
+    },
+    {
+      "slug": "craft/iron_shovel",
+      "level": "L2",
+      "goal_item": "iron_shovel",
+      "min_steps": 4,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect oak logs to craft wooden tools and sticks",
+            "command": "!collectBlocks(\"oak_log\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 3)"
+            ],
+            "reasoning": "Logs are needed to craft planks, sticks, and a wooden pickaxe to begin the tool chain from scratch.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks from logs",
+            "command": "!craftRecipe(\"oak_planks\", 12)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 12)"
+            ],
+            "reasoning": "Planks are required to craft sticks and a crafting table.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft sticks for tool handles",
+            "command": "!craftRecipe(\"stick\", 8)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 8)"
+            ],
+            "reasoning": "Sticks are needed for crafting the wooden pickaxe and later the iron shovel.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 12
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft a wooden pickaxe to mine stone",
+            "command": "!craftRecipe(\"wooden_pickaxe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"wooden_pickaxe\", 1)"
+            ],
+            "reasoning": "A wooden pickaxe is required to collect cobblestone.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 3
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 5,
+            "goal": "Collect stone to craft a stone pickaxe",
+            "command": "!collectBlocks(\"stone\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"stone\", 3)"
+            ],
+            "reasoning": "Stone is needed to craft a stone pickaxe, which is required to mine iron ore.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "wooden_pickaxe",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 6,
+            "goal": "Craft a stone pickaxe to mine iron ore",
+            "command": "!craftRecipe(\"stone_pickaxe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"stone_pickaxe\", 1)"
+            ],
+            "reasoning": "A stone pickaxe or better is required to mine iron ore blocks.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone",
+                "count": 3
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 7,
+            "goal": "Collect iron ore from underground",
+            "command": "!collectBlocks(\"iron_ore\", 1)",
+            "action_cmd": [
+              "!collectBlocks(\"iron_ore\", 1)"
+            ],
+            "reasoning": "Iron shovel requires only 1 iron ingot, so only 1 iron ore needs to be mined.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "underground",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 8,
+            "goal": "Craft a furnace to smelt raw iron",
+            "command": "!craftRecipe(\"furnace\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"furnace\", 1)"
+            ],
+            "reasoning": "A furnace is required to smelt raw_iron into iron_ingots.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone",
+                "count": 8
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 9,
+            "goal": "Smelt raw iron into iron ingots",
+            "command": "!smeltItem(\"raw_iron\", 1)",
+            "action_cmd": [
+              "!smeltItem(\"raw_iron\", 1)"
+            ],
+            "reasoning": "collectBlocks(\"iron_ore\") drops raw_iron, which must be smelted into iron_ingot before crafting.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "raw_iron",
+                "count": 1
+              },
+              {
+                "type": "station",
+                "name": "furnace",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 10,
+            "goal": "Craft the iron shovel",
+            "command": "!craftRecipe(\"iron_shovel\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"iron_shovel\", 1)"
+            ],
+            "reasoning": "Shovels require 1 material unit and 2 sticks. With 1 iron_ingot and 2 sticks available, the iron_shovel can now be crafted.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_ingot",
+                "count": 1
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "iron_shovel"
+      },
+      "raw_response": "**REASONING**:\nTarget item: iron_shovel\nMaterial type: iron\nTool type: shovel\n\nApplying the patterns:\n- Shovels require 1 material unit + 2 sticks (Material Quantity Pattern)\n- Iron must be smelted from raw_iron before use (Material Processing Pattern)\n- Need to mine iron ore, which requires a stone pickaxe (Mining Tool Requirement Pattern)\n- Full cold-start assumed: must build up from logs to wooden pickaxe to stone pickaxe to iron\n\n**EXECUTION PLAN**:\n\nStep 1: Collect oak logs to craft wooden tools and sticks\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 3)\nReasoning: Logs are needed to craft planks, sticks, and a wooden pickaxe to begin the tool chain from scratch.\n\nStep 2: Craft oak planks from logs\nPrerequisites: item:oak_log:3\nCommand: !craftRecipe(\"oak_planks\", 12)\nReasoning: Planks are required to craft sticks and a crafting table.\n\nStep 3: Craft sticks for tool handles\nPrerequisites: item:oak_planks:12\nCommand: !craftRecipe(\"stick\", 8)\nReasoning: Sticks are needed for crafting the wooden pickaxe and later the iron shovel.\n\nStep 4: Craft a wooden pickaxe to mine stone\nPrerequisites: item:oak_planks:3, item:stick:2\nCommand: !craftRecipe(\"wooden_pickaxe\", 1)\nReasoning: A wooden pickaxe is required to collect cobblestone.\n\nStep 5: Collect stone to craft a stone pickaxe\nPrerequisites: item:wooden_pickaxe:1\nCommand: !collectBlocks(\"stone\", 3)\nReasoning: Stone is needed to craft a stone pickaxe, which is required to mine iron ore.\n\nStep 6: Craft a stone pickaxe to mine iron ore\nPrerequisites: item:stone:3, item:stick:2\nCommand: !craftRecipe(\"stone_pickaxe\", 1)\nReasoning: A stone pickaxe or better is required to mine iron ore blocks.\n\nStep 7: Collect iron ore from underground\nPrerequisites: item:stone_pickaxe:1, access:underground\nCommand: !collectBlocks(\"iron_ore\", 1)\nReasoning: Iron shovel requires only 1 iron ingot, so only 1 iron ore needs to be mined.\n\nStep 8: Craft a furnace to smelt raw iron\nPrerequisites: item:stone:8\nCommand: !craftRecipe(\"furnace\", 1)\nReasoning: A furnace is required to smelt raw_iron into iron_ingots.\n\nStep 9: Smelt raw iron into iron ingots\nPrerequisites: item:raw_iron:1, station:furnace\nCommand: !smeltItem(\"raw_iron\", 1)\nReasoning: collectBlocks(\"iron_ore\") drops raw_iron, which must be smelted into iron_ingot before crafting.\n\nStep 10: Craft the iron shovel\nPrerequisites: item:iron_ingot:1, item:stick:2\nCommand: !craftRecipe(\"iron_shovel\", 1)\nReasoning: Shovels require 1 material unit and 2 sticks. With 1 iron_ingot and 2 sticks available, the iron_shovel can now be crafted.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 10,
+        "step_efficiency": 0.4,
+        "issues": [
+          "Step 6: craftRecipe(\"stone_pickaxe\", 1) missing ingredients: cobblestone x3",
+          "Step 8: missing stone x8",
+          "Step 8: craftRecipe(\"furnace\", 1) missing ingredients: cobblestone x8"
+        ],
+        "lenient_issues": [
+          "Step 6: craftRecipe(\"stone_pickaxe\", 1) missing ingredients: cobblestone x3",
+          "Step 8: missing stone x8",
+          "Step 8: craftRecipe(\"furnace\", 1) missing ingredients: cobblestone x8"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7651
+    },
+    {
+      "slug": "craft/furnace",
+      "level": "L2",
+      "goal_item": "furnace",
+      "min_steps": 3,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect oak logs to make planks, sticks, and a wooden pickaxe",
+            "command": "!collectBlocks(\"oak_log\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 3)"
+            ],
+            "reasoning": "Logs are needed to craft planks and sticks, which are required to make a wooden pickaxe. A wooden pickaxe is needed to mine stone for cobblestone.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks from logs",
+            "command": "!craftRecipe(\"oak_planks\", 12)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 12)"
+            ],
+            "reasoning": "Planks are needed to craft sticks and the crafting table required for further crafting steps.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft a crafting table",
+            "command": "!craftRecipe(\"crafting_table\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"crafting_table\", 1)"
+            ],
+            "reasoning": "A crafting table is required to craft the wooden pickaxe and the furnace.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 4
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft sticks from planks",
+            "command": "!craftRecipe(\"stick\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 4)"
+            ],
+            "reasoning": "Sticks are needed as part of the wooden pickaxe recipe.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 4
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 5,
+            "goal": "Craft a wooden pickaxe",
+            "command": "!craftRecipe(\"wooden_pickaxe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"wooden_pickaxe\", 1)"
+            ],
+            "reasoning": "A wooden pickaxe is the minimum tool required to mine stone and obtain cobblestone.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 3
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 6,
+            "goal": "Mine cobblestone",
+            "command": "!collectBlocks(\"stone\", 8)",
+            "action_cmd": [
+              "!collectBlocks(\"stone\", 8)"
+            ],
+            "reasoning": "A furnace requires 8 cobblestone. Mining stone with a pickaxe yields cobblestone directly.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "wooden_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "stone",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 7,
+            "goal": "Craft the furnace",
+            "command": "!craftRecipe(\"furnace\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"furnace\", 1)"
+            ],
+            "reasoning": "With 8 cobblestone collected and a crafting table available, the furnace can now be crafted using the ring pattern in the crafting grid.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "cobblestone",
+                "count": 8
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "furnace"
+      },
+      "raw_response": "**REASONING**:\nThe user wants to craft a furnace. A furnace in Minecraft requires 8 cobblestone arranged in a ring (leaving the center empty) in a crafting table. Cobblestone is obtained by mining stone, which requires at least a wooden pickaxe. I need to follow the cold-start tool chain: collect logs, craft planks and sticks, craft a wooden pickaxe, then mine cobblestone, and finally craft the furnace.\n\nTarget item: furnace\nMaterial: cobblestone (8 units needed)\nTool type: furnace (special block, not a tool)\n\n**EXECUTION PLAN**:\n\nStep 1: Collect oak logs to make planks, sticks, and a wooden pickaxe\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 3)\nReasoning: Logs are needed to craft planks and sticks, which are required to make a wooden pickaxe. A wooden pickaxe is needed to mine stone for cobblestone.\n\nStep 2: Craft oak planks from logs\nPrerequisites: item:oak_log:3\nCommand: !craftRecipe(\"oak_planks\", 12)\nReasoning: Planks are needed to craft sticks and the crafting table required for further crafting steps.\n\nStep 3: Craft a crafting table\nPrerequisites: item:oak_planks:4\nCommand: !craftRecipe(\"crafting_table\", 1)\nReasoning: A crafting table is required to craft the wooden pickaxe and the furnace.\n\nStep 4: Craft sticks from planks\nPrerequisites: item:oak_planks:4, station:crafting_table\nCommand: !craftRecipe(\"stick\", 4)\nReasoning: Sticks are needed as part of the wooden pickaxe recipe.\n\nStep 5: Craft a wooden pickaxe\nPrerequisites: item:oak_planks:3, item:stick:2, station:crafting_table\nCommand: !craftRecipe(\"wooden_pickaxe\", 1)\nReasoning: A wooden pickaxe is the minimum tool required to mine stone and obtain cobblestone.\n\nStep 6: Mine cobblestone\nPrerequisites: item:wooden_pickaxe:1, access:stone\nCommand: !collectBlocks(\"stone\", 8)\nReasoning: A furnace requires 8 cobblestone. Mining stone with a pickaxe yields cobblestone directly.\n\nStep 7: Craft the furnace\nPrerequisites: item:cobblestone:8, station:crafting_table\nCommand: !craftRecipe(\"furnace\", 1)\nReasoning: With 8 cobblestone collected and a crafting table available, the furnace can now be crafted using the ring pattern in the crafting grid.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 7,
+        "step_efficiency": 0.43,
+        "issues": [
+          "Step 7: missing cobblestone x8",
+          "Step 7: craftRecipe(\"furnace\", 1) missing ingredients: cobblestone x8"
+        ],
+        "lenient_issues": [
+          "Step 7: missing cobblestone x8",
+          "Step 7: craftRecipe(\"furnace\", 1) missing ingredients: cobblestone x8"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7611
+    },
+    {
+      "slug": "craft/shears",
+      "level": "L2",
+      "goal_item": "shears",
+      "min_steps": 4,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect logs to begin tool chain",
+            "command": "!collectBlocks(\"oak_log\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 3)"
+            ],
+            "reasoning": "Logs are needed to craft planks and sticks, which are required for a wooden pickaxe to start the tool chain.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks from logs",
+            "command": "!craftRecipe(\"oak_planks\", 12)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 12)"
+            ],
+            "reasoning": "Planks are needed to craft sticks and a crafting table for further crafting steps.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft sticks from planks",
+            "command": "!craftRecipe(\"stick\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 4)"
+            ],
+            "reasoning": "Sticks are required as part of the wooden pickaxe recipe.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 4
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft a wooden pickaxe",
+            "command": "!craftRecipe(\"wooden_pickaxe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"wooden_pickaxe\", 1)"
+            ],
+            "reasoning": "A wooden pickaxe is required to mine stone, which is needed to craft a stone pickaxe.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 3
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 5,
+            "goal": "Mine cobblestone",
+            "command": "!collectBlocks(\"stone\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"stone\", 3)"
+            ],
+            "reasoning": "Cobblestone is needed to craft a stone pickaxe, which is required to mine iron ore.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "wooden_pickaxe",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 6,
+            "goal": "Craft a stone pickaxe",
+            "command": "!craftRecipe(\"stone_pickaxe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"stone_pickaxe\", 1)"
+            ],
+            "reasoning": "A stone pickaxe is the minimum tier required to mine iron ore.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "cobblestone",
+                "count": 3
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 7,
+            "goal": "Mine iron ore",
+            "command": "!collectBlocks(\"iron_ore\", 2)",
+            "action_cmd": [
+              "!collectBlocks(\"iron_ore\", 2)"
+            ],
+            "reasoning": "Shears require 2 iron ingots, so 2 iron ore must be mined. Mining iron ore drops raw iron.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "underground",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 8,
+            "goal": "Smelt raw iron into iron ingots",
+            "command": "!smeltItem(\"raw_iron\", 2)",
+            "action_cmd": [
+              "!smeltItem(\"raw_iron\", 2)"
+            ],
+            "reasoning": "Raw iron must be smelted in a furnace to produce iron ingots, which are the material needed to craft shears.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "raw_iron",
+                "count": 2
+              },
+              {
+                "type": "station",
+                "name": "furnace",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 9,
+            "goal": "Craft shears",
+            "command": "!craftRecipe(\"shears\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"shears\", 1)"
+            ],
+            "reasoning": "Shears are crafted from 2 iron ingots. This is the final step now that all materials have been collected and processed.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_ingot",
+                "count": 2
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "shears"
+      },
+      "raw_response": "**REASONING**:\nShears are crafted from 2 iron ingots arranged diagonally in a crafting grid. Iron must be collected as iron ore, which drops raw iron, then smelted into ingots before crafting. Since iron ore requires a stone pickaxe to mine, I need to build up from logs to a wooden pickaxe, then mine stone for a stone pickaxe, then mine iron ore, smelt it, and finally craft shears. Shears have no sticks or other components needed beyond the 2 iron ingots.\n\nTarget item: shears\nMaterial: iron (requires smelting from raw iron)\nTool type: shears (requires 2 iron ingots)\n\n**EXECUTION PLAN**:\n\nStep 1: Collect logs to begin tool chain\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 3)\nReasoning: Logs are needed to craft planks and sticks, which are required for a wooden pickaxe to start the tool chain.\n\nStep 2: Craft oak planks from logs\nPrerequisites: item:oak_log:3\nCommand: !craftRecipe(\"oak_planks\", 12)\nReasoning: Planks are needed to craft sticks and a crafting table for further crafting steps.\n\nStep 3: Craft sticks from planks\nPrerequisites: item:oak_planks:4\nCommand: !craftRecipe(\"stick\", 4)\nReasoning: Sticks are required as part of the wooden pickaxe recipe.\n\nStep 4: Craft a wooden pickaxe\nPrerequisites: item:oak_planks:3, item:stick:2\nCommand: !craftRecipe(\"wooden_pickaxe\", 1)\nReasoning: A wooden pickaxe is required to mine stone, which is needed to craft a stone pickaxe.\n\nStep 5: Mine cobblestone\nPrerequisites: item:wooden_pickaxe:1\nCommand: !collectBlocks(\"stone\", 3)\nReasoning: Cobblestone is needed to craft a stone pickaxe, which is required to mine iron ore.\n\nStep 6: Craft a stone pickaxe\nPrerequisites: item:cobblestone:3, item:stick:2\nCommand: !craftRecipe(\"stone_pickaxe\", 1)\nReasoning: A stone pickaxe is the minimum tier required to mine iron ore.\n\nStep 7: Mine iron ore\nPrerequisites: item:stone_pickaxe:1, access:underground\nCommand: !collectBlocks(\"iron_ore\", 2)\nReasoning: Shears require 2 iron ingots, so 2 iron ore must be mined. Mining iron ore drops raw iron.\n\nStep 8: Smelt raw iron into iron ingots\nPrerequisites: item:raw_iron:2, station:furnace\nCommand: !smeltItem(\"raw_iron\", 2)\nReasoning: Raw iron must be smelted in a furnace to produce iron ingots, which are the material needed to craft shears.\n\nStep 9: Craft shears\nPrerequisites: item:iron_ingot:2, station:crafting_table\nCommand: !craftRecipe(\"shears\", 1)\nReasoning: Shears are crafted from 2 iron ingots. This is the final step now that all materials have been collected and processed.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 9,
+        "step_efficiency": 0.44,
+        "issues": [
+          "Step 6: missing cobblestone x3",
+          "Step 6: craftRecipe(\"stone_pickaxe\", 1) missing ingredients: cobblestone x3"
+        ],
+        "lenient_issues": [
+          "Step 6: missing cobblestone x3",
+          "Step 6: craftRecipe(\"stone_pickaxe\", 1) missing ingredients: cobblestone x3"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7605
+    },
+    {
+      "slug": "craft/shield",
+      "level": "L2",
+      "goal_item": "shield",
+      "min_steps": 4,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7609
+    },
+    {
+      "slug": "craft/stone_sword",
+      "level": "L2",
+      "goal_item": "stone_sword",
+      "min_steps": 3,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7619
+    },
+    {
+      "slug": "craft/stone_axe",
+      "level": "L2",
+      "goal_item": "stone_axe",
+      "min_steps": 3,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7615
+    },
+    {
+      "slug": "collect/deepslate_copper",
+      "level": "L2",
+      "goal_item": "raw_copper",
+      "min_steps": 1,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7727
+    },
+    {
+      "slug": "craft/stone_bricks",
+      "level": "L2",
+      "goal_item": "stone_bricks",
+      "min_steps": 4,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7617
+    },
+    {
+      "slug": "craft/iron_chestplate",
+      "level": "L3",
+      "goal_item": "iron_chestplate",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7659
+    },
+    {
+      "slug": "craft/bow",
+      "level": "L3",
+      "goal_item": "bow",
+      "min_steps": 3,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7603
+    },
+    {
+      "slug": "craft/bucket",
+      "level": "L3",
+      "goal_item": "bucket",
+      "min_steps": 4,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7609
+    },
+    {
+      "slug": "craft/compass",
+      "level": "L3",
+      "goal_item": "compass",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7611
+    },
+    {
+      "slug": "craft/piston",
+      "level": "L3",
+      "goal_item": "piston",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7609
+    },
+    {
+      "slug": "craft/golden_sword",
+      "level": "L3",
+      "goal_item": "golden_sword",
+      "min_steps": 6,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7651
+    },
+    {
+      "slug": "craft/diamond_pickaxe",
+      "level": "L3",
+      "goal_item": "diamond_pickaxe",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7627
+    },
+    {
+      "slug": "craft/diamond_sword",
+      "level": "L3",
+      "goal_item": "diamond_sword",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7623
+    },
+    {
+      "slug": "collect/deepslate_diamond",
+      "level": "L3",
+      "goal_item": "diamond",
+      "min_steps": 1,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7679
+    },
+    {
+      "slug": "craft/iron_block",
+      "level": "L3",
+      "goal_item": "iron_block",
+      "min_steps": 4,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7649
+    },
+    {
+      "slug": "craft/iron_leggings",
+      "level": "L3",
+      "goal_item": "iron_leggings",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7649
+    },
+    {
+      "slug": "craft/iron_sword",
+      "level": "L3",
+      "goal_item": "iron_sword",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7649
+    },
+    {
+      "slug": "craft/chest",
+      "level": "L1",
+      "goal_item": "chest",
+      "min_steps": 2,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7607
+    },
+    {
+      "slug": "craft/ladder",
+      "level": "L1",
+      "goal_item": "ladder",
+      "min_steps": 2,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7609
+    },
+    {
+      "slug": "craft/iron_trapdoor",
+      "level": "L2",
+      "goal_item": "iron_trapdoor",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7655
+    },
+    {
+      "slug": "craft/iron_door",
+      "level": "L2",
+      "goal_item": "iron_door",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7647
+    },
+    {
+      "slug": "craft/iron_bars",
+      "level": "L2",
+      "goal_item": "iron_bars",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7641
+    },
+    {
+      "slug": "craft/clock",
+      "level": "L3",
+      "goal_item": "clock",
+      "min_steps": 6,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7607
+    },
+    {
+      "slug": "craft/iron_horse_armor",
+      "level": "L3",
+      "goal_item": "iron_horse_armor",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7655
+    },
+    {
+      "slug": "combat/kill_creeper",
+      "level": "L1",
+      "goal_item": "gunpowder",
+      "min_steps": 3,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7654
+    },
+    {
+      "slug": "combat/kill_enderman",
+      "level": "L2",
+      "goal_item": "ender_pearl",
+      "min_steps": 4,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7668
+    },
+    {
+      "slug": "combat/kill_slime",
+      "level": "L2",
+      "goal_item": "slime_ball",
+      "min_steps": 3,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7672
+    },
+    {
+      "slug": "combat/kill_blaze",
+      "level": "L3",
+      "goal_item": "blaze_rod",
+      "min_steps": 6,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7682
+    },
+    {
+      "slug": "combat/kill_wither_skeleton",
+      "level": "L3",
+      "goal_item": "bone",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7712
+    },
+    {
+      "slug": "craft/wooden_shovel",
+      "level": "L1",
+      "goal_item": "wooden_shovel",
+      "min_steps": 2,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7623
+    },
+    {
+      "slug": "craft/oak_fence",
+      "level": "L1",
+      "goal_item": "oak_fence",
+      "min_steps": 3,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7617
+    },
+    {
+      "slug": "craft/oak_door",
+      "level": "L1",
+      "goal_item": "oak_door",
+      "min_steps": 2,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7615
+    },
+    {
+      "slug": "craft/lever",
+      "level": "L1",
+      "goal_item": "lever",
+      "min_steps": 3,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7607
+    },
+    {
+      "slug": "craft/painting",
+      "level": "L1",
+      "goal_item": "painting",
+      "min_steps": 3,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7613
+    },
+    {
+      "slug": "collect/gravel",
+      "level": "L1",
+      "goal_item": "gravel",
+      "min_steps": 1,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7621
+    },
+    {
+      "slug": "collect/pumpkin",
+      "level": "L1",
+      "goal_item": "pumpkin",
+      "min_steps": 1,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7617
+    },
+    {
+      "slug": "craft/stonecutter",
+      "level": "L2",
+      "goal_item": "stonecutter",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7619
+    },
+    {
+      "slug": "craft/minecart",
+      "level": "L2",
+      "goal_item": "minecart",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7613
+    },
+    {
+      "slug": "craft/golden_chestplate",
+      "level": "L3",
+      "goal_item": "golden_chestplate",
+      "min_steps": 6,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7661
+    },
+    {
+      "slug": "craft/jukebox",
+      "level": "L3",
+      "goal_item": "jukebox",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7611
+    },
+    {
+      "slug": "craft/anvil",
+      "level": "L3",
+      "goal_item": "anvil",
+      "min_steps": 6,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7609
+    },
+    {
+      "slug": "craft/note_block",
+      "level": "L3",
+      "goal_item": "note_block",
+      "min_steps": 6,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7617
+    }
+  ],
+  "summary": {
+    "by_level": {
+      "L1": {
+        "total": 20,
+        "strict_tcr": "9/20",
+        "lenient_tcr": "9/20",
+        "pvr": "9/20",
+        "avg_step_efficiency": 0.3
+      },
+      "L2": {
+        "total": 20,
+        "strict_tcr": "0/20",
+        "lenient_tcr": "0/20",
+        "pvr": "1/20",
+        "avg_step_efficiency": 0.17
+      },
+      "L3": {
+        "total": 20,
+        "strict_tcr": "0/20",
+        "lenient_tcr": "0/20",
+        "pvr": "0/20",
+        "avg_step_efficiency": 0
+      }
+    },
+    "overall": {
+      "strict_tcr": "9/60",
+      "lenient_tcr": "9/60",
+      "pvr": "10/60",
+      "avg_step_efficiency": 0.16
+    }
+  }
+}

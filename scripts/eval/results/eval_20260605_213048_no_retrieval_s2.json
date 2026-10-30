@@ -1,0 +1,4142 @@
+{
+  "meta": {
+    "timestamp": "2026-06-05T13:44:11.104Z",
+    "model": "qwen3-8b",
+    "condition": "no_retrieval",
+    "total_tasks": 60,
+    "completed_tasks": 60,
+    "failed_tasks": 0
+  },
+  "tasks": [
+    {
+      "slug": "craft/wooden_sword",
+      "level": "L1",
+      "goal_item": "wooden_sword",
+      "min_steps": 2,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect oak logs",
+            "command": "!collectBlocks(\"oak_log\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 3)"
+            ],
+            "reasoning": "Oak logs are needed to craft planks and sticks.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks",
+            "command": "!craftRecipe(\"oak_planks\", 12)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 12)"
+            ],
+            "reasoning": "Planks are required to make sticks.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft sticks",
+            "command": "!craftRecipe(\"stick\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 4)"
+            ],
+            "reasoning": "Sticks are a necessary component for crafting a sword.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 12
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft wooden sword",
+            "command": "!craftRecipe(\"wooden_sword\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"wooden_sword\", 1)"
+            ],
+            "reasoning": "The final step is to craft the wooden sword using 2 planks and 1 stick as per the sword crafting pattern.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 4
+              },
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 12
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "wooden_sword"
+      },
+      "raw_response": "**REASONING**:\nI referenced the Material Quantity Pattern and the Step Structure Pattern. The target item is \"wooden_sword\", the material type is \"wood\", and the tool type is \"sword\". Swords require 2 material units and 1 stick. Since wood can be used directly, no smelting is needed. I will collect logs, craft planks, make sticks, and then craft the wooden sword.\n\n**EXECUTION PLAN**:\nStep 1: Collect oak logs\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 3)\nReasoning: Oak logs are needed to craft planks and sticks.\n\nStep 2: Craft oak planks\nPrerequisites: item:oak_log:3\nCommand: !craftRecipe(\"oak_planks\", 12)\nReasoning: Planks are required to make sticks.\n\nStep 3: Craft sticks\nPrerequisites: item:oak_planks:12\nCommand: !craftRecipe(\"stick\", 4)\nReasoning: Sticks are a necessary component for crafting a sword.\n\nStep 4: Craft wooden sword\nPrerequisites: item:stick:4, item:oak_planks:12\nCommand: !craftRecipe(\"wooden_sword\", 1)\nReasoning: The final step is to craft the wooden sword using 2 planks and 1 stick as per the sword crafting pattern.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 4,
+        "step_efficiency": 0.5,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 0,
+      "prompt_length": 7621
+    },
+    {
+      "slug": "craft/oak_boat",
+      "level": "L1",
+      "goal_item": "oak_boat",
+      "min_steps": 2,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect oak logs",
+            "command": "!collectBlocks(\"oak_log\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 3)"
+            ],
+            "reasoning": "Oak logs are needed to craft oak planks, which are required for making the boat.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks",
+            "command": "!craftRecipe(\"oak_planks\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 4)"
+            ],
+            "reasoning": "Oak planks are needed to craft the oak boat, and the recipe requires 4 planks.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft oak boat",
+            "command": "!craftRecipe(\"oak_boat\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_boat\", 1)"
+            ],
+            "reasoning": "The final step is to craft the oak boat using the oak planks.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 4
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "oak_boat"
+      },
+      "raw_response": "**REASONING**:\nThe user wants to craft an oak boat. The target item is \"oak_boat\", the material type is \"oak\", and the tool type is not applicable since boats are crafted differently. Boats require planks as a material, which in turn require logs. No smelting is needed for oak logs. The process involves collecting logs, crafting planks, and then using them to craft the boat.\n\n**EXECUTION PLAN**:\nStep 1: Collect oak logs\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 3)\nReasoning: Oak logs are needed to craft oak planks, which are required for making the boat.\n\nStep 2: Craft oak planks\nPrerequisites: item:oak_log:3\nCommand: !craftRecipe(\"oak_planks\", 4)\nReasoning: Oak planks are needed to craft the oak boat, and the recipe requires 4 planks.\n\nStep 3: Craft oak boat\nPrerequisites: item:oak_planks:4\nCommand: !craftRecipe(\"oak_boat\", 1)\nReasoning: The final step is to craft the oak boat using the oak planks.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": true,
+        "step_count": 3,
+        "step_efficiency": 0.67,
+        "issues": [
+          "Step 3: craftRecipe(\"oak_boat\", 1) missing ingredients: oak_planks x5"
+        ],
+        "lenient_issues": [
+          "Step 3: craftRecipe(\"oak_boat\", 1) missing ingredients: oak_planks x5"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7615
+    },
+    {
+      "slug": "craft/oak_sign",
+      "level": "L1",
+      "goal_item": "oak_sign",
+      "min_steps": 2,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect oak logs",
+            "command": "!collectBlocks(\"oak_log\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 3)"
+            ],
+            "reasoning": "Oak logs are needed to craft oak planks, which are the material for the sign.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks",
+            "command": "!craftRecipe(\"oak_planks\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 4)"
+            ],
+            "reasoning": "Oak planks are required to craft the oak sign, and 4 planks are needed for one sign.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft oak sign",
+            "command": "!craftRecipe(\"oak_sign\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_sign\", 1)"
+            ],
+            "reasoning": "Oak planks are used to craft the oak sign at a crafting table.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 4
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "oak_sign"
+      },
+      "raw_response": "**REASONING**:\nThe user wants to craft an oak sign. The target item is \"oak_sign\", which is a sign made from oak planks. Signs are crafted using oak planks at a crafting table. No special tools or processing steps are required for signs, as they are directly crafted from planks.\n\n**EXECUTION PLAN**:\nStep 1: Collect oak logs\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 3)\nReasoning: Oak logs are needed to craft oak planks, which are the material for the sign.\n\nStep 2: Craft oak planks\nPrerequisites: item:oak_log:3\nCommand: !craftRecipe(\"oak_planks\", 4)\nReasoning: Oak planks are required to craft the oak sign, and 4 planks are needed for one sign.\n\nStep 3: Craft oak sign\nPrerequisites: item:oak_planks:4, station:crafting_table\nCommand: !craftRecipe(\"oak_sign\", 1)\nReasoning: Oak planks are used to craft the oak sign at a crafting table.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": true,
+        "step_count": 3,
+        "step_efficiency": 0.67,
+        "issues": [
+          "Step 3: craftRecipe(\"oak_sign\", 1) missing ingredients: oak_planks x6, stick x1"
+        ],
+        "lenient_issues": [
+          "Step 3: craftRecipe(\"oak_sign\", 1) missing ingredients: oak_planks x6, stick x1"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7615
+    },
+    {
+      "slug": "craft/oak_trapdoor",
+      "level": "L1",
+      "goal_item": "oak_trapdoor",
+      "min_steps": 2,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect oak logs",
+            "command": "!collectBlocks(\"oak_log\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 3)"
+            ],
+            "reasoning": "Oak logs are needed to craft oak planks, which are required for the trapdoor.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks",
+            "command": "!craftRecipe(\"oak_planks\", 12)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 12)"
+            ],
+            "reasoning": "Oak planks are required to craft the trapdoor, and 12 planks are needed for the recipe.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft oak trapdoor",
+            "command": "!craftRecipe(\"oak_trapdoor\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_trapdoor\", 1)"
+            ],
+            "reasoning": "The final step is to craft the oak trapdoor using 6 oak planks arranged in the correct pattern.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 6
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "oak_trapdoor"
+      },
+      "raw_response": "**REASONING**:\nThe user wants to craft an oak trapdoor. The target item is \"oak_trapdoor\". Trapdoors are crafted using planks, and the material type is \"oak\". There is no specific tool type for trapdoors, but the crafting process involves using planks. According to the pattern recognition, trapdoors require 6 planks arranged in a specific pattern. No smelting or special processing is needed for oak planks. The plan will involve collecting oak logs, crafting planks, and then creating the trapdoor.\n\n**EXECUTION PLAN**:\nStep 1: Collect oak logs\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 3)\nReasoning: Oak logs are needed to craft oak planks, which are required for the trapdoor.\n\nStep 2: Craft oak planks\nPrerequisites: item:oak_log:3\nCommand: !craftRecipe(\"oak_planks\", 12)\nReasoning: Oak planks are required to craft the trapdoor, and 12 planks are needed for the recipe.\n\nStep 3: Craft oak trapdoor\nPrerequisites: item:oak_planks:6\nCommand: !craftRecipe(\"oak_trapdoor\", 1)\nReasoning: The final step is to craft the oak trapdoor using 6 oak planks arranged in the correct pattern.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 3,
+        "step_efficiency": 0.67,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 0,
+      "prompt_length": 7623
+    },
+    {
+      "slug": "craft/oak_pressure_plate",
+      "level": "L1",
+      "goal_item": "oak_pressure_plate",
+      "min_steps": 1,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect oak logs",
+            "command": "!collectBlocks(\"oak_log\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 3)"
+            ],
+            "reasoning": "Oak logs are required to craft oak planks, which are needed for the pressure plate.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks",
+            "command": "!craftRecipe(\"oak_planks\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 4)"
+            ],
+            "reasoning": "Oak planks are needed to craft the oak pressure plate, and the quantity must match the recipe requirement.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft oak pressure plate",
+            "command": "!craftRecipe(\"oak_pressure_plate\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_pressure_plate\", 1)"
+            ],
+            "reasoning": "The final step is to craft the oak pressure plate using 2 oak planks as per the crafting recipe.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 2
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "oak_pressure_plate"
+      },
+      "raw_response": "**REASONING**:\nThe user wants to craft an oak pressure plate. The target item is \"oak_pressure_plate\". The material type is \"oak\", and the tool type is not applicable since pressure plates are not tools. Oak pressure plates are crafted directly from planks, so no smelting or additional processing is needed. The pattern for crafting pressure plates requires 2 oak planks.\n\n**EXECUTION PLAN**:\nStep 1: Collect oak logs\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 3)\nReasoning: Oak logs are required to craft oak planks, which are needed for the pressure plate.\n\nStep 2: Craft oak planks\nPrerequisites: item:oak_log:3\nCommand: !craftRecipe(\"oak_planks\", 4)\nReasoning: Oak planks are needed to craft the oak pressure plate, and the quantity must match the recipe requirement.\n\nStep 3: Craft oak pressure plate\nPrerequisites: item:oak_planks:2\nCommand: !craftRecipe(\"oak_pressure_plate\", 1)\nReasoning: The final step is to craft the oak pressure plate using 2 oak planks as per the crafting recipe.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 3,
+        "step_efficiency": 0.33,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 0,
+      "prompt_length": 7635
+    },
+    {
+      "slug": "craft/bowl",
+      "level": "L1",
+      "goal_item": "bowl",
+      "min_steps": 1,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect clay",
+            "command": "!collectBlocks(\"clay\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"clay\", 3)"
+            ],
+            "reasoning": "Clay is a raw material that needs to be collected from the environment before it can be used to craft a bowl.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft bowl",
+            "command": "!craftRecipe(\"bowl\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"bowl\", 1)"
+            ],
+            "reasoning": "A bowl is crafted by placing 3 clay balls in the 3 slots of a crafting table. This step uses the collected clay to create the final item.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "clay_ball",
+                "count": 3
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "bowl"
+      },
+      "raw_response": "**REASONING**:\nThe target item is \"bowl\". Based on Minecraft crafting recipes, a bowl is crafted using clay balls. The material type is \"clay\" and the tool type is not applicable since it's a container. No smelting or processing steps are required for clay. The bowl requires 3 clay balls in a crafting table.\n\n**EXECUTION PLAN**:\nStep 1: Collect clay\nPrerequisites: None\nCommand: !collectBlocks(\"clay\", 3)\nReasoning: Clay is a raw material that needs to be collected from the environment before it can be used to craft a bowl.\n\nStep 2: Craft bowl\nPrerequisites: item:clay_ball:3\nCommand: !craftRecipe(\"bowl\", 1)\nReasoning: A bowl is crafted by placing 3 clay balls in the 3 slots of a crafting table. This step uses the collected clay to create the final item.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": true,
+        "step_count": 2,
+        "step_efficiency": 0.5,
+        "issues": [
+          "Step 2: craftRecipe(\"bowl\", 1) missing ingredients: oak_planks x3"
+        ],
+        "lenient_issues": [
+          "Step 2: craftRecipe(\"bowl\", 1) missing ingredients: oak_planks x3"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7605
+    },
+    {
+      "slug": "collect/bamboo",
+      "level": "L1",
+      "goal_item": "bamboo",
+      "min_steps": 1,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect bamboo blocks",
+            "command": "!collectBlocks(\"bamboo\", 8)",
+            "action_cmd": [
+              "!collectBlocks(\"bamboo\", 8)"
+            ],
+            "reasoning": "Bamboo is a direct material that can be collected without any prior processing or tool requirements. The command collects 8 bamboo blocks as requested.",
+            "preconditions": [],
+            "produces": null
+          }
+        ],
+        "target": null
+      },
+      "raw_response": "**REASONING**:\nThe user's request is to \"collect 8 bamboo\". This indicates the goal is to gather bamboo blocks. Bamboo is a material that can be used directly for crafting without smelting or processing. Since no specific tool type is mentioned, we assume the task is simply to collect bamboo blocks. The quantity of 8 bamboo blocks is the target.\n\n**EXECUTION PLAN**:\nStep 1: Collect bamboo blocks\nPrerequisites: None\nCommand: !collectBlocks(\"bamboo\", 8)\nReasoning: Bamboo is a direct material that can be collected without any prior processing or tool requirements. The command collects 8 bamboo blocks as requested.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 1,
+        "step_efficiency": 1,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 0,
+      "prompt_length": 7615
+    },
+    {
+      "slug": "collect/sugar_cane",
+      "level": "L1",
+      "goal_item": "sugar_cane",
+      "min_steps": 1,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect sugar cane",
+            "command": "!collectBlocks(\"sugar_cane\", 4)",
+            "action_cmd": [
+              "!collectBlocks(\"sugar_cane\", 4)"
+            ],
+            "reasoning": "Sugar cane is a block that can be collected directly from the environment without requiring any tools or prior steps. The command collects 4 sugar cane blocks as requested.",
+            "preconditions": [],
+            "produces": null
+          }
+        ],
+        "target": null
+      },
+      "raw_response": "**REASONING**:\nThe user's request is to \"collect 4 sugar cane\". This is a direct collection task, not a crafting or smelting task. Sugar cane does not require any processing or crafting steps to be used directly in Minecraft. The target item is \"sugar_cane\", the material type is \"sugar cane\", and there is no tool type involved since it is a block to collect, not an item to craft.\n\n**EXECUTION PLAN**:\nStep 1: Collect sugar cane\nPrerequisites: None\nCommand: !collectBlocks(\"sugar_cane\", 4)\nReasoning: Sugar cane is a block that can be collected directly from the environment without requiring any tools or prior steps. The command collects 4 sugar cane blocks as requested.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 1,
+        "step_efficiency": 1,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 0,
+      "prompt_length": 7623
+    },
+    {
+      "slug": "collect/dirt",
+      "level": "L1",
+      "goal_item": "dirt",
+      "min_steps": 1,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect dirt blocks",
+            "command": "!collectBlocks(\"dirt\", 8)",
+            "action_cmd": [
+              "!collectBlocks(\"dirt\", 8)"
+            ],
+            "reasoning": "Dirt blocks can be collected directly without any tool or processing. The command collects 8 dirt blocks as requested.",
+            "preconditions": [],
+            "produces": null
+          }
+        ],
+        "target": null
+      },
+      "raw_response": "**REASONING**:\nThe user's request is to \"collect 8 dirt blocks\". This is a direct collection task, not a crafting or smelting task. Dirt blocks do not require any processing or tool for collection. The target item is \"dirt_block\", the material type is \"dirt\", and there is no tool involved since dirt can be collected without any tool. I will use the `!collectBlocks` command directly.\n\n**EXECUTION PLAN**:\nStep 1: Collect dirt blocks\nPrerequisites: None\nCommand: !collectBlocks(\"dirt\", 8)\nReasoning: Dirt blocks can be collected directly without any tool or processing. The command collects 8 dirt blocks as requested.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 1,
+        "step_efficiency": 1,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 0,
+      "prompt_length": 7625
+    },
+    {
+      "slug": "collect/andesite",
+      "level": "L1",
+      "goal_item": "andesite",
+      "min_steps": 1,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect andesite",
+            "command": "!collectBlocks(\"andesite\", 8)",
+            "action_cmd": [
+              "!collectBlocks(\"andesite\", 8)"
+            ],
+            "reasoning": "The user wants to collect 8 andesite blocks. Andesite is a block that can be collected directly without any processing. A stone pickaxe or better is required to mine it, but since the user did not specify a tool, we assume the correct tool is available or will be crafted if necessary.",
+            "preconditions": [],
+            "produces": null
+          }
+        ],
+        "target": null
+      },
+      "raw_response": "**REASONING**:\nThe user's request is to \"collect 8 andesite\". This is a material collection task, not a crafting task. Andesite is a block type that can be collected directly from the environment. Since it is not an ore or log, no smelting or processing is required. The tool type is not specified, but since andesite is a stone-like block, a stone pickaxe or better is required to collect it efficiently. No crafting steps are needed as the user only wants to collect the material.\n\n**EXECUTION PLAN**:\nStep 1: Collect andesite\nPrerequisites: None\nCommand: !collectBlocks(\"andesite\", 8)\nReasoning: The user wants to collect 8 andesite blocks. Andesite is a block that can be collected directly without any processing. A stone pickaxe or better is required to mine it, but since the user did not specify a tool, we assume the correct tool is available or will be crafted if necessary.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 1,
+        "step_efficiency": 1,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 0,
+      "prompt_length": 7619
+    },
+    {
+      "slug": "craft/cauldron",
+      "level": "L2",
+      "goal_item": "cauldron",
+      "min_steps": 4,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect cobblestone",
+            "command": "!collectBlocks(\"cobblestone\", 7)",
+            "action_cmd": [
+              "!collectBlocks(\"cobblestone\", 7)"
+            ],
+            "reasoning": "Cobblestone is the primary material needed to craft a cauldron. We need 7 cobblestone blocks arranged in a specific pattern on the crafting table.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft cauldron",
+            "command": "!craftRecipe(\"cauldron\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"cauldron\", 1)"
+            ],
+            "reasoning": "The cauldron is crafted using a crafting table with 7 cobblestone blocks arranged in a specific pattern. This step completes the crafting process.",
+            "preconditions": [
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "cauldron"
+      },
+      "raw_response": "**REASONING**:\nThe target item is \"cauldron\". The cauldron is a unique item that does not follow the standard tool crafting patterns. It requires specific materials and a different crafting approach. The cauldron is crafted using a crafting table with 7 cobblestone blocks arranged in a specific pattern. No smelting or additional processing is required for the materials. The cauldron does not require any special tools to craft, but it does need a crafting table.\n\n**EXECUTION PLAN**:\nStep 1: Collect cobblestone\nPrerequisites: None\nCommand: !collectBlocks(\"cobblestone\", 7)\nReasoning: Cobblestone is the primary material needed to craft a cauldron. We need 7 cobblestone blocks arranged in a specific pattern on the crafting table.\n\nStep 2: Craft cauldron\nPrerequisites: station:crafting_table\nCommand: !craftRecipe(\"cauldron\", 1)\nReasoning: The cauldron is crafted using a crafting table with 7 cobblestone blocks arranged in a specific pattern. This step completes the crafting process.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": true,
+        "step_count": 2,
+        "step_efficiency": 1,
+        "issues": [
+          "Step 1: collecting cobblestone requires wooden_pickaxe, not available",
+          "Step 2: craftRecipe(\"cauldron\", 1) missing ingredients: iron_ingot x7"
+        ],
+        "lenient_issues": [
+          "Step 1: collecting cobblestone requires wooden_pickaxe, not available",
+          "Step 2: craftRecipe(\"cauldron\", 1) missing ingredients: iron_ingot x7"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7613
+    },
+    {
+      "slug": "craft/iron_helmet",
+      "level": "L2",
+      "goal_item": "iron_helmet",
+      "min_steps": 5,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect iron_ore",
+            "command": "!collectBlocks(\"iron_ore\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"iron_ore\", 3)"
+            ],
+            "reasoning": "Iron_ore is needed to create iron_ingots, which are required for crafting the iron helmet.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Smelt raw_iron into iron_ingot",
+            "command": "!smeltItem(\"raw_iron\", 3)",
+            "action_cmd": [
+              "!smeltItem(\"raw_iron\", 3)"
+            ],
+            "reasoning": "Iron_ore must be smelted into iron_ingots in a furnace to be used for crafting.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "raw_iron",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft iron_helmet",
+            "command": "!craftRecipe(\"iron_helmet\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"iron_helmet\", 1)"
+            ],
+            "reasoning": "The iron helmet requires one iron_ingot and can be crafted at the crafting table.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_ingot",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "iron_helmet"
+      },
+      "raw_response": "**REASONING**:\nI referenced the material quantity pattern and processing pattern. The target item is \"iron_helmet\", which is a helmet. Helmets are crafted using iron_ingots, and iron_ore must be smelted into iron_ingots before crafting. The material type is \"iron\" and the tool type is \"helmet\".\n\n**EXECUTION PLAN**:\nStep 1: Collect iron_ore\nPrerequisites: None\nCommand: !collectBlocks(\"iron_ore\", 3)\nReasoning: Iron_ore is needed to create iron_ingots, which are required for crafting the iron helmet.\n\nStep 2: Smelt raw_iron into iron_ingot\nPrerequisites: item:raw_iron:3\nCommand: !smeltItem(\"raw_iron\", 3)\nReasoning: Iron_ore must be smelted into iron_ingots in a furnace to be used for crafting.\n\nStep 3: Craft iron_helmet\nPrerequisites: item:iron_ingot:1\nCommand: !craftRecipe(\"iron_helmet\", 1)\nReasoning: The iron helmet requires one iron_ingot and can be crafted at the crafting table.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": true,
+        "step_count": 3,
+        "step_efficiency": 1,
+        "issues": [
+          "Step 1: collecting iron_ore requires stone_pickaxe, not available",
+          "Step 3: craftRecipe(\"iron_helmet\", 1) missing ingredients: iron_ingot x5"
+        ],
+        "lenient_issues": [
+          "Step 1: collecting iron_ore requires stone_pickaxe, not available",
+          "Step 3: craftRecipe(\"iron_helmet\", 1) missing ingredients: iron_ingot x5"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7651
+    },
+    {
+      "slug": "craft/iron_boots",
+      "level": "L2",
+      "goal_item": "iron_boots",
+      "min_steps": 5,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect iron ore",
+            "command": "!collectBlocks(\"iron_ore\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"iron_ore\", 3)"
+            ],
+            "reasoning": "Iron ore needs to be collected first before it can be processed into iron ingots.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Smelt raw_iron into iron_ingot",
+            "command": "!smeltItem(\"raw_iron\", 3)",
+            "action_cmd": [
+              "!smeltItem(\"raw_iron\", 3)"
+            ],
+            "reasoning": "Iron ore must be smelted in a furnace to produce iron ingots, which are needed for crafting the boots.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "raw_iron",
+                "count": 3
+              },
+              {
+                "type": "station",
+                "name": "furnace",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft sticks from wooden planks",
+            "command": "!craftRecipe(\"stick\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 4)"
+            ],
+            "reasoning": "Sticks are required for crafting boots, and they are made from wooden planks.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 4
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft iron boots",
+            "command": "!craftRecipe(\"iron_boots\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"iron_boots\", 1)"
+            ],
+            "reasoning": "The final step is to craft the iron boots using 2 iron ingots and 2 sticks at the crafting table.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_ingot",
+                "count": 2
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "iron_boots"
+      },
+      "raw_response": "**REASONING**:\nThe user's request is to \"craft iron boots\". Based on the input, the target item is \"iron_boots\", the material type is \"iron\", and the tool type is \"boots\". Boots are a type of footwear in Minecraft, and they follow the pattern of requiring 2 material units + 2 sticks. Since iron is a material that requires smelting, I will apply the processing pattern and include the necessary steps for collecting raw materials, smelting them into ingots, crafting sticks, and finally creating the boots.\n\n**EXECUTION PLAN**:\nStep 1: Collect iron ore\nPrerequisites: None\nCommand: !collectBlocks(\"iron_ore\", 3)\nReasoning: Iron ore needs to be collected first before it can be processed into iron ingots.\n\nStep 2: Smelt raw_iron into iron_ingot\nPrerequisites: item:raw_iron:3, station:furnace\nCommand: !smeltItem(\"raw_iron\", 3)\nReasoning: Iron ore must be smelted in a furnace to produce iron ingots, which are needed for crafting the boots.\n\nStep 3: Craft sticks from wooden planks\nPrerequisites: item:oak_planks:4\nCommand: !craftRecipe(\"stick\", 4)\nReasoning: Sticks are required for crafting boots, and they are made from wooden planks.\n\nStep 4: Craft iron boots\nPrerequisites: item:iron_ingot:2, item:stick:2, station:crafting_table\nCommand: !craftRecipe(\"iron_boots\", 1)\nReasoning: The final step is to craft the iron boots using 2 iron ingots and 2 sticks at the crafting table.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 4,
+        "step_efficiency": 1,
+        "issues": [
+          "Step 1: collecting iron_ore requires stone_pickaxe, not available",
+          "Step 3: missing oak_planks x4",
+          "Step 3: craftRecipe(\"stick\", 4) missing ingredients: oak_planks x2",
+          "Step 4: craftRecipe(\"iron_boots\", 1) missing ingredients: iron_ingot x4"
+        ],
+        "lenient_issues": [
+          "Step 1: collecting iron_ore requires stone_pickaxe, not available",
+          "Step 3: missing oak_planks x4",
+          "Step 3: craftRecipe(\"stick\", 4) missing ingredients: oak_planks x2",
+          "Step 4: craftRecipe(\"iron_boots\", 1) missing ingredients: iron_ingot x4"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7643
+    },
+    {
+      "slug": "collect/pointed_dripstone",
+      "level": "L2",
+      "goal_item": "pointed_dripstone",
+      "min_steps": 2,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect pointed dripstone",
+            "command": "!collectBlocks(\"pointed_dripstone\", 1)",
+            "action_cmd": [
+              "!collectBlocks(\"pointed_dripstone\", 1)"
+            ],
+            "reasoning": "Pointed dripstone is a natural block found in dripstone caves, so it can be collected directly without requiring any prior processing or tool.",
+            "preconditions": [],
+            "produces": null
+          }
+        ],
+        "target": null
+      },
+      "raw_response": "**REASONING**:\nThe user's request is to \"collect pointed dripstone from a dripstone cave\". This indicates the target item is \"pointed_dripstone\". Pointed dripstone is a block that can be found in dripstone caves, and it does not require crafting or smelting. The task involves collecting this block from the environment. Since it is a natural block, no tool type or material quantity pattern applies directly. However, to collect it, we must ensure the correct mining tool is available.\n\n**EXECUTION PLAN**:\nStep 1: Collect pointed dripstone\nPrerequisites: None\nCommand: !collectBlocks(\"pointed_dripstone\", 1)\nReasoning: Pointed dripstone is a natural block found in dripstone caves, so it can be collected directly without requiring any prior processing or tool.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 1,
+        "step_efficiency": 1,
+        "issues": [
+          "Goal item \"pointed_dripstone\" not produced by any step"
+        ],
+        "lenient_issues": [
+          "Goal item \"pointed_dripstone\" not produced by any step"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7677
+    },
+    {
+      "slug": "craft/flint_and_steel",
+      "level": "L2",
+      "goal_item": "flint_and_steel",
+      "min_steps": 4,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect gravel",
+            "command": "!collectBlocks(\"gravel\", 1)",
+            "action_cmd": [
+              "!collectBlocks(\"gravel\", 1)"
+            ],
+            "reasoning": "Gravel is the source of flint, which is needed for crafting flint and steel.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft flint",
+            "command": "!craftRecipe(\"flint\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"flint\", 1)"
+            ],
+            "reasoning": "Flint is crafted from gravel, so this step converts the collected gravel into flint.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "gravel",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Collect redstone",
+            "command": "!collectBlocks(\"redstone_ore\", 1)",
+            "action_cmd": [
+              "!collectBlocks(\"redstone_ore\", 1)"
+            ],
+            "reasoning": "Redstone is required for crafting flint and steel and is obtained by mining redstone ore.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft flint and steel",
+            "command": "!craftRecipe(\"flint_and_steel\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"flint_and_steel\", 1)"
+            ],
+            "reasoning": "The final step crafts the flint and steel using the collected flint and redstone.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "flint",
+                "count": 1
+              },
+              {
+                "type": "item",
+                "name": "redstone",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "flint_and_steel"
+      },
+      "raw_response": "**REASONING**:\nThe target item is \"flint_and_steel\". This is a unique item in Minecraft that does not follow the standard crafting patterns for tools like swords or pickaxes. It requires specific materials and a different crafting process. The flint and steel can be crafted using 1 flint and 1 redstone. Since redstone is a special material, it does not require smelting or processing. Flint is typically obtained by mining gravel, which requires a tool. \n\n**EXECUTION PLAN**:\nStep 1: Collect gravel\nPrerequisites: None\nCommand: !collectBlocks(\"gravel\", 1)\nReasoning: Gravel is the source of flint, which is needed for crafting flint and steel.\n\nStep 2: Craft flint\nPrerequisites: item:gravel:1\nCommand: !craftRecipe(\"flint\", 1)\nReasoning: Flint is crafted from gravel, so this step converts the collected gravel into flint.\n\nStep 3: Collect redstone\nPrerequisites: None\nCommand: !collectBlocks(\"redstone_ore\", 1)\nReasoning: Redstone is required for crafting flint and steel and is obtained by mining redstone ore.\n\nStep 4: Craft flint and steel\nPrerequisites: item:flint:1, item:redstone:1\nCommand: !craftRecipe(\"flint_and_steel\", 1)\nReasoning: The final step crafts the flint and steel using the collected flint and redstone.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": true,
+        "step_count": 4,
+        "step_efficiency": 1,
+        "issues": [
+          "Step 3: collecting redstone_ore requires iron_pickaxe, not available",
+          "Step 4: craftRecipe(\"flint_and_steel\", 1) missing ingredients: iron_ingot x1"
+        ],
+        "lenient_issues": [
+          "Step 3: collecting redstone_ore requires iron_pickaxe, not available",
+          "Step 4: craftRecipe(\"flint_and_steel\", 1) missing ingredients: iron_ingot x1"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7623
+    },
+    {
+      "slug": "craft/hopper",
+      "level": "L2",
+      "goal_item": "hopper",
+      "min_steps": 5,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Break hopper block",
+            "command": "!collectBlocks(\"hopper\", 1)",
+            "action_cmd": [
+              "!collectBlocks(\"hopper\", 1)"
+            ],
+            "reasoning": "Hoppers are blocks that can be broken to obtain the hopper item. This step directly fulfills the request.",
+            "preconditions": [],
+            "produces": null
+          }
+        ],
+        "target": "a_hopper"
+      },
+      "raw_response": "**REASONING**:\nThe target item is \"hopper\". Hoppers are not crafted directly from raw materials but are obtained by breaking hopper blocks. Since the user wants to craft a hopper, they likely mean obtaining one by breaking a hopper block. No specific material or tool type is mentioned, so we assume the goal is to collect a hopper block and break it to get the hopper item.\n\n**EXECUTION PLAN**:\nStep 1: Break hopper block\nPrerequisites: None\nCommand: !collectBlocks(\"hopper\", 1)\nReasoning: Hoppers are blocks that can be broken to obtain the hopper item. This step directly fulfills the request.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 1,
+        "step_efficiency": 1,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 0,
+      "prompt_length": 7609
+    },
+    {
+      "slug": "craft/stone_pressure_plate",
+      "level": "L2",
+      "goal_item": "stone_pressure_plate",
+      "min_steps": 3,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect stone blocks",
+            "command": "!collectBlocks(\"stone\", 2)",
+            "action_cmd": [
+              "!collectBlocks(\"stone\", 2)"
+            ],
+            "reasoning": "Stone blocks are required to craft the stone pressure plate, and they can be collected directly without needing a tool.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft stone pressure plate",
+            "command": "!craftRecipe(\"stone_pressure_plate\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"stone_pressure_plate\", 1)"
+            ],
+            "reasoning": "The stone pressure plate is crafted using 2 stone blocks arranged in the crafting grid. This is the final step as no further components or processing are needed.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone",
+                "count": 2
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "stone_pressure_plate"
+      },
+      "raw_response": "**REASONING**:\nThe target item is \"stone_pressure_plate\". The material type is \"stone\", and the tool type is not applicable since pressure plates are not crafted with tools. Based on the pattern recognition, stone pressure plates require 2 stone blocks arranged in a specific crafting pattern. No smelting or additional processing is needed for stone. The execution plan will follow the dependency order: collect raw materials first, then craft the final item.\n\n**EXECUTION PLAN**:\nStep 1: Collect stone blocks\nPrerequisites: None\nCommand: !collectBlocks(\"stone\", 2)\nReasoning: Stone blocks are required to craft the stone pressure plate, and they can be collected directly without needing a tool.\n\nStep 2: Craft stone pressure plate\nPrerequisites: item:stone:2\nCommand: !craftRecipe(\"stone_pressure_plate\", 1)\nReasoning: The stone pressure plate is crafted using 2 stone blocks arranged in the crafting grid. This is the final step as no further components or processing are needed.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 2,
+        "step_efficiency": 1,
+        "issues": [
+          "Step 1: collecting stone requires wooden_pickaxe, not available",
+          "Step 2: missing stone x2",
+          "Step 2: craftRecipe(\"stone_pressure_plate\", 1) missing ingredients: stone x2"
+        ],
+        "lenient_issues": [
+          "Step 1: collecting stone requires wooden_pickaxe, not available",
+          "Step 2: missing stone x2",
+          "Step 2: craftRecipe(\"stone_pressure_plate\", 1) missing ingredients: stone x2"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7637
+    },
+    {
+      "slug": "craft/stone_button",
+      "level": "L2",
+      "goal_item": "stone_button",
+      "min_steps": 3,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Craft stone button",
+            "command": "!craftRecipe(\"stone_button\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"stone_button\", 1)"
+            ],
+            "reasoning": "Stone buttons can be crafted directly using stone as the material. No additional processing or collection steps are needed since the crafting recipe for a stone button only requires stone.",
+            "preconditions": [],
+            "produces": null
+          }
+        ],
+        "target": "stone_button"
+      },
+      "raw_response": "**REASONING**:\nThe target item is \"stone_button\". Buttons in Minecraft are crafted using stone, and they do not require any additional tools or materials beyond the stone itself. The material type is \"stone\", and since buttons are not a tool type that follows the quantity patterns for swords, axes, etc., we can directly craft the button without needing to process or collect additional components. No smelting or crafting table is required for this item.\n\n**EXECUTION PLAN**:\nStep 1: Craft stone button\nPrerequisites: None\nCommand: !craftRecipe(\"stone_button\", 1)\nReasoning: Stone buttons can be crafted directly using stone as the material. No additional processing or collection steps are needed since the crafting recipe for a stone button only requires stone.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": true,
+        "step_count": 1,
+        "step_efficiency": 1,
+        "issues": [
+          "Step 1: craftRecipe(\"stone_button\", 1) missing ingredients: stone x1"
+        ],
+        "lenient_issues": [
+          "Step 1: craftRecipe(\"stone_button\", 1) missing ingredients: stone x1"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7621
+    },
+    {
+      "slug": "craft/grindstone",
+      "level": "L2",
+      "goal_item": "grindstone",
+      "min_steps": 4,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect oak logs",
+            "command": "!collectBlocks(\"oak_log\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 3)"
+            ],
+            "reasoning": "Oak logs are needed to craft wooden planks, which are required for the grindstone.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks",
+            "command": "!craftRecipe(\"oak_planks\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 4)"
+            ],
+            "reasoning": "Oak planks are needed to create the wooden component of the grindstone.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft grindstone",
+            "command": "!craftRecipe(\"grindstone\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"grindstone\", 1)"
+            ],
+            "reasoning": "The grindstone requires 1 diamond and 1 wooden plank, which are crafted in the previous steps. A crafting table is needed to complete the final step.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 4
+              },
+              {
+                "type": "item",
+                "name": "diamond",
+                "count": 1
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "grindstone"
+      },
+      "raw_response": "**REASONING**:\nThe target item is \"grindstone\". The grindstone is not a tool that requires crafting from materials in the traditional sense. It can be crafted directly using a crafting table with 1 diamond and 1 wooden plank. No smelting or additional processing is needed for this item. The material type is \"diamond\" and the tool type is not applicable since it's a standalone block.\n\n**EXECUTION PLAN**:\nStep 1: Collect oak logs\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 3)\nReasoning: Oak logs are needed to craft wooden planks, which are required for the grindstone.\n\nStep 2: Craft oak planks\nPrerequisites: item:oak_log:3\nCommand: !craftRecipe(\"oak_planks\", 4)\nReasoning: Oak planks are needed to create the wooden component of the grindstone.\n\nStep 3: Craft grindstone\nPrerequisites: item:oak_planks:4, item:diamond:1, station:crafting_table\nCommand: !craftRecipe(\"grindstone\", 1)\nReasoning: The grindstone requires 1 diamond and 1 wooden plank, which are crafted in the previous steps. A crafting table is needed to complete the final step.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 3,
+        "step_efficiency": 1,
+        "issues": [
+          "Step 3: missing diamond",
+          "Step 3: craftRecipe(\"grindstone\", 1) missing ingredients: stick x2, stone_slab x1"
+        ],
+        "lenient_issues": [
+          "Step 3: missing diamond",
+          "Step 3: craftRecipe(\"grindstone\", 1) missing ingredients: stick x2, stone_slab x1"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7617
+    },
+    {
+      "slug": "collect/amethyst_shard",
+      "level": "L2",
+      "goal_item": "amethyst_shard",
+      "min_steps": 2,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Mine amethyst clusters",
+            "command": "!collectBlocks(\"amethyst_cluster\", 1)",
+            "action_cmd": [
+              "!collectBlocks(\"amethyst_cluster\", 1)"
+            ],
+            "reasoning": "Amethyst clusters are found in geodes and can be mined directly to obtain amethyst shards. The correct tool for mining amethyst clusters is a pickaxe, but since the user's goal is only to collect amethyst shards, no further crafting steps are needed.",
+            "preconditions": [],
+            "produces": null
+          }
+        ],
+        "target": null
+      },
+      "raw_response": "**REASONING**:\nThe user's request is to collect amethyst shards by mining amethyst clusters in a geode. The target item is \"amethyst_shard\", the material type is \"amethyst\", and the tool type is \"shard\" (which follows the same pattern as other collection items). Since amethyst shards are obtained directly from mining amethyst clusters, no smelting or crafting steps are required. The task requires collecting the amethyst shards using the correct tool, which is a pickaxe.\n\n**EXECUTION PLAN**:\nStep 1: Mine amethyst clusters\nPrerequisites: None\nCommand: !collectBlocks(\"amethyst_cluster\", 1)\nReasoning: Amethyst clusters are found in geodes and can be mined directly to obtain amethyst shards. The correct tool for mining amethyst clusters is a pickaxe, but since the user's goal is only to collect amethyst shards, no further crafting steps are needed.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 1,
+        "step_efficiency": 1,
+        "issues": [
+          "Goal item \"amethyst_shard\" not produced by any step"
+        ],
+        "lenient_issues": [
+          "Goal item \"amethyst_shard\" not produced by any step"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7707
+    },
+    {
+      "slug": "collect/tuff",
+      "level": "L2",
+      "goal_item": "tuff",
+      "min_steps": 2,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect tuff blocks from deepslate",
+            "command": "!collectBlocks(\"tuff\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"tuff\", 3)"
+            ],
+            "reasoning": "Tuff is a block found in the deepslate layer. Collecting it directly is possible without smelting or processing. The quantity of 3 is chosen as a starting point for further crafting or use.",
+            "preconditions": [],
+            "produces": null
+          }
+        ],
+        "target": null
+      },
+      "raw_response": "**REASONING**:\nThe user's request is to \"collect tuff blocks by mining underground at deepslate level\". This indicates the target item is \"tuff_block\", the material type is \"tuff\", and the tool type is \"block collection\" (which requires a pickaxe). Tuff is a block found in the deepslate layer, and collecting it requires a pickaxe. Since tuff is not an ore and does not require smelting, no processing steps are needed. The execution plan will focus on collecting tuff blocks using the appropriate pickaxe.\n\n**EXECUTION PLAN**:\nStep 1: Collect tuff blocks from deepslate\nPrerequisites: None\nCommand: !collectBlocks(\"tuff\", 3)\nReasoning: Tuff is a block found in the deepslate layer. Collecting it directly is possible without smelting or processing. The quantity of 3 is chosen as a starting point for further crafting or use.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 1,
+        "step_efficiency": 1,
+        "issues": [
+          "Goal item \"tuff\" not produced by any step"
+        ],
+        "lenient_issues": [
+          "Goal item \"tuff\" not produced by any step"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7703
+    },
+    {
+      "slug": "collect/calcite",
+      "level": "L2",
+      "goal_item": "calcite",
+      "min_steps": 2,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect oak logs",
+            "command": "!collectBlocks(\"oak_log\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 3)"
+            ],
+            "reasoning": "Oak logs are needed to craft a wooden pickaxe, which is required to mine calcite blocks.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks",
+            "command": "!craftRecipe(\"oak_planks\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 4)"
+            ],
+            "reasoning": "Oak planks are needed to craft sticks, which are required for making a wooden pickaxe.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft sticks",
+            "command": "!craftRecipe(\"stick\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 4)"
+            ],
+            "reasoning": "Sticks are required to craft a wooden pickaxe.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 4
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft wooden pickaxe",
+            "command": "!craftRecipe(\"wooden_pickaxe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"wooden_pickaxe\", 1)"
+            ],
+            "reasoning": "A wooden pickaxe is needed to mine calcite blocks from an amethyst geode underground.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 4
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 5,
+            "goal": "Collect calcite blocks",
+            "command": "!collectBlocks(\"calcite\", 6)",
+            "action_cmd": [
+              "!collectBlocks(\"calcite\", 6)"
+            ],
+            "reasoning": "Calcite blocks can be collected using a wooden pickaxe, and the user is specified to be underground. The quantity of 6 is chosen as a reasonable amount to collect.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "wooden_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "underground",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "wooden_pickaxe"
+      },
+      "raw_response": "**REASONING**:\nThe user's request is to collect calcite blocks from an amethyst geode underground. The target item is \"calcite_block\" (as it is the block being collected), the material type is \"calcite\", and the tool type is not explicitly stated, but since the goal is to collect blocks, no crafting is required. However, based on the pattern of collecting blocks, we need to consider the appropriate pickaxe for mining calcite.\n\nCalcite is a stone-like block that can be mined with a wooden pickaxe or better. Since the user is going underground, they will need a suitable pickaxe. Based on the mining tool requirement pattern, calcite (stone-like) requires a wooden pickaxe or better. As no tools are assumed to be in inventory, we must first craft a wooden pickaxe using logs.\n\n**EXECUTION PLAN**:\nStep 1: Collect oak logs\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 3)\nReasoning: Oak logs are needed to craft a wooden pickaxe, which is required to mine calcite blocks.\n\nStep 2: Craft oak planks\nPrerequisites: item:oak_log:3\nCommand: !craftRecipe(\"oak_planks\", 4)\nReasoning: Oak planks are needed to craft sticks, which are required for making a wooden pickaxe.\n\nStep 3: Craft sticks\nPrerequisites: item:oak_planks:4\nCommand: !craftRecipe(\"stick\", 4)\nReasoning: Sticks are required to craft a wooden pickaxe.\n\nStep 4: Craft wooden pickaxe\nPrerequisites: item:stick:4\nCommand: !craftRecipe(\"wooden_pickaxe\", 1)\nReasoning: A wooden pickaxe is needed to mine calcite blocks from an amethyst geode underground.\n\nStep 5: Collect calcite blocks\nPrerequisites: item:wooden_pickaxe:1, access:underground\nCommand: !collectBlocks(\"calcite\", 6)\nReasoning: Calcite blocks can be collected using a wooden pickaxe, and the user is specified to be underground. The quantity of 6 is chosen as a reasonable amount to collect.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 5,
+        "step_efficiency": 0.4,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 0,
+      "prompt_length": 7697
+    },
+    {
+      "slug": "craft/stone_bricks",
+      "level": "L2",
+      "goal_item": "stone_bricks",
+      "min_steps": 4,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect stone blocks",
+            "command": "!collectBlocks(\"stone\", 4)",
+            "action_cmd": [
+              "!collectBlocks(\"stone\", 4)"
+            ],
+            "reasoning": "To craft stone bricks, we need stone blocks. The collectBlocks command gathers the necessary raw material.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft stone bricks",
+            "command": "!craftRecipe(\"stone_bricks\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"stone_bricks\", 1)"
+            ],
+            "reasoning": "Stone bricks are crafted directly from stone blocks using a crafting table. This step uses the collected stone blocks to create the final item.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone",
+                "count": 4
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "stone_bricks"
+      },
+      "raw_response": "**REASONING**:\nThe user's request is to \"craft stone bricks\". Based on this, the target item is \"stone_bricks\", the material type is \"stone\", and the tool type is not applicable since stone bricks are crafted from stone, not a tool. Stone bricks can be crafted directly from stone blocks using a crafting table.\n\n**EXECUTION PLAN**:\nStep 1: Collect stone blocks\nPrerequisites: None\nCommand: !collectBlocks(\"stone\", 4)\nReasoning: To craft stone bricks, we need stone blocks. The collectBlocks command gathers the necessary raw material.\n\nStep 2: Craft stone bricks\nPrerequisites: item:stone:4\nCommand: !craftRecipe(\"stone_bricks\", 1)\nReasoning: Stone bricks are crafted directly from stone blocks using a crafting table. This step uses the collected stone blocks to create the final item.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 2,
+        "step_efficiency": 1,
+        "issues": [
+          "Step 1: collecting stone requires wooden_pickaxe, not available",
+          "Step 2: missing stone x4",
+          "Step 2: craftRecipe(\"stone_bricks\", 1) missing ingredients: stone x4"
+        ],
+        "lenient_issues": [
+          "Step 1: collecting stone requires wooden_pickaxe, not available",
+          "Step 2: missing stone x4",
+          "Step 2: craftRecipe(\"stone_bricks\", 1) missing ingredients: stone x4"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7617
+    },
+    {
+      "slug": "craft/diamond_hoe",
+      "level": "L3",
+      "goal_item": "diamond_hoe",
+      "min_steps": 5,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect diamond_ore",
+            "command": "!collectBlocks(\"diamond_ore\", 2)",
+            "action_cmd": [
+              "!collectBlocks(\"diamond_ore\", 2)"
+            ],
+            "reasoning": "Diamond_ore is the raw material needed for crafting a diamond hoe. We need 2 diamond_ore blocks to get enough diamonds.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft diamond_hoe",
+            "command": "!craftRecipe(\"diamond_hoe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"diamond_hoe\", 1)"
+            ],
+            "reasoning": "A diamond hoe requires 2 diamonds and a crafting table. This step uses the collected diamonds to craft the final item.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "diamond",
+                "count": 2
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "diamond_hoe"
+      },
+      "raw_response": "**REASONING**:\nI referenced the Material Quantity Pattern and Processing Pattern. The target item is \"diamond_hoe\", which is a hoe made from diamond. Hoes require 2 material units + 2 sticks. Diamond does not need smelting, so no smelting step is needed. I followed the Step Structure Pattern by first collecting raw materials, then crafting components, and finally crafting the final item.\n\n**EXECUTION PLAN**:\nStep 1: Collect diamond_ore\nPrerequisites: None\nCommand: !collectBlocks(\"diamond_ore\", 2)\nReasoning: Diamond_ore is the raw material needed for crafting a diamond hoe. We need 2 diamond_ore blocks to get enough diamonds.\n\nStep 2: Craft diamond_hoe\nPrerequisites: item:diamond:2, station:crafting_table\nCommand: !craftRecipe(\"diamond_hoe\", 1)\nReasoning: A diamond hoe requires 2 diamonds and a crafting table. This step uses the collected diamonds to craft the final item.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": true,
+        "step_count": 2,
+        "step_efficiency": 1,
+        "issues": [
+          "Step 1: collecting diamond_ore requires iron_pickaxe, not available",
+          "Step 2: craftRecipe(\"diamond_hoe\", 1) missing ingredients: stick x2"
+        ],
+        "lenient_issues": [
+          "Step 1: collecting diamond_ore requires iron_pickaxe, not available",
+          "Step 2: craftRecipe(\"diamond_hoe\", 1) missing ingredients: stick x2"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7619
+    },
+    {
+      "slug": "craft/diamond_axe",
+      "level": "L3",
+      "goal_item": "diamond_axe",
+      "min_steps": 5,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect diamond",
+            "command": "!collectBlocks(\"diamond_ore\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"diamond_ore\", 3)"
+            ],
+            "reasoning": "Diamond ore needs to be collected before it can be used for crafting.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft diamond axe",
+            "command": "!craftRecipe(\"diamond_axe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"diamond_axe\", 1)"
+            ],
+            "reasoning": "Diamond axe requires 3 diamonds based on the axe quantity pattern. No sticks are needed for diamond axes.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "diamond",
+                "count": 3
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "diamond_axe"
+      },
+      "raw_response": "**REASONING**:\nI referenced the material quantity pattern for axes (3 material units + 2 sticks) and the processing pattern for diamond. Diamond does not require smelting, so no smelting step is needed. The target item is \"diamond_axe\", with material type \"diamond\" and tool type \"axe\".\n\n**EXECUTION PLAN**:\nStep 1: Collect diamond\nPrerequisites: None\nCommand: !collectBlocks(\"diamond_ore\", 3)\nReasoning: Diamond ore needs to be collected before it can be used for crafting.\n\nStep 2: Craft diamond axe\nPrerequisites: item:diamond:3\nCommand: !craftRecipe(\"diamond_axe\", 1)\nReasoning: Diamond axe requires 3 diamonds based on the axe quantity pattern. No sticks are needed for diamond axes.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": true,
+        "step_count": 2,
+        "step_efficiency": 1,
+        "issues": [
+          "Step 1: collecting diamond_ore requires iron_pickaxe, not available",
+          "Step 2: craftRecipe(\"diamond_axe\", 1) missing ingredients: stick x2"
+        ],
+        "lenient_issues": [
+          "Step 1: collecting diamond_ore requires iron_pickaxe, not available",
+          "Step 2: craftRecipe(\"diamond_axe\", 1) missing ingredients: stick x2"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7619
+    },
+    {
+      "slug": "craft/diamond_shovel",
+      "level": "L3",
+      "goal_item": "diamond_shovel",
+      "min_steps": 5,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect diamond",
+            "command": "!collectBlocks(\"diamond_ore\", 1)",
+            "action_cmd": [
+              "!collectBlocks(\"diamond_ore\", 1)"
+            ],
+            "reasoning": "Diamond ore is the raw material needed for the shovel. Collecting it is the first step in the process.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft sticks",
+            "command": "!craftRecipe(\"stick\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 4)"
+            ],
+            "reasoning": "Sticks are required for the shovel. Crafting them requires planks, which are made from logs. However, since diamond is already collected, I can directly craft sticks using the diamond as a material.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "diamond",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft diamond shovel",
+            "command": "!craftRecipe(\"diamond_shovel\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"diamond_shovel\", 1)"
+            ],
+            "reasoning": "The final step is to craft the diamond shovel using 1 diamond and 2 sticks. This follows the Material Quantity Pattern for shovels.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "diamond",
+                "count": 1
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 8
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "diamond_shovel"
+      },
+      "raw_response": "**REASONING**:\nI referenced the Material Quantity Pattern and Processing Pattern. The target item is \"diamond_shovel\", which is a shovel made from diamond. Shovels require 1 material unit (diamond) + 2 sticks. Diamond does not need smelting, so no smelting step is needed. I will collect diamond and craft sticks to build the shovel.\n\n**EXECUTION PLAN**:\nStep 1: Collect diamond\nPrerequisites: None\nCommand: !collectBlocks(\"diamond_ore\", 1)\nReasoning: Diamond ore is the raw material needed for the shovel. Collecting it is the first step in the process.\n\nStep 2: Craft sticks\nPrerequisites: item:diamond:1\nCommand: !craftRecipe(\"stick\", 4)\nReasoning: Sticks are required for the shovel. Crafting them requires planks, which are made from logs. However, since diamond is already collected, I can directly craft sticks using the diamond as a material.\n\nStep 3: Craft diamond shovel\nPrerequisites: item:diamond:1, item:stick:8\nCommand: !craftRecipe(\"diamond_shovel\", 1)\nReasoning: The final step is to craft the diamond shovel using 1 diamond and 2 sticks. This follows the Material Quantity Pattern for shovels.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 3,
+        "step_efficiency": 1,
+        "issues": [
+          "Step 1: collecting diamond_ore requires iron_pickaxe, not available",
+          "Step 2: craftRecipe(\"stick\", 4) missing ingredients: oak_planks x2",
+          "Step 3: missing stick x8"
+        ],
+        "lenient_issues": [
+          "Step 1: collecting diamond_ore requires iron_pickaxe, not available",
+          "Step 2: craftRecipe(\"stick\", 4) missing ingredients: oak_planks x2",
+          "Step 3: missing stick x8"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7625
+    },
+    {
+      "slug": "craft/compass",
+      "level": "L3",
+      "goal_item": "compass",
+      "min_steps": 5,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Obtain a crafting table",
+            "command": "!collectBlocks(\"crafting_table\", 1)",
+            "action_cmd": [
+              "!collectBlocks(\"crafting_table\", 1)"
+            ],
+            "reasoning": "A crafting table is required to craft the compass.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft a compass",
+            "command": "!craftRecipe(\"compass\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"compass\", 1)"
+            ],
+            "reasoning": "The compass can be crafted directly using a crafting table. No additional materials or processing steps are needed.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "compass"
+      },
+      "raw_response": "**REASONING**:\nThe target item is \"compass\". The compass does not require any materials or tools for crafting. It can be crafted directly using a crafting table. No smelting or processing steps are needed. The compass is a unique item that does not follow the standard tool crafting patterns.\n\n**EXECUTION PLAN**:\nStep 1: Obtain a crafting table\nPrerequisites: None\nCommand: !collectBlocks(\"crafting_table\", 1)\nReasoning: A crafting table is required to craft the compass.\n\nStep 2: Craft a compass\nPrerequisites: item:crafting_table:1\nCommand: !craftRecipe(\"compass\", 1)\nReasoning: The compass can be crafted directly using a crafting table. No additional materials or processing steps are needed.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": true,
+        "step_count": 2,
+        "step_efficiency": 1,
+        "issues": [
+          "Step 2: craftRecipe(\"compass\", 1) missing ingredients: iron_ingot x4, redstone x1"
+        ],
+        "lenient_issues": [
+          "Step 2: craftRecipe(\"compass\", 1) missing ingredients: iron_ingot x4, redstone x1"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7611
+    },
+    {
+      "slug": "craft/diamond_boots",
+      "level": "L3",
+      "goal_item": "diamond_boots",
+      "min_steps": 5,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect diamond ore",
+            "command": "!collectBlocks(\"diamond_ore\", 2)",
+            "action_cmd": [
+              "!collectBlocks(\"diamond_ore\", 2)"
+            ],
+            "reasoning": "Diamond boots require 2 diamond units, so we need to collect 2 diamond_ore blocks first.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft diamond boots",
+            "command": "!craftRecipe(\"diamond_boots\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"diamond_boots\", 1)"
+            ],
+            "reasoning": "After collecting the diamond ore, we now have the required material to craft the diamond boots at the crafting table.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "diamond",
+                "count": 2
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "diamond_boots"
+      },
+      "raw_response": "**REASONING**:\nThe user's request is to \"craft diamond boots\". This identifies the target item as \"diamond_boots\", the material type as \"diamond\", and the tool type as \"boots\". Boots in Minecraft require 2 material units and no sticks. Since diamond is a direct material (no smelting needed), no processing steps are required. The execution plan will follow the dependency order: collect raw materials, craft components (if needed), and finally craft the target item.\n\n**EXECUTION PLAN**:\nStep 1: Collect diamond ore\nPrerequisites: None\nCommand: !collectBlocks(\"diamond_ore\", 2)\nReasoning: Diamond boots require 2 diamond units, so we need to collect 2 diamond_ore blocks first.\n\nStep 2: Craft diamond boots\nPrerequisites: item:diamond:2\nCommand: !craftRecipe(\"diamond_boots\", 1)\nReasoning: After collecting the diamond ore, we now have the required material to craft the diamond boots at the crafting table.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": true,
+        "step_count": 2,
+        "step_efficiency": 1,
+        "issues": [
+          "Step 1: collecting diamond_ore requires iron_pickaxe, not available",
+          "Step 2: craftRecipe(\"diamond_boots\", 1) missing ingredients: diamond x4"
+        ],
+        "lenient_issues": [
+          "Step 1: collecting diamond_ore requires iron_pickaxe, not available",
+          "Step 2: craftRecipe(\"diamond_boots\", 1) missing ingredients: diamond x4"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7619
+    },
+    {
+      "slug": "craft/diamond_helmet",
+      "level": "L3",
+      "goal_item": "diamond_helmet",
+      "min_steps": 5,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect diamond_ore",
+            "command": "!collectBlocks(\"diamond_ore\", 1)",
+            "action_cmd": [
+              "!collectBlocks(\"diamond_ore\", 1)"
+            ],
+            "reasoning": "Diamond ore must be collected first as it is the raw material needed for crafting the helmet.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft diamond_helmet",
+            "command": "!craftRecipe(\"diamond_helmet\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"diamond_helmet\", 1)"
+            ],
+            "reasoning": "The diamond helmet requires 1 diamond, which was obtained from the collected diamond_ore. The final crafting step is performed last as per the dependency order.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "diamond",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "diamond_helmet"
+      },
+      "raw_response": "**REASONING**:\nThe user wants to craft a diamond helmet. The target item is \"diamond_helmet\", the material is \"diamond\", and the tool type is \"helmet\". Helmets in Minecraft are crafted using 1 diamond, following the standard crafting pattern for helmets. No additional materials or processing steps are required for diamonds. The execution plan will follow the dependency order: collect raw materials (diamond_ore), process (if needed), craft components (none required), and finally craft the helmet.\n\n**EXECUTION PLAN**:\nStep 1: Collect diamond_ore\nPrerequisites: None\nCommand: !collectBlocks(\"diamond_ore\", 1)\nReasoning: Diamond ore must be collected first as it is the raw material needed for crafting the helmet.\n\nStep 2: Craft diamond_helmet\nPrerequisites: item:diamond:1\nCommand: !craftRecipe(\"diamond_helmet\", 1)\nReasoning: The diamond helmet requires 1 diamond, which was obtained from the collected diamond_ore. The final crafting step is performed last as per the dependency order.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": true,
+        "step_count": 2,
+        "step_efficiency": 1,
+        "issues": [
+          "Step 1: collecting diamond_ore requires iron_pickaxe, not available",
+          "Step 2: craftRecipe(\"diamond_helmet\", 1) missing ingredients: diamond x5"
+        ],
+        "lenient_issues": [
+          "Step 1: collecting diamond_ore requires iron_pickaxe, not available",
+          "Step 2: craftRecipe(\"diamond_helmet\", 1) missing ingredients: diamond x5"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7625
+    },
+    {
+      "slug": "craft/golden_pickaxe",
+      "level": "L3",
+      "goal_item": "golden_pickaxe",
+      "min_steps": 6,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect gold_ore",
+            "command": "!collectBlocks(\"gold_ore\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"gold_ore\", 3)"
+            ],
+            "reasoning": "Gold ore is needed to create gold ingots, which are required for crafting a golden pickaxe.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Smelt raw_gold into gold_ingot",
+            "command": "!smeltItem(\"raw_gold\", 3)",
+            "action_cmd": [
+              "!smeltItem(\"raw_gold\", 3)"
+            ],
+            "reasoning": "Gold ore must be smelted into gold ingots before it can be used in crafting.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "raw_gold",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft sticks from oak_planks",
+            "command": "!craftRecipe(\"stick\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 4)"
+            ],
+            "reasoning": "Sticks are required for crafting a pickaxe, and they are made from planks.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 12
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft golden_pickaxe",
+            "command": "!craftRecipe(\"golden_pickaxe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"golden_pickaxe\", 1)"
+            ],
+            "reasoning": "A golden pickaxe requires 3 gold ingots and 2 sticks, and it must be crafted at a crafting table.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "gold_ingot",
+                "count": 3
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "golden_pickaxe"
+      },
+      "raw_response": "**REASONING**:\nI referenced the material quantity pattern for pickaxes, which require 3 material units + 2 sticks. The target item is \"golden_pickaxe\", which uses \"gold\" as the material. Since gold ore needs to be smelted into gold ingots, I applied the processing pattern. I also followed the dependency pattern by including steps for collecting blocks, smelting, crafting sticks, and finally crafting the golden pickaxe.\n\n**EXECUTION PLAN**:\nStep 1: Collect gold_ore\nPrerequisites: None\nCommand: !collectBlocks(\"gold_ore\", 3)\nReasoning: Gold ore is needed to create gold ingots, which are required for crafting a golden pickaxe.\n\nStep 2: Smelt raw_gold into gold_ingot\nPrerequisites: item:raw_gold:3\nCommand: !smeltItem(\"raw_gold\", 3)\nReasoning: Gold ore must be smelted into gold ingots before it can be used in crafting.\n\nStep 3: Craft sticks from oak_planks\nPrerequisites: item:oak_planks:12\nCommand: !craftRecipe(\"stick\", 4)\nReasoning: Sticks are required for crafting a pickaxe, and they are made from planks.\n\nStep 4: Craft golden_pickaxe\nPrerequisites: item:gold_ingot:3, item:stick:2, station:crafting_table\nCommand: !craftRecipe(\"golden_pickaxe\", 1)\nReasoning: A golden pickaxe requires 3 gold ingots and 2 sticks, and it must be crafted at a crafting table.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 4,
+        "step_efficiency": 1,
+        "issues": [
+          "Step 1: collecting gold_ore requires iron_pickaxe, not available",
+          "Step 3: missing oak_planks x12",
+          "Step 3: craftRecipe(\"stick\", 4) missing ingredients: oak_planks x2"
+        ],
+        "lenient_issues": [
+          "Step 1: collecting gold_ore requires iron_pickaxe, not available",
+          "Step 3: missing oak_planks x12",
+          "Step 3: craftRecipe(\"stick\", 4) missing ingredients: oak_planks x2"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7655
+    },
+    {
+      "slug": "craft/golden_axe",
+      "level": "L3",
+      "goal_item": "golden_axe",
+      "min_steps": 6,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect gold ore",
+            "command": "!collectBlocks(\"gold_ore\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"gold_ore\", 3)"
+            ],
+            "reasoning": "Gold ore is needed to smelt into gold ingots, which are the material for the golden axe.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Smelt gold ore into gold ingots",
+            "command": "!smeltItem(\"raw_gold\", 3)",
+            "action_cmd": [
+              "!smeltItem(\"raw_gold\", 3)"
+            ],
+            "reasoning": "Gold ore must be smelted into gold ingots before it can be used to craft the golden axe.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "raw_gold",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft sticks",
+            "command": "!craftRecipe(\"stick\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 4)"
+            ],
+            "reasoning": "Sticks are required for the golden axe as per the axe crafting pattern.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 4
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft golden axe",
+            "command": "!craftRecipe(\"golden_axe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"golden_axe\", 1)"
+            ],
+            "reasoning": "The golden axe requires 3 gold ingots and 2 sticks, and a crafting table is needed to craft it.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "gold_ingot",
+                "count": 3
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "golden_axe"
+      },
+      "raw_response": "**REASONING**:\nI referenced the material quantity pattern for axes, which require 3 material units + 2 sticks. The target item is \"golden_axe\", so the material type is \"gold\". Gold requires smelting from raw_gold, which comes from gold_ore. I followed the processing pattern for ores and the dependency pattern for crafting components like sticks and the crafting table.\n\n**EXECUTION PLAN**:\nStep 1: Collect gold ore\nPrerequisites: None\nCommand: !collectBlocks(\"gold_ore\", 3)\nReasoning: Gold ore is needed to smelt into gold ingots, which are the material for the golden axe.\n\nStep 2: Smelt gold ore into gold ingots\nPrerequisites: item:raw_gold:3\nCommand: !smeltItem(\"raw_gold\", 3)\nReasoning: Gold ore must be smelted into gold ingots before it can be used to craft the golden axe.\n\nStep 3: Craft sticks\nPrerequisites: item:stick:4\nCommand: !craftRecipe(\"stick\", 4)\nReasoning: Sticks are required for the golden axe as per the axe crafting pattern.\n\nStep 4: Craft golden axe\nPrerequisites: item:gold_ingot:3, item:stick:2, station:crafting_table\nCommand: !craftRecipe(\"golden_axe\", 1)\nReasoning: The golden axe requires 3 gold ingots and 2 sticks, and a crafting table is needed to craft it.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 4,
+        "step_efficiency": 1,
+        "issues": [
+          "Step 1: collecting gold_ore requires iron_pickaxe, not available",
+          "Step 3: missing stick x4",
+          "Step 3: craftRecipe(\"stick\", 4) missing ingredients: oak_planks x2"
+        ],
+        "lenient_issues": [
+          "Step 1: collecting gold_ore requires iron_pickaxe, not available",
+          "Step 3: missing stick x4",
+          "Step 3: craftRecipe(\"stick\", 4) missing ingredients: oak_planks x2"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7647
+    },
+    {
+      "slug": "collect/terracotta",
+      "level": "L3",
+      "goal_item": "terracotta",
+      "min_steps": 2,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect terracotta blocks from badlands biome",
+            "command": "!collectBlocks(\"terracotta\", 64)",
+            "action_cmd": [
+              "!collectBlocks(\"terracotta\", 64)"
+            ],
+            "reasoning": "Terracotta is a block that can be collected directly from the environment, and the user requested to collect it from the badlands biome. The quantity of 64 is chosen as a standard amount for collection.",
+            "preconditions": [],
+            "produces": null
+          }
+        ],
+        "target": null
+      },
+      "raw_response": "**REASONING**:\nThe user's request is to \"collect terracotta blocks from a badlands biome\". The target item is \"terracotta\", the material type is \"terracotta\", and the tool type is not explicitly mentioned. Since terracotta is a block that can be collected directly without requiring mining, no special tool is needed. However, since the user wants to collect it from a specific biome (badlands), we need to ensure the correct access is specified.\n\n**EXECUTION PLAN**:\nStep 1: Collect terracotta blocks from badlands biome\nPrerequisites: None\nCommand: !collectBlocks(\"terracotta\", 64)\nReasoning: Terracotta is a block that can be collected directly from the environment, and the user requested to collect it from the badlands biome. The quantity of 64 is chosen as a standard amount for collection.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 1,
+        "step_efficiency": 1,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 0,
+      "prompt_length": 7677
+    },
+    {
+      "slug": "craft/iron_block",
+      "level": "L3",
+      "goal_item": "iron_block",
+      "min_steps": 4,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect iron ore",
+            "command": "!collectBlocks(\"iron_ore\", 9)",
+            "action_cmd": [
+              "!collectBlocks(\"iron_ore\", 9)"
+            ],
+            "reasoning": "Iron ore must be collected first as it is the raw material needed for smelting.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Smelt raw iron into iron ingots",
+            "command": "!smeltItem(\"raw_iron\", 9)",
+            "action_cmd": [
+              "!smeltItem(\"raw_iron\", 9)"
+            ],
+            "reasoning": "Iron ore is smelted into iron ingots using a furnace, which is required for crafting the iron block.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "raw_iron",
+                "count": 9
+              },
+              {
+                "type": "station",
+                "name": "furnace",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft iron block",
+            "command": "!craftRecipe(\"iron_block\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"iron_block\", 1)"
+            ],
+            "reasoning": "The iron block is crafted by arranging 9 iron ingots in a 3x3 grid at the crafting table.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_ingot",
+                "count": 9
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "iron_block"
+      },
+      "raw_response": "**REASONING**:\nThe user wants to craft an \"iron block\". The target item is \"iron_block\", which is made from 9 iron ingots arranged in a 3x3 grid. The material type is \"iron\", and the tool type is not applicable since it's a block, not a tool. I will follow the pattern of collecting raw materials (iron_ore), smelting them into iron_ingots, and then crafting the final item.\n\n**EXECUTION PLAN**:\nStep 1: Collect iron ore\nPrerequisites: None\nCommand: !collectBlocks(\"iron_ore\", 9)\nReasoning: Iron ore must be collected first as it is the raw material needed for smelting.\n\nStep 2: Smelt raw iron into iron ingots\nPrerequisites: item:raw_iron:9, station:furnace\nCommand: !smeltItem(\"raw_iron\", 9)\nReasoning: Iron ore is smelted into iron ingots using a furnace, which is required for crafting the iron block.\n\nStep 3: Craft iron block\nPrerequisites: item:iron_ingot:9\nCommand: !craftRecipe(\"iron_block\", 1)\nReasoning: The iron block is crafted by arranging 9 iron ingots in a 3x3 grid at the crafting table.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": true,
+        "step_count": 3,
+        "step_efficiency": 1,
+        "issues": [
+          "Step 1: collecting iron_ore requires stone_pickaxe, not available"
+        ],
+        "lenient_issues": [
+          "Step 1: collecting iron_ore requires stone_pickaxe, not available"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7649
+    },
+    {
+      "slug": "craft/iron_leggings",
+      "level": "L3",
+      "goal_item": "iron_leggings",
+      "min_steps": 5,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect iron ore",
+            "command": "!collectBlocks(\"iron_ore\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"iron_ore\", 3)"
+            ],
+            "reasoning": "Iron ore is the raw material needed to smelt into iron ingots, which are required for crafting iron leggings.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Smelt raw iron into iron ingots",
+            "command": "!smeltItem(\"raw_iron\", 3)",
+            "action_cmd": [
+              "!smeltItem(\"raw_iron\", 3)"
+            ],
+            "reasoning": "Iron ore must be smelted into iron ingots before it can be used in crafting.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "raw_iron",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft iron leggings",
+            "command": "!craftRecipe(\"iron_leggings\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"iron_leggings\", 1)"
+            ],
+            "reasoning": "Iron leggings require 3 iron ingots and a crafting table to craft. This is the final step as per the dependency order.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_ingot",
+                "count": 3
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "iron_leggings"
+      },
+      "raw_response": "**REASONING**:\nThe user's request is to craft \"iron leggings\". Based on the item name, the target item is \"iron_leggings\", the material type is \"iron\", and the tool type is \"leggings\". Leggings are armor, not a tool, so the standard crafting patterns for tools do not apply. However, I will follow the dependency and processing patterns to ensure all necessary materials and steps are included.\n\n**EXECUTION PLAN**:\nStep 1: Collect iron ore\nPrerequisites: None\nCommand: !collectBlocks(\"iron_ore\", 3)\nReasoning: Iron ore is the raw material needed to smelt into iron ingots, which are required for crafting iron leggings.\n\nStep 2: Smelt raw iron into iron ingots\nPrerequisites: item:raw_iron:3\nCommand: !smeltItem(\"raw_iron\", 3)\nReasoning: Iron ore must be smelted into iron ingots before it can be used in crafting.\n\nStep 3: Craft iron leggings\nPrerequisites: item:iron_ingot:3, station:crafting_table\nCommand: !craftRecipe(\"iron_leggings\", 1)\nReasoning: Iron leggings require 3 iron ingots and a crafting table to craft. This is the final step as per the dependency order.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": true,
+        "step_count": 3,
+        "step_efficiency": 1,
+        "issues": [
+          "Step 1: collecting iron_ore requires stone_pickaxe, not available",
+          "Step 3: craftRecipe(\"iron_leggings\", 1) missing ingredients: iron_ingot x7"
+        ],
+        "lenient_issues": [
+          "Step 1: collecting iron_ore requires stone_pickaxe, not available",
+          "Step 3: craftRecipe(\"iron_leggings\", 1) missing ingredients: iron_ingot x7"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7649
+    },
+    {
+      "slug": "craft/golden_boots",
+      "level": "L3",
+      "goal_item": "golden_boots",
+      "min_steps": 6,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect gold_ore",
+            "command": "!collectBlocks(\"gold_ore\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"gold_ore\", 3)"
+            ],
+            "reasoning": "Gold ore is the raw material needed to create gold_ingot, which is required for crafting golden boots.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Smelt raw_gold into gold_ingot",
+            "command": "!smeltItem(\"raw_gold\", 3)",
+            "action_cmd": [
+              "!smeltItem(\"raw_gold\", 3)"
+            ],
+            "reasoning": "Gold ore must be smelted in a furnace to produce gold_ingot, which is a necessary component for crafting golden boots.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "raw_gold",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft golden boots",
+            "command": "!craftRecipe(\"golden_boots\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"golden_boots\", 1)"
+            ],
+            "reasoning": "Golden boots are crafted using 2 gold_ingot at the crafting table, following the standard crafting pattern for boots.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "gold_ingot",
+                "count": 2
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "golden_boots"
+      },
+      "raw_response": "**REASONING**:\nThe user's request is to craft \"golden boots\". Based on the item name, the target item is \"golden_boots\", the material type is \"gold\", and the tool type is \"boots\". According to the Material Quantity Pattern, boots require **2 material units** + **1 leather**. However, since golden boots are crafted using gold_ingot, not leather, we focus on the gold_ingot requirement. The Processing Pattern indicates that gold_ore must be smelted into gold_ingot. The Dependency Pattern requires collecting gold_ore first, then smelting it into gold_ingot, and finally crafting the golden boots.\n\n**EXECUTION PLAN**:\nStep 1: Collect gold_ore\nPrerequisites: None\nCommand: !collectBlocks(\"gold_ore\", 3)\nReasoning: Gold ore is the raw material needed to create gold_ingot, which is required for crafting golden boots.\n\nStep 2: Smelt raw_gold into gold_ingot\nPrerequisites: item:raw_gold:3\nCommand: !smeltItem(\"raw_gold\", 3)\nReasoning: Gold ore must be smelted in a furnace to produce gold_ingot, which is a necessary component for crafting golden boots.\n\nStep 3: Craft golden boots\nPrerequisites: item:gold_ingot:2\nCommand: !craftRecipe(\"golden_boots\", 1)\nReasoning: Golden boots are crafted using 2 gold_ingot at the crafting table, following the standard crafting pattern for boots.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": true,
+        "step_count": 3,
+        "step_efficiency": 1,
+        "issues": [
+          "Step 1: collecting gold_ore requires iron_pickaxe, not available",
+          "Step 3: craftRecipe(\"golden_boots\", 1) missing ingredients: gold_ingot x4"
+        ],
+        "lenient_issues": [
+          "Step 1: collecting gold_ore requires iron_pickaxe, not available",
+          "Step 3: craftRecipe(\"golden_boots\", 1) missing ingredients: gold_ingot x4"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7647
+    },
+    {
+      "slug": "craft/chest",
+      "level": "L1",
+      "goal_item": "chest",
+      "min_steps": 2,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect oak logs",
+            "command": "!collectBlocks(\"oak_log\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 3)"
+            ],
+            "reasoning": "Oak logs are needed to craft wooden planks, which are required for making a chest.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks",
+            "command": "!craftRecipe(\"oak_planks\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 4)"
+            ],
+            "reasoning": "Oak planks are a prerequisite for crafting a chest, and 4 planks are needed for the crafting recipe.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft a chest",
+            "command": "!craftRecipe(\"chest\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"chest\", 1)"
+            ],
+            "reasoning": "The chest is crafted using 4 oak planks arranged in the correct pattern on the crafting table.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 4
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "chest"
+      },
+      "raw_response": "**REASONING**:\nThe user's request is to \"craft a chest\". The target item is \"chest\", which is a container. Chests in Minecraft are crafted using wooden planks. Since the tool type is not specified, I assume a standard wooden chest. The material type is wood, and the quantity pattern for chests is 3 planks arranged in a specific crafting grid. No smelting or special processing is needed for wood. The plan follows the dependency order: collect logs, craft planks, then craft the chest.\n\n**EXECUTION PLAN**:\nStep 1: Collect oak logs\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 3)\nReasoning: Oak logs are needed to craft wooden planks, which are required for making a chest.\n\nStep 2: Craft oak planks\nPrerequisites: item:oak_log:3\nCommand: !craftRecipe(\"oak_planks\", 4)\nReasoning: Oak planks are a prerequisite for crafting a chest, and 4 planks are needed for the crafting recipe.\n\nStep 3: Craft a chest\nPrerequisites: item:oak_planks:4\nCommand: !craftRecipe(\"chest\", 1)\nReasoning: The chest is crafted using 4 oak planks arranged in the correct pattern on the crafting table.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": true,
+        "step_count": 3,
+        "step_efficiency": 0.67,
+        "issues": [
+          "Step 3: craftRecipe(\"chest\", 1) missing ingredients: oak_planks x8"
+        ],
+        "lenient_issues": [
+          "Step 3: craftRecipe(\"chest\", 1) missing ingredients: oak_planks x8"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7607
+    },
+    {
+      "slug": "craft/ladder",
+      "level": "L1",
+      "goal_item": "ladder",
+      "min_steps": 2,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect oak logs",
+            "command": "!collectBlocks(\"oak_log\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 3)"
+            ],
+            "reasoning": "Oak logs are needed to craft planks, which are required to make sticks.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks",
+            "command": "!craftRecipe(\"oak_planks\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 4)"
+            ],
+            "reasoning": "Planks are a necessary intermediate step to create sticks for the ladder.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft sticks",
+            "command": "!craftRecipe(\"stick\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 4)"
+            ],
+            "reasoning": "Sticks are the primary material needed to craft a ladder.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 4
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft a ladder",
+            "command": "!craftRecipe(\"ladder\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"ladder\", 1)"
+            ],
+            "reasoning": "The final step is to use the sticks to craft the ladder.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 4
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "ladder"
+      },
+      "raw_response": "**REASONING**:\nThe target item is \"ladder\". Ladders in Minecraft are crafted using sticks, and they do not require any specific material type or tool type. The crafting pattern for ladders involves using sticks, which require planks, which require logs. I will follow the dependency pattern to collect logs, craft planks, then sticks, and finally craft the ladder.\n\n**EXECUTION PLAN**:\nStep 1: Collect oak logs\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 3)\nReasoning: Oak logs are needed to craft planks, which are required to make sticks.\n\nStep 2: Craft oak planks\nPrerequisites: item:oak_log:3\nCommand: !craftRecipe(\"oak_planks\", 4)\nReasoning: Planks are a necessary intermediate step to create sticks for the ladder.\n\nStep 3: Craft sticks\nPrerequisites: item:oak_planks:4\nCommand: !craftRecipe(\"stick\", 4)\nReasoning: Sticks are the primary material needed to craft a ladder.\n\nStep 4: Craft a ladder\nPrerequisites: item:stick:4\nCommand: !craftRecipe(\"ladder\", 1)\nReasoning: The final step is to use the sticks to craft the ladder.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": true,
+        "step_count": 4,
+        "step_efficiency": 0.5,
+        "issues": [
+          "Step 4: craftRecipe(\"ladder\", 1) missing ingredients: stick x7"
+        ],
+        "lenient_issues": [
+          "Step 4: craftRecipe(\"ladder\", 1) missing ingredients: stick x7"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7609
+    },
+    {
+      "slug": "craft/iron_trapdoor",
+      "level": "L2",
+      "goal_item": "iron_trapdoor",
+      "min_steps": 5,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect iron_ore",
+            "command": "!collectBlocks(\"iron_ore\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"iron_ore\", 3)"
+            ],
+            "reasoning": "Iron ore must be collected before it can be processed into iron ingots.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Smelt raw_iron into iron_ingot",
+            "command": "!smeltItem(\"raw_iron\", 3)",
+            "action_cmd": [
+              "!smeltItem(\"raw_iron\", 3)"
+            ],
+            "reasoning": "Iron ore is smelted into iron ingots using a furnace.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "raw_iron",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft iron_trapdoor",
+            "command": "!craftRecipe(\"iron_trapdoor\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"iron_trapdoor\", 1)"
+            ],
+            "reasoning": "Iron trapdoors are crafted using 4 iron ingots arranged in a 2x2 pattern at the crafting table.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_ingot",
+                "count": 4
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "iron_trapdoor"
+      },
+      "raw_response": "**REASONING**:\nThe target item is \"iron_trapdoor\". The material type is \"iron\", and the tool type is \"trapdoor\". Trapdoors are crafted using iron ingots in a 2x2 pattern. Since iron ore needs to be smelted into iron ingots, I will follow the material processing pattern. The execution plan includes collecting iron ore, smelting it into iron ingots, and then crafting the trapdoor.\n\n**EXECUTION PLAN**:\nStep 1: Collect iron_ore\nPrerequisites: None\nCommand: !collectBlocks(\"iron_ore\", 3)\nReasoning: Iron ore must be collected before it can be processed into iron ingots.\n\nStep 2: Smelt raw_iron into iron_ingot\nPrerequisites: item:raw_iron:3\nCommand: !smeltItem(\"raw_iron\", 3)\nReasoning: Iron ore is smelted into iron ingots using a furnace.\n\nStep 3: Craft iron_trapdoor\nPrerequisites: item:iron_ingot:4\nCommand: !craftRecipe(\"iron_trapdoor\", 1)\nReasoning: Iron trapdoors are crafted using 4 iron ingots arranged in a 2x2 pattern at the crafting table.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 3,
+        "step_efficiency": 1,
+        "issues": [
+          "Step 1: collecting iron_ore requires stone_pickaxe, not available",
+          "Step 3: missing iron_ingot x4",
+          "Step 3: craftRecipe(\"iron_trapdoor\", 1) missing ingredients: iron_ingot x4"
+        ],
+        "lenient_issues": [
+          "Step 1: collecting iron_ore requires stone_pickaxe, not available",
+          "Step 3: missing iron_ingot x4",
+          "Step 3: craftRecipe(\"iron_trapdoor\", 1) missing ingredients: iron_ingot x4"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7655
+    },
+    {
+      "slug": "craft/iron_door",
+      "level": "L2",
+      "goal_item": "iron_door",
+      "min_steps": 5,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect iron ore",
+            "command": "!collectBlocks(\"iron_ore\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"iron_ore\", 3)"
+            ],
+            "reasoning": "Iron ore must be collected first before it can be processed.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Smelt raw iron into iron ingots",
+            "command": "!smeltItem(\"raw_iron\", 3)",
+            "action_cmd": [
+              "!smeltItem(\"raw_iron\", 3)"
+            ],
+            "reasoning": "Iron ore is smelted into iron ingots in a furnace.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "raw_iron",
+                "count": 3
+              },
+              {
+                "type": "station",
+                "name": "furnace",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft iron door",
+            "command": "!craftRecipe(\"iron_door\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"iron_door\", 1)"
+            ],
+            "reasoning": "An iron door requires 6 iron ingots arranged in a specific pattern at the crafting table.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_ingot",
+                "count": 6
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "iron_door"
+      },
+      "raw_response": "**REASONING**:\nThe user wants to craft an \"iron door\". The target item is \"iron_door\", the material is \"iron\", and the tool type is \"door\". Doors in Minecraft are crafted using iron ingots in a specific pattern. Since doors require iron ingots, we need to first collect iron ore, smelt it into iron ingots, and then use those ingots to craft the door. \n\n**EXECUTION PLAN**:\nStep 1: Collect iron ore\nPrerequisites: None\nCommand: !collectBlocks(\"iron_ore\", 3)\nReasoning: Iron ore must be collected first before it can be processed.\n\nStep 2: Smelt raw iron into iron ingots\nPrerequisites: item:raw_iron:3, station:furnace\nCommand: !smeltItem(\"raw_iron\", 3)\nReasoning: Iron ore is smelted into iron ingots in a furnace.\n\nStep 3: Craft iron door\nPrerequisites: item:iron_ingot:6, station:crafting_table\nCommand: !craftRecipe(\"iron_door\", 1)\nReasoning: An iron door requires 6 iron ingots arranged in a specific pattern at the crafting table.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 3,
+        "step_efficiency": 1,
+        "issues": [
+          "Step 1: collecting iron_ore requires stone_pickaxe, not available",
+          "Step 3: missing iron_ingot x6",
+          "Step 3: craftRecipe(\"iron_door\", 1) missing ingredients: iron_ingot x6"
+        ],
+        "lenient_issues": [
+          "Step 1: collecting iron_ore requires stone_pickaxe, not available",
+          "Step 3: missing iron_ingot x6",
+          "Step 3: craftRecipe(\"iron_door\", 1) missing ingredients: iron_ingot x6"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7647
+    },
+    {
+      "slug": "craft/iron_bars",
+      "level": "L2",
+      "goal_item": "iron_bars",
+      "min_steps": 5,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect iron ore",
+            "command": "!collectBlocks(\"iron_ore\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"iron_ore\", 3)"
+            ],
+            "reasoning": "Iron ore needs to be collected first before it can be processed into iron ingots.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Smelt raw iron into iron ingots",
+            "command": "!smeltItem(\"raw_iron\", 3)",
+            "action_cmd": [
+              "!smeltItem(\"raw_iron\", 3)"
+            ],
+            "reasoning": "Iron ore must be smelted in a furnace to produce iron ingots, which are needed for crafting.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "raw_iron",
+                "count": 3
+              },
+              {
+                "type": "station",
+                "name": "furnace",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft iron bars",
+            "command": "!craftRecipe(\"iron_bars\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"iron_bars\", 1)"
+            ],
+            "reasoning": "Iron bars can be crafted using iron ingots at a crafting table, following the standard crafting pattern for items made from ingots.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_ingot",
+                "count": 3
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "iron_bars"
+      },
+      "raw_response": "**REASONING**:\nThe user's request is to \"craft iron bars\". Based on the input, the target item is \"iron_bars\", the material type is \"iron\", and the tool type is not explicitly mentioned. However, since \"bars\" typically refer to a crafting item that requires processing, I will assume the user intends to craft \"iron_ingot\" as the base material for further crafting. The pattern for crafting items like \"iron_ingot\" involves collecting raw materials (iron_ore), smelting them into ingots, and then using those ingots to create the final item.\n\n**EXECUTION PLAN**:\nStep 1: Collect iron ore\nPrerequisites: None\nCommand: !collectBlocks(\"iron_ore\", 3)\nReasoning: Iron ore needs to be collected first before it can be processed into iron ingots.\n\nStep 2: Smelt raw iron into iron ingots\nPrerequisites: item:raw_iron:3, station:furnace\nCommand: !smeltItem(\"raw_iron\", 3)\nReasoning: Iron ore must be smelted in a furnace to produce iron ingots, which are needed for crafting.\n\nStep 3: Craft iron bars\nPrerequisites: item:iron_ingot:3, station:crafting_table\nCommand: !craftRecipe(\"iron_bars\", 1)\nReasoning: Iron bars can be crafted using iron ingots at a crafting table, following the standard crafting pattern for items made from ingots.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": true,
+        "step_count": 3,
+        "step_efficiency": 1,
+        "issues": [
+          "Step 1: collecting iron_ore requires stone_pickaxe, not available",
+          "Step 3: craftRecipe(\"iron_bars\", 1) missing ingredients: iron_ingot x6"
+        ],
+        "lenient_issues": [
+          "Step 1: collecting iron_ore requires stone_pickaxe, not available",
+          "Step 3: craftRecipe(\"iron_bars\", 1) missing ingredients: iron_ingot x6"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7641
+    },
+    {
+      "slug": "craft/clock",
+      "level": "L3",
+      "goal_item": "clock",
+      "min_steps": 6,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect gold_ore",
+            "command": "!collectBlocks(\"gold_ore\", 1)",
+            "action_cmd": [
+              "!collectBlocks(\"gold_ore\", 1)"
+            ],
+            "reasoning": "Gold ore needs to be collected first as it is a raw material for crafting gold ingots.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Smelt raw_gold into gold_ingot",
+            "command": "!smeltItem(\"raw_gold\", 1)",
+            "action_cmd": [
+              "!smeltItem(\"raw_gold\", 1)"
+            ],
+            "reasoning": "Gold ore must be smelted into gold ingots before it can be used in crafting.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "raw_gold",
+                "count": 1
+              },
+              {
+                "type": "station",
+                "name": "furnace",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Collect redstone",
+            "command": "!collectBlocks(\"redstone\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"redstone\", 3)"
+            ],
+            "reasoning": "Redstone is a raw material needed for crafting a clock and must be collected directly.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft clock",
+            "command": "!craftRecipe(\"clock\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"clock\", 1)"
+            ],
+            "reasoning": "The clock is crafted using a crafting table with 3 redstone and 1 gold ingot, following the standard Minecraft crafting recipe.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "gold_ingot",
+                "count": 1
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "clock"
+      },
+      "raw_response": "**REASONING**:\nThe target item is \"clock\". Clocks in Minecraft are crafted using a crafting table with 3 redstone and 1 gold ingot. The material type is \"gold\" and \"redstone\", and the tool type is not applicable since clocks are not tools. I applied the pattern that requires collecting raw materials, processing them if needed, and then crafting the final item.\n\n**EXECUTION PLAN**:\nStep 1: Collect gold_ore\nPrerequisites: None\nCommand: !collectBlocks(\"gold_ore\", 1)\nReasoning: Gold ore needs to be collected first as it is a raw material for crafting gold ingots.\n\nStep 2: Smelt raw_gold into gold_ingot\nPrerequisites: item:raw_gold:1, station:furnace\nCommand: !smeltItem(\"raw_gold\", 1)\nReasoning: Gold ore must be smelted into gold ingots before it can be used in crafting.\n\nStep 3: Collect redstone\nPrerequisites: None\nCommand: !collectBlocks(\"redstone\", 3)\nReasoning: Redstone is a raw material needed for crafting a clock and must be collected directly.\n\nStep 4: Craft clock\nPrerequisites: item:gold_ingot:1, station:crafting_table\nCommand: !craftRecipe(\"clock\", 1)\nReasoning: The clock is crafted using a crafting table with 3 redstone and 1 gold ingot, following the standard Minecraft crafting recipe.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": true,
+        "step_count": 4,
+        "step_efficiency": 1,
+        "issues": [
+          "Step 1: collecting gold_ore requires iron_pickaxe, not available",
+          "Step 4: craftRecipe(\"clock\", 1) missing ingredients: gold_ingot x4"
+        ],
+        "lenient_issues": [
+          "Step 1: collecting gold_ore requires iron_pickaxe, not available",
+          "Step 4: craftRecipe(\"clock\", 1) missing ingredients: gold_ingot x4"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7607
+    },
+    {
+      "slug": "craft/iron_horse_armor",
+      "level": "L3",
+      "goal_item": "iron_horse_armor",
+      "min_steps": 5,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect iron ore",
+            "command": "!collectBlocks(\"iron_ore\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"iron_ore\", 3)"
+            ],
+            "reasoning": "Iron ore is needed to craft iron ingots, which are required for making iron horse armor.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Smelt raw_iron into iron_ingot",
+            "command": "!smeltItem(\"raw_iron\", 3)",
+            "action_cmd": [
+              "!smeltItem(\"raw_iron\", 3)"
+            ],
+            "reasoning": "Iron ore must be smelted into iron ingots before it can be used to craft horse armor.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "raw_iron",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft iron horse armor",
+            "command": "!craftRecipe(\"iron_horse_armor\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"iron_horse_armor\", 1)"
+            ],
+            "reasoning": "The final step is to craft the iron horse armor using the iron ingots obtained from smelting.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_ingot",
+                "count": 3
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "iron_horse_armor"
+      },
+      "raw_response": "**REASONING**:\nThe user wants to craft \"iron horse armor\". This is a piece of armor, not a tool. The pattern for crafting armor in Minecraft does not follow the same material quantity rules as tools. Horse armor can be crafted using specific materials directly without needing sticks or other components. The target item is \"iron_horse_armor\", the material is \"iron\", and there is no tool type involved.\n\n**EXECUTION PLAN**:\nStep 1: Collect iron ore\nPrerequisites: None\nCommand: !collectBlocks(\"iron_ore\", 3)\nReasoning: Iron ore is needed to craft iron ingots, which are required for making iron horse armor.\n\nStep 2: Smelt raw_iron into iron_ingot\nPrerequisites: item:raw_iron:3\nCommand: !smeltItem(\"raw_iron\", 3)\nReasoning: Iron ore must be smelted into iron ingots before it can be used to craft horse armor.\n\nStep 3: Craft iron horse armor\nPrerequisites: item:iron_ingot:3\nCommand: !craftRecipe(\"iron_horse_armor\", 1)\nReasoning: The final step is to craft the iron horse armor using the iron ingots obtained from smelting.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": true,
+        "step_count": 3,
+        "step_efficiency": 1,
+        "issues": [
+          "Step 1: collecting iron_ore requires stone_pickaxe, not available"
+        ],
+        "lenient_issues": [
+          "Step 1: collecting iron_ore requires stone_pickaxe, not available"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7655
+    },
+    {
+      "slug": "combat/kill_creeper",
+      "level": "L1",
+      "goal_item": "gunpowder",
+      "min_steps": 3,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Kill a creeper and collect gunpowder",
+            "command": "!killMob(\"creeper\", 1)",
+            "action_cmd": [
+              "!killMob(\"creeper\", 1)"
+            ],
+            "reasoning": "Killing a creeper is the first step to obtain gunpowder, which is dropped as a result.",
+            "preconditions": [],
+            "produces": null
+          }
+        ],
+        "target": null
+      },
+      "raw_response": "**REASONING**:\nThe user's request involves killing a creeper and collecting gunpowder. Gunpowder is a material used in crafting certain items, such as TNT or fireworks. Based on the pattern recognition, the target item is \"gunpowder,\" the material type is \"gunpowder,\" and the tool type is not directly applicable since gunpowder is a material, not a tool. However, to collect gunpowder, we need to kill creepers, which requires combat skills. The execution plan will focus on killing creepers and collecting gunpowder.\n\n**EXECUTION PLAN**:\nStep 1: Kill a creeper and collect gunpowder\nPrerequisites: None\nCommand: !killMob(\"creeper\", 1)\nReasoning: Killing a creeper is the first step to obtain gunpowder, which is dropped as a result.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 1,
+        "step_efficiency": 1,
+        "issues": [
+          "Goal item \"gunpowder\" not produced by any step"
+        ],
+        "lenient_issues": [
+          "Goal item \"gunpowder\" not produced by any step"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7654
+    },
+    {
+      "slug": "combat/kill_enderman",
+      "level": "L2",
+      "goal_item": "ender_pearl",
+      "min_steps": 4,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Defeat an enderman to collect ender pearls",
+            "command": "!collectBlocks(\"enderman\", 1)",
+            "action_cmd": [
+              "!collectBlocks(\"enderman\", 1)"
+            ],
+            "reasoning": "Ender pearls are dropped by endermen when defeated, so defeating an enderman directly yields ender pearls. No crafting or processing steps are needed.",
+            "preconditions": [],
+            "produces": null
+          }
+        ],
+        "target": null
+      },
+      "raw_response": "**REASONING**:\nThe user's request involves defeating an enderman and collecting ender pearls. Ender pearls are obtained by defeating endermen, so the target item is \"ender_pearl\". Since ender pearls are not crafted but collected, no material or tool type is required for crafting. The task focuses on collecting ender pearls from defeated endermen.\n\n**EXECUTION PLAN**:\nStep 1: Defeat an enderman to collect ender pearls\nPrerequisites: None\nCommand: !collectBlocks(\"enderman\", 1)\nReasoning: Ender pearls are dropped by endermen when defeated, so defeating an enderman directly yields ender pearls. No crafting or processing steps are needed.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 1,
+        "step_efficiency": 1,
+        "issues": [
+          "Goal item \"ender_pearl\" not produced by any step"
+        ],
+        "lenient_issues": [
+          "Goal item \"ender_pearl\" not produced by any step"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7668
+    },
+    {
+      "slug": "combat/kill_slime",
+      "level": "L2",
+      "goal_item": "slime_ball",
+      "min_steps": 3,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Hunt slimes in a swamp and collect slimeballs",
+            "command": "!collectBlocks(\"slime\", 1)",
+            "action_cmd": [
+              "!collectBlocks(\"slime\", 1)"
+            ],
+            "reasoning": "Slimeballs are obtained by interacting with slimes, which are found in swamps. Collecting one slime will yield slimeballs.",
+            "preconditions": [],
+            "produces": null
+          }
+        ],
+        "target": null
+      },
+      "raw_response": "**REASONING**:\nThe user's request involves hunting slimes in a swamp and collecting slimeballs. The target item is \"slimeball\", which is a material used in crafting. Slimeballs are collected directly from slimes, so no smelting or processing is required. Since the task does not involve crafting an item with specific tool types (like swords or pickaxes), there is no need to apply the material quantity pattern for tools. However, the task requires gathering slimeballs, which can be done directly by interacting with slimes in a swamp environment.\n\n**EXECUTION PLAN**:\nStep 1: Hunt slimes in a swamp and collect slimeballs\nPrerequisites: None\nCommand: !collectBlocks(\"slime\", 1)\nReasoning: Slimeballs are obtained by interacting with slimes, which are found in swamps. Collecting one slime will yield slimeballs.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 1,
+        "step_efficiency": 1,
+        "issues": [
+          "Goal item \"slime_ball\" not produced by any step"
+        ],
+        "lenient_issues": [
+          "Goal item \"slime_ball\" not produced by any step"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7672
+    },
+    {
+      "slug": "combat/kill_blaze",
+      "level": "L3",
+      "goal_item": "blaze_rod",
+      "min_steps": 6,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Access the Nether",
+            "command": "!collectBlocks(\"nether_portal\", 1)",
+            "action_cmd": [
+              "!collectBlocks(\"nether_portal\", 1)"
+            ],
+            "reasoning": "To access the Nether, you need to collect a nether portal block, which is required to build a portal.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Build a nether portal",
+            "command": "!craftRecipe(\"nether_portal\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"nether_portal\", 1)"
+            ],
+            "reasoning": "Crafting a nether portal allows entry into the Nether where blazes can be defeated.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "nether_portal",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Defeat blazes in the Nether",
+            "command": "!collectBlocks(\"blaze\", 1)",
+            "action_cmd": [
+              "!collectBlocks(\"blaze\", 1)"
+            ],
+            "reasoning": "Blazes are mobs found in the Nether. Defeating them drops blaze rods, which are the target item.",
+            "preconditions": [
+              {
+                "type": "station",
+                "name": "nether_portal",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Collect blaze rods",
+            "command": "!collectBlocks(\"blaze_rod\", 1)",
+            "action_cmd": [
+              "!collectBlocks(\"blaze_rod\", 1)"
+            ],
+            "reasoning": "After defeating a blaze, it drops a blaze rod, which can be collected directly.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "blaze",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "nether_portal"
+      },
+      "raw_response": "**REASONING**:\nThe user's request involves defeating blazes in the Nether and collecting blaze rods. The target item is \"blaze_rod\", which is a material used to craft items like the blaze rod itself or other Nether-related items. Since the user wants to collect blaze rods, the focus is on gathering them from blazes. No specific tool type is mentioned, but the process involves accessing the Nether and defeating blazes.\n\n**EXECUTION PLAN**:\nStep 1: Access the Nether\nPrerequisites: None\nCommand: !collectBlocks(\"nether_portal\", 1)\nReasoning: To access the Nether, you need to collect a nether portal block, which is required to build a portal.\n\nStep 2: Build a nether portal\nPrerequisites: item:nether_portal:1\nCommand: !craftRecipe(\"nether_portal\", 1)\nReasoning: Crafting a nether portal allows entry into the Nether where blazes can be defeated.\n\nStep 3: Defeat blazes in the Nether\nPrerequisites: station:nether_portal\nCommand: !collectBlocks(\"blaze\", 1)\nReasoning: Blazes are mobs found in the Nether. Defeating them drops blaze rods, which are the target item.\n\nStep 4: Collect blaze rods\nPrerequisites: item:blaze:1\nCommand: !collectBlocks(\"blaze_rod\", 1)\nReasoning: After defeating a blaze, it drops a blaze rod, which can be collected directly.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 4,
+        "step_efficiency": 1,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 0,
+      "prompt_length": 7682
+    },
+    {
+      "slug": "combat/kill_wither_skeleton",
+      "level": "L3",
+      "goal_item": "bone",
+      "min_steps": 5,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect wither skeleton bones",
+            "command": "!collectBlocks(\"wither_skeleton_bone\", 64)",
+            "action_cmd": [
+              "!collectBlocks(\"wither_skeleton_bone\", 64)"
+            ],
+            "reasoning": "Wither skeleton bones can be collected directly from wither skeletons in a nether fortress. The quantity of 64 is chosen as it is the maximum amount that can be collected at once.",
+            "preconditions": [],
+            "produces": null
+          }
+        ],
+        "target": null
+      },
+      "raw_response": "**REASONING**:\nThe user's request involves collecting bones from wither skeletons in a nether fortress. The target item is \"wither_skeleton_bone\", which is a material used in crafting. Since the task does not involve crafting a tool or weapon, the patterns for tool types and material processing are not directly applicable. However, the main goal is to collect the required number of bones.\n\n**EXECUTION PLAN**:\nStep 1: Collect wither skeleton bones\nPrerequisites: None\nCommand: !collectBlocks(\"wither_skeleton_bone\", 64)\nReasoning: Wither skeleton bones can be collected directly from wither skeletons in a nether fortress. The quantity of 64 is chosen as it is the maximum amount that can be collected at once.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 1,
+        "step_efficiency": 1,
+        "issues": [
+          "Goal item \"bone\" not produced by any step"
+        ],
+        "lenient_issues": [
+          "Goal item \"bone\" not produced by any step"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7712
+    },
+    {
+      "slug": "craft/wooden_shovel",
+      "level": "L1",
+      "goal_item": "wooden_shovel",
+      "min_steps": 2,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect oak logs",
+            "command": "!collectBlocks(\"oak_log\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 3)"
+            ],
+            "reasoning": "Oak logs are needed to craft planks, which are required for making sticks and the wooden shovel.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks",
+            "command": "!craftRecipe(\"oak_planks\", 12)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 12)"
+            ],
+            "reasoning": "Planks are necessary to create sticks, which are a component of the wooden shovel.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft sticks",
+            "command": "!craftRecipe(\"stick\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 4)"
+            ],
+            "reasoning": "Sticks are a required component for crafting the wooden shovel.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 12
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft wooden shovel",
+            "command": "!craftRecipe(\"wooden_shovel\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"wooden_shovel\", 1)"
+            ],
+            "reasoning": "The final step is to craft the wooden shovel using 1 material unit (plank) and 2 sticks, following the shovel crafting pattern.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 4
+              },
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "wooden_shovel"
+      },
+      "raw_response": "**REASONING**:\nI referenced the Material Quantity Pattern and the Tool Type Pattern. The target item is \"wooden_shovel\", the material type is \"wood\", and the tool type is \"shovel\". According to the pattern, a shovel requires 1 material unit and 2 sticks. Since wood is a direct material, no smelting is needed. I will collect logs, craft planks, then sticks, and finally craft the wooden shovel.\n\n**EXECUTION PLAN**:\nStep 1: Collect oak logs\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 3)\nReasoning: Oak logs are needed to craft planks, which are required for making sticks and the wooden shovel.\n\nStep 2: Craft oak planks\nPrerequisites: item:oak_log:3\nCommand: !craftRecipe(\"oak_planks\", 12)\nReasoning: Planks are necessary to create sticks, which are a component of the wooden shovel.\n\nStep 3: Craft sticks\nPrerequisites: item:oak_planks:12\nCommand: !craftRecipe(\"stick\", 4)\nReasoning: Sticks are a required component for crafting the wooden shovel.\n\nStep 4: Craft wooden shovel\nPrerequisites: item:stick:4, item:oak_planks:1\nCommand: !craftRecipe(\"wooden_shovel\", 1)\nReasoning: The final step is to craft the wooden shovel using 1 material unit (plank) and 2 sticks, following the shovel crafting pattern.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 4,
+        "step_efficiency": 0.5,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 0,
+      "prompt_length": 7623
+    },
+    {
+      "slug": "craft/oak_fence",
+      "level": "L1",
+      "goal_item": "oak_fence",
+      "min_steps": 3,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect oak logs",
+            "command": "!collectBlocks(\"oak_log\", 6)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 6)"
+            ],
+            "reasoning": "Oak logs are needed to craft oak planks, which are the base material for the fence.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks",
+            "command": "!craftRecipe(\"oak_planks\", 36)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 36)"
+            ],
+            "reasoning": "Oak planks are required to craft the fence, and each log can be turned into 4 planks, so 6 logs produce 36 planks.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 6
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft oak fence",
+            "command": "!craftRecipe(\"oak_fence\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_fence\", 1)"
+            ],
+            "reasoning": "Oak planks are used directly to craft the fence at the crafting table, following the standard fence recipe in Minecraft.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 36
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "oak_fence"
+      },
+      "raw_response": "**REASONING**:\nThe user wants to craft an oak fence. The target item is \"oak_fence\", the material is \"oak\", and the tool type is not directly applicable since fences are crafted differently from tools. Fences in Minecraft are made from planks, so I will follow the pattern of collecting logs, crafting planks, and then using them to build the fence. This process involves gathering materials and crafting steps without requiring specific tools like swords or pickaxes.\n\n**EXECUTION PLAN**:\nStep 1: Collect oak logs\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 6)\nReasoning: Oak logs are needed to craft oak planks, which are the base material for the fence.\n\nStep 2: Craft oak planks\nPrerequisites: item:oak_log:6\nCommand: !craftRecipe(\"oak_planks\", 36)\nReasoning: Oak planks are required to craft the fence, and each log can be turned into 4 planks, so 6 logs produce 36 planks.\n\nStep 3: Craft oak fence\nPrerequisites: item:oak_planks:36\nCommand: !craftRecipe(\"oak_fence\", 1)\nReasoning: Oak planks are used directly to craft the fence at the crafting table, following the standard fence recipe in Minecraft.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": true,
+        "step_count": 3,
+        "step_efficiency": 1,
+        "issues": [
+          "Step 2: craftRecipe(\"oak_planks\", 36) missing ingredients: oak_log x9",
+          "Step 3: craftRecipe(\"oak_fence\", 1) missing ingredients: stick x2"
+        ],
+        "lenient_issues": [
+          "Step 2: craftRecipe(\"oak_planks\", 36) missing ingredients: oak_log x9",
+          "Step 3: craftRecipe(\"oak_fence\", 1) missing ingredients: stick x2"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7617
+    },
+    {
+      "slug": "craft/oak_door",
+      "level": "L1",
+      "goal_item": "oak_door",
+      "min_steps": 2,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect oak logs",
+            "command": "!collectBlocks(\"oak_log\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 3)"
+            ],
+            "reasoning": "Oak logs are needed to craft oak planks, which are required for making the door.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks",
+            "command": "!craftRecipe(\"oak_planks\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 4)"
+            ],
+            "reasoning": "Oak planks are needed to craft the oak door, and the recipe requires 4 planks.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft oak door",
+            "command": "!craftRecipe(\"oak_door\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_door\", 1)"
+            ],
+            "reasoning": "The oak door can be crafted using 4 oak planks at the crafting table.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 4
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "oak_door"
+      },
+      "raw_response": "**REASONING**:\nThe user wants to craft an oak door. The target item is \"oak_door\", the material is \"oak\", and the tool type is not directly applicable since doors are crafted differently. Oak doors require oak planks and a crafting table. I will follow the pattern of collecting raw materials (logs), processing them into planks, and then crafting the final item at the crafting table.\n\n**EXECUTION PLAN**:\nStep 1: Collect oak logs\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 3)\nReasoning: Oak logs are needed to craft oak planks, which are required for making the door.\n\nStep 2: Craft oak planks\nPrerequisites: item:oak_log:3\nCommand: !craftRecipe(\"oak_planks\", 4)\nReasoning: Oak planks are needed to craft the oak door, and the recipe requires 4 planks.\n\nStep 3: Craft oak door\nPrerequisites: item:oak_planks:4, station:crafting_table\nCommand: !craftRecipe(\"oak_door\", 1)\nReasoning: The oak door can be crafted using 4 oak planks at the crafting table.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": true,
+        "step_count": 3,
+        "step_efficiency": 0.67,
+        "issues": [
+          "Step 3: craftRecipe(\"oak_door\", 1) missing ingredients: oak_planks x6"
+        ],
+        "lenient_issues": [
+          "Step 3: craftRecipe(\"oak_door\", 1) missing ingredients: oak_planks x6"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7615
+    },
+    {
+      "slug": "craft/lever",
+      "level": "L1",
+      "goal_item": "lever",
+      "min_steps": 3,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect oak logs",
+            "command": "!collectBlocks(\"oak_log\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 3)"
+            ],
+            "reasoning": "Oak logs are needed to craft wooden planks and sticks.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks",
+            "command": "!craftRecipe(\"oak_planks\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 4)"
+            ],
+            "reasoning": "Planks are required for crafting sticks and the lever itself.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft sticks",
+            "command": "!craftRecipe(\"stick\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 4)"
+            ],
+            "reasoning": "Sticks are a necessary component for crafting the lever.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 4
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft lever",
+            "command": "!craftRecipe(\"lever\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"lever\", 1)"
+            ],
+            "reasoning": "The lever is crafted using 3 sticks and 1 wooden plank, following the standard crafting recipe.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 4
+              },
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 4
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "lever"
+      },
+      "raw_response": "**REASONING**:\nThe target item is \"lever\". Levers in Minecraft are crafted using 3 sticks and 1 wooden plank. This is a simple crafting recipe that does not require smelting or special tools. The material type is wood, and the tool type is not applicable since levers are not tools.\n\n**EXECUTION PLAN**:\nStep 1: Collect oak logs\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 3)\nReasoning: Oak logs are needed to craft wooden planks and sticks.\n\nStep 2: Craft oak planks\nPrerequisites: item:oak_log:3\nCommand: !craftRecipe(\"oak_planks\", 4)\nReasoning: Planks are required for crafting sticks and the lever itself.\n\nStep 3: Craft sticks\nPrerequisites: item:oak_planks:4\nCommand: !craftRecipe(\"stick\", 4)\nReasoning: Sticks are a necessary component for crafting the lever.\n\nStep 4: Craft lever\nPrerequisites: item:stick:4, item:oak_planks:4\nCommand: !craftRecipe(\"lever\", 1)\nReasoning: The lever is crafted using 3 sticks and 1 wooden plank, following the standard crafting recipe.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": true,
+        "step_count": 4,
+        "step_efficiency": 0.75,
+        "issues": [
+          "Step 4: craftRecipe(\"lever\", 1) missing ingredients: cobblestone x1"
+        ],
+        "lenient_issues": [
+          "Step 4: craftRecipe(\"lever\", 1) missing ingredients: cobblestone x1"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7607
+    },
+    {
+      "slug": "craft/painting",
+      "level": "L1",
+      "goal_item": "painting",
+      "min_steps": 3,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect wool",
+            "command": "!collectBlocks(\"wool\", 6)",
+            "action_cmd": [
+              "!collectBlocks(\"wool\", 6)"
+            ],
+            "reasoning": "Wool is needed to craft the painting, and we need 6 pieces of wool for the painting pattern.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft painting",
+            "command": "!craftRecipe(\"painting\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"painting\", 1)"
+            ],
+            "reasoning": "The painting is crafted using a crafting table with a frame and 6 wool blocks arranged in a specific pattern.",
+            "preconditions": [
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "painting"
+      },
+      "raw_response": "**REASONING**:\nThe user's request is to \"craft a painting\". In Minecraft, paintings are crafted using a crafting table and require a frame and a set of colored wool blocks. The target item is \"painting\", which is a decorative item. Since the painting does not require any specific material type or tool type, we focus on gathering the required materials (wool) and crafting the painting at the crafting table.\n\n**EXECUTION PLAN**:\nStep 1: Collect wool\nPrerequisites: None\nCommand: !collectBlocks(\"wool\", 6)\nReasoning: Wool is needed to craft the painting, and we need 6 pieces of wool for the painting pattern.\n\nStep 2: Craft painting\nPrerequisites: station:crafting_table\nCommand: !craftRecipe(\"painting\", 1)\nReasoning: The painting is crafted using a crafting table with a frame and 6 wool blocks arranged in a specific pattern.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": true,
+        "step_count": 2,
+        "step_efficiency": 1,
+        "issues": [
+          "Step 2: craftRecipe(\"painting\", 1) missing ingredients: stick x8, white_wool x1"
+        ],
+        "lenient_issues": [
+          "Step 2: craftRecipe(\"painting\", 1) missing ingredients: stick x8, white_wool x1"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7613
+    },
+    {
+      "slug": "collect/gravel",
+      "level": "L1",
+      "goal_item": "gravel",
+      "min_steps": 1,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect gravel",
+            "command": "!collectBlocks(\"gravel\", 1)",
+            "action_cmd": [
+              "!collectBlocks(\"gravel\", 1)"
+            ],
+            "reasoning": "Gravel can be collected directly from the environment without any prerequisites or tool requirements.",
+            "preconditions": [],
+            "produces": null
+          }
+        ],
+        "target": null
+      },
+      "raw_response": "**REASONING**:\nThe user's request is to \"collect some gravel\". Based on the patterns learned, gravel does not require any tool for collection. The target item is gravel itself, and since it's a block, no crafting or processing is needed. Gravel can be collected directly without smelting or crafting steps.\n\n**EXECUTION PLAN**:\nStep 1: Collect gravel\nPrerequisites: None\nCommand: !collectBlocks(\"gravel\", 1)\nReasoning: Gravel can be collected directly from the environment without any prerequisites or tool requirements.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 1,
+        "step_efficiency": 1,
+        "issues": [
+          "Goal item \"gravel\" not produced by any step"
+        ],
+        "lenient_issues": [
+          "Goal item \"gravel\" not produced by any step"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7621
+    },
+    {
+      "slug": "collect/pumpkin",
+      "level": "L1",
+      "goal_item": "pumpkin",
+      "min_steps": 1,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect pumpkins",
+            "command": "!collectBlocks(\"pumpkin\", 1)",
+            "action_cmd": [
+              "!collectBlocks(\"pumpkin\", 1)"
+            ],
+            "reasoning": "Pumpkins are a block that can be collected directly from the environment without any prerequisites or processing steps.",
+            "preconditions": [],
+            "produces": null
+          }
+        ],
+        "target": null
+      },
+      "raw_response": "**REASONING**:\nThe user's request is to \"collect a pumpkin\". This implies they want to gather pumpkins from the environment. Pumpkins are a block that can be collected directly without requiring any special tools or processing. The target item is \"pumpkin\", and since it is a block, no crafting or smelting steps are required. The tool type is not applicable here as collecting pumpkins does not involve crafting tools.\n\n**EXECUTION PLAN**:\nStep 1: Collect pumpkins\nPrerequisites: None\nCommand: !collectBlocks(\"pumpkin\", 1)\nReasoning: Pumpkins are a block that can be collected directly from the environment without any prerequisites or processing steps.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 1,
+        "step_efficiency": 1,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 0,
+      "prompt_length": 7617
+    },
+    {
+      "slug": "craft/stonecutter",
+      "level": "L2",
+      "goal_item": "stonecutter",
+      "min_steps": 5,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect oak logs",
+            "command": "!collectBlocks(\"oak_log\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 3)"
+            ],
+            "reasoning": "Oak logs are needed to craft planks, which are required for making sticks.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks",
+            "command": "!craftRecipe(\"oak_planks\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 4)"
+            ],
+            "reasoning": "Planks are needed to make sticks, which are a component of the stonecutter.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft sticks",
+            "command": "!craftRecipe(\"stick\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 4)"
+            ],
+            "reasoning": "Sticks are a required component for the stonecutter.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 4
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft stonecutter",
+            "command": "!craftRecipe(\"stonecutter\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"stonecutter\", 1)"
+            ],
+            "reasoning": "The stonecutter requires 2 stone blocks and 1 stick, which are now available.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone",
+                "count": 2
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 4
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "stonecutter"
+      },
+      "raw_response": "**REASONING**:\nThe target item is \"stonecutter\". The stonecutter is a crafting tool that requires 2 stone blocks and 1 stick. Based on the material quantity pattern, tools like the stonecutter require 2 material units (stone) + 1 stick. Since stone does not need processing, we can use it directly. The stick requires planks, which in turn require logs. We will follow the dependency pattern by first collecting logs, then crafting planks and sticks, and finally crafting the stonecutter.\n\n**EXECUTION PLAN**:\nStep 1: Collect oak logs\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 3)\nReasoning: Oak logs are needed to craft planks, which are required for making sticks.\n\nStep 2: Craft oak planks\nPrerequisites: item:oak_log:3\nCommand: !craftRecipe(\"oak_planks\", 4)\nReasoning: Planks are needed to make sticks, which are a component of the stonecutter.\n\nStep 3: Craft sticks\nPrerequisites: item:oak_planks:4\nCommand: !craftRecipe(\"stick\", 4)\nReasoning: Sticks are a required component for the stonecutter.\n\nStep 4: Craft stonecutter\nPrerequisites: item:stone:2, item:stick:4\nCommand: !craftRecipe(\"stonecutter\", 1)\nReasoning: The stonecutter requires 2 stone blocks and 1 stick, which are now available.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 4,
+        "step_efficiency": 1,
+        "issues": [
+          "Step 4: missing stone x2",
+          "Step 4: craftRecipe(\"stonecutter\", 1) missing ingredients: iron_ingot x1, stone x3"
+        ],
+        "lenient_issues": [
+          "Step 4: missing stone x2",
+          "Step 4: craftRecipe(\"stonecutter\", 1) missing ingredients: iron_ingot x1, stone x3"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7619
+    },
+    {
+      "slug": "craft/minecart",
+      "level": "L2",
+      "goal_item": "minecart",
+      "min_steps": 5,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect iron ore",
+            "command": "!collectBlocks(\"iron_ore\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"iron_ore\", 3)"
+            ],
+            "reasoning": "Iron ore needs to be collected before it can be processed into iron ingots.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Smelt raw iron into iron ingots",
+            "command": "!smeltItem(\"raw_iron\", 3)",
+            "action_cmd": [
+              "!smeltItem(\"raw_iron\", 3)"
+            ],
+            "reasoning": "Iron ore must be smelted into iron ingots to be used in crafting.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "raw_iron",
+                "count": 3
+              },
+              {
+                "type": "station",
+                "name": "furnace",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft minecart",
+            "command": "!craftRecipe(\"minecart\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"minecart\", 1)"
+            ],
+            "reasoning": "The minecart is crafted using 3 iron ingots arranged in the correct pattern on the crafting table.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_ingot",
+                "count": 3
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "minecart"
+      },
+      "raw_response": "**REASONING**:\nThe target item is \"minecart\". Minecarts are crafted using iron ingots and a crafting table. The material type is \"iron\", and the tool type is not applicable since minecarts are not tools but a transport item. The crafting pattern for minecarts requires 3 iron ingots arranged in a specific pattern on the crafting table. No smelting or additional processing is needed for iron ingots, as they are already available after smelting raw iron. The execution plan follows the dependency order: collect raw materials (iron ore), process them into ingots, and then craft the final item.\n\n**EXECUTION PLAN**:\nStep 1: Collect iron ore\nPrerequisites: None\nCommand: !collectBlocks(\"iron_ore\", 3)\nReasoning: Iron ore needs to be collected before it can be processed into iron ingots.\n\nStep 2: Smelt raw iron into iron ingots\nPrerequisites: item:raw_iron:3, station:furnace\nCommand: !smeltItem(\"raw_iron\", 3)\nReasoning: Iron ore must be smelted into iron ingots to be used in crafting.\n\nStep 3: Craft minecart\nPrerequisites: item:iron_ingot:3, station:crafting_table\nCommand: !craftRecipe(\"minecart\", 1)\nReasoning: The minecart is crafted using 3 iron ingots arranged in the correct pattern on the crafting table.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": true,
+        "step_count": 3,
+        "step_efficiency": 1,
+        "issues": [
+          "Step 1: collecting iron_ore requires stone_pickaxe, not available",
+          "Step 3: craftRecipe(\"minecart\", 1) missing ingredients: iron_ingot x5"
+        ],
+        "lenient_issues": [
+          "Step 1: collecting iron_ore requires stone_pickaxe, not available",
+          "Step 3: craftRecipe(\"minecart\", 1) missing ingredients: iron_ingot x5"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7613
+    },
+    {
+      "slug": "craft/golden_chestplate",
+      "level": "L3",
+      "goal_item": "golden_chestplate",
+      "min_steps": 6,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect gold ore",
+            "command": "!collectBlocks(\"gold_ore\", 1)",
+            "action_cmd": [
+              "!collectBlocks(\"gold_ore\", 1)"
+            ],
+            "reasoning": "Gold ore is required to smelt into gold ingots, which are needed for crafting the golden chestplate.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Smelt raw gold into gold ingot",
+            "command": "!smeltItem(\"raw_gold\", 1)",
+            "action_cmd": [
+              "!smeltItem(\"raw_gold\", 1)"
+            ],
+            "reasoning": "Raw gold obtained from gold ore must be smelted into gold ingots to be used in crafting.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "raw_gold",
+                "count": 1
+              },
+              {
+                "type": "station",
+                "name": "furnace",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft golden chestplate",
+            "command": "!craftRecipe(\"golden_chestplate\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"golden_chestplate\", 1)"
+            ],
+            "reasoning": "The golden chestplate is crafted using one gold_ingot at a crafting table, following the standard Minecraft crafting pattern for chestplates.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "gold_ingot",
+                "count": 1
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "golden_chestplate"
+      },
+      "raw_response": "**REASONING**:\nThe target item is \"golden_chestplate\". The material type is \"gold\", and the tool type is \"chestplate\". Chestplates are crafted using gold_ingots, which require smelting raw_gold from gold_ore. This follows the Material Processing Pattern where ores must be smelted into ingots. I will follow the Step Structure Pattern by first collecting raw materials, then processing them, crafting components if needed, and finally crafting the golden chestplate.\n\n**EXECUTION PLAN**:\nStep 1: Collect gold ore\nPrerequisites: None\nCommand: !collectBlocks(\"gold_ore\", 1)\nReasoning: Gold ore is required to smelt into gold ingots, which are needed for crafting the golden chestplate.\n\nStep 2: Smelt raw gold into gold ingot\nPrerequisites: item:raw_gold:1, station:furnace\nCommand: !smeltItem(\"raw_gold\", 1)\nReasoning: Raw gold obtained from gold ore must be smelted into gold ingots to be used in crafting.\n\nStep 3: Craft golden chestplate\nPrerequisites: item:gold_ingot:1, station:crafting_table\nCommand: !craftRecipe(\"golden_chestplate\", 1)\nReasoning: The golden chestplate is crafted using one gold_ingot at a crafting table, following the standard Minecraft crafting pattern for chestplates.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": true,
+        "step_count": 3,
+        "step_efficiency": 1,
+        "issues": [
+          "Step 1: collecting gold_ore requires iron_pickaxe, not available",
+          "Step 3: craftRecipe(\"golden_chestplate\", 1) missing ingredients: gold_ingot x8"
+        ],
+        "lenient_issues": [
+          "Step 1: collecting gold_ore requires iron_pickaxe, not available",
+          "Step 3: craftRecipe(\"golden_chestplate\", 1) missing ingredients: gold_ingot x8"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7661
+    },
+    {
+      "slug": "craft/jukebox",
+      "level": "L3",
+      "goal_item": "jukebox",
+      "min_steps": 5,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect oak logs",
+            "command": "!collectBlocks(\"oak_log\", 4)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 4)"
+            ],
+            "reasoning": "Oak logs are needed to craft oak planks, which are required for the jukebox.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks",
+            "command": "!craftRecipe(\"oak_planks\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 4)"
+            ],
+            "reasoning": "Oak planks are a necessary component for crafting the jukebox.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 4
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft jukebox",
+            "command": "!craftRecipe(\"jukebox\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"jukebox\", 1)"
+            ],
+            "reasoning": "The jukebox requires 4 oak planks and 1 record. The planks are crafted from logs, and the record is a separate item that must be obtained.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 4
+              },
+              {
+                "type": "item",
+                "name": "record",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "jukebox"
+      },
+      "raw_response": "**REASONING**:\nThe target item is \"jukebox\". Jukeboxes in Minecraft are crafted using a wooden plank and a record. The material type is wood (plank), and the tool type is not applicable as jukebox is not a tool. The pattern for crafting jukebox involves collecting logs, crafting planks, and then using them to craft the jukebox.\n\n**EXECUTION PLAN**:\nStep 1: Collect oak logs\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 4)\nReasoning: Oak logs are needed to craft oak planks, which are required for the jukebox.\n\nStep 2: Craft oak planks\nPrerequisites: item:oak_log:4\nCommand: !craftRecipe(\"oak_planks\", 4)\nReasoning: Oak planks are a necessary component for crafting the jukebox.\n\nStep 3: Craft jukebox\nPrerequisites: item:oak_planks:4, item:record:1\nCommand: !craftRecipe(\"jukebox\", 1)\nReasoning: The jukebox requires 4 oak planks and 1 record. The planks are crafted from logs, and the record is a separate item that must be obtained.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 3,
+        "step_efficiency": 1,
+        "issues": [
+          "Step 3: missing record",
+          "Step 3: craftRecipe(\"jukebox\", 1) missing ingredients: oak_planks x8, diamond x1"
+        ],
+        "lenient_issues": [
+          "Step 3: missing record",
+          "Step 3: craftRecipe(\"jukebox\", 1) missing ingredients: oak_planks x8, diamond x1"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7611
+    },
+    {
+      "slug": "craft/anvil",
+      "level": "L3",
+      "goal_item": "anvil",
+      "min_steps": 6,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect iron_ore",
+            "command": "!collectBlocks(\"iron_ore\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"iron_ore\", 3)"
+            ],
+            "reasoning": "Iron ore must be collected before it can be processed into iron ingots.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Smelt raw_iron into iron_ingot",
+            "command": "!smeltItem(\"raw_iron\", 3)",
+            "action_cmd": [
+              "!smeltItem(\"raw_iron\", 3)"
+            ],
+            "reasoning": "Iron ore is dropped as raw_iron after collection, and must be smelted into iron_ingot to be used in crafting.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "raw_iron",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft anvil",
+            "command": "!craftRecipe(\"anvil\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"anvil\", 1)"
+            ],
+            "reasoning": "The anvil requires 3 iron ingots and a crafting table to craft. This step completes the final crafting of the anvil.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_ingot",
+                "count": 3
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "anvil"
+      },
+      "raw_response": "**REASONING**:\nThe target item is \"anvil\". Anvils are crafted using iron ingots and a crafting table. The material type is \"iron\", and the tool type is not applicable since anvil is a block, not a tool. Based on the patterns learned, the anvil requires 3 iron ingots and a crafting table. Since iron ore needs to be smelted into iron ingots, I will follow the dependency pattern by first collecting iron ore, then smelting it, and finally crafting the anvil.\n\n**EXECUTION PLAN**:\nStep 1: Collect iron_ore\nPrerequisites: None\nCommand: !collectBlocks(\"iron_ore\", 3)\nReasoning: Iron ore must be collected before it can be processed into iron ingots.\n\nStep 2: Smelt raw_iron into iron_ingot\nPrerequisites: item:raw_iron:3\nCommand: !smeltItem(\"raw_iron\", 3)\nReasoning: Iron ore is dropped as raw_iron after collection, and must be smelted into iron_ingot to be used in crafting.\n\nStep 3: Craft anvil\nPrerequisites: item:iron_ingot:3, station:crafting_table\nCommand: !craftRecipe(\"anvil\", 1)\nReasoning: The anvil requires 3 iron ingots and a crafting table to craft. This step completes the final crafting of the anvil.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": true,
+        "step_count": 3,
+        "step_efficiency": 1,
+        "issues": [
+          "Step 1: collecting iron_ore requires stone_pickaxe, not available",
+          "Step 3: craftRecipe(\"anvil\", 1) missing ingredients: iron_block x3, iron_ingot x4"
+        ],
+        "lenient_issues": [
+          "Step 1: collecting iron_ore requires stone_pickaxe, not available",
+          "Step 3: craftRecipe(\"anvil\", 1) missing ingredients: iron_block x3, iron_ingot x4"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7609
+    },
+    {
+      "slug": "craft/note_block",
+      "level": "L3",
+      "goal_item": "note_block",
+      "min_steps": 6,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect oak logs",
+            "command": "!collectBlocks(\"oak_log\", 4)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 4)"
+            ],
+            "reasoning": "Oak logs are needed to craft wooden planks, which are required for crafting a note block.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks",
+            "command": "!craftRecipe(\"oak_planks\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 4)"
+            ],
+            "reasoning": "Planks are required to create the wooden component for the note block.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 4
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Collect redstone dust",
+            "command": "!collectBlocks(\"redstone_ore\", 1)",
+            "action_cmd": [
+              "!collectBlocks(\"redstone_ore\", 1)"
+            ],
+            "reasoning": "Redstone ore is needed to craft redstone dust, which is required for the note block.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Smelt redstone ore into redstone dust",
+            "command": "!smeltItem(\"raw_redstone\", 1)",
+            "action_cmd": [
+              "!smeltItem(\"raw_redstone\", 1)"
+            ],
+            "reasoning": "Redstone ore must be smelted into redstone dust before it can be used in crafting.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "redstone_ore",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 5,
+            "goal": "Craft note block",
+            "command": "!craftRecipe(\"note_block\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"note_block\", 1)"
+            ],
+            "reasoning": "The final step is to craft the note block using the required materials.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 4
+              },
+              {
+                "type": "item",
+                "name": "redstone_dust",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "note_block"
+      },
+      "raw_response": "**REASONING**:\nThe target item is \"note_block\". Note blocks are crafted directly from a wooden plank and a redstone dust. This does not require any smelting or additional processing steps. The material type is \"wood\" and the tool type is not applicable since it's a block, not a tool.\n\n**EXECUTION PLAN**:\nStep 1: Collect oak logs\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 4)\nReasoning: Oak logs are needed to craft wooden planks, which are required for crafting a note block.\n\nStep 2: Craft oak planks\nPrerequisites: item:oak_log:4\nCommand: !craftRecipe(\"oak_planks\", 4)\nReasoning: Planks are required to create the wooden component for the note block.\n\nStep 3: Collect redstone dust\nPrerequisites: None\nCommand: !collectBlocks(\"redstone_ore\", 1)\nReasoning: Redstone ore is needed to craft redstone dust, which is required for the note block.\n\nStep 4: Smelt redstone ore into redstone dust\nPrerequisites: item:redstone_ore:1\nCommand: !smeltItem(\"raw_redstone\", 1)\nReasoning: Redstone ore must be smelted into redstone dust before it can be used in crafting.\n\nStep 5: Craft note block\nPrerequisites: item:oak_planks:4, item:redstone_dust:1\nCommand: !craftRecipe(\"note_block\", 1)\nReasoning: The final step is to craft the note block using the required materials.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 5,
+        "step_efficiency": 1,
+        "issues": [
+          "Step 3: collecting redstone_ore requires iron_pickaxe, not available",
+          "Step 4: missing redstone_ore",
+          "Step 4: smeltItem(\"raw_redstone\", 1) needs 1 but only 0 available",
+          "Step 5: missing redstone_dust",
+          "Step 5: craftRecipe(\"note_block\", 1) missing ingredients: oak_planks x8"
+        ],
+        "lenient_issues": [
+          "Step 3: collecting redstone_ore requires iron_pickaxe, not available",
+          "Step 4: missing redstone_ore",
+          "Step 4: smeltItem(\"raw_redstone\", 1) needs 1 but only 0 available",
+          "Step 5: missing redstone_dust",
+          "Step 5: craftRecipe(\"note_block\", 1) missing ingredients: oak_planks x8"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7617
+    }
+  ],
+  "summary": {
+    "by_level": {
+      "L1": {
+        "total": 20,
+        "strict_tcr": "9/20",
+        "lenient_tcr": "9/20",
+        "pvr": "18/20",
+        "avg_step_efficiency": 0.77
+      },
+      "L2": {
+        "total": 20,
+        "strict_tcr": "2/20",
+        "lenient_tcr": "2/20",
+        "pvr": "8/20",
+        "avg_step_efficiency": 0.97
+      },
+      "L3": {
+        "total": 20,
+        "strict_tcr": "2/20",
+        "lenient_tcr": "2/20",
+        "pvr": "14/20",
+        "avg_step_efficiency": 1
+      }
+    },
+    "overall": {
+      "strict_tcr": "13/60",
+      "lenient_tcr": "13/60",
+      "pvr": "40/60",
+      "avg_step_efficiency": 0.91
+    }
+  }
+}

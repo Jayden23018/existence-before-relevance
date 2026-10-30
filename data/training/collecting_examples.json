@@ -1,0 +1,2498 @@
+[
+  {
+    "slug": "collect/coal",
+    "name": "Collect Coal",
+    "tab": "collect",
+    "level": "L1",
+    "rationale": "Coal is essential fuel for smelting and making torches.",
+    "actual": "Find and mine coal ore from caves or exposed stone areas.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Craft a wooden pickaxe",
+        "action_nl": "Collect oak logs, craft planks, a crafting table, sticks, and a wooden pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 3)",
+          "!craftRecipe('oak_planks', 12)",
+          "!craftRecipe('crafting_table', 1)",
+          "!craftRecipe('stick', 2)",
+          "!craftRecipe('wooden_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees"
+          ]
+        },
+        "expected": "Wooden pickaxe in inventory.",
+        "notes": "Coal ore requires a pickaxe (any tier) to yield a drop; mining it by hand yields nothing.",
+        "produces": [
+          {
+            "type": "item",
+            "name": "crafting_table",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "wooden_pickaxe",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "step": 2,
+        "goal": "Find coal ore",
+        "action_nl": "Search for coal ore in caves or exposed stone faces",
+        "action_cmd": [
+          "!searchForBlock('coal_ore', 32)"
+        ],
+        "verify_cmd": [],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "Coal ore found nearby.",
+        "notes": "Coal ore appears at similar heights to iron ore, commonly in caves."
+      },
+      {
+        "step": 3,
+        "goal": "Mine coal ore",
+        "action_nl": "Mine at least 8 coal ore blocks using the wooden pickaxe",
+        "action_cmd": [
+          "!collectBlocks('coal_ore', 8)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "wooden_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "At least 8 coal items in inventory.",
+        "notes": "Coal ore requires a pickaxe (any tier) to drop coal — mining by hand yields nothing.",
+        "produces": {
+          "type": "item",
+          "name": "coal",
+          "count": 8
+        }
+      }
+    ]
+  },
+  {
+    "slug": "collect/iron",
+    "name": "Collect Iron Ore",
+    "tab": "collect",
+    "level": "L1",
+    "rationale": "Iron is a versatile material used for tools, armor, and many crafting recipes.",
+    "actual": "Find and mine iron ore from underground areas using a stone pickaxe.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Craft a Stone Pickaxe",
+        "action_nl": "Collect wood, craft a wooden pickaxe, mine stone, and craft a stone pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 2)",
+          "!craftRecipe('oak_planks', 4)",
+          "!craftRecipe('stick', 2)",
+          "!craftRecipe('wooden_pickaxe', 1)",
+          "!collectBlocks('stone', 3)",
+          "!craftRecipe('stone_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees",
+            "stone"
+          ]
+        },
+        "expected": "Stone Pickaxe in inventory.",
+        "notes": "Iron requires at least a stone pickaxe to mine. We craft one from scratch.",
+        "produces": {
+          "type": "item",
+          "name": "stone_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 2,
+        "goal": "Find iron ore",
+        "action_nl": "Search underground (below Y=64) for iron ore deposits",
+        "action_cmd": [
+          "!searchForBlock('iron_ore', 32)"
+        ],
+        "verify_cmd": [],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "stone_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "Iron ore found nearby.",
+        "notes": "Iron ore is most common below Y=64."
+      },
+      {
+        "step": 3,
+        "goal": "Mine iron ore",
+        "action_nl": "Mine at least 3 iron ore blocks using stone pickaxe or better",
+        "action_cmd": [
+          "!collectBlocks('iron_ore', 3)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "equipped": [
+              "stone_pickaxe"
+            ],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "At least 3 raw iron in inventory.",
+        "notes": "Mining iron_ore drops raw_iron in Minecraft 1.17+. Always bring extra torches when cave mining.",
+        "produces": {
+          "type": "item",
+          "name": "raw_iron",
+          "count": 3
+        }
+      }
+    ]
+  },
+  {
+    "slug": "collect/wood",
+    "name": "Collect Wood",
+    "tab": "collect",
+    "level": "L1",
+    "rationale": "Wood is a fundamental resource used for tools, building, and fuel.",
+    "actual": "Find trees and collect logs by breaking them with your hand or any tool.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Find trees",
+        "action_nl": "Look for nearby trees (oak, birch, spruce, etc.)",
+        "action_cmd": [
+          "!searchForBlock('oak_log', 32)"
+        ],
+        "verify_cmd": [],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees"
+          ]
+        },
+        "expected": "Trees found nearby.",
+        "notes": "Different biomes have different tree types."
+      },
+      {
+        "step": 2,
+        "goal": "Collect logs",
+        "action_nl": "Break at least 4 log blocks from trees",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 4)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": [
+              "axe"
+            ]
+          },
+          "access": [
+            "trees"
+          ]
+        },
+        "expected": "At least 4 logs in inventory.",
+        "notes": "An axe makes this faster but is not required.",
+        "produces": {
+          "type": "item",
+          "name": "oak_log",
+          "count": 4
+        }
+      }
+    ]
+  },
+  {
+    "slug": "collect/cobblestone",
+    "name": "Collect Cobblestone",
+    "tab": "collect",
+    "level": "L1",
+    "rationale": "Cobblestone is essential for crafting tools, furnaces, and building.",
+    "actual": "Mine stone blocks to obtain cobblestone.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Craft a Wooden Pickaxe",
+        "action_nl": "You need at least a wooden pickaxe to mine stone",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 3)",
+          "!craftRecipe('oak_planks', 4)",
+          "!craftRecipe('stick', 2)",
+          "!craftRecipe('wooden_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees"
+          ]
+        },
+        "expected": "Wooden Pickaxe in inventory.",
+        "notes": "The wooden pickaxe is only for mining stone, not durable.",
+        "produces": {
+          "type": "item",
+          "name": "wooden_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 2,
+        "goal": "Find stone",
+        "action_nl": "Look for exposed stone or dig down to reach stone layer",
+        "action_cmd": [
+          "!searchForBlock('stone', 32)"
+        ],
+        "verify_cmd": [],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "wooden_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          }
+        },
+        "expected": "Stone found nearby.",
+        "notes": "Stone is typically just below the dirt layer."
+      },
+      {
+        "step": 3,
+        "goal": "Mine stone into cobblestone",
+        "action_nl": "Mine at least 8 stone blocks to get cobblestone",
+        "action_cmd": [
+          "!collectBlocks('stone', 8)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "equipped": [
+              "wooden_pickaxe"
+            ],
+            "optional": []
+          }
+        },
+        "expected": "At least 8 cobblestone in inventory.",
+        "notes": "Mining stone always yields cobblestone (not smooth stone).",
+        "produces": {
+          "type": "item",
+          "name": "cobblestone",
+          "count": 8
+        }
+      }
+    ]
+  },
+  {
+    "slug": "collect/sand",
+    "name": "Collect Sand",
+    "tab": "collect",
+    "level": "L1",
+    "rationale": "Sand is used for crafting glass, sandstone, and concrete.",
+    "actual": "Find sand near water or in deserts and collect it by hand or with a shovel.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Find sand",
+        "action_nl": "Search for sand blocks near water, beaches, or in desert biomes.",
+        "action_cmd": [
+          "!searchForBlock('sand', 32)"
+        ],
+        "verify_cmd": [],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "beach"
+          ]
+        },
+        "expected": "Sand blocks found nearby.",
+        "notes": "Sand is found near water bodies and in desert biomes."
+      },
+      {
+        "step": 2,
+        "goal": "Collect sand",
+        "action_nl": "Collect at least 8 sand blocks.",
+        "action_cmd": [
+          "!collectBlocks('sand', 8)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": [
+              "shovel"
+            ]
+          },
+          "access": [
+            "beach"
+          ]
+        },
+        "expected": "At least 8 sand in inventory.",
+        "notes": "Sand can be collected by hand, but a shovel is much faster.",
+        "produces": {
+          "type": "item",
+          "name": "sand",
+          "count": 8
+        }
+      }
+    ]
+  },
+  {
+    "slug": "collect/gold_ore",
+    "name": "Collect Gold Ore",
+    "tab": "collect",
+    "level": "L2",
+    "rationale": "Gold is used for powered rails, golden apples, and trading with piglins. Requires iron pickaxe to mine.",
+    "actual": "Craft an iron pickaxe, then find and mine gold ore underground or in mesas.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Craft a stone pickaxe",
+        "action_nl": "Collect logs, craft sticks, mine cobblestone, and craft a stone pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 2)",
+          "!craftRecipe('oak_planks', 4)",
+          "!craftRecipe('stick', 4)",
+          "!craftRecipe('wooden_pickaxe', 1)",
+          "!collectBlocks('stone', 3)",
+          "!craftRecipe('stone_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees",
+            "stone"
+          ]
+        },
+        "expected": "Stone pickaxe in inventory.",
+        "notes": "Gold ore requires iron pickaxe, so we first need stone pickaxe to get iron.",
+        "produces": {
+          "type": "item",
+          "name": "stone_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 2,
+        "goal": "Mine iron and craft iron pickaxe",
+        "action_nl": "Mine iron ore with stone pickaxe, smelt into ingots, and craft an iron pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('iron_ore', 3)",
+          "!smeltItem('raw_iron', 3)",
+          "!craftRecipe('iron_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "stone_pickaxe:1",
+              "stick:2"
+            ],
+            "nearby": [
+              "furnace"
+            ],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ],
+          "resources": {
+            "fuel": 3
+          }
+        },
+        "expected": "Iron pickaxe in inventory.",
+        "notes": "Iron pickaxe is the minimum tool required to mine gold ore.",
+        "produces": {
+          "type": "item",
+          "name": "iron_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 3,
+        "goal": "Find gold ore",
+        "action_nl": "Search underground or in mesa biomes for gold ore deposits.",
+        "action_cmd": [
+          "!searchForBlock('gold_ore', 32)"
+        ],
+        "verify_cmd": [],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "iron_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "Gold ore found nearby.",
+        "notes": "Gold ore spawns between Y=-64 and Y=32, more common in mesa biomes."
+      },
+      {
+        "step": 4,
+        "goal": "Mine gold ore",
+        "action_nl": "Mine at least 3 gold ore blocks using iron pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('gold_ore', 3)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "equipped": [
+              "iron_pickaxe"
+            ],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "At least 3 raw gold in inventory.",
+        "notes": "Mining gold_ore drops raw_gold in Minecraft 1.17+. Must use iron pickaxe or better.",
+        "produces": {
+          "type": "item",
+          "name": "raw_gold",
+          "count": 3
+        }
+      }
+    ]
+  },
+  {
+    "slug": "collect/lapis",
+    "name": "Collect Lapis Lazuli",
+    "tab": "collect",
+    "level": "L2",
+    "rationale": "Lapis lazuli is used for enchanting and blue dye. Requires stone pickaxe to mine.",
+    "actual": "Craft a stone pickaxe, then find and mine lapis ore deep underground.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Craft a stone pickaxe",
+        "action_nl": "Collect logs, craft sticks, mine cobblestone, and craft a stone pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 2)",
+          "!craftRecipe('oak_planks', 4)",
+          "!craftRecipe('stick', 2)",
+          "!craftRecipe('wooden_pickaxe', 1)",
+          "!collectBlocks('stone', 3)",
+          "!craftRecipe('stone_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees",
+            "stone"
+          ]
+        },
+        "expected": "Stone pickaxe in inventory.",
+        "notes": "Lapis ore requires stone pickaxe or better to mine.",
+        "produces": {
+          "type": "item",
+          "name": "stone_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 2,
+        "goal": "Find lapis ore",
+        "action_nl": "Search deep underground for lapis lazuli ore.",
+        "action_cmd": [
+          "!searchForBlock('lapis_ore', 32)"
+        ],
+        "verify_cmd": [],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "stone_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "Lapis ore found nearby.",
+        "notes": "Lapis ore spawns deep underground, usually below Y=0."
+      },
+      {
+        "step": 3,
+        "goal": "Mine lapis ore",
+        "action_nl": "Mine at least 6 lapis ore blocks using stone pickaxe or better.",
+        "action_cmd": [
+          "!collectBlocks('lapis_ore', 6)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "equipped": [
+              "stone_pickaxe"
+            ],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "At least 6 lapis lazuli in inventory.",
+        "notes": "Each lapis ore drops 4-9 lapis lazuli. Very valuable for enchanting.",
+        "produces": {
+          "type": "item",
+          "name": "lapis_lazuli",
+          "count": 6
+        }
+      }
+    ]
+  },
+  {
+    "slug": "collect/redstone",
+    "name": "Collect Redstone Dust",
+    "tab": "collect",
+    "level": "L2",
+    "rationale": "Redstone is essential for circuits, mechanisms, and powered devices. Requires iron pickaxe to mine — stone pickaxe cannot break redstone ore.",
+    "actual": "Craft an iron pickaxe, then find and mine redstone ore deep underground.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Craft a stone pickaxe",
+        "action_nl": "Collect logs, craft sticks, mine cobblestone, and craft a stone pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 2)",
+          "!craftRecipe('oak_planks', 4)",
+          "!craftRecipe('stick', 2)",
+          "!craftRecipe('wooden_pickaxe', 1)",
+          "!collectBlocks('stone', 3)",
+          "!craftRecipe('stone_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees",
+            "stone"
+          ]
+        },
+        "expected": "Stone pickaxe in inventory.",
+        "notes": "Stone pickaxe is needed to mine iron ore. Redstone ore itself requires iron pickaxe.",
+        "produces": {
+          "type": "item",
+          "name": "stone_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 2,
+        "goal": "Mine iron ore and craft iron pickaxe",
+        "action_nl": "Mine iron ore with stone pickaxe, smelt into ingots, and craft an iron pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('iron_ore', 3)",
+          "!smeltItem('raw_iron', 3)",
+          "!craftRecipe('iron_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "stone_pickaxe:1",
+              "stick:2"
+            ],
+            "nearby": [
+              "furnace"
+            ],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ],
+          "resources": {
+            "fuel": 3
+          }
+        },
+        "expected": "Iron pickaxe in inventory.",
+        "notes": "Iron pickaxe is the minimum tool required to mine redstone ore in Minecraft 1.20.4.",
+        "produces": {
+          "type": "item",
+          "name": "iron_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 3,
+        "goal": "Find redstone ore",
+        "action_nl": "Search deep underground for redstone ore deposits.",
+        "action_cmd": [
+          "!searchForBlock('redstone_ore', 32)"
+        ],
+        "verify_cmd": [],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "iron_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "Redstone ore found nearby.",
+        "notes": "Redstone ore spawns below Y=16 and emits a faint glow when touched."
+      },
+      {
+        "step": 4,
+        "goal": "Mine redstone ore",
+        "action_nl": "Mine at least 8 redstone ore blocks using iron pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('redstone_ore', 8)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "equipped": [
+              "iron_pickaxe"
+            ],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "At least 8 redstone dust in inventory.",
+        "notes": "Each redstone ore drops 4-5 redstone dust. Must use iron pickaxe or better.",
+        "produces": {
+          "type": "item",
+          "name": "redstone",
+          "count": 8
+        }
+      }
+    ]
+  },
+  {
+    "slug": "collect/diamond",
+    "name": "Collect Diamonds",
+    "tab": "collect",
+    "level": "L2",
+    "rationale": "Diamonds are the most valuable resource for top-tier tools and armor. Requires iron pickaxe to mine.",
+    "actual": "Craft an iron pickaxe through the full tool chain, then mine diamond ore deep underground.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Craft basic tools and stone pickaxe",
+        "action_nl": "Collect logs, craft crafting table and wooden pickaxe, mine cobblestone, craft stone pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 4)",
+          "!craftRecipe('crafting_table', 1)",
+          "!craftRecipe('oak_planks', 8)",
+          "!craftRecipe('stick', 4)",
+          "!craftRecipe('wooden_pickaxe', 1)",
+          "!collectBlocks('stone', 3)",
+          "!craftRecipe('stone_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees",
+            "stone"
+          ]
+        },
+        "expected": "Stone pickaxe in inventory.",
+        "notes": "Diamonds require iron pickaxe, so we need the full chain from scratch.",
+        "produces": {
+          "type": "item",
+          "name": "stone_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 2,
+        "goal": "Mine iron and craft iron pickaxe",
+        "action_nl": "Mine iron ore with stone pickaxe, smelt into ingots, and craft an iron pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('iron_ore', 3)",
+          "!smeltItem('raw_iron', 3)",
+          "!craftRecipe('iron_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "stone_pickaxe:1",
+              "stick:2"
+            ],
+            "nearby": [
+              "furnace"
+            ],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ],
+          "resources": {
+            "fuel": 3
+          }
+        },
+        "expected": "Iron pickaxe in inventory.",
+        "notes": "Iron pickaxe is the minimum tool required to mine diamond ore.",
+        "produces": {
+          "type": "item",
+          "name": "iron_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 3,
+        "goal": "Find diamond ore",
+        "action_nl": "Search deep underground (Y < -58) for diamond ore.",
+        "action_cmd": [
+          "!searchForBlock('diamond_ore', 32)"
+        ],
+        "verify_cmd": [],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "iron_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "Diamond ore found nearby.",
+        "notes": "Diamonds spawn below Y=-58, often near lava pools."
+      },
+      {
+        "step": 4,
+        "goal": "Mine diamond ore",
+        "action_nl": "Mine at least 3 diamond ore blocks using iron pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('diamond_ore', 3)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "equipped": [
+              "iron_pickaxe"
+            ],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "At least 3 diamonds in inventory.",
+        "notes": "Each diamond ore drops exactly 1 diamond. Must use iron pickaxe or better.",
+        "produces": {
+          "type": "item",
+          "name": "diamond",
+          "count": 3
+        }
+      }
+    ]
+  },
+  {
+    "slug": "collect/copper",
+    "name": "Collect Copper Ore",
+    "tab": "collect",
+    "level": "L2",
+    "rationale": "Copper is used for lightning rods, spyglasses, and building blocks. Requires stone pickaxe to mine.",
+    "actual": "Craft a stone pickaxe, then find and mine copper ore underground.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Craft a stone pickaxe",
+        "action_nl": "Collect logs, craft sticks, mine cobblestone, and craft a stone pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 2)",
+          "!craftRecipe('oak_planks', 4)",
+          "!craftRecipe('stick', 2)",
+          "!craftRecipe('wooden_pickaxe', 1)",
+          "!collectBlocks('stone', 3)",
+          "!craftRecipe('stone_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees",
+            "stone"
+          ]
+        },
+        "expected": "Stone pickaxe in inventory.",
+        "notes": "Copper ore requires stone pickaxe or better to mine.",
+        "produces": {
+          "type": "item",
+          "name": "stone_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 2,
+        "goal": "Find copper ore",
+        "action_nl": "Search underground for copper ore deposits.",
+        "action_cmd": [
+          "!searchForBlock('copper_ore', 32)"
+        ],
+        "verify_cmd": [],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "stone_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "Copper ore found nearby.",
+        "notes": "Copper ore is common between Y=0 and Y=96."
+      },
+      {
+        "step": 3,
+        "goal": "Mine copper ore",
+        "action_nl": "Mine at least 5 copper ore blocks using stone pickaxe or better.",
+        "action_cmd": [
+          "!collectBlocks('copper_ore', 5)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "equipped": [
+              "stone_pickaxe"
+            ],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "At least 5 raw copper in inventory.",
+        "notes": "Each copper ore drops 2-3 raw copper. Can be smelted into copper ingots.",
+        "produces": {
+          "type": "item",
+          "name": "raw_copper",
+          "count": 5
+        }
+      }
+    ]
+  },
+  {
+    "slug": "collect/emerald",
+    "name": "Collect Emeralds",
+    "tab": "collect",
+    "level": "L2",
+    "rationale": "Emeralds are used for trading with villagers. Rare and requires iron pickaxe to mine.",
+    "actual": "Craft an iron pickaxe, then find and mine emerald ore in mountain biomes.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Craft basic tools and stone pickaxe",
+        "action_nl": "Collect logs, craft sticks, mine cobblestone, and craft a stone pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 4)",
+          "!craftRecipe('oak_planks', 8)",
+          "!craftRecipe('stick', 4)",
+          "!craftRecipe('wooden_pickaxe', 1)",
+          "!collectBlocks('stone', 3)",
+          "!craftRecipe('stone_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees",
+            "stone"
+          ]
+        },
+        "expected": "Stone pickaxe in inventory.",
+        "notes": "Emerald ore requires iron pickaxe, so we need the full tool chain.",
+        "produces": {
+          "type": "item",
+          "name": "stone_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 2,
+        "goal": "Mine iron and craft iron pickaxe",
+        "action_nl": "Mine iron ore, smelt into ingots, and craft an iron pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('iron_ore', 3)",
+          "!smeltItem('raw_iron', 3)",
+          "!craftRecipe('iron_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "stone_pickaxe:1",
+              "stick:2"
+            ],
+            "nearby": [
+              "furnace"
+            ],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ],
+          "resources": {
+            "fuel": 3
+          }
+        },
+        "expected": "Iron pickaxe in inventory.",
+        "notes": "Iron pickaxe is required to mine emerald ore.",
+        "produces": {
+          "type": "item",
+          "name": "iron_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 3,
+        "goal": "Find emerald ore",
+        "action_nl": "Search in mountain biomes for emerald ore.",
+        "action_cmd": [
+          "!searchForBlock('emerald_ore', 32)"
+        ],
+        "verify_cmd": [],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "iron_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "mountains"
+          ]
+        },
+        "expected": "Emerald ore found nearby.",
+        "notes": "Emerald ore only spawns in mountain biomes, making it very rare."
+      },
+      {
+        "step": 4,
+        "goal": "Mine emerald ore",
+        "action_nl": "Mine at least 3 emerald ore blocks using iron pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('emerald_ore', 3)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "equipped": [
+              "iron_pickaxe"
+            ],
+            "optional": []
+          },
+          "access": [
+            "mountains"
+          ]
+        },
+        "expected": "At least 3 emeralds in inventory.",
+        "notes": "Each emerald ore drops exactly 1 emerald. Very valuable for villager trading.",
+        "produces": {
+          "type": "item",
+          "name": "emerald",
+          "count": 3
+        }
+      }
+    ]
+  },
+  {
+    "slug": "collect/iron_bulk",
+    "name": "Collect Iron in Bulk",
+    "tab": "collect",
+    "level": "L2",
+    "rationale": "Bulk iron collection for large crafting projects like armor sets or anvil.",
+    "actual": "Craft a stone pickaxe, then mine a large quantity of iron ore underground.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Craft a stone pickaxe",
+        "action_nl": "Collect logs, craft sticks, mine cobblestone, and craft a stone pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 2)",
+          "!craftRecipe('oak_planks', 4)",
+          "!craftRecipe('stick', 2)",
+          "!craftRecipe('wooden_pickaxe', 1)",
+          "!collectBlocks('stone', 3)",
+          "!craftRecipe('stone_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees",
+            "stone"
+          ]
+        },
+        "expected": "Stone pickaxe in inventory.",
+        "notes": "Bring a stone pickaxe for bulk iron mining.",
+        "produces": {
+          "type": "item",
+          "name": "stone_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 2,
+        "goal": "Find iron ore deposits",
+        "action_nl": "Search underground for large iron ore deposits.",
+        "action_cmd": [
+          "!searchForBlock('iron_ore', 32)"
+        ],
+        "verify_cmd": [],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "stone_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "Iron ore deposits found nearby.",
+        "notes": "Iron ore spawns in veins of up to 9 blocks."
+      },
+      {
+        "step": 3,
+        "goal": "Mine iron ore in bulk",
+        "action_nl": "Mine at least 16 iron ore blocks using stone pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('iron_ore', 16)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "equipped": [
+              "stone_pickaxe"
+            ],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "At least 16 raw iron in inventory.",
+        "notes": "Mining iron_ore drops raw_iron in Minecraft 1.17+. Smelt in batches for efficiency.",
+        "produces": {
+          "type": "item",
+          "name": "raw_iron",
+          "count": 16
+        }
+      }
+    ]
+  },
+  {
+    "slug": "collect/clay",
+    "name": "Collect Clay",
+    "tab": "collect",
+    "level": "L2",
+    "rationale": "Clay is used for bricks, terracotta, and pottery. Found near water.",
+    "actual": "Find clay blocks near rivers and lakes, then collect them by hand or with a shovel.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Find clay near water",
+        "action_nl": "Search for clay blocks near rivers, lakes, or ocean shores.",
+        "action_cmd": [
+          "!searchForBlock('clay', 32)"
+        ],
+        "verify_cmd": [],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "water"
+          ]
+        },
+        "expected": "Clay blocks found nearby.",
+        "notes": "Clay is found underwater near sand, appearing as gray-blue blocks."
+      },
+      {
+        "step": 2,
+        "goal": "Collect clay",
+        "action_nl": "Mine at least 16 clay blocks.",
+        "action_cmd": [
+          "!collectBlocks('clay', 16)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": [
+              "shovel"
+            ]
+          },
+          "access": [
+            "water"
+          ]
+        },
+        "expected": "At least 16 clay balls in inventory.",
+        "notes": "Each clay block drops 4 clay balls. Can be smelted into bricks or crafted into terracotta.",
+        "produces": {
+          "type": "item",
+          "name": "clay_ball",
+          "count": 16
+        }
+      }
+    ]
+  },
+  {
+    "slug": "collect/cactus",
+    "name": "Collect Cactus",
+    "tab": "collect",
+    "level": "L2",
+    "rationale": "Cactus is used for green dye and defense. Found only in desert biomes.",
+    "actual": "Find cactus in desert biomes and collect them by breaking the base block.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Find cactus in desert",
+        "action_nl": "Search for cactus blocks in desert biomes.",
+        "action_cmd": [
+          "!searchForBlock('cactus', 32)"
+        ],
+        "verify_cmd": [],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "desert"
+          ]
+        },
+        "expected": "Cactus found nearby.",
+        "notes": "Cactus only grows in desert biomes on sand blocks."
+      },
+      {
+        "step": 2,
+        "goal": "Collect cactus",
+        "action_nl": "Break the base of cactus plants to collect at least 8 cactus blocks.",
+        "action_cmd": [
+          "!collectBlocks('cactus', 8)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "desert"
+          ]
+        },
+        "expected": "At least 8 cactus in inventory.",
+        "notes": "Breaking the bottom of a tall cactus drops all blocks above it. Touching cactus causes damage.",
+        "produces": {
+          "type": "item",
+          "name": "cactus",
+          "count": 8
+        }
+      }
+    ]
+  },
+  {
+    "slug": "collect/glowstone",
+    "name": "Collect Glowstone",
+    "tab": "collect",
+    "level": "L2",
+    "rationale": "Glowstone provides bright light and is used in redstone lamps. Found in the Nether.",
+    "actual": "Find glowstone in the Nether and collect it. No special tool required.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Find glowstone",
+        "action_nl": "Search for glowstone blocks hanging from nether ceilings.",
+        "action_cmd": [
+          "!searchForBlock('glowstone', 32)"
+        ],
+        "verify_cmd": [],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "nether"
+          ]
+        },
+        "expected": "Glowstone found nearby.",
+        "notes": "Glowstone generates on the ceilings of the Nether. Any tool works."
+      },
+      {
+        "step": 2,
+        "goal": "Collect glowstone",
+        "action_nl": "Break glowstone blocks to collect glowstone dust.",
+        "action_cmd": [
+          "!collectBlocks('glowstone', 8)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "nether"
+          ]
+        },
+        "expected": "At least 8 glowstone dust in inventory.",
+        "notes": "Each glowstone block drops 2-4 glowstone dust. Can be crafted back into glowstone blocks.",
+        "produces": {
+          "type": "item",
+          "name": "glowstone_dust",
+          "count": 8
+        }
+      }
+    ]
+  },
+  {
+    "slug": "collect/obsidian",
+    "name": "Collect Obsidian",
+    "tab": "collect",
+    "level": "L3",
+    "rationale": "Obsidian is required for nether portals and enchanting tables. Requires diamond pickaxe to mine.",
+    "actual": "Craft a diamond pickaxe through the full tool chain, then mine obsidian formed by water touching lava.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Craft basic tools and stone pickaxe",
+        "action_nl": "Collect logs, craft crafting table and wooden pickaxe, mine cobblestone, craft stone pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 4)",
+          "!craftRecipe('crafting_table', 1)",
+          "!craftRecipe('oak_planks', 12)",
+          "!craftRecipe('stick', 6)",
+          "!craftRecipe('wooden_pickaxe', 1)",
+          "!collectBlocks('stone', 3)",
+          "!craftRecipe('stone_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees",
+            "stone"
+          ]
+        },
+        "expected": "Stone pickaxe in inventory.",
+        "notes": "Obsidian requires diamond pickaxe. This is the longest tool chain.",
+        "produces": {
+          "type": "item",
+          "name": "stone_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 2,
+        "goal": "Mine iron and craft iron pickaxe",
+        "action_nl": "Mine iron ore, smelt into ingots, and craft an iron pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('iron_ore', 3)",
+          "!smeltItem('raw_iron', 3)",
+          "!craftRecipe('iron_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "stone_pickaxe:1",
+              "stick:2"
+            ],
+            "nearby": [
+              "furnace"
+            ],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ],
+          "resources": {
+            "fuel": 3
+          }
+        },
+        "expected": "Iron pickaxe in inventory.",
+        "notes": "Iron pickaxe needed to mine diamond ore.",
+        "produces": {
+          "type": "item",
+          "name": "iron_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 3,
+        "goal": "Mine diamond and craft diamond pickaxe",
+        "action_nl": "Mine diamond ore with iron pickaxe, then craft a diamond pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('diamond_ore', 3)",
+          "!craftRecipe('diamond_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "iron_pickaxe:1",
+              "stick:2"
+            ],
+            "nearby": [
+              "crafting_table"
+            ],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "Diamond pickaxe in inventory.",
+        "notes": "Diamond pickaxe is the only tool that can mine obsidian.",
+        "produces": {
+          "type": "item",
+          "name": "diamond_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 4,
+        "goal": "Find obsidian",
+        "action_nl": "Search for obsidian formed where water meets lava, or pour water on lava to create obsidian.",
+        "action_cmd": [
+          "!searchForBlock('obsidian', 32)"
+        ],
+        "verify_cmd": [],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "diamond_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "Obsidian found nearby.",
+        "notes": "Obsidian forms when flowing water touches a lava source block."
+      },
+      {
+        "step": 5,
+        "goal": "Mine obsidian",
+        "action_nl": "Mine at least 10 obsidian blocks using diamond pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('obsidian', 10)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "equipped": [
+              "diamond_pickaxe"
+            ],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "At least 10 obsidian in inventory.",
+        "notes": "Obsidian takes 10 seconds to mine with diamond pickaxe. Do NOT use any other tool — it will drop nothing.",
+        "produces": {
+          "type": "item",
+          "name": "obsidian",
+          "count": 10
+        }
+      }
+    ]
+  },
+  {
+    "slug": "collect/ancient_debris",
+    "name": "Collect Ancient Debris",
+    "tab": "collect",
+    "level": "L3",
+    "rationale": "Ancient debris is the source of netherite, the strongest material in the game. Extremely rare, found only in the Nether.",
+    "actual": "Craft a diamond pickaxe through the full tool chain, enter the Nether, and mine ancient debris at Y=8-22.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Craft full tool chain to iron pickaxe",
+        "action_nl": "Collect logs, craft tools through wood and stone tiers, mine iron and smelt, craft iron pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 4)",
+          "!craftRecipe('crafting_table', 1)",
+          "!craftRecipe('oak_planks', 12)",
+          "!craftRecipe('stick', 6)",
+          "!craftRecipe('wooden_pickaxe', 1)",
+          "!collectBlocks('stone', 3)",
+          "!craftRecipe('stone_pickaxe', 1)",
+          "!collectBlocks('iron_ore', 3)",
+          "!smeltItem('raw_iron', 3)",
+          "!craftRecipe('iron_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees",
+            "stone",
+            "underground"
+          ],
+          "resources": {
+            "fuel": 3
+          }
+        },
+        "expected": "Iron pickaxe in inventory.",
+        "notes": "Ancient debris needs diamond pickaxe, requiring the full overworld tool chain first.",
+        "produces": {
+          "type": "item",
+          "name": "iron_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 2,
+        "goal": "Mine diamond and craft diamond pickaxe",
+        "action_nl": "Mine diamond ore with iron pickaxe, then craft a diamond pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('diamond_ore', 3)",
+          "!craftRecipe('diamond_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "iron_pickaxe:1",
+              "stick:2"
+            ],
+            "nearby": [
+              "crafting_table"
+            ],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "Diamond pickaxe in inventory.",
+        "notes": "Diamond pickaxe is required to mine ancient debris.",
+        "produces": {
+          "type": "item",
+          "name": "diamond_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 3,
+        "goal": "Mine obsidian for the nether portal",
+        "action_nl": "Mine 10 obsidian blocks using the diamond pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('obsidian', 10)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "equipped": [
+              "diamond_pickaxe"
+            ],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "10 obsidian in inventory.",
+        "notes": "Obsidian requires a diamond pickaxe or better to mine — lower tiers yield nothing.",
+        "produces": {
+          "type": "item",
+          "name": "obsidian",
+          "count": 10
+        }
+      },
+      {
+        "step": 4,
+        "goal": "Enter the Nether",
+        "action_nl": "Build a nether portal from obsidian and light it with a flint and steel or fire charge.",
+        "action_cmd": [
+          "!placeHere('obsidian')",
+          "!placeHere('obsidian')",
+          "!placeHere('obsidian')",
+          "!placeHere('obsidian')"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "obsidian:10"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "nether"
+          ]
+        },
+        "expected": "Nether portal frame built.",
+        "notes": "Need 10 obsidian for a full portal frame. Light with flint and steel to activate.",
+        "produces": []
+      },
+      {
+        "step": 5,
+        "goal": "Find ancient debris",
+        "action_nl": "Search in the Nether at Y=8-22 for ancient debris blocks.",
+        "action_cmd": [
+          "!searchForBlock('ancient_debris', 32)"
+        ],
+        "verify_cmd": [],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "diamond_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "nether"
+          ]
+        },
+        "expected": "Ancient debris found nearby.",
+        "notes": "Ancient debris is very rare, spawning at Y=8-22 in the Nether. It is blast-resistant."
+      },
+      {
+        "step": 6,
+        "goal": "Mine ancient debris",
+        "action_nl": "Mine at least 2 ancient debris blocks using diamond pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('ancient_debris', 2)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "equipped": [
+              "diamond_pickaxe"
+            ],
+            "optional": []
+          },
+          "access": [
+            "nether"
+          ]
+        },
+        "expected": "At least 2 ancient debris in inventory.",
+        "notes": "Ancient debris can be smelted into netherite scraps. 4 scraps + 4 gold ingots = 1 netherite ingot.",
+        "produces": {
+          "type": "item",
+          "name": "ancient_debris",
+          "count": 2
+        }
+      }
+    ]
+  },
+  {
+    "slug": "collect/ender_pearl",
+    "name": "Collect Ender Pearls",
+    "tab": "collect",
+    "level": "L3",
+    "rationale": "Ender pearls are essential for reaching the End dimension and teleportation. Dropped by endermen.",
+    "actual": "Prepare iron armor and sword, find an enderman, build shelter, and defeat it to collect ender pearls.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Collect logs and craft basic tools",
+        "action_nl": "Collect oak logs, craft planks, sticks, crafting table, and a wooden pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 4)",
+          "!craftRecipe('oak_planks', 12)",
+          "!craftRecipe('crafting_table', 1)",
+          "!craftRecipe('stick', 6)",
+          "!craftRecipe('wooden_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees"
+          ]
+        },
+        "expected": "Wooden pickaxe in inventory.",
+        "notes": "Pickaxes need 3 iron ingots + 2 sticks. Collect extra logs for sticks and crafting table.",
+        "produces": [
+          {
+            "type": "item",
+            "name": "wooden_pickaxe",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "crafting_table",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "stick",
+            "count": 4
+          }
+        ]
+      },
+      {
+        "step": 2,
+        "goal": "Mine cobblestone and craft stone pickaxe",
+        "action_nl": "Use the wooden pickaxe to mine cobblestone, then craft a stone pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('stone', 3)",
+          "!craftRecipe('stone_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "wooden_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "stone"
+          ]
+        },
+        "expected": "Stone pickaxe in inventory.",
+        "notes": "Stone pickaxe is REQUIRED to mine iron ore. Wooden pickaxe cannot harvest iron.",
+        "produces": {
+          "type": "item",
+          "name": "stone_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 3,
+        "goal": "Prepare iron equipment",
+        "action_nl": "Mine iron ore, smelt into ingots, and craft iron sword and iron chestplate for protection.",
+        "action_cmd": [
+          "!collectBlocks('iron_ore', 11)",
+          "!smeltItem('raw_iron', 11)",
+          "!craftRecipe('iron_sword', 1)",
+          "!craftRecipe('iron_chestplate', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "stone_pickaxe:1",
+              "stick:3"
+            ],
+            "nearby": [
+              "furnace",
+              "crafting_table"
+            ],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ],
+          "resources": {
+            "fuel": 11
+          }
+        },
+        "expected": "Iron sword and iron chestplate in inventory.",
+        "notes": "Endermen are dangerous. Iron equipment is minimum recommended gear.",
+        "produces": [
+          {
+            "type": "item",
+            "name": "iron_sword",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "iron_chestplate",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "step": 4,
+        "goal": "Find an enderman",
+        "action_nl": "Search for endermen at night or in the End dimension.",
+        "action_cmd": [
+          "!searchForEntity('enderman', 32)"
+        ],
+        "verify_cmd": [],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "iron_sword:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "surface"
+          ]
+        },
+        "expected": "Enderman found nearby.",
+        "notes": "Endermen spawn at night in the overworld. Do NOT look at them directly or they will attack."
+      },
+      {
+        "step": 5,
+        "goal": "Defeat the enderman",
+        "action_nl": "Stand under the 2-block shelter and attack the enderman with iron sword.",
+        "action_cmd": [
+          "!attack('enderman', true)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "iron_sword:1"
+            ],
+            "nearby": [],
+            "equipped": [
+              "iron_sword"
+            ],
+            "optional": []
+          },
+          "access": [
+            "surface"
+          ]
+        },
+        "expected": "Ender pearl dropped from defeated enderman.",
+        "notes": "Endermen drop 0-1 ender pearls when killed. May need to defeat multiple for enough pearls.",
+        "produces": {
+          "type": "item",
+          "name": "ender_pearl",
+          "count": 1
+        }
+      }
+    ]
+  },
+  {
+    "slug": "collect/blaze_rod",
+    "name": "Collect Blaze Rods",
+    "tab": "collect",
+    "level": "L3",
+    "rationale": "Blaze rods are needed for brewing stands and eyes of ender to reach the End. Dropped by blazes in Nether fortresses.",
+    "actual": "Craft a shield, enter the Nether, find a fortress, and defeat blazes to collect blaze rods.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Collect logs and craft basic tools",
+        "action_nl": "Collect oak logs, craft planks, sticks, crafting table, and a wooden pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 4)",
+          "!craftRecipe('oak_planks', 12)",
+          "!craftRecipe('crafting_table', 1)",
+          "!craftRecipe('stick', 8)",
+          "!craftRecipe('wooden_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees"
+          ]
+        },
+        "expected": "Wooden pickaxe in inventory.",
+        "notes": "Full chain needed: wooden → stone → iron pickaxe before you can mine diamonds.",
+        "produces": [
+          {
+            "type": "item",
+            "name": "wooden_pickaxe",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "crafting_table",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "stick",
+            "count": 6
+          }
+        ]
+      },
+      {
+        "step": 2,
+        "goal": "Mine cobblestone and craft stone pickaxe",
+        "action_nl": "Use wooden pickaxe to mine cobblestone, then craft a stone pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('stone', 3)",
+          "!craftRecipe('stone_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "wooden_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "stone"
+          ]
+        },
+        "expected": "Stone pickaxe in inventory.",
+        "notes": "Stone pickaxe is needed to mine iron ore.",
+        "produces": {
+          "type": "item",
+          "name": "stone_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 3,
+        "goal": "Mine iron, smelt, and craft iron pickaxe",
+        "action_nl": "Mine 3 iron ore with stone pickaxe, smelt raw_iron into ingots, craft an iron pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('iron_ore', 3)",
+          "!smeltItem('raw_iron', 3)",
+          "!craftRecipe('iron_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "stone_pickaxe:1",
+              "stick:2"
+            ],
+            "nearby": [
+              "furnace"
+            ],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ],
+          "resources": {
+            "fuel": 3
+          }
+        },
+        "expected": "Iron pickaxe in inventory.",
+        "notes": "Iron pickaxe is the minimum tool required to mine diamond ore. Mining iron_ore drops raw_iron in 1.17+.",
+        "produces": {
+          "type": "item",
+          "name": "iron_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 4,
+        "goal": "Mine diamond ore",
+        "action_nl": "Find and mine 3 diamond ore blocks deep underground (below Y=-58) using the iron pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('diamond_ore', 3)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "iron_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "3 diamonds in inventory.",
+        "notes": "Diamonds only spawn below Y=-58. You MUST use an iron pickaxe or better.",
+        "produces": {
+          "type": "item",
+          "name": "diamond",
+          "count": 3
+        }
+      },
+      {
+        "step": 5,
+        "goal": "Craft a Diamond Pickaxe",
+        "action_nl": "Use a Crafting Table to combine 3 diamonds and 2 sticks in a 'T' shape pattern.",
+        "action_cmd": [
+          "!craftRecipe('diamond_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "diamond:3",
+              "stick:2"
+            ],
+            "nearby": [
+              "crafting_table"
+            ],
+            "optional": []
+          }
+        },
+        "expected": "A Diamond Pickaxe is added to your inventory.",
+        "notes": "Diamond Pickaxe can mine obsidian and is the fastest pickaxe tier before netherite.",
+        "produces": {
+          "type": "item",
+          "name": "diamond_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 6,
+        "goal": "Craft a shield for protection",
+        "action_nl": "Mine iron ore, smelt into an ingot, and craft a shield with planks.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 2)",
+          "!craftRecipe('oak_planks', 6)",
+          "!collectBlocks('iron_ore', 1)",
+          "!smeltItem('raw_iron', 1)",
+          "!craftRecipe('shield', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "stone_pickaxe:1"
+            ],
+            "nearby": [
+              "furnace",
+              "crafting_table"
+            ],
+            "optional": []
+          },
+          "access": [
+            "trees",
+            "underground"
+          ],
+          "resources": {
+            "fuel": 1
+          }
+        },
+        "expected": "Shield in inventory.",
+        "notes": "Shield is critical for blocking blaze fireballs.",
+        "produces": {
+          "type": "item",
+          "name": "shield",
+          "count": 1
+        }
+      },
+      {
+        "step": 7,
+        "goal": "Build and ignite a Nether portal",
+        "action_nl": "Mine gravel for flint, smelt an iron ingot, craft flint and steel, mine obsidian, and light the portal",
+        "action_cmd": [
+          "!collectBlocks('gravel', 4)",
+          "!collectBlocks('iron_ore', 1)",
+          "!smeltItem('raw_iron', 1)",
+          "!craftRecipe('flint_and_steel', 1)",
+          "!collectBlocks('obsidian', 10)",
+          "!placeHere('obsidian')",
+          "!equip('flint_and_steel')",
+          "!activate('obsidian')"
+        ],
+        "verify_cmd": [
+          "!inventory('flint_and_steel')"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "diamond_pickaxe:1"
+            ],
+            "nearby": [
+              "furnace"
+            ],
+            "optional": []
+          },
+          "access": [
+            "underground",
+            "surface"
+          ],
+          "resources": {
+            "fuel": 1
+          }
+        },
+        "expected": "Portal built and ignited",
+        "notes": "flint drops probabilistically from gravel; diamond pickaxe required to harvest obsidian"
+      },
+      {
+        "step": 8,
+        "goal": "Find a Nether fortress",
+        "action_nl": "Search for nether bricks which indicate a fortress structure.",
+        "action_cmd": [
+          "!searchForBlock('nether_bricks', 64)"
+        ],
+        "verify_cmd": [],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "shield:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "nether"
+          ]
+        },
+        "expected": "Nether fortress found.",
+        "notes": "Nether fortresses contain blaze spawners. Look for dark nether brick structures."
+      },
+      {
+        "step": 9,
+        "goal": "Defeat blazes",
+        "action_nl": "Use shield to block fireballs and attack blazes with a weapon.",
+        "action_cmd": [
+          "!attack('blaze', true)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "shield:1"
+            ],
+            "nearby": [],
+            "equipped": [
+              "shield"
+            ],
+            "optional": []
+          },
+          "access": [
+            "nether"
+          ]
+        },
+        "expected": "Blaze rods dropped from defeated blazes.",
+        "notes": "Blazes drop 0-1 blaze rods when killed by a player. Fire resistance potions help greatly.",
+        "produces": {
+          "type": "item",
+          "name": "blaze_rod",
+          "count": 2
+        }
+      }
+    ]
+  },
+  {
+    "slug": "collect/quartz",
+    "name": "Collect Nether Quartz",
+    "tab": "collect",
+    "level": "L3",
+    "rationale": "Nether quartz is used for redstone comparators, observers, and decorative blocks. Found only in the Nether.",
+    "actual": "Enter the Nether through a portal and mine nether quartz ore. Requires access to obsidian for portal construction.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Craft stone pickaxe for nether mining",
+        "action_nl": "Collect logs, craft sticks, mine cobblestone, and craft a stone pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 2)",
+          "!craftRecipe('oak_planks', 4)",
+          "!craftRecipe('stick', 2)",
+          "!craftRecipe('wooden_pickaxe', 1)",
+          "!collectBlocks('stone', 3)",
+          "!craftRecipe('stone_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees",
+            "stone"
+          ]
+        },
+        "expected": "Stone pickaxe in inventory.",
+        "notes": "Nether quartz ore needs at least a stone pickaxe to mine.",
+        "produces": {
+          "type": "item",
+          "name": "stone_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 2,
+        "goal": "Enter the Nether",
+        "action_nl": "Use a nether portal to enter the Nether dimension.",
+        "action_cmd": [
+          "!searchForBlock('nether_portal', 32)"
+        ],
+        "verify_cmd": [],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "stone_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "nether"
+          ]
+        },
+        "expected": "Nether portal found.",
+        "notes": "Need an active nether portal. Building one requires 10 obsidian and flint and steel."
+      },
+      {
+        "step": 3,
+        "goal": "Find nether quartz ore",
+        "action_nl": "Search in the Nether for nether quartz ore deposits.",
+        "action_cmd": [
+          "!searchForBlock('nether_quartz_ore', 32)"
+        ],
+        "verify_cmd": [],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "stone_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "nether"
+          ]
+        },
+        "expected": "Nether quartz ore found nearby.",
+        "notes": "Nether quartz ore is common in the Nether, appearing as white-speckled blocks in netherrack."
+      },
+      {
+        "step": 4,
+        "goal": "Mine nether quartz ore",
+        "action_nl": "Mine at least 16 nether quartz ore blocks using stone pickaxe or better.",
+        "action_cmd": [
+          "!collectBlocks('nether_quartz_ore', 16)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "equipped": [
+              "stone_pickaxe"
+            ],
+            "optional": []
+          },
+          "access": [
+            "nether"
+          ]
+        },
+        "expected": "At least 16 quartz in inventory.",
+        "notes": "Each nether quartz ore drops exactly 1 quartz. Collect enough for redstone components.",
+        "produces": {
+          "type": "item",
+          "name": "quartz",
+          "count": 16
+        }
+      }
+    ]
+  },
+  {
+    "slug": "collect/flint",
+    "name": "Collect Flint",
+    "tab": "collect",
+    "level": "L2",
+    "rationale": "Flint is needed for flint and steel, arrows, and other items. It drops from gravel at ~10% chance per block, so you must mine many gravel blocks to reliably obtain it.",
+    "actual": "Mine at least 20 gravel blocks to reliably get 1 or more flint (each block has 10% drop chance).",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Craft a wooden shovel for faster gravel mining",
+        "action_nl": "Collect logs, craft planks, sticks, and a wooden shovel to mine gravel efficiently.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 2)",
+          "!craftRecipe('oak_planks', 4)",
+          "!craftRecipe('stick', 2)",
+          "!craftRecipe('wooden_shovel', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees"
+          ]
+        },
+        "expected": "Wooden shovel in inventory.",
+        "notes": "A shovel mines gravel faster but is optional — hands work too.",
+        "produces": {
+          "type": "item",
+          "name": "wooden_shovel",
+          "count": 1
+        }
+      },
+      {
+        "step": 2,
+        "goal": "Mine at least 20 gravel blocks to collect flint",
+        "action_nl": "Gravel drops flint at approximately 10% chance per block. Mine 20 or more blocks to reliably obtain at least 1 flint.",
+        "action_cmd": [
+          "!collectBlocks('gravel', 20)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": [
+              "wooden_shovel:1"
+            ]
+          },
+          "access": [
+            "gravel_deposit"
+          ]
+        },
+        "expected": "At least 1 flint in inventory.",
+        "notes": "Flint drop rate is ~10% per gravel block. Mining 20 blocks gives ~88% chance of getting at least 1 flint. Do NOT mine just 1-3 blocks — that rarely yields flint.",
+        "produces": {
+          "type": "item",
+          "name": "flint",
+          "count": 1
+        }
+      }
+    ]
+  }
+]

@@ -1,0 +1,3509 @@
+[
+  {
+    "slug": "crafting/iron_axe",
+    "name": "Craft an Iron Axe",
+    "tab": "crafting",
+    "level": "L2",
+    "rationale": "Craft an Iron Axe to chop wood more efficiently and use it as a weapon. Shows the COMPLETE tool chain from scratch including wooden and stone pickaxe prerequisites.",
+    "actual": "Use a Crafting Table to combine 3 Iron Ingots and 2 Sticks in the correct pattern to make an Iron Axe. Requires full tool chain: wooden pickaxe → stone pickaxe → mine iron → smelt → craft.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Collect logs and craft basic tools",
+        "action_nl": "Collect oak logs, craft planks, sticks, crafting table, and a wooden pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 4)",
+          "!craftRecipe('oak_planks', 12)",
+          "!craftRecipe('crafting_table', 1)",
+          "!craftRecipe('stick', 4)",
+          "!craftRecipe('wooden_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees"
+          ]
+        },
+        "expected": "Wooden pickaxe in inventory.",
+        "notes": "Axes need 3 iron ingots + 2 sticks. Collect extra logs for sticks and crafting table.",
+        "produces": [
+          {
+            "type": "item",
+            "name": "wooden_pickaxe",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "crafting_table",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "stick",
+            "count": 4
+          }
+        ]
+      },
+      {
+        "step": 2,
+        "goal": "Mine cobblestone and craft stone pickaxe",
+        "action_nl": "Use the wooden pickaxe to mine cobblestone, then craft a stone pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('stone', 3)",
+          "!craftRecipe('stone_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "wooden_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "stone"
+          ]
+        },
+        "expected": "Stone pickaxe in inventory.",
+        "notes": "Stone pickaxe is REQUIRED to mine iron ore. Wooden pickaxe cannot harvest iron.",
+        "produces": {
+          "type": "item",
+          "name": "stone_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 3,
+        "goal": "Mine iron ore",
+        "action_nl": "Find and mine iron ore underground using the stone pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('iron_ore', 3)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "stone_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "3 raw iron in inventory.",
+        "notes": "Mining iron_ore drops raw_iron in Minecraft 1.17+. Stone pickaxe or better required.",
+        "produces": {
+          "type": "item",
+          "name": "raw_iron",
+          "count": 3
+        }
+      },
+      {
+        "step": 4,
+        "goal": "Smelt raw iron into iron ingots",
+        "action_nl": "Use a furnace to smelt raw iron into iron ingots.",
+        "action_cmd": [
+          "!smeltItem('raw_iron', 3)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "raw_iron:3"
+            ],
+            "nearby": [
+              "furnace"
+            ],
+            "optional": []
+          },
+          "resources": {
+            "fuel": 3
+          }
+        },
+        "expected": "3 iron ingots in inventory.",
+        "notes": "Use raw_iron not iron_ore for smelting.",
+        "produces": {
+          "type": "item",
+          "name": "iron_ingot",
+          "count": 3
+        }
+      },
+      {
+        "step": 5,
+        "goal": "Craft an Iron Axe",
+        "action_nl": "Use a Crafting Table to combine 3 iron ingots and 2 sticks in an 'L' shape.",
+        "action_cmd": [
+          "!craftRecipe('iron_axe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "iron_ingot:3",
+              "stick:2"
+            ],
+            "nearby": [
+              "crafting_table"
+            ],
+            "optional": []
+          }
+        },
+        "expected": "An Iron Axe is added to your inventory.",
+        "notes": "Iron axe deals more damage than stone axe and chops wood faster.",
+        "produces": {
+          "type": "item",
+          "name": "iron_axe",
+          "count": 1
+        }
+      }
+    ]
+  },
+  {
+    "slug": "crafting/diamond_pickaxe",
+    "name": "Craft a Diamond Pickaxe",
+    "tab": "crafting",
+    "level": "L3",
+    "rationale": "Craft a Diamond Pickaxe to mine obsidian and other rare materials efficiently. Shows the complete tool chain from wood to diamond tier.",
+    "actual": "Use a Crafting Table to combine 3 Diamonds and 2 Sticks to make a Diamond Pickaxe. Requires full tool chain: wooden pickaxe → stone pickaxe → iron pickaxe → mine diamonds → craft.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Collect logs and craft basic tools",
+        "action_nl": "Collect oak logs, craft planks, sticks, crafting table, and a wooden pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 4)",
+          "!craftRecipe('oak_planks', 12)",
+          "!craftRecipe('crafting_table', 1)",
+          "!craftRecipe('stick', 4)",
+          "!craftRecipe('wooden_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees"
+          ]
+        },
+        "expected": "Wooden pickaxe in inventory.",
+        "notes": "Full chain needed: wooden → stone → iron pickaxe before you can mine diamonds.",
+        "produces": [
+          {
+            "type": "item",
+            "name": "wooden_pickaxe",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "crafting_table",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "stick",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "step": 2,
+        "goal": "Mine cobblestone and craft stone pickaxe",
+        "action_nl": "Use wooden pickaxe to mine cobblestone, then craft a stone pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('stone', 3)",
+          "!craftRecipe('stone_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "wooden_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "stone"
+          ]
+        },
+        "expected": "Stone pickaxe in inventory.",
+        "notes": "Stone pickaxe is needed to mine iron ore.",
+        "produces": {
+          "type": "item",
+          "name": "stone_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 3,
+        "goal": "Mine iron, smelt, and craft iron pickaxe",
+        "action_nl": "Mine 3 iron ore with stone pickaxe, smelt raw_iron into ingots, craft an iron pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('iron_ore', 3)",
+          "!smeltItem('raw_iron', 3)",
+          "!craftRecipe('iron_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "stone_pickaxe:1",
+              "stick:2"
+            ],
+            "nearby": [
+              "furnace"
+            ],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ],
+          "resources": {
+            "fuel": 3
+          }
+        },
+        "expected": "Iron pickaxe in inventory.",
+        "notes": "Iron pickaxe is the minimum tool required to mine diamond ore. Mining iron_ore drops raw_iron in 1.17+.",
+        "produces": {
+          "type": "item",
+          "name": "iron_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 4,
+        "goal": "Mine diamond ore",
+        "action_nl": "Find and mine 3 diamond ore blocks deep underground (below Y=-58) using the iron pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('diamond_ore', 3)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "iron_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "3 diamonds in inventory.",
+        "notes": "Diamonds only spawn below Y=-58. You MUST use an iron pickaxe or better.",
+        "produces": {
+          "type": "item",
+          "name": "diamond",
+          "count": 3
+        }
+      },
+      {
+        "step": 5,
+        "goal": "Craft a Diamond Pickaxe",
+        "action_nl": "Use a Crafting Table to combine 3 diamonds and 2 sticks in a 'T' shape pattern.",
+        "action_cmd": [
+          "!craftRecipe('diamond_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "diamond:3",
+              "stick:2"
+            ],
+            "nearby": [
+              "crafting_table"
+            ],
+            "optional": []
+          }
+        },
+        "expected": "A Diamond Pickaxe is added to your inventory.",
+        "notes": "Diamond Pickaxe can mine obsidian and is the fastest pickaxe tier before netherite.",
+        "produces": {
+          "type": "item",
+          "name": "diamond_pickaxe",
+          "count": 1
+        }
+      }
+    ]
+  },
+  {
+    "slug": "crafting/stone_sword",
+    "name": "Craft a Stone Sword",
+    "tab": "crafting",
+    "level": "L1",
+    "rationale": "Craft a Stone Sword for combat and self-defense.",
+    "actual": "Use a Crafting Table to combine 2 Cobblestone and 1 Stick to make a Stone Sword. You must craft a wooden pickaxe first to mine stone.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Collect logs and craft a wooden pickaxe",
+        "action_nl": "Collect oak logs, craft planks and sticks, then craft a wooden pickaxe. You need the pickaxe to mine stone.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 2)",
+          "!craftRecipe('oak_planks', 8)",
+          "!craftRecipe('stick', 4)",
+          "!craftRecipe('wooden_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees"
+          ]
+        },
+        "expected": "Wooden pickaxe and sticks in inventory.",
+        "notes": "A wooden pickaxe is REQUIRED to mine stone — you cannot collect cobblestone by hand.",
+        "produces": [
+          {
+            "type": "item",
+            "name": "wooden_pickaxe",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "stick",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "step": 2,
+        "goal": "Mine stone for cobblestone",
+        "action_nl": "Use the wooden pickaxe to mine stone blocks and get cobblestone.",
+        "action_cmd": [
+          "!collectBlocks('stone', 2)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "wooden_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "stone"
+          ]
+        },
+        "expected": "At least 2 cobblestone in inventory.",
+        "notes": "Mining stone always yields cobblestone.",
+        "produces": {
+          "type": "item",
+          "name": "cobblestone",
+          "count": 2
+        }
+      },
+      {
+        "step": 3,
+        "goal": "Craft a Stone Sword",
+        "action_nl": "Use a Crafting Table with 2 cobblestone above 1 stick in a vertical line.",
+        "action_cmd": [
+          "!craftRecipe('stone_sword', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "cobblestone:2",
+              "stick:1"
+            ],
+            "nearby": [
+              "crafting_table"
+            ],
+            "optional": []
+          }
+        },
+        "expected": "A Stone Sword is added to your inventory.",
+        "notes": "Swords are for combat. Axes can also be used as weapons.",
+        "produces": {
+          "type": "item",
+          "name": "stone_sword",
+          "count": 1
+        }
+      }
+    ]
+  },
+  {
+    "slug": "crafting/wooden_hoe",
+    "name": "Craft a Wooden Hoe",
+    "tab": "crafting",
+    "level": "L1",
+    "rationale": "Craft a Wooden Hoe to till soil for farming.",
+    "actual": "Use a Crafting Table to combine 2 Planks and 2 Sticks to make a Wooden Hoe.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Collect and process wood",
+        "action_nl": "Collect logs and convert them into planks and sticks.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 2)",
+          "!craftRecipe('oak_planks', 8)",
+          "!craftRecipe('stick', 2)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees"
+          ]
+        },
+        "expected": "At least 2 planks and 2 sticks in inventory.",
+        "notes": "Hoes require 2 planks and 2 sticks in a specific pattern.",
+        "produces": [
+          {
+            "type": "item",
+            "name": "planks",
+            "count": 2
+          },
+          {
+            "type": "item",
+            "name": "stick",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "step": 2,
+        "goal": "Craft a Wooden Hoe",
+        "action_nl": "Use a Crafting Table with planks and sticks in hoe pattern.",
+        "action_cmd": [
+          "!craftRecipe('wooden_hoe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "planks:2",
+              "stick:2"
+            ],
+            "nearby": [
+              "crafting_table"
+            ],
+            "optional": []
+          }
+        },
+        "expected": "A Wooden Hoe is added to your inventory.",
+        "notes": "Hoes are used to till dirt into farmland for crops.",
+        "produces": {
+          "type": "item",
+          "name": "wooden_hoe",
+          "count": 1
+        }
+      }
+    ]
+  },
+  {
+    "slug": "crafting/iron_sword",
+    "name": "Craft an Iron Sword",
+    "tab": "crafting",
+    "level": "L3",
+    "rationale": "Craft an Iron Sword for combat. This example shows the COMPLETE tool chain from scratch, including crafting wooden and stone tools as prerequisites.",
+    "actual": "Use a Crafting Table to combine 2 Iron Ingots and 1 Stick to make an Iron Sword. Requires gathering wood, crafting a pickaxe, mining stone, mining iron, and smelting.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Collect logs and craft basic tools",
+        "action_nl": "Collect oak logs, craft planks, sticks, and a crafting table, then make a wooden pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 4)",
+          "!craftRecipe('oak_planks', 12)",
+          "!craftRecipe('crafting_table', 1)",
+          "!craftRecipe('stick', 4)",
+          "!craftRecipe('wooden_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees"
+          ]
+        },
+        "expected": "Wooden pickaxe in inventory.",
+        "notes": "Swords need 2 material units + 1 stick. We collect extra logs for sticks and the crafting table.",
+        "produces": [
+          {
+            "type": "item",
+            "name": "wooden_pickaxe",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "crafting_table",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "stick",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "step": 2,
+        "goal": "Mine cobblestone and craft a stone pickaxe",
+        "action_nl": "Use the wooden pickaxe to mine cobblestone, then craft a stone pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('stone', 3)",
+          "!craftRecipe('stone_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "wooden_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "stone"
+          ]
+        },
+        "expected": "Stone pickaxe in inventory.",
+        "notes": "Stone pickaxe is required to mine iron ore. Wooden pickaxe cannot harvest iron.",
+        "produces": {
+          "type": "item",
+          "name": "stone_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 3,
+        "goal": "Mine iron ore",
+        "action_nl": "Find and mine iron ore underground using the stone pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('iron_ore', 2)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "stone_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "2 raw iron in inventory.",
+        "notes": "Mining iron_ore drops raw_iron in Minecraft 1.17+. Stone pickaxe or better required.",
+        "produces": {
+          "type": "item",
+          "name": "raw_iron",
+          "count": 2
+        }
+      },
+      {
+        "step": 4,
+        "goal": "Smelt raw iron into iron ingots",
+        "action_nl": "Use a furnace to smelt raw iron into iron ingots.",
+        "action_cmd": [
+          "!smeltItem('raw_iron', 2)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "raw_iron:2"
+            ],
+            "nearby": [
+              "furnace"
+            ],
+            "optional": []
+          }
+        },
+        "expected": "2 iron ingots in inventory.",
+        "notes": "smeltItem automatically uses available fuel. Use raw_iron not iron_ore for smelting.",
+        "produces": {
+          "type": "item",
+          "name": "iron_ingot",
+          "count": 2
+        }
+      },
+      {
+        "step": 5,
+        "goal": "Craft an Iron Sword",
+        "action_nl": "Use a Crafting Table to combine 2 iron ingots and 1 stick to make an Iron Sword.",
+        "action_cmd": [
+          "!craftRecipe('iron_sword', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "iron_ingot:2",
+              "stick:1"
+            ],
+            "nearby": [
+              "crafting_table"
+            ],
+            "optional": []
+          }
+        },
+        "expected": "An Iron Sword is added to your inventory.",
+        "notes": "Swords need 2 material units + 1 stick. Iron sword deals 6 attack damage.",
+        "produces": {
+          "type": "item",
+          "name": "iron_sword",
+          "count": 1
+        }
+      }
+    ]
+  },
+  {
+    "slug": "crafting/gold_shovel",
+    "name": "Craft a Gold Shovel",
+    "tab": "crafting",
+    "level": "L2",
+    "rationale": "Craft a Gold Shovel for fast digging (though not durable). Requires iron pickaxe to mine gold ore.",
+    "actual": "Use a Crafting Table to combine 1 Gold Ingot and 2 Sticks to make a Gold Shovel.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Craft sticks",
+        "action_nl": "Convert logs into planks and then craft 2 sticks.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 1)",
+          "!craftRecipe('oak_planks', 4)",
+          "!craftRecipe('stick', 2)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees"
+          ]
+        },
+        "expected": "At least 2 sticks in inventory.",
+        "notes": "Sticks are needed for the handle.",
+        "produces": {
+          "type": "item",
+          "name": "stick",
+          "count": 2
+        }
+      },
+      {
+        "step": 2,
+        "goal": "Mine and smelt Gold Ore",
+        "action_nl": "Find gold ore and smelt it into gold ingots.",
+        "action_cmd": [
+          "!collectBlocks('gold_ore', 1)",
+          "!smeltItem('raw_gold', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "iron_pickaxe:1"
+            ],
+            "nearby": [
+              "furnace"
+            ],
+            "optional": []
+          },
+          "resources": {
+            "fuel": 1
+          }
+        },
+        "expected": "At least 1 gold ingot in inventory.",
+        "notes": "Gold requires iron pickaxe or better to mine.",
+        "produces": {
+          "type": "item",
+          "name": "gold_ingot",
+          "count": 1
+        }
+      },
+      {
+        "step": 3,
+        "goal": "Craft a Gold Shovel",
+        "action_nl": "Use a Crafting Table with 1 gold ingot above 2 sticks.",
+        "action_cmd": [
+          "!craftRecipe('golden_shovel', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "gold_ingot:1",
+              "stick:2"
+            ],
+            "nearby": [
+              "crafting_table"
+            ],
+            "optional": []
+          }
+        },
+        "expected": "A Gold Shovel is added to your inventory.",
+        "notes": "Gold tools are fast but not durable. Good for quick digging projects.",
+        "produces": {
+          "type": "item",
+          "name": "golden_shovel",
+          "count": 1
+        }
+      }
+    ]
+  },
+  {
+    "slug": "crafting/wooden_pickaxe",
+    "name": "Craft a Wooden Pickaxe",
+    "tab": "crafting",
+    "level": "L1",
+    "rationale": "Craft a Wooden Pickaxe as the first mining tool to gather stone and coal.",
+    "actual": "Use a Crafting Table to combine 3 Planks and 2 Sticks to make a Wooden Pickaxe.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Collect logs and craft planks and sticks",
+        "action_nl": "Collect oak logs, convert to planks, then craft sticks.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 2)",
+          "!craftRecipe('oak_planks', 8)",
+          "!craftRecipe('stick', 2)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees"
+          ]
+        },
+        "expected": "At least 3 planks and 2 sticks in inventory.",
+        "notes": "Pickaxes need 3 planks on top row and 2 sticks in the middle column.",
+        "produces": [
+          {
+            "type": "item",
+            "name": "planks",
+            "count": 3
+          },
+          {
+            "type": "item",
+            "name": "stick",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "step": 2,
+        "goal": "Craft a Wooden Pickaxe",
+        "action_nl": "Use a Crafting Table to combine 3 planks and 2 sticks in a T shape.",
+        "action_cmd": [
+          "!craftRecipe('wooden_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "planks:3",
+              "stick:2"
+            ],
+            "nearby": [
+              "crafting_table"
+            ],
+            "optional": []
+          }
+        },
+        "expected": "A Wooden Pickaxe is added to your inventory.",
+        "notes": "Wooden pickaxe can mine stone, coal ore, and basic blocks.",
+        "produces": {
+          "type": "item",
+          "name": "wooden_pickaxe",
+          "count": 1
+        }
+      }
+    ]
+  },
+  {
+    "slug": "crafting/wooden_axe",
+    "name": "Craft a Wooden Axe",
+    "tab": "crafting",
+    "level": "L1",
+    "rationale": "Craft a Wooden Axe to chop wood faster and use as a basic weapon.",
+    "actual": "Use a Crafting Table to combine 3 Planks and 2 Sticks to make a Wooden Axe.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Collect logs and craft planks and sticks",
+        "action_nl": "Collect oak logs, convert to planks, then craft sticks.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 2)",
+          "!craftRecipe('oak_planks', 8)",
+          "!craftRecipe('stick', 2)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees"
+          ]
+        },
+        "expected": "At least 3 planks and 2 sticks in inventory.",
+        "notes": "Axes need 3 planks in an L shape and 2 sticks.",
+        "produces": [
+          {
+            "type": "item",
+            "name": "planks",
+            "count": 3
+          },
+          {
+            "type": "item",
+            "name": "stick",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "step": 2,
+        "goal": "Craft a Wooden Axe",
+        "action_nl": "Use a Crafting Table to combine 3 planks and 2 sticks in axe pattern.",
+        "action_cmd": [
+          "!craftRecipe('wooden_axe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "planks:3",
+              "stick:2"
+            ],
+            "nearby": [
+              "crafting_table"
+            ],
+            "optional": []
+          }
+        },
+        "expected": "A Wooden Axe is added to your inventory.",
+        "notes": "Wooden axe chops wood faster than hand and can be used as a weapon.",
+        "produces": {
+          "type": "item",
+          "name": "wooden_axe",
+          "count": 1
+        }
+      }
+    ]
+  },
+  {
+    "slug": "crafting/crafting_table",
+    "name": "Craft a Crafting Table",
+    "tab": "crafting",
+    "level": "L1",
+    "rationale": "Craft a Crafting Table to unlock 3x3 crafting recipes for tools and items.",
+    "actual": "Convert 1 log into 4 planks, then use 4 planks to craft a Crafting Table.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Collect a log and craft a Crafting Table",
+        "action_nl": "Punch a tree to get 1 log, convert to planks, then craft a crafting table.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 1)",
+          "!craftRecipe('oak_planks', 4)",
+          "!craftRecipe('crafting_table', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees"
+          ]
+        },
+        "expected": "A Crafting Table is in your inventory.",
+        "notes": "Place the crafting table on the ground to use 3x3 recipes. This is essential for all tool crafting.",
+        "produces": {
+          "type": "item",
+          "name": "crafting_table",
+          "count": 1
+        }
+      }
+    ]
+  },
+  {
+    "slug": "crafting/stone_pickaxe",
+    "name": "Craft a Stone Pickaxe",
+    "tab": "crafting",
+    "level": "L2",
+    "rationale": "Craft a Stone Pickaxe to mine iron ore and other mid-tier blocks.",
+    "actual": "Use a Crafting Table to combine 3 Cobblestone and 2 Sticks to make a Stone Pickaxe. You must craft a wooden pickaxe first to mine stone.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Collect logs and craft a wooden pickaxe",
+        "action_nl": "Collect oak logs, craft planks, sticks, and a wooden pickaxe. You need the wooden pickaxe to mine stone in the next step.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 2)",
+          "!craftRecipe('oak_planks', 8)",
+          "!craftRecipe('stick', 4)",
+          "!craftRecipe('wooden_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees"
+          ]
+        },
+        "expected": "Wooden pickaxe and at least 2 sticks in inventory.",
+        "notes": "Stone pickaxe needs 3 cobblestone and 2 sticks. A wooden pickaxe is REQUIRED to mine stone — you cannot collect cobblestone by hand.",
+        "produces": [
+          {
+            "type": "item",
+            "name": "wooden_pickaxe",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "stick",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "step": 2,
+        "goal": "Mine cobblestone",
+        "action_nl": "Use the wooden pickaxe to mine stone blocks and collect cobblestone.",
+        "action_cmd": [
+          "!collectBlocks('stone', 3)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "wooden_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "stone"
+          ]
+        },
+        "expected": "At least 3 cobblestone in inventory.",
+        "notes": "Mining stone with a pickaxe always yields cobblestone.",
+        "produces": {
+          "type": "item",
+          "name": "cobblestone",
+          "count": 3
+        }
+      },
+      {
+        "step": 3,
+        "goal": "Craft a Stone Pickaxe",
+        "action_nl": "Use a Crafting Table to combine 3 cobblestone and 2 sticks.",
+        "action_cmd": [
+          "!craftRecipe('stone_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "cobblestone:3",
+              "stick:2"
+            ],
+            "nearby": [
+              "crafting_table"
+            ],
+            "optional": []
+          }
+        },
+        "expected": "A Stone Pickaxe is added to your inventory.",
+        "notes": "Stone pickaxe can mine iron ore, coal, lapis, and redstone.",
+        "produces": {
+          "type": "item",
+          "name": "stone_pickaxe",
+          "count": 1
+        }
+      }
+    ]
+  },
+  {
+    "slug": "crafting/stone_axe",
+    "name": "Craft a Stone Axe",
+    "tab": "crafting",
+    "level": "L2",
+    "rationale": "Craft a Stone Axe for faster wood chopping and improved combat damage.",
+    "actual": "Use a Crafting Table to combine 3 Cobblestone and 2 Sticks to make a Stone Axe. You must craft a wooden pickaxe first to mine stone.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Collect logs and craft a wooden pickaxe",
+        "action_nl": "Collect oak logs, craft planks, sticks, and a wooden pickaxe. The wooden pickaxe is required to mine stone in the next step.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 2)",
+          "!craftRecipe('oak_planks', 8)",
+          "!craftRecipe('stick', 4)",
+          "!craftRecipe('wooden_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees"
+          ]
+        },
+        "expected": "Wooden pickaxe and at least 2 sticks in inventory.",
+        "notes": "Stone axe needs 3 cobblestone and 2 sticks. A wooden pickaxe is REQUIRED to mine stone — you cannot collect cobblestone by hand.",
+        "produces": [
+          {
+            "type": "item",
+            "name": "wooden_pickaxe",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "stick",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "step": 2,
+        "goal": "Mine cobblestone",
+        "action_nl": "Use the wooden pickaxe to mine stone blocks for cobblestone.",
+        "action_cmd": [
+          "!collectBlocks('stone', 3)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "wooden_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "stone"
+          ]
+        },
+        "expected": "At least 3 cobblestone in inventory.",
+        "notes": "Cobblestone is obtained by mining stone with any pickaxe.",
+        "produces": {
+          "type": "item",
+          "name": "cobblestone",
+          "count": 3
+        }
+      },
+      {
+        "step": 3,
+        "goal": "Craft a Stone Axe",
+        "action_nl": "Use a Crafting Table to combine 3 cobblestone and 2 sticks in axe pattern.",
+        "action_cmd": [
+          "!craftRecipe('stone_axe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "cobblestone:3",
+              "stick:2"
+            ],
+            "nearby": [
+              "crafting_table"
+            ],
+            "optional": []
+          }
+        },
+        "expected": "A Stone Axe is added to your inventory.",
+        "notes": "Stone axe is faster than wooden axe and deals more attack damage.",
+        "produces": {
+          "type": "item",
+          "name": "stone_axe",
+          "count": 1
+        }
+      }
+    ]
+  },
+  {
+    "slug": "crafting/iron_pickaxe",
+    "name": "Craft an Iron Pickaxe",
+    "tab": "crafting",
+    "level": "L2",
+    "rationale": "Craft an Iron Pickaxe to mine diamond ore, gold ore, emeralds, and redstone. Shows the COMPLETE tool chain from scratch including wooden and stone pickaxe prerequisites.",
+    "actual": "Use a Crafting Table to combine 3 Iron Ingots and 2 Sticks to make an Iron Pickaxe. Requires full tool chain: wooden pickaxe → stone pickaxe → mine iron → smelt → craft.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Collect logs and craft basic tools",
+        "action_nl": "Collect oak logs, craft planks, sticks, crafting table, and a wooden pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 4)",
+          "!craftRecipe('oak_planks', 12)",
+          "!craftRecipe('crafting_table', 1)",
+          "!craftRecipe('stick', 4)",
+          "!craftRecipe('wooden_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees"
+          ]
+        },
+        "expected": "Wooden pickaxe in inventory.",
+        "notes": "Pickaxes need 3 iron ingots + 2 sticks. Collect extra logs for sticks and crafting table.",
+        "produces": [
+          {
+            "type": "item",
+            "name": "wooden_pickaxe",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "crafting_table",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "stick",
+            "count": 4
+          }
+        ]
+      },
+      {
+        "step": 2,
+        "goal": "Mine cobblestone and craft stone pickaxe",
+        "action_nl": "Use the wooden pickaxe to mine cobblestone, then craft a stone pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('stone', 3)",
+          "!craftRecipe('stone_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "wooden_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "stone"
+          ]
+        },
+        "expected": "Stone pickaxe in inventory.",
+        "notes": "Stone pickaxe is REQUIRED to mine iron ore. Wooden pickaxe cannot harvest iron.",
+        "produces": {
+          "type": "item",
+          "name": "stone_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 3,
+        "goal": "Mine iron ore",
+        "action_nl": "Find and mine iron ore underground using the stone pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('iron_ore', 3)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "stone_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "3 raw iron in inventory.",
+        "notes": "Mining iron_ore drops raw_iron in Minecraft 1.17+. Stone pickaxe or better required.",
+        "produces": {
+          "type": "item",
+          "name": "raw_iron",
+          "count": 3
+        }
+      },
+      {
+        "step": 4,
+        "goal": "Smelt raw iron into iron ingots",
+        "action_nl": "Use a furnace to smelt raw iron into iron ingots.",
+        "action_cmd": [
+          "!smeltItem('raw_iron', 3)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "raw_iron:3"
+            ],
+            "nearby": [
+              "furnace"
+            ],
+            "optional": []
+          },
+          "resources": {
+            "fuel": 3
+          }
+        },
+        "expected": "3 iron ingots in inventory.",
+        "notes": "Use raw_iron not iron_ore for smelting.",
+        "produces": {
+          "type": "item",
+          "name": "iron_ingot",
+          "count": 3
+        }
+      },
+      {
+        "step": 5,
+        "goal": "Craft an Iron Pickaxe",
+        "action_nl": "Use a Crafting Table to combine 3 iron ingots and 2 sticks in a 'T' shape.",
+        "action_cmd": [
+          "!craftRecipe('iron_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "iron_ingot:3",
+              "stick:2"
+            ],
+            "nearby": [
+              "crafting_table"
+            ],
+            "optional": []
+          }
+        },
+        "expected": "An Iron Pickaxe is added to your inventory.",
+        "notes": "Iron pickaxe can mine diamond ore, gold ore, emerald ore, and redstone ore.",
+        "produces": {
+          "type": "item",
+          "name": "iron_pickaxe",
+          "count": 1
+        }
+      }
+    ]
+  },
+  {
+    "slug": "crafting/iron_shovel",
+    "name": "Craft an Iron Shovel",
+    "tab": "crafting",
+    "level": "L2",
+    "rationale": "Craft an Iron Shovel for efficient digging. Shows the COMPLETE tool chain from scratch including wooden and stone pickaxe prerequisites.",
+    "actual": "Use a Crafting Table to combine 1 Iron Ingot and 2 Sticks to make an Iron Shovel. Requires full tool chain: wooden pickaxe → stone pickaxe → mine iron → smelt → craft.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Collect logs and craft basic tools",
+        "action_nl": "Collect oak logs, craft planks, sticks, crafting table, and a wooden pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 4)",
+          "!craftRecipe('oak_planks', 12)",
+          "!craftRecipe('crafting_table', 1)",
+          "!craftRecipe('stick', 4)",
+          "!craftRecipe('wooden_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees"
+          ]
+        },
+        "expected": "Wooden pickaxe in inventory.",
+        "notes": "Shovels need 1 iron ingot + 2 sticks. Collect extra logs for sticks and crafting table.",
+        "produces": [
+          {
+            "type": "item",
+            "name": "wooden_pickaxe",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "crafting_table",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "stick",
+            "count": 4
+          }
+        ]
+      },
+      {
+        "step": 2,
+        "goal": "Mine cobblestone and craft stone pickaxe",
+        "action_nl": "Use the wooden pickaxe to mine cobblestone, then craft a stone pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('stone', 3)",
+          "!craftRecipe('stone_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "wooden_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "stone"
+          ]
+        },
+        "expected": "Stone pickaxe in inventory.",
+        "notes": "Stone pickaxe is REQUIRED to mine iron ore. Wooden pickaxe cannot harvest iron.",
+        "produces": {
+          "type": "item",
+          "name": "stone_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 3,
+        "goal": "Mine iron ore",
+        "action_nl": "Find and mine iron ore underground using the stone pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('iron_ore', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "stone_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "1 raw iron in inventory.",
+        "notes": "Mining iron_ore drops raw_iron in Minecraft 1.17+. Stone pickaxe or better required.",
+        "produces": {
+          "type": "item",
+          "name": "raw_iron",
+          "count": 1
+        }
+      },
+      {
+        "step": 4,
+        "goal": "Smelt raw iron into iron ingots",
+        "action_nl": "Use a furnace to smelt raw iron into iron ingots.",
+        "action_cmd": [
+          "!smeltItem('raw_iron', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "raw_iron:1"
+            ],
+            "nearby": [
+              "furnace"
+            ],
+            "optional": []
+          },
+          "resources": {
+            "fuel": 1
+          }
+        },
+        "expected": "1 iron ingots in inventory.",
+        "notes": "Use raw_iron not iron_ore for smelting.",
+        "produces": {
+          "type": "item",
+          "name": "iron_ingot",
+          "count": 1
+        }
+      },
+      {
+        "step": 5,
+        "goal": "Craft an Iron Shovel",
+        "action_nl": "Use a Crafting Table to combine 1 iron ingot above 2 sticks.",
+        "action_cmd": [
+          "!craftRecipe('iron_shovel', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "iron_ingot:1",
+              "stick:2"
+            ],
+            "nearby": [
+              "crafting_table"
+            ],
+            "optional": []
+          }
+        },
+        "expected": "An Iron Shovel is added to your inventory.",
+        "notes": "Iron shovel digs dirt, sand, and gravel much faster than using hands.",
+        "produces": {
+          "type": "item",
+          "name": "iron_shovel",
+          "count": 1
+        }
+      }
+    ]
+  },
+  {
+    "slug": "crafting/iron_hoe",
+    "name": "Craft an Iron Hoe",
+    "tab": "crafting",
+    "level": "L2",
+    "rationale": "Craft an Iron Hoe for tilling soil into farmland. Shows the COMPLETE tool chain from scratch including wooden and stone pickaxe prerequisites.",
+    "actual": "Use a Crafting Table to combine 2 Iron Ingots and 2 Sticks to make an Iron Hoe. Requires full tool chain: wooden pickaxe → stone pickaxe → mine iron → smelt → craft.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Collect logs and craft basic tools",
+        "action_nl": "Collect oak logs, craft planks, sticks, crafting table, and a wooden pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 4)",
+          "!craftRecipe('oak_planks', 12)",
+          "!craftRecipe('crafting_table', 1)",
+          "!craftRecipe('stick', 4)",
+          "!craftRecipe('wooden_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees"
+          ]
+        },
+        "expected": "Wooden pickaxe in inventory.",
+        "notes": "Hoes need 2 iron ingots + 2 sticks. Collect extra logs for sticks and crafting table.",
+        "produces": [
+          {
+            "type": "item",
+            "name": "wooden_pickaxe",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "crafting_table",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "stick",
+            "count": 4
+          }
+        ]
+      },
+      {
+        "step": 2,
+        "goal": "Mine cobblestone and craft stone pickaxe",
+        "action_nl": "Use the wooden pickaxe to mine cobblestone, then craft a stone pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('stone', 3)",
+          "!craftRecipe('stone_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "wooden_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "stone"
+          ]
+        },
+        "expected": "Stone pickaxe in inventory.",
+        "notes": "Stone pickaxe is REQUIRED to mine iron ore. Wooden pickaxe cannot harvest iron.",
+        "produces": {
+          "type": "item",
+          "name": "stone_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 3,
+        "goal": "Mine iron ore",
+        "action_nl": "Find and mine iron ore underground using the stone pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('iron_ore', 2)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "stone_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "2 raw iron in inventory.",
+        "notes": "Mining iron_ore drops raw_iron in Minecraft 1.17+. Stone pickaxe or better required.",
+        "produces": {
+          "type": "item",
+          "name": "raw_iron",
+          "count": 2
+        }
+      },
+      {
+        "step": 4,
+        "goal": "Smelt raw iron into iron ingots",
+        "action_nl": "Use a furnace to smelt raw iron into iron ingots.",
+        "action_cmd": [
+          "!smeltItem('raw_iron', 2)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "raw_iron:2"
+            ],
+            "nearby": [
+              "furnace"
+            ],
+            "optional": []
+          },
+          "resources": {
+            "fuel": 2
+          }
+        },
+        "expected": "2 iron ingots in inventory.",
+        "notes": "Use raw_iron not iron_ore for smelting.",
+        "produces": {
+          "type": "item",
+          "name": "iron_ingot",
+          "count": 2
+        }
+      },
+      {
+        "step": 5,
+        "goal": "Craft an Iron Hoe",
+        "action_nl": "Use a Crafting Table to combine 2 iron ingots and 2 sticks in hoe pattern.",
+        "action_cmd": [
+          "!craftRecipe('iron_hoe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "iron_ingot:2",
+              "stick:2"
+            ],
+            "nearby": [
+              "crafting_table"
+            ],
+            "optional": []
+          }
+        },
+        "expected": "An Iron Hoe is added to your inventory.",
+        "notes": "Iron hoe tills dirt and grass into farmland for planting crops.",
+        "produces": {
+          "type": "item",
+          "name": "iron_hoe",
+          "count": 1
+        }
+      }
+    ]
+  },
+  {
+    "slug": "crafting/furnace",
+    "name": "Craft a Furnace",
+    "tab": "crafting",
+    "level": "L2",
+    "rationale": "Craft a Furnace for smelting ores into ingots and cooking food.",
+    "actual": "Use a Crafting Table to combine 8 Cobblestone in a ring pattern to make a Furnace. You must craft a wooden pickaxe first to mine stone.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Collect logs and craft a wooden pickaxe",
+        "action_nl": "Collect oak logs, craft planks, sticks, and a wooden pickaxe. The wooden pickaxe is required to mine the cobblestone needed for the furnace.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 2)",
+          "!craftRecipe('oak_planks', 8)",
+          "!craftRecipe('crafting_table', 1)",
+          "!craftRecipe('stick', 2)",
+          "!craftRecipe('wooden_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees"
+          ]
+        },
+        "expected": "Wooden pickaxe in inventory.",
+        "notes": "A wooden pickaxe is REQUIRED to mine stone — you cannot collect cobblestone by hand. Furnace needs 8 cobblestone.",
+        "produces": [
+          {
+            "type": "item",
+            "name": "wooden_pickaxe",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "crafting_table",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "step": 2,
+        "goal": "Mine cobblestone",
+        "action_nl": "Use the wooden pickaxe to mine 8 stone blocks for cobblestone.",
+        "action_cmd": [
+          "!collectBlocks('stone', 8)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "wooden_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "stone"
+          ]
+        },
+        "expected": "At least 8 cobblestone in inventory.",
+        "notes": "Furnace requires 8 cobblestone arranged in a ring, leaving the center slot empty.",
+        "produces": {
+          "type": "item",
+          "name": "cobblestone",
+          "count": 8
+        }
+      },
+      {
+        "step": 3,
+        "goal": "Craft a Furnace",
+        "action_nl": "Use a Crafting Table to arrange 8 cobblestone in a ring pattern.",
+        "action_cmd": [
+          "!craftRecipe('furnace', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "cobblestone:8"
+            ],
+            "nearby": [
+              "crafting_table"
+            ],
+            "optional": []
+          }
+        },
+        "expected": "A Furnace is added to your inventory.",
+        "notes": "Place the furnace and use coal or planks as fuel to smelt ores and cook food.",
+        "produces": {
+          "type": "item",
+          "name": "furnace",
+          "count": 1
+        }
+      }
+    ]
+  },
+  {
+    "slug": "crafting/shield",
+    "name": "Craft a Shield",
+    "tab": "crafting",
+    "level": "L2",
+    "rationale": "Craft a Shield to block incoming attacks. Shows the COMPLETE tool chain from scratch including wooden and stone pickaxe prerequisites.",
+    "actual": "Use a Crafting Table to combine 1 Iron Ingot and 6 Oak Planks in shield pattern. Requires full tool chain: wooden pickaxe → stone pickaxe → mine iron → smelt → craft.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Collect logs and craft basic tools",
+        "action_nl": "Collect oak logs, craft planks, sticks, crafting table, and a wooden pickaxe. Keep extra planks for the shield.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 5)",
+          "!craftRecipe('oak_planks', 20)",
+          "!craftRecipe('crafting_table', 1)",
+          "!craftRecipe('stick', 4)",
+          "!craftRecipe('wooden_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees"
+          ]
+        },
+        "expected": "Wooden pickaxe and extra planks in inventory.",
+        "notes": "Shield needs 6 oak_planks + 1 iron ingot. Collect extra logs for planks as well as the tool chain.",
+        "produces": [
+          {
+            "type": "item",
+            "name": "wooden_pickaxe",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "crafting_table",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "oak_planks",
+            "count": 6
+          },
+          {
+            "type": "item",
+            "name": "stick",
+            "count": 4
+          }
+        ]
+      },
+      {
+        "step": 2,
+        "goal": "Mine cobblestone and craft stone pickaxe",
+        "action_nl": "Use the wooden pickaxe to mine cobblestone, then craft a stone pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('stone', 3)",
+          "!craftRecipe('stone_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "wooden_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "stone"
+          ]
+        },
+        "expected": "Stone pickaxe in inventory.",
+        "notes": "Stone pickaxe is REQUIRED to mine iron ore. Wooden pickaxe cannot harvest iron.",
+        "produces": {
+          "type": "item",
+          "name": "stone_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 3,
+        "goal": "Mine iron ore",
+        "action_nl": "Find and mine iron ore underground using the stone pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('iron_ore', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "stone_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "1 raw iron in inventory.",
+        "notes": "Mining iron_ore drops raw_iron in Minecraft 1.17+. Stone pickaxe or better required.",
+        "produces": {
+          "type": "item",
+          "name": "raw_iron",
+          "count": 1
+        }
+      },
+      {
+        "step": 4,
+        "goal": "Smelt raw iron into iron ingots",
+        "action_nl": "Use a furnace to smelt raw iron into iron ingots.",
+        "action_cmd": [
+          "!smeltItem('raw_iron', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "raw_iron:1"
+            ],
+            "nearby": [
+              "furnace"
+            ],
+            "optional": []
+          },
+          "resources": {
+            "fuel": 1
+          }
+        },
+        "expected": "1 iron ingots in inventory.",
+        "notes": "Use raw_iron not iron_ore for smelting.",
+        "produces": {
+          "type": "item",
+          "name": "iron_ingot",
+          "count": 1
+        }
+      },
+      {
+        "step": 5,
+        "goal": "Craft a Shield",
+        "action_nl": "Use a Crafting Table to combine 1 iron ingot and 6 oak planks in shield pattern.",
+        "action_cmd": [
+          "!craftRecipe('shield', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "iron_ingot:1",
+              "oak_planks:6"
+            ],
+            "nearby": [
+              "crafting_table"
+            ],
+            "optional": []
+          }
+        },
+        "expected": "A Shield is added to your inventory.",
+        "notes": "Equip the shield in your off-hand to block attacks. Right-click to raise shield.",
+        "produces": {
+          "type": "item",
+          "name": "shield",
+          "count": 1
+        }
+      }
+    ]
+  },
+  {
+    "slug": "crafting/shears",
+    "name": "Craft Shears",
+    "tab": "crafting",
+    "level": "L2",
+    "rationale": "Craft Shears to collect wool from sheep. Shows the COMPLETE tool chain from scratch including wooden and stone pickaxe prerequisites.",
+    "actual": "Use a Crafting Table to combine 2 Iron Ingots in a V shape to make Shears. Requires full tool chain: wooden pickaxe → stone pickaxe → mine iron → smelt → craft.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Collect logs and craft basic tools",
+        "action_nl": "Collect oak logs, craft planks, sticks, crafting table, and a wooden pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 4)",
+          "!craftRecipe('oak_planks', 12)",
+          "!craftRecipe('crafting_table', 1)",
+          "!craftRecipe('stick', 4)",
+          "!craftRecipe('wooden_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees"
+          ]
+        },
+        "expected": "Wooden pickaxe in inventory.",
+        "notes": "Shears need 2 iron ingots. Collect logs for crafting table and tool chain sticks.",
+        "produces": [
+          {
+            "type": "item",
+            "name": "wooden_pickaxe",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "crafting_table",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "stick",
+            "count": 4
+          }
+        ]
+      },
+      {
+        "step": 2,
+        "goal": "Mine cobblestone and craft stone pickaxe",
+        "action_nl": "Use the wooden pickaxe to mine cobblestone, then craft a stone pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('stone', 3)",
+          "!craftRecipe('stone_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "wooden_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "stone"
+          ]
+        },
+        "expected": "Stone pickaxe in inventory.",
+        "notes": "Stone pickaxe is REQUIRED to mine iron ore. Wooden pickaxe cannot harvest iron.",
+        "produces": {
+          "type": "item",
+          "name": "stone_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 3,
+        "goal": "Mine iron ore",
+        "action_nl": "Find and mine iron ore underground using the stone pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('iron_ore', 2)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "stone_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "2 raw iron in inventory.",
+        "notes": "Mining iron_ore drops raw_iron in Minecraft 1.17+. Stone pickaxe or better required.",
+        "produces": {
+          "type": "item",
+          "name": "raw_iron",
+          "count": 2
+        }
+      },
+      {
+        "step": 4,
+        "goal": "Smelt raw iron into iron ingots",
+        "action_nl": "Use a furnace to smelt raw iron into iron ingots.",
+        "action_cmd": [
+          "!smeltItem('raw_iron', 2)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "raw_iron:2"
+            ],
+            "nearby": [
+              "furnace"
+            ],
+            "optional": []
+          },
+          "resources": {
+            "fuel": 2
+          }
+        },
+        "expected": "2 iron ingots in inventory.",
+        "notes": "Use raw_iron not iron_ore for smelting.",
+        "produces": {
+          "type": "item",
+          "name": "iron_ingot",
+          "count": 2
+        }
+      },
+      {
+        "step": 5,
+        "goal": "Craft Shears",
+        "action_nl": "Use a Crafting Table to place 2 iron ingots in a V shape (diagonal).",
+        "action_cmd": [
+          "!craftRecipe('shears', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "iron_ingot:2"
+            ],
+            "nearby": [
+              "crafting_table"
+            ],
+            "optional": []
+          }
+        },
+        "expected": "Shears are added to your inventory.",
+        "notes": "Shears can collect wool from sheep without killing them and harvest leaves.",
+        "produces": {
+          "type": "item",
+          "name": "shears",
+          "count": 1
+        }
+      }
+    ]
+  },
+  {
+    "slug": "crafting/iron_chestplate",
+    "name": "Craft an Iron Chestplate",
+    "tab": "crafting",
+    "level": "L3",
+    "rationale": "Craft an Iron Chestplate for strong torso protection. Shows the complete tool chain from scratch.",
+    "actual": "Use a Crafting Table to combine 8 Iron Ingots to make an Iron Chestplate. Requires full tool chain: wood tools, stone pickaxe, mining iron, and smelting.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Collect logs and craft basic tools",
+        "action_nl": "Collect oak logs, craft planks, sticks, crafting table, and a wooden pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 4)",
+          "!craftRecipe('oak_planks', 12)",
+          "!craftRecipe('crafting_table', 1)",
+          "!craftRecipe('stick', 4)",
+          "!craftRecipe('wooden_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees"
+          ]
+        },
+        "expected": "Wooden pickaxe in inventory.",
+        "notes": "Chestplate needs 8 iron ingots, the most of any single armor piece.",
+        "produces": [
+          {
+            "type": "item",
+            "name": "wooden_pickaxe",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "crafting_table",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "stick",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "step": 2,
+        "goal": "Mine cobblestone and craft a stone pickaxe",
+        "action_nl": "Use the wooden pickaxe to mine cobblestone, then craft a stone pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('stone', 3)",
+          "!craftRecipe('stone_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "wooden_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "stone"
+          ]
+        },
+        "expected": "Stone pickaxe in inventory.",
+        "notes": "Stone pickaxe is required to mine iron ore.",
+        "produces": {
+          "type": "item",
+          "name": "stone_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 3,
+        "goal": "Mine iron ore",
+        "action_nl": "Use the stone pickaxe to mine 8 iron ore underground.",
+        "action_cmd": [
+          "!collectBlocks('iron_ore', 8)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "stone_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "8 raw iron in inventory.",
+        "notes": "Mining iron_ore drops raw_iron in Minecraft 1.17+.",
+        "produces": {
+          "type": "item",
+          "name": "raw_iron",
+          "count": 8
+        }
+      },
+      {
+        "step": 4,
+        "goal": "Smelt raw iron into iron ingots",
+        "action_nl": "Use a furnace to smelt 8 raw iron into iron ingots.",
+        "action_cmd": [
+          "!smeltItem('raw_iron', 8)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "raw_iron:8"
+            ],
+            "nearby": [
+              "furnace"
+            ],
+            "optional": []
+          },
+          "resources": {
+            "fuel": 8
+          }
+        },
+        "expected": "8 iron ingots in inventory.",
+        "notes": "Smelting 8 items requires significant fuel. Coal is most efficient.",
+        "produces": {
+          "type": "item",
+          "name": "iron_ingot",
+          "count": 8
+        }
+      },
+      {
+        "step": 5,
+        "goal": "Craft an Iron Chestplate",
+        "action_nl": "Use a Crafting Table to arrange 8 iron ingots in chestplate pattern.",
+        "action_cmd": [
+          "!craftRecipe('iron_chestplate', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "iron_ingot:8"
+            ],
+            "nearby": [
+              "crafting_table"
+            ],
+            "optional": []
+          }
+        },
+        "expected": "An Iron Chestplate is added to your inventory.",
+        "notes": "Iron chestplate provides 6 armor points, the strongest single piece of iron armor.",
+        "produces": {
+          "type": "item",
+          "name": "iron_chestplate",
+          "count": 1
+        }
+      }
+    ]
+  },
+  {
+    "slug": "crafting/diamond_sword",
+    "name": "Craft a Diamond Sword",
+    "tab": "crafting",
+    "level": "L3",
+    "rationale": "Craft a Diamond Sword for the best melee damage. Shows complete tool chain from wood to diamond.",
+    "actual": "Use a Crafting Table to combine 2 Diamonds and 1 Stick to make a Diamond Sword. Requires full tool chain to reach diamond tier.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Collect logs and craft basic tools",
+        "action_nl": "Collect oak logs, craft planks, sticks, crafting table, and wooden pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 4)",
+          "!craftRecipe('oak_planks', 12)",
+          "!craftRecipe('crafting_table', 1)",
+          "!craftRecipe('stick', 4)",
+          "!craftRecipe('wooden_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees"
+          ]
+        },
+        "expected": "Wooden pickaxe in inventory.",
+        "notes": "This full chain goes from nothing to diamond sword, collecting all prerequisites.",
+        "produces": [
+          {
+            "type": "item",
+            "name": "wooden_pickaxe",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "crafting_table",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "stick",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "step": 2,
+        "goal": "Mine cobblestone and craft stone pickaxe",
+        "action_nl": "Use wooden pickaxe to mine cobblestone, then craft stone pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('stone', 3)",
+          "!craftRecipe('stone_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "wooden_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "stone"
+          ]
+        },
+        "expected": "Stone pickaxe in inventory.",
+        "notes": "Stone pickaxe is needed to mine iron ore.",
+        "produces": {
+          "type": "item",
+          "name": "stone_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 3,
+        "goal": "Mine iron, smelt, and craft iron pickaxe",
+        "action_nl": "Mine 3 iron ore, smelt into ingots, and craft an iron pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('iron_ore', 3)",
+          "!smeltItem('raw_iron', 3)",
+          "!craftRecipe('iron_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "stone_pickaxe:1",
+              "stick:2"
+            ],
+            "nearby": [
+              "furnace"
+            ],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ],
+          "resources": {
+            "fuel": 3
+          }
+        },
+        "expected": "Iron pickaxe in inventory.",
+        "notes": "Iron pickaxe is the minimum tool needed to mine diamond ore.",
+        "produces": {
+          "type": "item",
+          "name": "iron_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 4,
+        "goal": "Mine diamond ore",
+        "action_nl": "Find and mine 2 diamond ore blocks deep underground with iron pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('diamond_ore', 2)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "iron_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "2 diamonds in inventory.",
+        "notes": "Diamonds spawn below Y=-58. Must use iron pickaxe or better.",
+        "produces": {
+          "type": "item",
+          "name": "diamond",
+          "count": 2
+        }
+      },
+      {
+        "step": 5,
+        "goal": "Craft a Diamond Sword",
+        "action_nl": "Use a Crafting Table to combine 2 diamonds above 1 stick.",
+        "action_cmd": [
+          "!craftRecipe('diamond_sword', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "diamond:2",
+              "stick:1"
+            ],
+            "nearby": [
+              "crafting_table"
+            ],
+            "optional": []
+          }
+        },
+        "expected": "A Diamond Sword is added to your inventory.",
+        "notes": "Diamond sword deals 7 attack damage, the highest of any craftable sword.",
+        "produces": {
+          "type": "item",
+          "name": "diamond_sword",
+          "count": 1
+        }
+      }
+    ]
+  },
+  {
+    "slug": "crafting/bucket",
+    "name": "Craft a Bucket",
+    "tab": "crafting",
+    "level": "L3",
+    "rationale": "Craft a Bucket to carry water, lava, and milk. Shows the complete tool chain from scratch.",
+    "actual": "Use a Crafting Table to combine 3 Iron Ingots in a V shape to make a Bucket. Requires mining and smelting iron.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Collect logs and craft basic tools",
+        "action_nl": "Collect oak logs, craft planks, sticks, crafting table, and wooden pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 3)",
+          "!craftRecipe('oak_planks', 8)",
+          "!craftRecipe('crafting_table', 1)",
+          "!craftRecipe('stick', 4)",
+          "!craftRecipe('wooden_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees"
+          ]
+        },
+        "expected": "Wooden pickaxe in inventory.",
+        "notes": "Bucket needs 3 iron ingots arranged in a V shape.",
+        "produces": [
+          {
+            "type": "item",
+            "name": "wooden_pickaxe",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "crafting_table",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "step": 2,
+        "goal": "Mine cobblestone and craft stone pickaxe",
+        "action_nl": "Use wooden pickaxe to mine cobblestone, then craft stone pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('stone', 3)",
+          "!craftRecipe('stone_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "wooden_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "stone"
+          ]
+        },
+        "expected": "Stone pickaxe in inventory.",
+        "notes": "Stone pickaxe is needed to mine iron ore.",
+        "produces": {
+          "type": "item",
+          "name": "stone_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 3,
+        "goal": "Mine iron ore",
+        "action_nl": "Use stone pickaxe to mine 3 iron ore underground.",
+        "action_cmd": [
+          "!collectBlocks('iron_ore', 3)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "stone_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "3 raw iron in inventory.",
+        "notes": "Mining iron_ore drops raw_iron in Minecraft 1.17+.",
+        "produces": {
+          "type": "item",
+          "name": "raw_iron",
+          "count": 3
+        }
+      },
+      {
+        "step": 4,
+        "goal": "Smelt raw iron into iron ingots",
+        "action_nl": "Use a furnace to smelt 3 raw iron into iron ingots.",
+        "action_cmd": [
+          "!smeltItem('raw_iron', 3)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "raw_iron:3"
+            ],
+            "nearby": [
+              "furnace"
+            ],
+            "optional": []
+          },
+          "resources": {
+            "fuel": 3
+          }
+        },
+        "expected": "3 iron ingots in inventory.",
+        "notes": "Use raw_iron not iron_ore for smelting.",
+        "produces": {
+          "type": "item",
+          "name": "iron_ingot",
+          "count": 3
+        }
+      },
+      {
+        "step": 5,
+        "goal": "Craft a Bucket",
+        "action_nl": "Use a Crafting Table to arrange 3 iron ingots in a V shape.",
+        "action_cmd": [
+          "!craftRecipe('bucket', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "iron_ingot:3"
+            ],
+            "nearby": [
+              "crafting_table"
+            ],
+            "optional": []
+          }
+        },
+        "expected": "A Bucket is added to your inventory.",
+        "notes": "Bucket can hold water, lava, or milk from cows. Essential for farming and obsidian.",
+        "produces": {
+          "type": "item",
+          "name": "bucket",
+          "count": 1
+        }
+      }
+    ]
+  },
+  {
+    "slug": "crafting/torch",
+    "name": "Craft Torches",
+    "tab": "crafting",
+    "level": "L1",
+    "rationale": "Craft torches for lighting caves and preventing mob spawning. Requires a wooden pickaxe to mine coal ore first.",
+    "actual": "Craft a wooden pickaxe, mine coal ore to get coal, then combine coal and sticks to craft 4 torches.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Collect logs and craft a wooden pickaxe",
+        "action_nl": "Collect oak logs, craft planks, sticks, and a wooden pickaxe. You need the pickaxe to mine coal ore.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 2)",
+          "!craftRecipe('oak_planks', 8)",
+          "!craftRecipe('stick', 4)",
+          "!craftRecipe('wooden_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees"
+          ]
+        },
+        "expected": "Wooden pickaxe and sticks in inventory.",
+        "notes": "A wooden pickaxe is REQUIRED to mine coal ore — you cannot collect coal by hand.",
+        "produces": [
+          {
+            "type": "item",
+            "name": "wooden_pickaxe",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "stick",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "step": 2,
+        "goal": "Mine coal ore",
+        "action_nl": "Use the wooden pickaxe to mine coal ore blocks. Coal ore drops coal directly.",
+        "action_cmd": [
+          "!collectBlocks('coal_ore', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "wooden_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "stone"
+          ]
+        },
+        "expected": "At least 1 coal in inventory.",
+        "notes": "Coal ore drops coal directly (no smelting needed). Found near stone at any depth.",
+        "produces": {
+          "type": "item",
+          "name": "coal",
+          "count": 1
+        }
+      },
+      {
+        "step": 3,
+        "goal": "Craft torches",
+        "action_nl": "Combine 1 coal above 1 stick to craft 4 torches.",
+        "action_cmd": [
+          "!craftRecipe('torch', 4)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "coal:1",
+              "stick:1"
+            ],
+            "nearby": [],
+            "optional": []
+          }
+        },
+        "expected": "4 torches in inventory.",
+        "notes": "Each coal + stick recipe yields 4 torches. Torches can be placed to light up areas and prevent mob spawning.",
+        "produces": {
+          "type": "item",
+          "name": "torch",
+          "count": 4
+        }
+      }
+    ]
+  },
+  {
+    "slug": "crafting/golden_sword",
+    "name": "Craft a Golden Sword",
+    "tab": "crafting",
+    "level": "L3",
+    "rationale": "Craft a Golden Sword. Shows the full tool chain including correct raw_gold naming for 1.17+ smelting.",
+    "actual": "Use a Crafting Table to combine 2 Gold Ingots and 1 Stick. Requires full tool chain: wooden pickaxe, stone pickaxe, iron pickaxe, then mine gold ore and smelt raw_gold.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Collect logs and craft basic tools",
+        "action_nl": "Collect oak logs, craft planks, sticks, crafting table, and a wooden pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 4)",
+          "!craftRecipe('oak_planks', 12)",
+          "!craftRecipe('crafting_table', 1)",
+          "!craftRecipe('stick', 4)",
+          "!craftRecipe('wooden_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees"
+          ]
+        },
+        "expected": "Wooden pickaxe in inventory.",
+        "notes": "Full chain needed: wooden → stone → iron pickaxe before you can mine gold ore.",
+        "produces": [
+          {
+            "type": "item",
+            "name": "wooden_pickaxe",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "crafting_table",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "stick",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "step": 2,
+        "goal": "Mine cobblestone and craft a stone pickaxe",
+        "action_nl": "Use the wooden pickaxe to mine cobblestone, then craft a stone pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('stone', 3)",
+          "!craftRecipe('stone_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "wooden_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "stone"
+          ]
+        },
+        "expected": "Stone pickaxe in inventory.",
+        "notes": "Stone pickaxe is needed to mine iron ore.",
+        "produces": {
+          "type": "item",
+          "name": "stone_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 3,
+        "goal": "Mine iron ore, smelt, and craft iron pickaxe",
+        "action_nl": "Mine iron ore with the stone pickaxe, smelt raw_iron into ingots, craft an iron pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('iron_ore', 3)",
+          "!smeltItem('raw_iron', 3)",
+          "!craftRecipe('iron_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "stone_pickaxe:1",
+              "stick:2"
+            ],
+            "nearby": [
+              "furnace"
+            ],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ],
+          "resources": {
+            "fuel": 3
+          }
+        },
+        "expected": "Iron pickaxe in inventory.",
+        "notes": "Iron pickaxe is required to mine gold ore. Mining iron_ore drops raw_iron in 1.17+.",
+        "produces": {
+          "type": "item",
+          "name": "iron_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 4,
+        "goal": "Mine gold ore",
+        "action_nl": "Use the iron pickaxe to mine gold ore. Mining drops raw_gold in Minecraft 1.17+.",
+        "action_cmd": [
+          "!collectBlocks('gold_ore', 2)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "iron_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "2 raw_gold in inventory.",
+        "notes": "Gold ore spawns below Y=32. Mining gold_ore drops raw_gold (NOT gold_ingot) in 1.17+. You MUST use smeltItem('raw_gold') not smeltItem('gold_ore').",
+        "produces": {
+          "type": "item",
+          "name": "raw_gold",
+          "count": 2
+        }
+      },
+      {
+        "step": 5,
+        "goal": "Smelt raw_gold into gold ingots",
+        "action_nl": "Use a furnace to smelt 2 raw_gold into gold ingots.",
+        "action_cmd": [
+          "!smeltItem('raw_gold', 2)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "raw_gold:2"
+            ],
+            "nearby": [
+              "furnace"
+            ],
+            "optional": []
+          },
+          "resources": {
+            "fuel": 2
+          }
+        },
+        "expected": "2 gold ingots in inventory.",
+        "notes": "IMPORTANT: use smeltItem('raw_gold') NOT smeltItem('gold_ore'). Mining drops raw_gold in 1.17+.",
+        "produces": {
+          "type": "item",
+          "name": "gold_ingot",
+          "count": 2
+        }
+      },
+      {
+        "step": 6,
+        "goal": "Craft a Golden Sword",
+        "action_nl": "Use a Crafting Table to combine 2 gold ingots above 1 stick.",
+        "action_cmd": [
+          "!craftRecipe('golden_sword', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "gold_ingot:2",
+              "stick:1"
+            ],
+            "nearby": [
+              "crafting_table"
+            ],
+            "optional": []
+          }
+        },
+        "expected": "A Golden Sword is added to your inventory.",
+        "notes": "Golden sword has low durability but high attack speed. Swords need 2 material units + 1 stick.",
+        "produces": {
+          "type": "item",
+          "name": "golden_sword",
+          "count": 1
+        }
+      }
+    ]
+  },
+  {
+    "slug": "crafting/piston",
+    "name": "Craft a Piston",
+    "tab": "crafting",
+    "level": "L3",
+    "rationale": "Craft a Piston, which requires three independent resource chains: wood/stone, iron, and redstone. This is the most complex crafting task requiring the full tool progression.",
+    "actual": "Piston = 3 oak_planks + 4 cobblestone + 1 iron_ingot + 1 redstone. Requires wooden→stone→iron pickaxe chain to reach redstone.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Collect logs and craft wooden pickaxe",
+        "action_nl": "Collect oak logs, craft planks, sticks, crafting table, and a wooden pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 4)",
+          "!craftRecipe('oak_planks', 12)",
+          "!craftRecipe('crafting_table', 1)",
+          "!craftRecipe('stick', 4)",
+          "!craftRecipe('wooden_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees"
+          ]
+        },
+        "expected": "Wooden pickaxe in inventory.",
+        "notes": "Piston needs 3 oak_planks — collect extra logs upfront for all wood requirements.",
+        "produces": [
+          {
+            "type": "item",
+            "name": "wooden_pickaxe",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "crafting_table",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "stick",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "step": 2,
+        "goal": "Mine cobblestone and craft stone pickaxe",
+        "action_nl": "Use wooden pickaxe to mine 7 cobblestone: 3 for stone_pickaxe, 4 for piston. Then craft stone pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('stone', 7)",
+          "!craftRecipe('stone_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "wooden_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "stone"
+          ]
+        },
+        "expected": "Stone pickaxe in inventory with 4 cobblestone remaining.",
+        "notes": "Mine extra cobblestone — 3 for stone_pickaxe and 4 leftover for the piston recipe.",
+        "produces": {
+          "type": "item",
+          "name": "stone_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 3,
+        "goal": "Mine iron ore, smelt, and craft iron pickaxe",
+        "action_nl": "Mine 4 iron ore: 3 for iron_pickaxe + 1 iron_ingot for piston. Smelt all, craft iron pickaxe.",
+        "action_cmd": [
+          "!collectBlocks('iron_ore', 4)",
+          "!smeltItem('raw_iron', 4)",
+          "!craftRecipe('iron_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "stone_pickaxe:1",
+              "stick:2"
+            ],
+            "nearby": [
+              "furnace"
+            ],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ],
+          "resources": {
+            "fuel": 4
+          }
+        },
+        "expected": "Iron pickaxe in inventory with 1 iron_ingot remaining for piston.",
+        "notes": "Iron pickaxe is REQUIRED to mine redstone_ore. Mine 4 total: 3 for pickaxe head + 1 for piston.",
+        "produces": {
+          "type": "item",
+          "name": "iron_pickaxe",
+          "count": 1
+        }
+      },
+      {
+        "step": 4,
+        "goal": "Mine redstone ore",
+        "action_nl": "Use iron pickaxe to mine redstone ore. Found below Y=16.",
+        "action_cmd": [
+          "!collectBlocks('redstone_ore', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "iron_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "underground"
+          ]
+        },
+        "expected": "At least 1 redstone in inventory.",
+        "notes": "Redstone ore REQUIRES iron_pickaxe or better — stone_pickaxe cannot mine it. Drops multiple redstone per ore.",
+        "produces": {
+          "type": "item",
+          "name": "redstone",
+          "count": 1
+        }
+      },
+      {
+        "step": 5,
+        "goal": "Craft a Piston",
+        "action_nl": "Use Crafting Table to combine 3 oak_planks (top row), 4 cobblestone (sides + bottom), 1 iron_ingot (center), 1 redstone (bottom center).",
+        "action_cmd": [
+          "!craftRecipe('piston', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "oak_planks:3",
+              "cobblestone:4",
+              "iron_ingot:1",
+              "redstone:1"
+            ],
+            "nearby": [
+              "crafting_table"
+            ],
+            "optional": []
+          }
+        },
+        "expected": "A Piston is added to your inventory.",
+        "notes": "Piston pushes blocks when powered by redstone. Core component for many redstone contraptions.",
+        "produces": {
+          "type": "item",
+          "name": "piston",
+          "count": 1
+        }
+      }
+    ]
+  },
+  {
+    "slug": "crafting/stone_slab",
+    "name": "Craft Stone Slabs",
+    "tab": "crafting",
+    "level": "L2",
+    "rationale": "Craft Stone Slabs, a common building block. Demonstrates the critical cobblestone→smelt→stone chain: mining stone yields cobblestone, which must be smelted back into smooth stone before crafting.",
+    "actual": "Mine cobblestone with a wooden pickaxe, smelt cobblestone into smooth stone in a furnace, then craft stone_slab. 3 cobblestone → 3 stone → 6 stone_slabs.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Collect logs and craft a wooden pickaxe",
+        "action_nl": "Collect oak logs, craft planks, sticks, and a wooden pickaxe to mine stone.",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 2)",
+          "!craftRecipe('oak_planks', 8)",
+          "!craftRecipe('stick', 4)",
+          "!craftRecipe('wooden_pickaxe', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees"
+          ]
+        },
+        "expected": "Wooden pickaxe and sticks in inventory.",
+        "notes": "A wooden pickaxe is REQUIRED to mine stone — cobblestone cannot be collected by hand.",
+        "produces": [
+          {
+            "type": "item",
+            "name": "wooden_pickaxe",
+            "count": 1
+          },
+          {
+            "type": "item",
+            "name": "stick",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "step": 2,
+        "goal": "Mine cobblestone",
+        "action_nl": "Use the wooden pickaxe to mine 3 stone blocks, which yields cobblestone.",
+        "action_cmd": [
+          "!collectBlocks('stone', 3)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "wooden_pickaxe:1"
+            ],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "stone"
+          ]
+        },
+        "expected": "At least 3 cobblestone in inventory.",
+        "notes": "Mining stone WITHOUT Silk Touch always yields cobblestone, not stone. You must smelt cobblestone to get smooth stone.",
+        "produces": {
+          "type": "item",
+          "name": "cobblestone",
+          "count": 3
+        }
+      },
+      {
+        "step": 3,
+        "goal": "Smelt cobblestone into smooth stone",
+        "action_nl": "Use a furnace to smelt 3 cobblestone into smooth stone.",
+        "action_cmd": [
+          "!smeltItem('cobblestone', 3)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "cobblestone:3"
+            ],
+            "nearby": [
+              "furnace"
+            ],
+            "optional": []
+          },
+          "resources": {
+            "fuel": 3
+          }
+        },
+        "expected": "3 smooth stone in inventory.",
+        "notes": "CRITICAL: Use smeltItem('cobblestone', 3) NOT smeltItem('stone', 3). Mining stone yields cobblestone, and cobblestone smelts into smooth stone (item name 'stone'). You CANNOT craft stone_slab from cobblestone directly.",
+        "produces": {
+          "type": "item",
+          "name": "stone",
+          "count": 3
+        }
+      },
+      {
+        "step": 4,
+        "goal": "Craft Stone Slabs",
+        "action_nl": "Use a Crafting Table to arrange 3 smooth stone in the bottom row to craft 6 stone slabs.",
+        "action_cmd": [
+          "!craftRecipe('stone_slab', 6)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "stone:3"
+            ],
+            "nearby": [
+              "crafting_table"
+            ],
+            "optional": []
+          }
+        },
+        "expected": "6 stone slabs in inventory.",
+        "notes": "Stone slabs are crafted from smooth stone (not cobblestone). The recipe yields 6 slabs from 3 stone in a horizontal row.",
+        "produces": {
+          "type": "item",
+          "name": "stone_slab",
+          "count": 6
+        }
+      }
+    ]
+  },
+  {
+    "slug": "crafting/bow",
+    "name": "Craft a Bow",
+    "tab": "crafting",
+    "level": "L3",
+    "rationale": "Craft a Bow for ranged combat. Requires 3 sticks + 3 string. String is obtained by killing spiders, not crafting — demonstrates combat resource acquisition.",
+    "actual": "Craft planks→sticks, hunt spiders for string (3 needed), then combine sticks and string to craft a bow.",
+    "plan": [
+      {
+        "step": 1,
+        "goal": "Collect logs and craft sticks",
+        "action_nl": "Collect oak logs and craft enough sticks for the bow (3 needed).",
+        "action_cmd": [
+          "!collectBlocks('oak_log', 1)",
+          "!craftRecipe('oak_planks', 4)",
+          "!craftRecipe('stick', 4)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": []
+          },
+          "access": [
+            "trees"
+          ]
+        },
+        "expected": "At least 3 sticks in inventory.",
+        "notes": "Bow needs exactly 3 sticks and 3 string. Craft extra sticks for safety.",
+        "produces": {
+          "type": "item",
+          "name": "stick",
+          "count": 4
+        }
+      },
+      {
+        "step": 2,
+        "goal": "Hunt spiders to collect string",
+        "action_nl": "Find and kill spiders to collect 3 string. Spiders drop 0-2 string each — kill 2-3 spiders. Spiders spawn at night or in dark areas.",
+        "action_cmd": [
+          "!searchForEntity('spider', 64)",
+          "!attack('spider')",
+          "!searchForEntity('spider', 64)",
+          "!attack('spider')",
+          "!searchForEntity('spider', 64)",
+          "!attack('spider')"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [],
+            "nearby": [],
+            "optional": [
+              "sword"
+            ]
+          },
+          "access": [
+            "outdoor_night_or_cave"
+          ]
+        },
+        "expected": "At least 3 string in inventory.",
+        "notes": "String CANNOT be crafted — it only drops from spiders. Each spider drops 0-2 string. Kill 2-3 spiders to be safe. Having a sword speeds this up.",
+        "produces": {
+          "type": "item",
+          "name": "string",
+          "count": 3
+        }
+      },
+      {
+        "step": 3,
+        "goal": "Craft a Bow",
+        "action_nl": "Combine 3 sticks and 3 string in a specific diagonal pattern to craft a bow.",
+        "action_cmd": [
+          "!craftRecipe('bow', 1)"
+        ],
+        "verify_cmd": [
+          "!inventory()"
+        ],
+        "preconditions": {
+          "items": {
+            "inventory": [
+              "stick:3",
+              "string:3"
+            ],
+            "nearby": [],
+            "optional": []
+          }
+        },
+        "expected": "A Bow is added to your inventory.",
+        "notes": "Bow requires 3 sticks (right column) + 3 string (left diagonal). Used with arrows for ranged attacks.",
+        "produces": {
+          "type": "item",
+          "name": "bow",
+          "count": 1
+        }
+      }
+    ]
+  }
+]

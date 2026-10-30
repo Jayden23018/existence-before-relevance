@@ -1,0 +1,2678 @@
+{
+  "meta": {
+    "timestamp": "2026-06-11T09:50:13.166Z",
+    "model": "google/gemma-4-31b-it:free",
+    "condition": "no_retrieval",
+    "total_tasks": 60,
+    "completed_tasks": 13,
+    "failed_tasks": 47
+  },
+  "tasks": [
+    {
+      "slug": "craft/wooden_sword",
+      "level": "L1",
+      "goal_item": "wooden_sword",
+      "min_steps": 2,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect logs",
+            "command": "!collectBlocks(\"oak_log\", 1)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 1)"
+            ],
+            "reasoning": "Logs are the raw material needed to start the wood crafting chain.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft planks",
+            "command": "!craftRecipe(\"oak_planks\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 4)"
+            ],
+            "reasoning": "Logs must be converted into planks before they can be used for sticks or tool heads.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft sticks",
+            "command": "!craftRecipe(\"stick\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 4)"
+            ],
+            "reasoning": "Sticks are required as the handle for the sword.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 2
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft wooden sword",
+            "command": "!craftRecipe(\"wooden_sword\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"wooden_sword\", 1)"
+            ],
+            "reasoning": "Final step applying the sword pattern (2 materials + 1 stick) to create the target item.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 2
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "wooden_sword"
+      },
+      "raw_response": "REASONING:\nI referenced the Material Quantity Pattern for swords (2 material units + 1 stick) and the Dependency Pattern for the wood-to-plank-to-stick chain.\nTarget item: wooden_sword\nMaterial: wood\nTool type: sword\n\nEXECUTION PLAN:\nStep 1: Collect logs\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 1)\nReasoning: Logs are the raw material needed to start the wood crafting chain.\n\nStep 2: Craft planks\nPrerequisites: item:oak_log:1\nCommand: !craftRecipe(\"oak_planks\", 4)\nReasoning: Logs must be converted into planks before they can be used for sticks or tool heads.\n\nStep 3: Craft sticks\nPrerequisites: item:oak_planks:2\nCommand: !craftRecipe(\"stick\", 4)\nReasoning: Sticks are required as the handle for the sword.\n\nStep 4: Craft wooden sword\nPrerequisites: item:oak_planks:2, item:stick:1\nCommand: !craftRecipe(\"wooden_sword\", 1)\nReasoning: Final step applying the sword pattern (2 materials + 1 stick) to create the target item.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 4,
+        "step_efficiency": 0.5,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 0,
+      "prompt_length": 7621
+    },
+    {
+      "slug": "craft/oak_boat",
+      "level": "L1",
+      "goal_item": "oak_boat",
+      "min_steps": 2,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect oak logs",
+            "command": "!collectBlocks(\"oak_log\", 2)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 2)"
+            ],
+            "reasoning": "Logs are the raw material needed to create planks for the boat.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks",
+            "command": "!craftRecipe(\"oak_planks\", 8)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 8)"
+            ],
+            "reasoning": "Boats require planks as the primary crafting material.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 2
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft the oak boat",
+            "command": "!craftRecipe(\"oak_boat\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_boat\", 1)"
+            ],
+            "reasoning": "Using the processed planks to craft the final target item.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 5
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "oak_boat"
+      },
+      "raw_response": "REASONING:\nI am following the Material Processing Pattern and Dependency Pattern. The user wants an oak boat. I identified the target item as oak_boat and the material as oak. Since boats are crafted from planks, I must first collect logs and process them into planks.\n\nEXECUTION PLAN:\nStep 1: Collect oak logs\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 2)\nReasoning: Logs are the raw material needed to create planks for the boat.\n\nStep 2: Craft oak planks\nPrerequisites: item:oak_log:2\nCommand: !craftRecipe(\"oak_planks\", 8)\nReasoning: Boats require planks as the primary crafting material.\n\nStep 3: Craft the oak boat\nPrerequisites: item:oak_planks:5, station:crafting_table\nCommand: !craftRecipe(\"oak_boat\", 1)\nReasoning: Using the processed planks to craft the final target item.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 3,
+        "step_efficiency": 0.67,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 0,
+      "prompt_length": 7615
+    },
+    {
+      "slug": "craft/oak_sign",
+      "level": "L1",
+      "goal_item": "oak_sign",
+      "min_steps": 2,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect oak logs",
+            "command": "!collectBlocks(\"oak_log\", 1)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 1)"
+            ],
+            "reasoning": "Logs are the base material required to create planks.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks",
+            "command": "!craftRecipe(\"oak_planks\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 4)"
+            ],
+            "reasoning": "Planks are needed to craft both sticks and the sign itself.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 1
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft sticks",
+            "command": "!craftRecipe(\"stick\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 4)"
+            ],
+            "reasoning": "Sticks are a required component for the sign recipe.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 2
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft oak sign",
+            "command": "!craftRecipe(\"oak_sign\", 3)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_sign\", 3)"
+            ],
+            "reasoning": "The final step to craft the target item using processed planks and sticks.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 6
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 1
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "oak_sign"
+      },
+      "raw_response": "REASONING:\nI referenced the Step Structure and Dependency patterns. I identified the target item as oak_sign, the material as oak, and the tool type as a sign. Following the pattern that wood items require logs, then planks, then sticks, I have constructed a sequential plan to gather and process these materials before final crafting.\n\nEXECUTION PLAN:\nStep 1: Collect oak logs\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 1)\nReasoning: Logs are the base material required to create planks.\n\nStep 2: Craft oak planks\nPrerequisites: item:oak_log:1, station:crafting_table\nCommand: !craftRecipe(\"oak_planks\", 4)\nReasoning: Planks are needed to craft both sticks and the sign itself.\n\nStep 3: Craft sticks\nPrerequisites: item:oak_planks:2, station:crafting_table\nCommand: !craftRecipe(\"stick\", 4)\nReasoning: Sticks are a required component for the sign recipe.\n\nStep 4: Craft oak sign\nPrerequisites: item:oak_planks:6, item:stick:1, station:crafting_table\nCommand: !craftRecipe(\"oak_sign\", 3)\nReasoning: The final step to craft the target item using processed planks and sticks.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 4,
+        "step_efficiency": 0.5,
+        "issues": [
+          "Step 4: missing oak_planks x6",
+          "Step 4: craftRecipe(\"oak_sign\", 3) missing ingredients: oak_planks x6"
+        ],
+        "lenient_issues": [
+          "Step 4: missing oak_planks x6",
+          "Step 4: craftRecipe(\"oak_sign\", 3) missing ingredients: oak_planks x6"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7615
+    },
+    {
+      "slug": "craft/oak_trapdoor",
+      "level": "L1",
+      "goal_item": "oak_trapdoor",
+      "min_steps": 2,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect raw oak logs",
+            "command": "!collectBlocks(\"oak_log\", 1)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 1)"
+            ],
+            "reasoning": "Need raw wood to start the crafting process.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks from logs",
+            "command": "!craftRecipe(\"oak_planks\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 4)"
+            ],
+            "reasoning": "Logs must be processed into planks before they can be used for trapdoors.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft oak trapdoor from planks",
+            "command": "!craftRecipe(\"oak_trapdoor\", 2)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_trapdoor\", 2)"
+            ],
+            "reasoning": "Using the processed planks at a crafting table to create the final target item.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 6
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "oak_trapdoor"
+      },
+      "raw_response": "REASONING:\nI referenced the Material Processing Pattern and Step Structure Pattern. The user wants an oak trapdoor, which is a block made from wood. The target item is oak_trapdoor, the material is oak, and the tool type is a utility block. I must follow the chain of logs to planks to trapdoors.\n\nEXECUTION PLAN:\nStep 1: Collect raw oak logs\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 1)\nReasoning: Need raw wood to start the crafting process.\n\nStep 2: Craft oak planks from logs\nPrerequisites: item:oak_log:1\nCommand: !craftRecipe(\"oak_planks\", 4)\nReasoning: Logs must be processed into planks before they can be used for trapdoors.\n\nStep 3: Craft oak trapdoor from planks\nPrerequisites: item:oak_planks:6, station:crafting_table\nCommand: !craftRecipe(\"oak_trapdoor\", 2)\nReasoning: Using the processed planks at a crafting table to create the final target item.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 3,
+        "step_efficiency": 0.67,
+        "issues": [
+          "Step 3: missing oak_planks x6",
+          "Step 3: craftRecipe(\"oak_trapdoor\", 2) missing ingredients: oak_planks x6"
+        ],
+        "lenient_issues": [
+          "Step 3: missing oak_planks x6",
+          "Step 3: craftRecipe(\"oak_trapdoor\", 2) missing ingredients: oak_planks x6"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7623
+    },
+    {
+      "slug": "craft/oak_pressure_plate",
+      "level": "L1",
+      "goal_item": "oak_pressure_plate",
+      "min_steps": 1,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect oak logs",
+            "command": "!collectBlocks(\"oak_log\", 1)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 1)"
+            ],
+            "reasoning": "Raw logs are the base material needed to create planks.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft oak planks",
+            "command": "!craftRecipe(\"oak_planks\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 4)"
+            ],
+            "reasoning": "One log is processed into four planks which are the direct ingredient for the pressure plate.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 1
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft oak pressure plate",
+            "command": "!craftRecipe(\"oak_pressure_plate\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_pressure_plate\", 1)"
+            ],
+            "reasoning": "Two oak planks are combined to craft one oak pressure plate.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 2
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "oak_pressure_plate"
+      },
+      "raw_response": "REASONING:\nI identified the target item as an oak pressure plate. The material is oak wood. Based on the Dependency Pattern, I know that pressure plates are crafted from planks, and planks are crafted from logs. I adapted the Step Structure Pattern to move from raw material collection to final item crafting.\n\nEXECUTION PLAN:\nStep 1: Collect oak logs\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 1)\nReasoning: Raw logs are the base material needed to create planks.\n\nStep 2: Craft oak planks\nPrerequisites: item:oak_log:1, station:crafting_table\nCommand: !craftRecipe(\"oak_planks\", 4)\nReasoning: One log is processed into four planks which are the direct ingredient for the pressure plate.\n\nStep 3: Craft oak pressure plate\nPrerequisites: item:oak_planks:2, station:crafting_table\nCommand: !craftRecipe(\"oak_pressure_plate\", 1)\nReasoning: Two oak planks are combined to craft one oak pressure plate.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 3,
+        "step_efficiency": 0.33,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 0,
+      "prompt_length": 7635
+    },
+    {
+      "slug": "craft/bowl",
+      "level": "L1",
+      "goal_item": "bowl",
+      "min_steps": 1,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect oak logs",
+            "command": "!collectBlocks(\"oak_log\", 1)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 1)"
+            ],
+            "reasoning": "Logs are the raw material needed to create planks.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft wooden planks",
+            "command": "!craftRecipe(\"oak_planks\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 4)"
+            ],
+            "reasoning": "Planks are the immediate component needed to craft a bowl.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft bowl",
+            "command": "!craftRecipe(\"bowl\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"bowl\", 1)"
+            ],
+            "reasoning": "Three planks are used in a V-shape pattern to craft a bowl.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 3
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "bowl"
+      },
+      "raw_response": "REASONING:\nI referenced the Dependency Pattern and Step Structure Pattern. A bowl is crafted from wooden planks. To get planks, I must first collect logs. I identified the target item as bowl and the material as wood.\n\nEXECUTION PLAN:\nStep 1: Collect oak logs\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 1)\nReasoning: Logs are the raw material needed to create planks.\n\nStep 2: Craft wooden planks\nPrerequisites: item:oak_log:1\nCommand: !craftRecipe(\"oak_planks\", 4)\nReasoning: Planks are the immediate component needed to craft a bowl.\n\nStep 3: Craft bowl\nPrerequisites: item:oak_planks:3\nCommand: !craftRecipe(\"bowl\", 1)\nReasoning: Three planks are used in a V-shape pattern to craft a bowl.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 3,
+        "step_efficiency": 0.33,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 0,
+      "prompt_length": 7605
+    },
+    {
+      "slug": "collect/bamboo",
+      "level": "L1",
+      "goal_item": "bamboo",
+      "min_steps": 1,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect 8 bamboo",
+            "command": "!collectBlocks(\"bamboo\", 8)",
+            "action_cmd": [
+              "!collectBlocks(\"bamboo\", 8)"
+            ],
+            "reasoning": "The user specifically requested to collect 8 bamboo, which is a basic block collection task requiring no tools or processing.",
+            "preconditions": [],
+            "produces": null
+          }
+        ],
+        "target": null
+      },
+      "raw_response": "REASONING:\nI referenced the Collection Commands pattern from the Available Commands section. The user's request is a simple collection task rather than a complex crafting task.\nTarget item: bamboo\nMaterial: bamboo\nTool type: None (bamboo is a collectible block)\n\nEXECUTION PLAN:\nStep 1: Collect 8 bamboo\nPrerequisites: None\nCommand: !collectBlocks(\"bamboo\", 8)\nReasoning: The user specifically requested to collect 8 bamboo, which is a basic block collection task requiring no tools or processing.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 1,
+        "step_efficiency": 1,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 0,
+      "prompt_length": 7615
+    },
+    {
+      "slug": "collect/sugar_cane",
+      "level": "L1",
+      "goal_item": "sugar_cane",
+      "min_steps": 1,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect sugar cane",
+            "command": "!collectBlocks(\"sugar_cane\", 4)",
+            "action_cmd": [
+              "!collectBlocks(\"sugar_cane\", 4)"
+            ],
+            "reasoning": "Sugar cane is a plant block that can be collected without any tools.",
+            "preconditions": [],
+            "produces": null
+          }
+        ],
+        "target": null
+      },
+      "raw_response": "REASONING:\nI referenced the Collection Commands pattern. The user's request is a direct collection task.\nTarget item: sugar_cane\nMaterial: sugar_cane\nTool type: none (sugar cane can be collected by hand)\n\nEXECUTION PLAN:\nStep 1: Collect sugar cane\nPrerequisites: None\nCommand: !collectBlocks(\"sugar_cane\", 4)\nReasoning: Sugar cane is a plant block that can be collected without any tools.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 1,
+        "step_efficiency": 1,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 0,
+      "prompt_length": 7623
+    },
+    {
+      "slug": "collect/dirt",
+      "level": "L1",
+      "goal_item": "dirt",
+      "min_steps": 1,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect dirt blocks",
+            "command": "!collectBlocks(\"dirt\", 8)",
+            "action_cmd": [
+              "!collectBlocks(\"dirt\", 8)"
+            ],
+            "reasoning": "Dirt can be collected by hand without any tools as per the tool requirement pattern.",
+            "preconditions": [],
+            "produces": null
+          }
+        ],
+        "target": null
+      },
+      "raw_response": "REASONING:\nI referenced the Mining Tool Requirement Pattern which states that dirt requires no tool.\nTarget item: dirt\nMaterial: dirt\nTool type: None\n\nEXECUTION PLAN:\nStep 1: Collect dirt blocks\nPrerequisites: None\nCommand: !collectBlocks(\"dirt\", 8)\nReasoning: Dirt can be collected by hand without any tools as per the tool requirement pattern.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 1,
+        "step_efficiency": 1,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 0,
+      "prompt_length": 7625
+    },
+    {
+      "slug": "collect/andesite",
+      "level": "L1",
+      "goal_item": "andesite",
+      "min_steps": 1,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect logs to start tool chain",
+            "command": "!collectBlocks(\"oak_log\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 3)"
+            ],
+            "reasoning": "Logs are needed to create planks and sticks for the first tool.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft planks from logs",
+            "command": "!craftRecipe(\"oak_planks\", 12)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 12)"
+            ],
+            "reasoning": "Planks are a prerequisite for sticks and the crafting table.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft sticks from planks",
+            "command": "!craftRecipe(\"stick\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 4)"
+            ],
+            "reasoning": "Sticks are needed as handles for the pickaxe.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 2
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft wooden pickaxe",
+            "command": "!craftRecipe(\"wooden_pickaxe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"wooden_pickaxe\", 1)"
+            ],
+            "reasoning": "A pickaxe is required to collect stone-tier blocks like andesite.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 3
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 5,
+            "goal": "Collect andesite",
+            "command": "!collectBlocks(\"andesite\", 8)",
+            "action_cmd": [
+              "!collectBlocks(\"andesite\", 8)"
+            ],
+            "reasoning": "Use the wooden pickaxe to mine the requested 8 andesite blocks.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "wooden_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "stone",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "wooden_pickaxe"
+      },
+      "raw_response": "REASONING:\nI referenced the Mining Tool Requirement Pattern which states that stone and cobblestone require a wooden pickaxe or better. Andesite is a stone-tier block and thus requires a pickaxe. I identified the target item as andesite, the material as andesite, and the tool type as a pickaxe (specifically a wooden pickaxe as the minimum requirement for a cold start).\n\nEXECUTION PLAN:\nStep 1: Collect logs to start tool chain\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 3)\nReasoning: Logs are needed to create planks and sticks for the first tool.\n\nStep 2: Craft planks from logs\nPrerequisites: item:oak_log:3\nCommand: !craftRecipe(\"oak_planks\", 12)\nReasoning: Planks are a prerequisite for sticks and the crafting table.\n\nStep 3: Craft sticks from planks\nPrerequisites: item:oak_planks:2\nCommand: !craftRecipe(\"stick\", 4)\nReasoning: Sticks are needed as handles for the pickaxe.\n\nStep 4: Craft wooden pickaxe\nPrerequisites: item:oak_planks:3, item:stick:2\nCommand: !craftRecipe(\"wooden_pickaxe\", 1)\nReasoning: A pickaxe is required to collect stone-tier blocks like andesite.\n\nStep 5: Collect andesite\nPrerequisites: item:wooden_pickaxe:1, access:stone\nCommand: !collectBlocks(\"andesite\", 8)\nReasoning: Use the wooden pickaxe to mine the requested 8 andesite blocks.",
+      "validation": {
+        "strict_pass": true,
+        "lenient_pass": true,
+        "pvr": true,
+        "step_count": 5,
+        "step_efficiency": 0.2,
+        "issues": [],
+        "lenient_issues": []
+      },
+      "examples_used": 0,
+      "prompt_length": 7619
+    },
+    {
+      "slug": "craft/cauldron",
+      "level": "L2",
+      "goal_item": "cauldron",
+      "min_steps": 4,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect logs for basic tools",
+            "command": "!collectBlocks(\"oak_log\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 3)"
+            ],
+            "reasoning": "Need wood to start the tool chain.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft planks",
+            "command": "!craftRecipe(\"oak_planks\", 12)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 12)"
+            ],
+            "reasoning": "Planks are required to make sticks and a crafting table.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft sticks",
+            "command": "!craftRecipe(\"stick\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 4)"
+            ],
+            "reasoning": "Sticks are needed for the handle of the pickaxe.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 2
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft crafting table",
+            "command": "!craftRecipe(\"crafting_table\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"crafting_table\", 1)"
+            ],
+            "reasoning": "A crafting table is required for all complex crafting recipes.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 4
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 5,
+            "goal": "Craft wooden pickaxe",
+            "command": "!craftRecipe(\"wooden_pickaxe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"wooden_pickaxe\", 1)"
+            ],
+            "reasoning": "Need a wooden pickaxe to mine cobblestone.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 3
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 6,
+            "goal": "Collect cobblestone",
+            "command": "!collectBlocks(\"stone\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"stone\", 3)"
+            ],
+            "reasoning": "Stone is needed to upgrade to a stone pickaxe.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "wooden_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "stone",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 7,
+            "goal": "Craft stone pickaxe",
+            "command": "!craftRecipe(\"stone_pickaxe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"stone_pickaxe\", 1)"
+            ],
+            "reasoning": "A stone pickaxe is required to mine iron ore.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone",
+                "count": 3
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 8,
+            "goal": "Collect iron ore",
+            "command": "!collectBlocks(\"iron_ore\", 7)",
+            "action_cmd": [
+              "!collectBlocks(\"iron_ore\", 7)"
+            ],
+            "reasoning": "Need 7 raw iron to create the 7 ingots required for a cauldron.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "underground",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 9,
+            "goal": "Craft furnace",
+            "command": "!craftRecipe(\"furnace\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"furnace\", 1)"
+            ],
+            "reasoning": "A furnace is required to smelt raw iron into ingots.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone",
+                "count": 8
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 10,
+            "goal": "Smelt raw iron into ingots",
+            "command": "!smeltItem(\"raw_iron\", 7)",
+            "action_cmd": [
+              "!smeltItem(\"raw_iron\", 7)"
+            ],
+            "reasoning": "Raw iron must be processed into iron ingots before they can be used in crafting.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "raw_iron",
+                "count": 7
+              },
+              {
+                "type": "station",
+                "name": "furnace",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 11,
+            "goal": "Craft cauldron",
+            "command": "!craftRecipe(\"cauldron\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"cauldron\", 1)"
+            ],
+            "reasoning": "Final step to create the cauldron using the processed iron ingots.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_ingot",
+                "count": 7
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "cauldron"
+      },
+      "raw_response": "REASONING:\nI referenced the Material Processing Pattern and Mining Tool Requirement Pattern. A cauldron is made of 7 iron ingots. This requires iron ore, which must be mined with a stone pickaxe (or better) and then smelted. Since the user starts from nothing, I must build the tool chain from wood to stone to iron.\nTarget item: cauldron\nMaterial: iron\nTool type: utility block\n\nEXECUTION PLAN:\nStep 1: Collect logs for basic tools\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 3)\nReasoning: Need wood to start the tool chain.\n\nStep 2: Craft planks\nPrerequisites: item:oak_log:3\nCommand: !craftRecipe(\"oak_planks\", 12)\nReasoning: Planks are required to make sticks and a crafting table.\n\nStep 3: Craft sticks\nPrerequisites: item:oak_planks:2\nCommand: !craftRecipe(\"stick\", 4)\nReasoning: Sticks are needed for the handle of the pickaxe.\n\nStep 4: Craft crafting table\nPrerequisites: item:oak_planks:4\nCommand: !craftRecipe(\"crafting_table\", 1)\nReasoning: A crafting table is required for all complex crafting recipes.\n\nStep 5: Craft wooden pickaxe\nPrerequisites: item:oak_planks:3, item:stick:2, station:crafting_table\nCommand: !craftRecipe(\"wooden_pickaxe\", 1)\nReasoning: Need a wooden pickaxe to mine cobblestone.\n\nStep 6: Collect cobblestone\nPrerequisites: item:wooden_pickaxe:1, access:stone\nCommand: !collectBlocks(\"stone\", 3)\nReasoning: Stone is needed to upgrade to a stone pickaxe.\n\nStep 7: Craft stone pickaxe\nPrerequisites: item:stone:3, item:stick:2, station:crafting_table\nCommand: !craftRecipe(\"stone_pickaxe\", 1)\nReasoning: A stone pickaxe is required to mine iron ore.\n\nStep 8: Collect iron ore\nPrerequisites: item:stone_pickaxe:1, access:underground\nCommand: !collectBlocks(\"iron_ore\", 7)\nReasoning: Need 7 raw iron to create the 7 ingots required for a cauldron.\n\nStep 9: Craft furnace\nPrerequisites: item:stone:8, station:crafting_table\nCommand: !craftRecipe(\"furnace\", 1)\nReasoning: A furnace is required to smelt raw iron into ingots.\n\nStep 10: Smelt raw iron into ingots\nPrerequisites: item:raw_iron:7, station:furnace\nCommand: !smeltItem(\"raw_iron\", 7)\nReasoning: Raw iron must be processed into iron ingots before they can be used in crafting.\n\nStep 11: Craft cauldron\nPrerequisites: item:iron_ingot:7, station:crafting_table\nCommand: !craftRecipe(\"cauldron\", 1)\nReasoning: Final step to create the cauldron using the processed iron ingots.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 11,
+        "step_efficiency": 0.36,
+        "issues": [
+          "Step 7: missing stone x3",
+          "Step 9: missing stone x8",
+          "Step 9: craftRecipe(\"furnace\", 1) missing ingredients: cobblestone x8"
+        ],
+        "lenient_issues": [
+          "Step 7: missing stone x3",
+          "Step 9: missing stone x8",
+          "Step 9: craftRecipe(\"furnace\", 1) missing ingredients: cobblestone x8"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7613
+    },
+    {
+      "slug": "craft/iron_helmet",
+      "level": "L2",
+      "goal_item": "iron_helmet",
+      "min_steps": 5,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect logs for basic tools",
+            "command": "!collectBlocks(\"oak_log\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 3)"
+            ],
+            "reasoning": "Logs are needed to create planks and sticks for the first tool.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft planks",
+            "command": "!craftRecipe(\"oak_planks\", 12)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 12)"
+            ],
+            "reasoning": "Planks are the base material for sticks and crafting tables.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft sticks",
+            "command": "!craftRecipe(\"stick\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 4)"
+            ],
+            "reasoning": "Sticks are required for tool handles.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 2
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft crafting table",
+            "command": "!craftRecipe(\"crafting_table\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"crafting_table\", 1)"
+            ],
+            "reasoning": "A crafting table is required for all advanced crafting.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 4
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 5,
+            "goal": "Craft wooden pickaxe",
+            "command": "!craftRecipe(\"wooden_pickaxe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"wooden_pickaxe\", 1)"
+            ],
+            "reasoning": "A wooden pickaxe is required to mine stone.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 3
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 6,
+            "goal": "Collect stone",
+            "command": "!collectBlocks(\"stone\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"stone\", 3)"
+            ],
+            "reasoning": "Stone is required to upgrade the pickaxe tier.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "wooden_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "stone",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 7,
+            "goal": "Craft stone pickaxe",
+            "command": "!craftRecipe(\"stone_pickaxe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"stone_pickaxe\", 1)"
+            ],
+            "reasoning": "A stone pickaxe is required to mine iron ore.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone",
+                "count": 3
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 8,
+            "goal": "Collect iron ore",
+            "command": "!collectBlocks(\"iron_ore\", 5)",
+            "action_cmd": [
+              "!collectBlocks(\"iron_ore\", 5)"
+            ],
+            "reasoning": "Collecting iron ore which drops raw iron.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "underground",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 9,
+            "goal": "Craft furnace",
+            "command": "!craftRecipe(\"furnace\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"furnace\", 1)"
+            ],
+            "reasoning": "A furnace is required to smelt raw iron into ingots.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone",
+                "count": 8
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 10,
+            "goal": "Smelt raw iron into ingots",
+            "command": "!smeltItem(\"raw_iron\", 5)",
+            "action_cmd": [
+              "!smeltItem(\"raw_iron\", 5)"
+            ],
+            "reasoning": "Smelting converts raw iron into iron ingots needed for the helmet.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "raw_iron",
+                "count": 5
+              },
+              {
+                "type": "station",
+                "name": "furnace",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 11,
+            "goal": "Craft iron helmet",
+            "command": "!craftRecipe(\"iron_helmet\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"iron_helmet\", 1)"
+            ],
+            "reasoning": "Final step to create the iron helmet using 5 iron ingots.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_ingot",
+                "count": 5
+              },
+              {
+                "type": "station",
+                "name": "crafting_table",
+                "count": 1
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "iron_helmet"
+      },
+      "raw_response": "REASONING:\nI referenced the Material Processing Pattern and the Mining Tool Requirement Pattern. The user wants an iron helmet. Target item: iron_helmet. Material: iron. Tool type: helmet. A helmet requires 5 iron ingots. I must follow the full tool chain from logs to stone pickaxe to iron ore collection and smelting.\n\nEXECUTION PLAN:\nStep 1: Collect logs for basic tools\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 3)\nReasoning: Logs are needed to create planks and sticks for the first tool.\n\nStep 2: Craft planks\nPrerequisites: item:oak_log:3\nCommand: !craftRecipe(\"oak_planks\", 12)\nReasoning: Planks are the base material for sticks and crafting tables.\n\nStep 3: Craft sticks\nPrerequisites: item:oak_planks:2\nCommand: !craftRecipe(\"stick\", 4)\nReasoning: Sticks are required for tool handles.\n\nStep 4: Craft crafting table\nPrerequisites: item:oak_planks:4\nCommand: !craftRecipe(\"crafting_table\", 1)\nReasoning: A crafting table is required for all advanced crafting.\n\nStep 5: Craft wooden pickaxe\nPrerequisites: item:oak_planks:3, item:stick:2, station:crafting_table\nCommand: !craftRecipe(\"wooden_pickaxe\", 1)\nReasoning: A wooden pickaxe is required to mine stone.\n\nStep 6: Collect stone\nPrerequisites: item:wooden_pickaxe:1, access:stone\nCommand: !collectBlocks(\"stone\", 3)\nReasoning: Stone is required to upgrade the pickaxe tier.\n\nStep 7: Craft stone pickaxe\nPrerequisites: item:stone:3, item:stick:2, station:crafting_table\nCommand: !craftRecipe(\"stone_pickaxe\", 1)\nReasoning: A stone pickaxe is required to mine iron ore.\n\nStep 8: Collect iron ore\nPrerequisites: item:stone_pickaxe:1, access:underground\nCommand: !collectBlocks(\"iron_ore\", 5)\nReasoning: Collecting iron ore which drops raw iron.\n\nStep 9: Craft furnace\nPrerequisites: item:stone:8, station:crafting_table\nCommand: !craftRecipe(\"furnace\", 1)\nReasoning: A furnace is required to smelt raw iron into ingots.\n\nStep 10: Smelt raw iron into ingots\nPrerequisites: item:raw_iron:5, station:furnace\nCommand: !smeltItem(\"raw_iron\", 5)\nReasoning: Smelting converts raw iron into iron ingots needed for the helmet.\n\nStep 11: Craft iron helmet\nPrerequisites: item:iron_ingot:5, station:crafting_table\nCommand: !craftRecipe(\"iron_helmet\", 1)\nReasoning: Final step to create the iron helmet using 5 iron ingots.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 11,
+        "step_efficiency": 0.45,
+        "issues": [
+          "Step 7: missing stone x3",
+          "Step 9: missing stone x8",
+          "Step 9: craftRecipe(\"furnace\", 1) missing ingredients: cobblestone x8"
+        ],
+        "lenient_issues": [
+          "Step 7: missing stone x3",
+          "Step 9: missing stone x8",
+          "Step 9: craftRecipe(\"furnace\", 1) missing ingredients: cobblestone x8"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7651
+    },
+    {
+      "slug": "craft/iron_boots",
+      "level": "L2",
+      "goal_item": "iron_boots",
+      "min_steps": 5,
+      "parse_success": true,
+      "plan": {
+        "steps": [
+          {
+            "step": 1,
+            "goal": "Collect logs and craft wooden pickaxe",
+            "command": "!collectBlocks(\"oak_log\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"oak_log\", 3)"
+            ],
+            "reasoning": "Need a wooden pickaxe to mine stone for the stone pickaxe upgrade.",
+            "preconditions": [],
+            "produces": null
+          },
+          {
+            "step": 2,
+            "goal": "Craft planks and sticks",
+            "command": "!craftRecipe(\"oak_planks\", 12)",
+            "action_cmd": [
+              "!craftRecipe(\"oak_planks\", 12)"
+            ],
+            "reasoning": "Planks are needed to make sticks and a crafting table.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_log",
+                "count": 3
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 3,
+            "goal": "Craft sticks",
+            "command": "!craftRecipe(\"stick\", 4)",
+            "action_cmd": [
+              "!craftRecipe(\"stick\", 4)"
+            ],
+            "reasoning": "Sticks are needed to craft the wooden pickaxe.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 2
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 4,
+            "goal": "Craft wooden pickaxe",
+            "command": "!craftRecipe(\"wooden_pickaxe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"wooden_pickaxe\", 1)"
+            ],
+            "reasoning": "A wooden pickaxe is required to mine cobblestone.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "oak_planks",
+                "count": 3
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 5,
+            "goal": "Collect cobblestone",
+            "command": "!collectBlocks(\"stone\", 3)",
+            "action_cmd": [
+              "!collectBlocks(\"stone\", 3)"
+            ],
+            "reasoning": "Cobblestone is needed to craft a stone pickaxe.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "wooden_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "stone",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 6,
+            "goal": "Craft stone pickaxe",
+            "command": "!craftRecipe(\"stone_pickaxe\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"stone_pickaxe\", 1)"
+            ],
+            "reasoning": "A stone pickaxe is required to mine iron ore.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone",
+                "count": 3
+              },
+              {
+                "type": "item",
+                "name": "stick",
+                "count": 2
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 7,
+            "goal": "Collect iron ore",
+            "command": "!collectBlocks(\"iron_ore\", 4)",
+            "action_cmd": [
+              "!collectBlocks(\"iron_ore\", 4)"
+            ],
+            "reasoning": "Iron ore is the raw material needed for iron boots.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone_pickaxe",
+                "count": 1
+              },
+              {
+                "type": "access",
+                "name": "underground",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 8,
+            "goal": "Craft furnace",
+            "command": "!craftRecipe(\"furnace\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"furnace\", 1)"
+            ],
+            "reasoning": "A furnace is required to smelt raw iron into ingots.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "stone",
+                "count": 8
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 9,
+            "goal": "Smelt raw iron",
+            "command": "!smeltItem(\"raw_iron\", 4)",
+            "action_cmd": [
+              "!smeltItem(\"raw_iron\", 4)"
+            ],
+            "reasoning": "Smelting converts raw iron into iron ingots required for crafting armor.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "raw_iron",
+                "count": 4
+              },
+              {
+                "type": "station",
+                "name": "furnace",
+                "count": 1
+              }
+            ],
+            "produces": null
+          },
+          {
+            "step": 10,
+            "goal": "Craft iron boots",
+            "command": "!craftRecipe(\"iron_boots\", 1)",
+            "action_cmd": [
+              "!craftRecipe(\"iron_boots\", 1)"
+            ],
+            "reasoning": "Final step to craft the requested iron boots using 4 iron ingots.",
+            "preconditions": [
+              {
+                "type": "item",
+                "name": "iron_ingot",
+                "count": 4
+              }
+            ],
+            "produces": null
+          }
+        ],
+        "target": "iron_boots"
+      },
+      "raw_response": "REASONING:\nI referenced the Processing Pattern and the Raw Ore Naming Pattern. The target item is iron_boots, the material is iron, and the tool type is armor. I identified that iron ore requires a stone pickaxe for collection and smelting in a furnace to produce iron ingots. Boots require 4 iron ingots.\n\nEXECUTION PLAN:\nStep 1: Collect logs and craft wooden pickaxe\nPrerequisites: None\nCommand: !collectBlocks(\"oak_log\", 3)\nReasoning: Need a wooden pickaxe to mine stone for the stone pickaxe upgrade.\nStep 2: Craft planks and sticks\nPrerequisites: item:oak_log:3\nCommand: !craftRecipe(\"oak_planks\", 12)\nReasoning: Planks are needed to make sticks and a crafting table.\nStep 3: Craft sticks\nPrerequisites: item:oak_planks:2\nCommand: !craftRecipe(\"stick\", 4)\nReasoning: Sticks are needed to craft the wooden pickaxe.\nStep 4: Craft wooden pickaxe\nPrerequisites: item:oak_planks:3, item:stick:2\nCommand: !craftRecipe(\"wooden_pickaxe\", 1)\nReasoning: A wooden pickaxe is required to mine cobblestone.\nStep 5: Collect cobblestone\nPrerequisites: item:wooden_pickaxe:1, access:stone\nCommand: !collectBlocks(\"stone\", 3)\nReasoning: Cobblestone is needed to craft a stone pickaxe.\nStep 6: Craft stone pickaxe\nPrerequisites: item:stone:3, item:stick:2\nCommand: !craftRecipe(\"stone_pickaxe\", 1)\nReasoning: A stone pickaxe is required to mine iron ore.\nStep 7: Collect iron ore\nPrerequisites: item:stone_pickaxe:1, access:underground\nCommand: !collectBlocks(\"iron_ore\", 4)\nReasoning: Iron ore is the raw material needed for iron boots.\nStep 8: Craft furnace\nPrerequisites: item:stone:8\nCommand: !craftRecipe(\"furnace\", 1)\nReasoning: A furnace is required to smelt raw iron into ingots.\nStep 9: Smelt raw iron\nPrerequisites: item:raw_iron:4, station:furnace\nCommand: !smeltItem(\"raw_iron\", 4)\nReasoning: Smelting converts raw iron into iron ingots required for crafting armor.\nStep 10: Craft iron boots\nPrerequisites: item:iron_ingot:4\nCommand: !craftRecipe(\"iron_boots\", 1)\nReasoning: Final step to craft the requested iron boots using 4 iron ingots.",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 10,
+        "step_efficiency": 0.5,
+        "issues": [
+          "Step 6: missing stone x3",
+          "Step 8: missing stone x8",
+          "Step 8: craftRecipe(\"furnace\", 1) missing ingredients: cobblestone x8"
+        ],
+        "lenient_issues": [
+          "Step 6: missing stone x3",
+          "Step 8: missing stone x8",
+          "Step 8: craftRecipe(\"furnace\", 1) missing ingredients: cobblestone x8"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7643
+    },
+    {
+      "slug": "collect/pointed_dripstone",
+      "level": "L2",
+      "goal_item": "pointed_dripstone",
+      "min_steps": 2,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7677
+    },
+    {
+      "slug": "craft/flint_and_steel",
+      "level": "L2",
+      "goal_item": "flint_and_steel",
+      "min_steps": 4,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7623
+    },
+    {
+      "slug": "craft/hopper",
+      "level": "L2",
+      "goal_item": "hopper",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7609
+    },
+    {
+      "slug": "craft/stone_pressure_plate",
+      "level": "L2",
+      "goal_item": "stone_pressure_plate",
+      "min_steps": 3,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7637
+    },
+    {
+      "slug": "craft/stone_button",
+      "level": "L2",
+      "goal_item": "stone_button",
+      "min_steps": 3,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7621
+    },
+    {
+      "slug": "craft/grindstone",
+      "level": "L2",
+      "goal_item": "grindstone",
+      "min_steps": 4,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7617
+    },
+    {
+      "slug": "collect/amethyst_shard",
+      "level": "L2",
+      "goal_item": "amethyst_shard",
+      "min_steps": 2,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7707
+    },
+    {
+      "slug": "collect/tuff",
+      "level": "L2",
+      "goal_item": "tuff",
+      "min_steps": 2,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7703
+    },
+    {
+      "slug": "collect/calcite",
+      "level": "L2",
+      "goal_item": "calcite",
+      "min_steps": 2,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7697
+    },
+    {
+      "slug": "craft/stone_bricks",
+      "level": "L2",
+      "goal_item": "stone_bricks",
+      "min_steps": 4,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7617
+    },
+    {
+      "slug": "craft/diamond_hoe",
+      "level": "L3",
+      "goal_item": "diamond_hoe",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7619
+    },
+    {
+      "slug": "craft/diamond_axe",
+      "level": "L3",
+      "goal_item": "diamond_axe",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7619
+    },
+    {
+      "slug": "craft/diamond_shovel",
+      "level": "L3",
+      "goal_item": "diamond_shovel",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7625
+    },
+    {
+      "slug": "craft/compass",
+      "level": "L3",
+      "goal_item": "compass",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7611
+    },
+    {
+      "slug": "craft/diamond_boots",
+      "level": "L3",
+      "goal_item": "diamond_boots",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7619
+    },
+    {
+      "slug": "craft/diamond_helmet",
+      "level": "L3",
+      "goal_item": "diamond_helmet",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7625
+    },
+    {
+      "slug": "craft/golden_pickaxe",
+      "level": "L3",
+      "goal_item": "golden_pickaxe",
+      "min_steps": 6,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7655
+    },
+    {
+      "slug": "craft/golden_axe",
+      "level": "L3",
+      "goal_item": "golden_axe",
+      "min_steps": 6,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7647
+    },
+    {
+      "slug": "collect/terracotta",
+      "level": "L3",
+      "goal_item": "terracotta",
+      "min_steps": 2,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7677
+    },
+    {
+      "slug": "craft/iron_block",
+      "level": "L3",
+      "goal_item": "iron_block",
+      "min_steps": 4,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7649
+    },
+    {
+      "slug": "craft/iron_leggings",
+      "level": "L3",
+      "goal_item": "iron_leggings",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7649
+    },
+    {
+      "slug": "craft/golden_boots",
+      "level": "L3",
+      "goal_item": "golden_boots",
+      "min_steps": 6,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7647
+    },
+    {
+      "slug": "craft/chest",
+      "level": "L1",
+      "goal_item": "chest",
+      "min_steps": 2,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7607
+    },
+    {
+      "slug": "craft/ladder",
+      "level": "L1",
+      "goal_item": "ladder",
+      "min_steps": 2,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7609
+    },
+    {
+      "slug": "craft/iron_trapdoor",
+      "level": "L2",
+      "goal_item": "iron_trapdoor",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7655
+    },
+    {
+      "slug": "craft/iron_door",
+      "level": "L2",
+      "goal_item": "iron_door",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7647
+    },
+    {
+      "slug": "craft/iron_bars",
+      "level": "L2",
+      "goal_item": "iron_bars",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7641
+    },
+    {
+      "slug": "craft/clock",
+      "level": "L3",
+      "goal_item": "clock",
+      "min_steps": 6,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7607
+    },
+    {
+      "slug": "craft/iron_horse_armor",
+      "level": "L3",
+      "goal_item": "iron_horse_armor",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7655
+    },
+    {
+      "slug": "combat/kill_creeper",
+      "level": "L1",
+      "goal_item": "gunpowder",
+      "min_steps": 3,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7654
+    },
+    {
+      "slug": "combat/kill_enderman",
+      "level": "L2",
+      "goal_item": "ender_pearl",
+      "min_steps": 4,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7668
+    },
+    {
+      "slug": "combat/kill_slime",
+      "level": "L2",
+      "goal_item": "slime_ball",
+      "min_steps": 3,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7672
+    },
+    {
+      "slug": "combat/kill_blaze",
+      "level": "L3",
+      "goal_item": "blaze_rod",
+      "min_steps": 6,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7682
+    },
+    {
+      "slug": "combat/kill_wither_skeleton",
+      "level": "L3",
+      "goal_item": "bone",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7712
+    },
+    {
+      "slug": "craft/wooden_shovel",
+      "level": "L1",
+      "goal_item": "wooden_shovel",
+      "min_steps": 2,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7623
+    },
+    {
+      "slug": "craft/oak_fence",
+      "level": "L1",
+      "goal_item": "oak_fence",
+      "min_steps": 3,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7617
+    },
+    {
+      "slug": "craft/oak_door",
+      "level": "L1",
+      "goal_item": "oak_door",
+      "min_steps": 2,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7615
+    },
+    {
+      "slug": "craft/lever",
+      "level": "L1",
+      "goal_item": "lever",
+      "min_steps": 3,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7607
+    },
+    {
+      "slug": "craft/painting",
+      "level": "L1",
+      "goal_item": "painting",
+      "min_steps": 3,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7613
+    },
+    {
+      "slug": "collect/gravel",
+      "level": "L1",
+      "goal_item": "gravel",
+      "min_steps": 1,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7621
+    },
+    {
+      "slug": "collect/pumpkin",
+      "level": "L1",
+      "goal_item": "pumpkin",
+      "min_steps": 1,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7617
+    },
+    {
+      "slug": "craft/stonecutter",
+      "level": "L2",
+      "goal_item": "stonecutter",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7619
+    },
+    {
+      "slug": "craft/minecart",
+      "level": "L2",
+      "goal_item": "minecart",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7613
+    },
+    {
+      "slug": "craft/golden_chestplate",
+      "level": "L3",
+      "goal_item": "golden_chestplate",
+      "min_steps": 6,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7661
+    },
+    {
+      "slug": "craft/jukebox",
+      "level": "L3",
+      "goal_item": "jukebox",
+      "min_steps": 5,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7611
+    },
+    {
+      "slug": "craft/anvil",
+      "level": "L3",
+      "goal_item": "anvil",
+      "min_steps": 6,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7609
+    },
+    {
+      "slug": "craft/note_block",
+      "level": "L3",
+      "goal_item": "note_block",
+      "min_steps": 6,
+      "parse_success": false,
+      "plan": null,
+      "raw_response": "My brain disconnected, try again.",
+      "error_type": "api_error",
+      "validation": {
+        "strict_pass": false,
+        "lenient_pass": false,
+        "pvr": false,
+        "step_count": 0,
+        "step_efficiency": 0,
+        "issues": [
+          "Plan generation failed (API error)"
+        ],
+        "lenient_issues": [
+          "Plan generation failed (API error)"
+        ]
+      },
+      "examples_used": 0,
+      "prompt_length": 7617
+    }
+  ],
+  "summary": {
+    "by_level": {
+      "L1": {
+        "total": 20,
+        "strict_tcr": "8/20",
+        "lenient_tcr": "8/20",
+        "pvr": "8/20",
+        "avg_step_efficiency": 0.31
+      },
+      "L2": {
+        "total": 20,
+        "strict_tcr": "0/20",
+        "lenient_tcr": "0/20",
+        "pvr": "0/20",
+        "avg_step_efficiency": 0.07
+      },
+      "L3": {
+        "total": 20,
+        "strict_tcr": "0/20",
+        "lenient_tcr": "0/20",
+        "pvr": "0/20",
+        "avg_step_efficiency": 0
+      }
+    },
+    "overall": {
+      "strict_tcr": "8/60",
+      "lenient_tcr": "8/60",
+      "pvr": "8/60",
+      "avg_step_efficiency": 0.13
+    }
+  }
+}
