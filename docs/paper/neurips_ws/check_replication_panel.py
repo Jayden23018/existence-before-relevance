@@ -99,7 +99,9 @@ def main() -> int:
         fails.append("Appendix G no longer states the warm-start (saer_full) p-values")
     else:
         for quoted, model in zip(warm.groups(), ("gemma4-26b", "gemma4-31b")):
-            computed = f"{pairs[(model, 'saer_full')]['p']:.2f}"
+            # Compare at the precision the paper quotes (0.0625 and 0.219).
+            places = len(quoted.split(".")[1])
+            computed = f"{pairs[(model, 'saer_full')]['p']:.{places}f}"
             if quoted != computed:
                 fails.append(f"Appendix G quotes warm-start p={quoted} for {model}, "
                              f"scorer says {computed}")
