@@ -25,6 +25,7 @@
 % hidelinks keeps the look of the reviewed version.  Keep pdftitle equal to
 % \title: check_format.py --final compares them.
 \usepackage[hidelinks]{hyperref}
+\hypersetup{pdfauthor={Zixuan Wang, Ziming Dai, Yu Wu, Li Ning}}
 \hypersetup{pdftitle={Existence Before Relevance: Same-Category
   Demonstrations Narrow a Prerequisite-Chain Gap in LLM Plan Generation, and
   Pass On Their Defects}}
@@ -85,7 +86,7 @@ Large language models (LLMs) are increasingly used as task planners for
 embodied agents, yet long prerequisite chains remain a weak point.  We study
 this in offline plan generation for a Minecraft agent, scoring each plan with
 a rule-based validator that walks it over a virtual inventory.  For five of
-the seven LLMs we test (8\,B to 671\,B parameters where disclosed), plans for
+the seven LLMs we test (8B to 671B parameters where disclosed), plans for
 two-chain (L2) tasks pass only 10--30\% of the time without retrieval, against
 45--95\% on single-material tasks.  Adding three same-category demonstrations
 to the prompt improves all five.  In a four-condition ablation on one model,
@@ -173,8 +174,8 @@ dependency graph;
 Plan4MC~\citep{yuan2023plan4mc} traverses a pre-built skill prerequisite
 graph over RL skills; Optimus-1~\citep{li2024optimus} retrieves world
 knowledge from a hierarchical knowledge graph; and
-Plancraft~\citep{dagan2024plancraft} is a crafting-GUI benchmark whose
-oracle planner finds LLMs struggle with multi-step crafting.  Unlike these, we retrieve few-shot
+Plancraft~\citep{dagan2024plancraft} is a crafting-GUI benchmark, with an
+oracle planner, on which LLMs struggle with multi-step crafting.  Unlike these, we retrieve few-shot
 \emph{demonstrations} to condition plan generation, decomposing
 \emph{which} facet of knowledge provision binds performance.
 
@@ -182,8 +183,8 @@ oracle planner finds LLMs struggle with multi-step crafting.  Unlike these, we r
 \label{sec:ricl}
 In-context learning (ICL)~\citep{brown2020language} adapts LLMs from
 demonstrations without parameter updates; \citet{min2022rethinking} show
-format, not label correctness, drives ICL, motivating SAER's focus on
-structural relevance.  Retrieval-based ICL selects examples per query:
+that on classification tasks label correctness matters less than label
+space, input distribution and format.  Retrieval-based ICL selects examples per query:
 unsupervised methods (BM25~\citep{robertson2009probabilistic},
 SBERT~\citep{reimers2019sentence}) use lexical/semantic similarity;
 EPR~\citep{rubin2022learning} and LLM-R~\citep{wang2024learning} train
@@ -214,10 +215,9 @@ with scale.  \citet{shi2023large} show irrelevant
 context distracts models (motivating our category filter);
 \citet{liu2024lost} document a mid-prompt position bias.  PlanBench~\citep{valmeekam2023planbench} argues
 commonsense benchmarks conflate planning with retrieval, and
-\citet{xu2026depthceiling} attribute multi-step failure to a
-\emph{reasoning-depth} ceiling that scale and few-shot prompting barely
-move.  We isolate another constraint---stating the rules is not enough, and
-the binding limit is procedural knowledge in \emph{task-matched} form---and an
+\citet{xu2026depthceiling} report a \emph{latent-planning} depth ceiling
+that massive scaling leaves unresolved.  We isolate another constraint --- stating the rules is not enough, and
+the binding limit is procedural knowledge in \emph{task-matched} form --- and an
 exploratory thinking-mode ablation (\appref{app:thinking}) is consistent with
 test-time reasoning raising L1 without unlocking L2.
 
@@ -466,7 +466,7 @@ walks the plan's commands (\texttt{collectBlocks}, \texttt{craftRecipe},
 passes if it passes in at least two (\textbf{majority vote}).
 
 \textbf{Metrics.}  The primary metric is the \emph{Strict Plan Pass Rate}
-(SPR; labelled TCR, for task completion rate, in the released scripts\footnote{Code and data: \url{https://github.com/Jayden23018/existence-before-relevance}.}): the fraction of tasks whose plan
+(SPR; labelled TCR, for task completion rate, in the released scripts\footnote{Code and data: \url{https://github.com/Jayden23018/existence-before-relevance}}): the fraction of tasks whose plan
 has no prerequisite gap in the inventory walk and ends with the goal item
 present.  SPR measures the prerequisite-structure validity of a plan, not task
 completion.  \emph{Plan Validity Rate} (PVR) checks only \emph{explicitly
@@ -538,14 +538,14 @@ corrected for a cold start (\appref{app:livecombat}).
 under the pre-specified credit-only scorer and under debiting
 (\secref{sec:protocol}); PVR and the L1--L3 tier counts (of 20 each) are credit-only.
 \textbf{L2} is the discrimination tier.  Gap $=$ PVR$-$SPR in tasks.  $\Delta$
-$=$ \texttt{saer\_cold} minus \texttt{no\_ret}, differencing the rounded
+$=$ \texttt{saer\_cold} minus \texttt{no\_ret} (\texttt{no\_retrieval}), differencing the rounded
 percentages, with McNemar exact $p$; \textbf{bold} $=$ below
 $\alpha'{=}0.0038$.  $^\ddagger$ $=$ 4B active parameters (Mixture-of-Experts).  The
 replication panel lies outside the pre-specified family.  Verdicts in
 \appref{app:mcnemar} and \appref{app:exposure}; run provenance in
 \appref{app:provenance}; denominator sensitivity in \appref{app:denom}.}
 \label{tab:main}
-\footnotesize\setlength{\tabcolsep}{2.4pt}\renewcommand{\arraystretch}{0.9}
+\footnotesize\setlength{\tabcolsep}{3pt}\renewcommand{\arraystretch}{0.9}
 \centering
 \begin{tabular}{llrrrrrrrll}
 \toprule
@@ -555,7 +555,7 @@ Model & Cond. & credit & debited & PVR & Gap & L1 & \textbf{L2} & L3 & credit & 
 \midrule
 Qwen3-8B       & no\_ret    & 14 (23\%) & 13 (22\%) & 47 & +33 & 9  & 3  & 2  & --- & --- \\
 Qwen3-8B       & saer\_cold & 26 (43\%) & 24 (40\%) & 48 & +22 & 12 & 11 & 3  & +20 ($p{=}0.0075$) & +18 ($p{=}0.0127$) \\
-\midrule
+\addlinespace
 GPT-4o         & no\_ret    & 23 (38\%) & 20 (33\%) & 29 & +6  & 17 & 3  & 3  & --- & --- \\
 GPT-4o         & saer\_cold & 41 (68\%) & 34 (57\%) & 46 & +5  & 17 & 16 & 8  & \textbf{+30} ($p{<}0.001$) & \textbf{+24} ($p{<}0.001$) \\
 \addlinespace
@@ -592,9 +592,9 @@ included.}  SAER improves all five primary models by $+$20 to $+$50\,pp, four
 family-wise significantly; Qwen3-8B gains least ($+$20\,pp, $p{=}0.0075$:
 Holm yes, Bonferroni no).  Under debiting all five gains stay positive
 ($+$16 to $+$24\,pp) and three clear $\alpha'$.  Gain does not track parameter
-count (DeepSeek-V3, 671\,B, gains less than Qwen2.5-Max), and two of five sizes are undisclosed and a third only approximate
+count (DeepSeek-V3, 671B, gains less than Qwen2.5-Max), and two of five sizes are undisclosed and a third only approximate
 (\appref{app:models}), so we make no capacity-scaling claim.  Qwen3-8B keeps
-the largest PVR$-$SPR gap ($+$22 vs.\ $+3$--$+7$): given correct templates it
+the largest PVR$-$SPR gap ($+$22 vs.\ $+$3 to $+$7): given correct templates it
 still mis-specifies counts (2 iron ingots for a helmet needing 5), a residual
 distinct from the bottleneck.  Of the five, DeepSeek-V3 alone reaches 10/20 at L3 without
 retrieval (others 0--3/20); with SAER it converges with Qwen2.5-Max
@@ -613,6 +613,7 @@ in \appref{app:perseed}).
 \label{sec:ablation}
 
 \begin{table}[htbp]
+\vspace{-8pt}
 \caption{Four-condition ablation on Qwen2.5-Max (60 tasks, 3-seed majority
 vote) under both scorings.  $\Delta$ is against \texttt{no\_retrieval}, or
 between the two named arms, differencing rounded percentages; 95\% CI on the
@@ -724,14 +725,14 @@ model$\times$condition interaction.
 
 \noindent\textbf{Relevance evidence.}  One pre-specified test on one model, seven
 discordant tasks and a 16-day generation gap on a provider alias; settling it
-needs a same-window rerun, which we have not done.  The category filter is in
+needs a same-window re-run, which we have not done.  The category filter is in
 every retrieval condition, so its own contribution is unmeasured.  \textbf{Controls not run.}  We ablate retrieval \emph{policy}, not demonstration
 \emph{surface form}: format-only and content-masked controls, and supplying each target's resolved chain, are future work.
 
 \noindent\textbf{Models and decoding.}  Temperature differs across models
 (\secref{sec:models}); two primary models used date-pinned identifiers, and the
 other three are provider aliases, so endpoint updates between their arms cannot
-be excluded.  Three further 8--12\,B models, run at provider
+be excluded.  Three further 8--12B models, run at provider
 defaults, keep SAER ceilings at 7/26/34 of 60 when re-scored (7/23/33 at run time), below the four frontier primary
 models (41--52/60) but not all below Qwen3-8B's 26/60, so we claim no
 capacity threshold (\appref{app:capacity}).  Without \texttt{minecraft-data} SAER keeps only keyword and level, as on
@@ -1144,7 +1145,7 @@ were seen, so it is labelled post hoc throughout.
 
 
 
-The ablation and cross-model panels (\appref{app:mcnemar}) add that all retrieval conditions---including random---significantly
+The ablation and cross-model panels (\appref{app:mcnemar}) add that all retrieval conditions --- including random --- significantly
 beat no-retrieval for Qwen2.5-Max (all $p{<}0.001$; SAER-vs-BM25 there
 examined in \secref{sec:ablation}), Qwen2.5-Max and DeepSeek-V3 with SAER significantly
 outperform Qwen3-8B with SAER (the only two cross-model tests against it), and
@@ -1168,7 +1169,7 @@ diagnostic.}  The 21 tasks split seven per tier, so a per-tier denominator of
 21 counts trials (7 tasks $\times$ 3 seeds) while \emph{21 tasks} counts
 tasks.  At the L2 discrimination tier both conditions floor at
 2/21 trials (10\%) under \emph{both} metrics, and 11 of 21 tasks fail under both
-in all three seeds---a symmetry no knowledge-driven account predicts.  A
+in all three seeds --- a symmetry no knowledge-driven account predicts.  A
 failure-mode audit places most failures outside the knowledge axis:
 33/42 (79\%) of no\_retrieval failures are framework-execution errors
 (Mineflayer sync races) against 2 prerequisite-chain gaps, and 21/46
@@ -1451,9 +1452,9 @@ materials by task design (they collect raw blocks or kill mobs rather
 than craft from ingredients), not because they are structurally
 unrelated to the demonstration pool.
 
-This measure is asymmetric---the query side uses only final-craft
+This measure is asymmetric --- the query side uses only final-craft
 materials while the demonstration side uses each example's full
-prerequisite chain---which could overstate similarity. As a
+prerequisite chain --- which could overstate similarity. As a
 robustness check we recomputed a symmetric variant, expanding the
 query side to its own full prerequisite chain via the same static
 dependency resolution used elsewhere in the pipeline (applied offline
@@ -1463,14 +1464,14 @@ asymmetric one, with no task reaching the near-duplicate range (0/44
 above 0.75). At stricter thresholds, the asymmetric measure has 14/44
 tasks at or above 0.5, 4/44 at or above 0.75, and 4/44 at or above 0.9
 (i.e.\ 4 near-duplicate matches), whereas the symmetric measure has
-only 3/44 at or above 0.5 and 0/44 at or above 0.75 or 0.9---confirming
+only 3/44 at or above 0.5 and 0/44 at or above 0.75 or 0.9 --- confirming
 that the apparent near-duplicates are an artefact of the asymmetric
 comparison. The four asymmetric-measure exact matches (Jaccard$=$1.0:
 \texttt{wooden\_sword}, \texttt{oak\_sign}, \texttt{wooden\_shovel},
 \texttt{oak\_fence}, each matched to a wooden-tool demonstration)
 arise because these tasks' declared material sets contain only two
 items (a stick and a plank), so any other two-item wooden-tool set is
-trivially identical---not because of retrieval-pool duplication; none
+trivially identical --- not because of retrieval-pool duplication; none
 of the four survive under the symmetric measure.
 
 \paragraph{Which bank revision.}  The crafting bank was revised after the
@@ -1503,7 +1504,7 @@ Table~\ref{tab:overlap-tercile}.
 We further stratified SAER's SPR gain on Qwen2.5-Max
 (\texttt{no\_retrieval}$\to$\texttt{saer\_cold}) by overlap tercile
 (low/mid/high, $n{=}15/15/14$) to test whether the gain is
-concentrated in high-overlap, near-duplicate tasks---which would
+concentrated in high-overlap, near-duplicate tasks --- which would
 undercut a generalisation claim.  On the evaluation-time bank the gain rises
 monotonically with overlap ($+6/{+}8/{+}10$ asymmetric, $+5/{+}9/{+}10$
 symmetric; Table~\ref{tab:overlap-tercile}, upper block).  This does not
@@ -1515,7 +1516,7 @@ that never reaches $0.5$ cannot be retrieval of a near-copy.  Second,
 the tercile is confounded with difficulty by construction: that
 stratum is seven \texttt{iron\_*} items, three \texttt{stone\_*}
 items, \texttt{cauldron}, \texttt{minecart}, \texttt{compass} and
-\texttt{lever}---the iron- and stone-tier multi-hop chains, which
+\texttt{lever} --- the iron- and stone-tier multi-hop chains, which
 share ingredients with the demonstrations and with each other simply
 because those tiers have few distinct inputs.  Its no-retrieval floor
 is \textbf{0/14}, the L2 bottleneck this paper is about, whereas the
@@ -2003,7 +2004,7 @@ Table~\ref{tab:ablation_5cond} gives the four-condition within-model
 ablation discussed in \secref{sec:ablation}: knowledge \emph{existence} (random retrieval
 $+$31\,pp over no-retrieval, $p{<}0.001$) is the primary lever, and SAER
 exceeds BM25 on this model (saer\_cold 82\% vs.\ BM25 70\%; $b{=}7$,
-$c{=}0$, $p{=}0.0156$)---nominally significant, but \emph{not} family-wise
+$c{=}0$, $p{=}0.0156$) --- nominally significant, but \emph{not} family-wise
 significant under the pre-specified Bonferroni correction, since
 $0.0156{>}\alpha'{=}0.0038$, and family-wise significant only under the post
 hoc Holm step-down
@@ -2073,7 +2074,7 @@ Table~\ref{tab:main}) and 15/20.  The lift is $+$6 tasks either way, but
 quoting the run-time 8/20 beside Table~\ref{tab:main}'s re-scored 9/20 would
 be mixing the two.
 Thinking amplifies single-step reasoning but cannot substitute for the
-multi-hop procedural knowledge the model has not internalised---supporting
+multi-hop procedural knowledge the model has not internalised --- supporting
 our characterisation of the residual constraint as template-generalisation,
 not reasoning-depth (consistent with, and complementary to, the
 latent-depth ceiling of \citet{xu2026depthceiling}).
@@ -2182,7 +2183,7 @@ Gemma-3-12B       & 16/60 (26.7\%) & \textbf{33/60 (55.0\%)} & 100/100 & $+$28.3
 
 \textbf{Verdict.}  Llama-3.1-8B, Ministral-8B, and Gemma-3-12B reach
 \texttt{saer\_cold} SPR of 7/60 (11.7\%), 23/60 (38.3\%), and 33/60
-(55.0\%) respectively---all below the four frontier primary models
+(55.0\%) respectively --- all below the four frontier primary models
 (41--52/60).  Against the fifth, Qwen3-8B (26/60), the comparison is not
 uniform: on the re-scored ceilings below (7, 26 and 34 of 60), Llama-3.1-8B
 sits below it, Ministral-8B level with it and Gemma-3-12B above it.
@@ -2268,7 +2269,7 @@ one craft each removes the symptom in a three-task pilot
 the fix is confined to the live runtime and does not touch the static
 evaluation of Table~\ref{tab:main}.  A full re-run under the fix was not completed, so
 Table~\ref{tab:live} reports the pre-fix results and we do not claim a
-corrected live ranking---only that a substantial share of the
+corrected live ranking --- only that a substantial share of the
 \texttt{saer\_cold} live deficit is an execution-layer artefact.  Plan-length
 differences are not one-directional: \texttt{saer\_cold} plans are
 longer at L1 (5.4 steps against 4.3 for \texttt{no\_retrieval}) but shorter
@@ -2611,7 +2612,7 @@ groups: those carrying at least one unacquired-prerequisite issue
 the goal item is never produced, and those the majority rule cannot attribute
 at all.  Without retrieval the first group holds 41/46 (Qwen3-8B), 31/37
 (GPT-4o), 31/35 (Claude Sonnet~4.5), 39/41 (Qwen2.5-Max) and 20/27
-(DeepSeek-V3)---74--95\% of failures.  The shared
+(DeepSeek-V3) --- 74--95\% of failures.  The shared
 signature is therefore an \emph{unacquired prerequisite}, not a malformed
 or off-goal plan.  Retrieval shrinks both groups by similar proportions: the prerequisite group
 falls from 162 to 67 tasks in total (to 30, 16, 8, 8 and 5), and the goal-only
