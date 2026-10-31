@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Assert the Gemma4 replication panel in MCAI_neurips_ws.tex matches the scorer.
 
-The panel's two saer_cold rows were added by hand from the output of
+The appendices are a separate document, so both tex files are read.  The panel's two saer_cold rows were added by hand from the output of
 `node scripts/eval/mcnemar_table.mjs --rescore`.  Hand-copied table cells are
 exactly the thing that silently drifts, and LaTeX will happily compile a wrong
 number, so this re-derives every cell from the script and fails if the paper
@@ -17,6 +17,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[3]
 TEX = REPO / "docs/paper/neurips_ws/MCAI_neurips_ws.tex"
+APPENDIX_TEX = REPO / "docs/paper/neurips_ws/MCAI_neurips_ws_appendix.tex"
 LABEL = {"gemma4-26b": "Gemma4-26B", "gemma4-31b": "Gemma4-31B"}
 # Table 1 carries the two comparable arms only; the warm-start saer_full arm
 # moved to Appendix G, where it is guarded by its p-values further down.
@@ -38,7 +39,7 @@ def scorer_output() -> str:
 
 def main() -> int:
     out = scorer_output()
-    tex = TEX.read_text()
+    tex = TEX.read_text() + APPENDIX_TEX.read_text()
     fails = []
 
     runs = {

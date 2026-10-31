@@ -23,6 +23,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[3]
 TEX = REPO / "docs/paper/neurips_ws/MCAI_neurips_ws.tex"
+APPENDIX_TEX = REPO / "docs/paper/neurips_ws/MCAI_neurips_ws_appendix.tex"
 
 # Paper label -> run-id stem used by the scripts.
 MODELS = {
@@ -63,7 +64,7 @@ def run(*argv: str) -> str:
 
 
 def main() -> int:
-    tex = TEX.read_text()
+    tex = TEX.read_text() + APPENDIX_TEX.read_text()
     fails: list[str] = []
     checked = 0
 

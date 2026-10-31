@@ -1,5 +1,7 @@
 # Code and Data — Existence Before Relevance (NEmo Workshop, NeurIPS 2026)
 
+**Appendices of the paper:** [MCAI_neurips_ws_appendix.pdf](docs/paper/neurips_ws/MCAI_neurips_ws_appendix.pdf)
+
 This archive contains the full source, benchmark, and raw per-task results for the
 paper. Every confirmatory number — the main cross-model table, the ablation, and the
 appendix tables derived from them — can be recomputed offline from the JSON files
@@ -72,7 +74,8 @@ scripts/eval/
 tests/                            plain-node runner (no framework); see section 4
 profiles/                         per-model evaluation configs
 docs/paper/neurips_ws/            the submitted paper and its own checkers
-  MCAI_neurips_ws.tex/.pdf        the submission (body + appendices)
+  MCAI_neurips_ws.tex/.pdf        the camera-ready paper (body and references)
+  MCAI_neurips_ws_appendix.tex/.pdf  the appendices, a separate document
   check_replication_panel.py      re-derives every cell of the replication panel
                                   from the re-scorer and fails on any mismatch
   check_appendix_tables.py        re-derives the appendix tables the same way
